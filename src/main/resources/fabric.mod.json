@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "avoidlib",
+  "version": "${version}",
+  "name": "AvoidLib",
+  "description": "Yet another library for everything Minecraft",
+  "authors": [],
+  "contact": {},
+  "license": "Apache-2.0",
+  "icon": "assets/avoidlib/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "pl.olafcio.avoidlib.client.AvoidLibClient"
+    ],
+    "main": [
+      "pl.olafcio.avoidlib.AvoidLib"
+    ]
+  },
+  "mixins": [
+    "avoidlib.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_version}"
+  }
+}
