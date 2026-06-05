@@ -3,7 +3,7 @@
   "id": "avoidlib",
   "version": "${version}",
   "name": "AvoidLib",
-  "description": "Yet another library for everything Minecraft",
+  "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
   "authors": [],
   "contact": {},
   "license": "Apache-2.0",
