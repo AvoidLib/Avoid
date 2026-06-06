@@ -1,8 +1,11 @@
 package pl.olafcio.avoid.net.nbt;
 
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+
 import java.util.LinkedList;
 import java.util.List;
 
+@NeverRemoval
 public final class NbtList extends NbtElement {
     private final LinkedList<NbtElement> members = new LinkedList<>();
 

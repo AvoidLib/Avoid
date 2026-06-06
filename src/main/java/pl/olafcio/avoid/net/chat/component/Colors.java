@@ -5,11 +5,13 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.annotations.Untested;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 
 import java.awt.*;
 
-@ApiStatus.Experimental
 @NullMarked
+@NeverRemoval
+@ApiStatus.Experimental
 @SuppressWarnings("NullableProblems")
 public enum Colors {
     BLACK("black", '0', 0, new Color(0)),

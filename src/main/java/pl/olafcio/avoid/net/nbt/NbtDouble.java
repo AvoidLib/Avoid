@@ -1,13 +1,16 @@
 package pl.olafcio.avoid.net.nbt;
 
-public final class NbtDouble extends NbtElement implements NbtNumber {
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+
+@NeverRemoval
+public final class NbtDouble extends NbtElement implements NbtNumber<Double> {
     final double value;
 
     NbtDouble(double value) {
         this.value = value;
     }
 
-    public double get() {
+    public Double get() {
         return value;
     }
 

@@ -5,7 +5,11 @@ import org.jetbrains.annotations.ApiStatus;
 import java.lang.annotation.*;
 
 /**
- * Indicates that the annotated element may be renamed or removed at any time.
+ * Indicates that the annotated element may be renamed or removed at any time.<br/>
+ * <br/>
+ * If the {@code aspect} is name, use {@code var} instead of referencing to the annotated type.
+ * This will help you, where available, to avoid breakage.<br/>
+ * In the worst case, you can also try using Reflection; however, that approach is not recommended.
  */
 @Documented
 @Target({ElementType.METHOD, ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.RECORD_COMPONENT, ElementType.FIELD})

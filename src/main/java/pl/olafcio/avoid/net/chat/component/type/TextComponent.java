@@ -1,7 +1,9 @@
 package pl.olafcio.avoid.net.chat.component.type;
 
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 
+@WillRefactor(aspect = "name, fields, methods, superclass")
 public class TextComponent extends BaseComponent<TextComponent> {
     private final String text;
 

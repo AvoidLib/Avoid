@@ -1,9 +1,11 @@
 package pl.olafcio.avoid.net.chat.component.type;
 
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 
 import java.util.Arrays;
 
+@WillRefactor(aspect = "name, fields, methods, superclass")
 public class TranslateFormattedComponent extends BaseComponent<TranslateFormattedComponent> {
     private final String translate;
     private final String fallback;

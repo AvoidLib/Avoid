@@ -1,6 +1,9 @@
 package pl.olafcio.avoid.net.nbt;
 
-public final class NbtByte extends NbtElement implements NbtNumber {
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+
+@NeverRemoval
+public final class NbtByte extends NbtElement implements NbtNumber<Byte> {
     final byte value;
 
     NbtByte(byte value) {
@@ -15,7 +18,7 @@ public final class NbtByte extends NbtElement implements NbtNumber {
         this.value = (byte) value;
     }
 
-    public byte get() {
+    public Byte get() {
         return value;
     }
 

@@ -1,13 +1,16 @@
 package pl.olafcio.avoid.net.nbt;
 
-public final class NbtFloat extends NbtElement implements NbtNumber {
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+
+@NeverRemoval
+public final class NbtFloat extends NbtElement implements NbtNumber<Float> {
     final float value;
 
     NbtFloat(float value) {
         this.value = value;
     }
 
-    public float get() {
+    public Float get() {
         return value;
     }
 

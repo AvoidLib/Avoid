@@ -1,6 +1,9 @@
 package pl.olafcio.avoid.net.nbt;
 
-public sealed interface NbtNumber
-       extends NbtPrimitive
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
+
+@WillRefactor(aspect = "name")
+public sealed interface NbtNumber<T>
+       extends NbtPrimitive<T>
        permits NbtInt, NbtFloat, NbtShort, NbtLong, NbtDouble, NbtByte
 {}

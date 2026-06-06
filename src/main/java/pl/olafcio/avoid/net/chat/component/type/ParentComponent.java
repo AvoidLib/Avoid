@@ -1,11 +1,13 @@
 package pl.olafcio.avoid.net.chat.component.type;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@WillRefactor(aspect = "name, fields, methods, superclass")
 public class ParentComponent extends BaseComponent<ParentComponent> {
     final List<BaseComponent<?>> children;
 

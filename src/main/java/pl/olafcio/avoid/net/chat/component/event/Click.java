@@ -4,6 +4,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.dialog.Dialog;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.nbt.NbtElement;
 
@@ -12,6 +13,7 @@ import java.net.URI;
 import java.nio.file.Path;
 
 @NullMarked
+@NeverRemoval
 public sealed interface Click {
     Type type();
 

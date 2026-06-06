@@ -1,7 +1,9 @@
 package pl.olafcio.avoid.net.chat.component.type;
 
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 
+@WillRefactor(aspect = "name, fields, methods, superclass")
 public class TranslateComponent extends BaseComponent<TranslateComponent> {
     private final String translate;
     private final String fallback;

@@ -45,11 +45,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.PotDecorations;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import org.jspecify.annotations.NullMarked;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.id.Identification;
 
 import java.util.List;
 
 @NullMarked
+@NeverRemoval
 public class ItemComponents {
     private ItemComponents() {}
 

@@ -1,5 +1,12 @@
 package pl.olafcio.avoid.net.nbt;
 
-public sealed interface NbtPrimitive
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
+
+@WillRefactor(aspect = "name")
+public sealed interface NbtPrimitive<T>
        permits NbtString, NbtNumber
-{}
+{
+    @NeverRemoval
+    T get();
+}

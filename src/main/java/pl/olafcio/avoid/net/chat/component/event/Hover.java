@@ -3,6 +3,7 @@ package pl.olafcio.avoid.net.chat.component.event;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.component.type.TextComponent;
 import pl.olafcio.avoid.net.chat.component.type.TranslateFormattedComponent;
@@ -12,6 +13,7 @@ import pl.olafcio.avoid.net.item.stack.ItemStack;
 import java.util.*;
 
 @NullMarked
+@NeverRemoval
 public sealed interface Hover {
     Type type();
 

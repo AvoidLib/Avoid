@@ -3,10 +3,12 @@ package pl.olafcio.avoid.net.nbt;
 import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
 import pl.olafcio.avoid.annotations.describe.CanIgnoreReturnValue;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 
 import java.util.Map;
 import java.util.Set;
 
+@NeverRemoval
 public final class NbtCompound extends NbtElement {
     private final LinkedTreeMap<String, NbtElement> members = new LinkedTreeMap<>(false);
 

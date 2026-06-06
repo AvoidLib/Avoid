@@ -1,13 +1,16 @@
 package pl.olafcio.avoid.net.nbt;
 
-public final class NbtLong extends NbtElement implements NbtNumber {
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+
+@NeverRemoval
+public final class NbtLong extends NbtElement implements NbtNumber<Long> {
     final long value;
 
     NbtLong(long value) {
         this.value = value;
     }
 
-    public long get() {
+    public Long get() {
         return value;
     }
 

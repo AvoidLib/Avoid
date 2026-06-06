@@ -1,8 +1,11 @@
 package pl.olafcio.avoid.net.nbt;
 
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+
+@NeverRemoval
 public final class NbtString
              extends NbtElement
-             implements NbtPrimitive
+             implements NbtPrimitive<String>
 {
     final String value;
 
