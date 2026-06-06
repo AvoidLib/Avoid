@@ -10,6 +10,9 @@ base {
     archivesName = project.archives_base_name
 }
 
+loom {
+    accessWidenerPath = rootProject.file("src/main/resources/avoidlib.accesswidener")
+}
 
 repositories {
     // Add repositories to retrieve artifacts from in here.

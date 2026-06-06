@@ -11,10 +11,10 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "pl.olafcio.avoidlib.client.AvoidLibClient"
+      "pl.olafcio.avoid.client.AvoidLibClient"
     ],
     "main": [
-      "pl.olafcio.avoidlib.AvoidLib"
+      "pl.olafcio.avoid.Avoid"
     ]
   },
   "mixins": [

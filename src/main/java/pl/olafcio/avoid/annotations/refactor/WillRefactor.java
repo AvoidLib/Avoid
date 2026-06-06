@@ -1,15 +1,18 @@
-package pl.olafcio.avoidlib.annotations;
+package pl.olafcio.avoid.annotations.refactor;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.jetbrains.annotations.ApiStatus;
+
+import java.lang.annotation.*;
 
 /**
  * Indicates that the annotated element may be renamed or removed at any time.
  */
-@Target({ElementType.METHOD, ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.RECORD_COMPONENT})
+@Documented
+@Target({ElementType.METHOD, ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.RECORD_COMPONENT, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
+@WillRefactor(aspect = "name")
+@ApiStatus.Internal
+@ApiStatus.NonExtendable
 public @interface WillRefactor {
     /**
      * Why the element will be changed.
