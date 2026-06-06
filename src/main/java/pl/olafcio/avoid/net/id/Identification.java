@@ -1,6 +1,8 @@
 package pl.olafcio.avoid.net.id;
 
+import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 
 @NeverRemoval
 public record Identification(String namespace, String path) {
@@ -19,5 +21,12 @@ public record Identification(String namespace, String path) {
         String path = value.substring(sep + 1);
 
         return new Identification(namespace, path);
+    }
+
+    @Override
+    @NotNull
+    @WillRefactor(aspect = "name")
+    public String toString() {
+        return namespace + ":" + path;
     }
 }

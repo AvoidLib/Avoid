@@ -7,6 +7,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.net.item.component.ItemComponentNative;
+import pl.olafcio.avoid.net.item.component.TransformingItemComponentType;
 
 @Native
 @NullMarked
@@ -20,13 +21,23 @@ public final class ItemComponentMapNative {
         var patch = input.patch;
 
         for (var element : patch.entrySet()) {
-            var key = ItemComponentNative.convert(element.getKey());
+            var avoidKey = element.getKey();
+
+            var key = ItemComponentNative.convert(avoidKey);
             var value = element.getValue();
+
+            if (avoidKey instanceof TransformingItemComponentType<?,?> transformingKey)
+                value = untransformUnsafe(transformingKey, value);
 
             setUnsafe(map, key.orElseThrow(), value);
         }
 
         return map;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <I, O> I untransformUnsafe(TransformingItemComponentType<I, O> transformingKey, Object value) {
+        return transformingKey.untransform((O) value);
     }
 
     @SuppressWarnings("unchecked")

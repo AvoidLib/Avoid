@@ -1,12 +1,9 @@
 package pl.olafcio.avoid.net.item.component;
 
 import net.minecraft.core.Holder;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.Unit;
 import net.minecraft.world.LockCode;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
@@ -30,7 +27,9 @@ import net.minecraft.world.entity.animal.wolf.WolfVariant;
 import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.entity.npc.villager.VillagerType;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.AdventureModePredicate;
+import net.minecraft.world.item.EitherHolder;
+import net.minecraft.world.item.JukeboxPlayable;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.*;
 import net.minecraft.world.item.crafting.Recipe;
@@ -43,41 +42,51 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.PotDecorations;
-import net.minecraft.world.level.saveddata.maps.MapId;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
+import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.chat.converter.COFromNative;
+import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid.net.item.component.values.*;
+import pl.olafcio.avoid.net.item.component.values.MapItemColor;
+import pl.olafcio.avoid.net.item.component.values.SwingAnimation;
+import pl.olafcio.avoid.net.item.component.values.TooltipDisplay;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 @NullMarked
 @NeverRemoval
 public class ItemComponents {
     private ItemComponents() {}
 
-    public static final ItemComponentType<CustomData> CUSTOM_DATA = register("custom_data");
+    public static final ItemComponentType<Payload> CUSTOM_DATA = register("custom_data", new Payload.Controller());
     public static final ItemComponentType<Integer> MAX_STACK_SIZE = register("max_stack_size");
     public static final ItemComponentType<Integer> MAX_DAMAGE = register("max_damage");
     public static final ItemComponentType<Integer> DAMAGE = register("damage");
-    public static final ItemComponentType<Unit> UNBREAKABLE = register("unbreakable");
+    public static final ItemComponentType<Empty> UNBREAKABLE = register("unbreakable", new Empty.Controller());
     public static final ItemComponentType<UseEffects> USE_EFFECTS = register("use_effects");
-    public static final ItemComponentType<Component> CUSTOM_NAME = register("custom_name");
+    public static final ItemComponentType<BaseComponent<?>> CUSTOM_NAME = register("custom_name", COFromNative::from, COToNative::from);
     public static final ItemComponentType<Float> MINIMUM_ATTACK_CHARGE = register("minimum_attack_charge");
     public static final ItemComponentType<EitherHolder<DamageType>> DAMAGE_TYPE = register("damage_type");
-    public static final ItemComponentType<Component> ITEM_NAME = register("item_name");
-    public static final ItemComponentType<Identifier> ITEM_MODEL = register("item_model");
+    public static final ItemComponentType<BaseComponent<?>> ITEM_NAME = register("item_name", COFromNative::from, COToNative::from);
+    public static final ItemComponentType<Identification> ITEM_MODEL = register("item_model", IdentificationNative::convertFrom, IdentificationNative::convert);
     public static final ItemComponentType<ItemLore> LORE = register("lore");
-    public static final ItemComponentType<Rarity> RARITY = register("rarity");
+    public static final ItemComponentType<Rarity> RARITY = register("rarity", new Rarity.Controller());
     public static final ItemComponentType<ItemEnchantments> ENCHANTMENTS = register("enchantments");
     public static final ItemComponentType<AdventureModePredicate> CAN_PLACE_ON = register("can_place_on");
     public static final ItemComponentType<AdventureModePredicate> CAN_BREAK = register("can_break");
     public static final ItemComponentType<ItemAttributeModifiers> ATTRIBUTE_MODIFIERS = register("attribute_modifiers");
     public static final ItemComponentType<CustomModelData> CUSTOM_MODEL_DATA = register("custom_model_data");
-    public static final ItemComponentType<TooltipDisplay> TOOLTIP_DISPLAY = register("tooltip_display");
+    public static final ItemComponentType<TooltipDisplay> TOOLTIP_DISPLAY = register("tooltip_display", new TooltipDisplay.Controller());
     public static final ItemComponentType<Integer> REPAIR_COST = register("repair_cost");
-    public static final ItemComponentType<Unit> CREATIVE_SLOT_LOCK = register("creative_slot_lock");
+    public static final ItemComponentType<Empty> CREATIVE_SLOT_LOCK = register("creative_slot_lock", new Empty.Controller());
     public static final ItemComponentType<Boolean> ENCHANTMENT_GLINT_OVERRIDE = register("enchantment_glint_override");
-    public static final ItemComponentType<Unit> INTANGIBLE_PROJECTILE = register("intangible_projectile");
+    public static final ItemComponentType<Empty> INTANGIBLE_PROJECTILE = register("intangible_projectile", new Empty.Controller());
     public static final ItemComponentType<FoodProperties> FOOD = register("food");
     public static final ItemComponentType<Consumable> CONSUMABLE = register("consumable");
     public static final ItemComponentType<UseRemainder> USE_REMAINDER = register("use_remainder");
@@ -89,17 +98,17 @@ public class ItemComponents {
     public static final ItemComponentType<Enchantable> ENCHANTABLE = register("enchantable");
     public static final ItemComponentType<Equippable> EQUIPPABLE = register("equippable");
     public static final ItemComponentType<Repairable> REPAIRABLE = register("repairable");
-    public static final ItemComponentType<Unit> GLIDER = register("glider");
-    public static final ItemComponentType<Identifier> TOOLTIP_STYLE = register("tooltip_style");
+    public static final ItemComponentType<Empty> GLIDER = register("glider", new Empty.Controller());
+    public static final ItemComponentType<Identification> TOOLTIP_STYLE = register("tooltip_style", IdentificationNative::convertFrom, IdentificationNative::convert);
     public static final ItemComponentType<DeathProtection> DEATH_PROTECTION = register("death_protection");
     public static final ItemComponentType<BlocksAttacks> BLOCKS_ATTACKS = register("blocks_attacks");
     public static final ItemComponentType<PiercingWeapon> PIERCING_WEAPON = register("piercing_weapon");
     public static final ItemComponentType<KineticWeapon> KINETIC_WEAPON = register("kinetic_weapon");
-    public static final ItemComponentType<SwingAnimation> SWING_ANIMATION = register("swing_animation");
+    public static final ItemComponentType<SwingAnimation> SWING_ANIMATION = register("swing_animation", new SwingAnimation.Controller());
     public static final ItemComponentType<ItemEnchantments> STORED_ENCHANTMENTS = register("stored_enchantments");
     public static final ItemComponentType<DyedItemColor> DYED_COLOR = register("dyed_color");
-    public static final ItemComponentType<MapItemColor> MAP_COLOR = register("map_color");
-    public static final ItemComponentType<MapId> MAP_ID = register("map_id");
+    public static final ItemComponentType<MapItemColor> MAP_COLOR = register("map_color", new MapItemColor.Controller());
+    public static final ItemComponentType<MapId> MAP_ID = register("map_id", new MapId.Controller());
     public static final ItemComponentType<MapDecorations> MAP_DECORATIONS = register("map_decorations");
     public static final ItemComponentType<MapPostProcessing> MAP_POST_PROCESSING = register("map_post_processing");
     public static final ItemComponentType<ChargedProjectiles> CHARGED_PROJECTILES = register("charged_projectiles");
@@ -112,7 +121,7 @@ public class ItemComponents {
     public static final ItemComponentType<ArmorTrim> TRIM = register("trim");
     public static final ItemComponentType<DebugStickState> DEBUG_STICK_STATE = register("debug_stick_state");
     public static final ItemComponentType<TypedEntityData<EntityType<?>>> ENTITY_DATA = register("entity_data");
-    public static final ItemComponentType<CustomData> BUCKET_ENTITY_DATA = register("bucket_entity_data");
+    public static final ItemComponentType<Payload> BUCKET_ENTITY_DATA = register("bucket_entity_data", new Payload.Controller());
     public static final ItemComponentType<TypedEntityData<BlockEntityType<?>>> BLOCK_ENTITY_DATA = register("block_entity_data");
     public static final ItemComponentType<InstrumentComponent> INSTRUMENT = register("instrument");
     public static final ItemComponentType<ProvidesTrimMaterial> PROVIDES_TRIM_MATERIAL = register("provides_trim_material");
@@ -124,9 +133,9 @@ public class ItemComponents {
     public static final ItemComponentType<FireworkExplosion> FIREWORK_EXPLOSION = register("firework_explosion");
     public static final ItemComponentType<Fireworks> FIREWORKS = register("fireworks");
     public static final ItemComponentType<ResolvableProfile> PROFILE = register("profile");
-    public static final ItemComponentType<Identifier> NOTE_BLOCK_SOUND = register("note_block_sound");
+    public static final ItemComponentType<Identification> NOTE_BLOCK_SOUND = register("note_block_sound", IdentificationNative::convertFrom, IdentificationNative::convert);
     public static final ItemComponentType<BannerPatternLayers> BANNER_PATTERNS = register("banner_patterns");
-    public static final ItemComponentType<DyeColor> BASE_COLOR = register("base_color");
+    public static final ItemComponentType<DyeColor> BASE_COLOR = register("base_color", new DyeColor.Controller());
     public static final ItemComponentType<PotDecorations> POT_DECORATIONS = register("pot_decorations");
     public static final ItemComponentType<ItemContainerContents> CONTAINER = register("container");
     public static final ItemComponentType<BlockItemStateProperties> BLOCK_STATE = register("block_state");
@@ -137,13 +146,13 @@ public class ItemComponents {
     public static final ItemComponentType<Holder<VillagerType>> VILLAGER_VARIANT = register("villager/variant");
     public static final ItemComponentType<Holder<WolfVariant>> WOLF_VARIANT = register("wolf/variant");
     public static final ItemComponentType<Holder<WolfSoundVariant>> WOLF_SOUND_VARIANT = register("wolf/sound_variant");
-    public static final ItemComponentType<DyeColor> WOLF_COLLAR = register("wolf/collar");
+    public static final ItemComponentType<DyeColor> WOLF_COLLAR = register("wolf/collar", new DyeColor.Controller());
     public static final ItemComponentType<Fox.Variant> FOX_VARIANT = register("fox/variant");
     public static final ItemComponentType<Salmon.Variant> SALMON_SIZE = register("salmon/size");
     public static final ItemComponentType<Parrot.Variant> PARROT_VARIANT = register("parrot/variant");
     public static final ItemComponentType<TropicalFish.Pattern> TROPICAL_FISH_PATTERN = register("tropical_fish/pattern");
-    public static final ItemComponentType<DyeColor> TROPICAL_FISH_BASE_COLOR = register("tropical_fish/base_color");
-    public static final ItemComponentType<DyeColor> TROPICAL_FISH_PATTERN_COLOR = register("tropical_fish/pattern_color");
+    public static final ItemComponentType<DyeColor> TROPICAL_FISH_BASE_COLOR = register("tropical_fish/base_color", new DyeColor.Controller());
+    public static final ItemComponentType<DyeColor> TROPICAL_FISH_PATTERN_COLOR = register("tropical_fish/pattern_color", new DyeColor.Controller());
     public static final ItemComponentType<MushroomCow.Variant> MOOSHROOM_VARIANT = register("mooshroom/variant");
     public static final ItemComponentType<Rabbit.Variant> RABBIT_VARIANT = register("rabbit/variant");
     public static final ItemComponentType<Holder<PigVariant>> PIG_VARIANT = register("pig/variant");
@@ -156,12 +165,62 @@ public class ItemComponents {
     public static final ItemComponentType<Llama.Variant> LLAMA_VARIANT = register("llama/variant");
     public static final ItemComponentType<Axolotl.Variant> AXOLOTL_VARIANT = register("axolotl/variant");
     public static final ItemComponentType<Holder<CatVariant>> CAT_VARIANT = register("cat/variant");
-    public static final ItemComponentType<DyeColor> CAT_COLLAR = register("cat/collar");
-    public static final ItemComponentType<DyeColor> SHEEP_COLOR = register("sheep/color");
-    public static final ItemComponentType<DyeColor> SHULKER_COLOR = register("shulker/color");
+    public static final ItemComponentType<DyeColor> CAT_COLLAR = register("cat/collar", new DyeColor.Controller());
+    public static final ItemComponentType<DyeColor> SHEEP_COLOR = register("sheep/color", new DyeColor.Controller());
+    public static final ItemComponentType<DyeColor> SHULKER_COLOR = register("shulker/color", new DyeColor.Controller());
 
+    static final HashMap<String, ItemComponentType<?>> LOOKUP
+           = new HashMap<>();
+
+    @WillRefactor(aspect = "type, name, parameters, generic parameters, return value, file")
+    public static <I, O> ItemComponentType<O> register(String id, Function<I, O> transformer, Function<O, I> untransformer) {
+        return new TransformingItemComponentType<I, O>() {
+            {  LOOKUP.put(getId().toString(), this);  }
+
+            @Override
+            public Identification getId() {
+                return Identification.of(id);
+            }
+
+            @Override
+            public O transform(I value) {
+                return transformer.apply(value);
+            }
+
+            @Override
+            public I untransform(O value) {
+                return untransformer.apply(value);
+            }
+        };
+    }
+
+    @WillRefactor(aspect = "type, name, parameters, generic parameters, return value, file")
+    public static <I, O> ItemComponentType<O> register(String id, TransformingItemComponentValue<I, O> controller) {
+        return new TransformingItemComponentType<I, O>() {
+            {  LOOKUP.put(getId().toString(), this);  }
+
+            @Override
+            public Identification getId() {
+                return Identification.of(id);
+            }
+
+            @Override
+            public O transform(I value) {
+                return controller.transform(value);
+            }
+
+            @Override
+            public I untransform(O value) {
+                return controller.untransform(value);
+            }
+        };
+    }
+
+    @WillRefactor(aspect = "type, name, parameters, generic parameters, return value, file")
     public static <T> ItemComponentType<T> register(String id) {
-        return new ItemComponentType<>() {
+        return new ItemComponentType<T>() {
+            {  LOOKUP.put(getId().toString(), this);  }
+
             @Override
             public Identification getId() {
                 return Identification.of(id);

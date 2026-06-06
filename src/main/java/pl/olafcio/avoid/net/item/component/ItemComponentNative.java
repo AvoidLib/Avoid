@@ -19,4 +19,8 @@ public final class ItemComponentNative {
     public static Optional<DataComponentType<?>> convert(ItemComponentType<?> input) {
         return BuiltInRegistries.DATA_COMPONENT_TYPE.getOptional(IdentificationNative.convert(input.getId()));
     }
+
+    public static ItemComponentType<?> convertFrom(DataComponentType<?> input) {
+        return ItemComponents.LOOKUP.get(IdentificationNative.convertFrom(BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(input)).toString());
+    }
 }
