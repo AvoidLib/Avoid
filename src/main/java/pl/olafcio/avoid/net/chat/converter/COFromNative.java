@@ -4,7 +4,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.KeybindContents;
 import net.minecraft.network.chat.contents.PlainTextContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.dialog.Dialog;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +15,9 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.component.event.Click;
 import pl.olafcio.avoid.net.chat.component.event.Hover;
+import pl.olafcio.avoid.net.chat.component.type.KeymapComponent;
 import pl.olafcio.avoid.net.chat.component.type.TextComponent;
+import pl.olafcio.avoid.net.chat.component.type.TranslateComponent;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.stack.ItemStackNative;
@@ -34,6 +38,10 @@ public final class COFromNative {
 
         if (input.getContents() instanceof PlainTextContents content)
             comp = TextComponent.of(content.text());
+        else if (input.getContents() instanceof TranslatableContents content)
+            comp = TranslateComponent.of(content.getKey(), content.getFallback());
+        else if (input.getContents() instanceof KeybindContents content)
+            comp = KeymapComponent.of(content.getName());
         else throw new RuntimeException("Unknown minecraft component type '" + input + "'");
 
         if (input.getStyle().getColor() != null) comp.color(new Color(input.getStyle().getColor().getValue()));
