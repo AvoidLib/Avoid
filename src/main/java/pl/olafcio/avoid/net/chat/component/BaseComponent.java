@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.chat.component;
 
+import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
@@ -156,4 +157,12 @@ public abstract class BaseComponent<T extends BaseComponent<T>> {
         return ParentComponent.of(this)
                               .insert(index, comp);
     }
+
+    // ////// //
+    //  MISC  //
+    // ////// //
+
+//    public static FormattedCharSequence getVisualSequence() {
+//     TODO
+//    }
 }

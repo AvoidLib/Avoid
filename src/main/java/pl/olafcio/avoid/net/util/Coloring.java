@@ -25,4 +25,20 @@ public final class Coloring {
     public static int toRGB(Color i) {
         return i.getRGB() + 0x1000000;
     }
+
+    public static int getAlpha(int i) {
+        return i >>> 24;
+    }
+
+    public static int getRed(int i) {
+        return i >> 16 & 255;
+    }
+
+    public static int getGreen(int i) {
+        return i >> 8 & 255;
+    }
+
+    public static int getBlue(int i) {
+        return i & 255;
+    }
 }
