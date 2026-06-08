@@ -33,7 +33,6 @@ import net.minecraft.world.item.JukeboxPlayable;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.*;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.enchantment.Enchantable;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.enchantment.Repairable;
 import net.minecraft.world.item.equipment.Equippable;
@@ -97,7 +96,7 @@ public class ItemComponents {
     public static final ItemComponentType<Tool> TOOL = register("tool");
     public static final ItemComponentType<Weapon> WEAPON = register("weapon");
     public static final ItemComponentType<AttackRange> ATTACK_RANGE = register("attack_range");
-    public static final ItemComponentType<Enchantable> ENCHANTABLE = register("enchantable");
+    public static final ItemComponentType<Enchantable> ENCHANTABLE = register("enchantable", new Enchantable.Controller());
     public static final ItemComponentType<Equippable> EQUIPPABLE = register("equippable");
     public static final ItemComponentType<Repairable> REPAIRABLE = register("repairable");
     public static final ItemComponentType<Empty> GLIDER = register("glider", new Empty.Controller());
