@@ -6,6 +6,7 @@ import pl.olafcio.avoid.net.chat.component.event.Hover;
 import pl.olafcio.avoid.net.id.Identification;
 
 import java.awt.*;
+import java.util.function.Function;
 
 @ApiStatus.Experimental
 public final class ChatStyle {
@@ -163,5 +164,9 @@ public final class ChatStyle {
 
             return this;
         }
+    }
+
+    public static Function<BaseComponent<?>, BaseComponent<?>> merging(ChatStyle from) {
+        return cmp -> cmp.style(st -> st.merge().override(from));
     }
 }
