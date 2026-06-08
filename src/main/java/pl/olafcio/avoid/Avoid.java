@@ -11,10 +11,12 @@ import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModMeta;
+import pl.olafcio.avoid.mods.annotation_processor.OverwriteScreen;
+import pl.olafcio.avoid.net.screen.Screen;
+import pl.olafcio.avoid.net.screen.Screens;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
@@ -83,6 +85,30 @@ public class Avoid implements ModInitializer {
 
                             String klassName = manifest.get("main-class").getAsString();
                             Class<?> klassUnc = classLoader.loadClass(klassName);
+
+                            var entries = jar.entries();
+                            do {
+                                var el = entries.nextElement();
+                                var fn = el.getRealName();
+                                if (!el.isDirectory() && fn.endsWith(".class")) {
+                                    var className = fn.substring(0, fn.length() - 6)
+                                                      .replace("/", ".");
+
+                                    var klass = classLoader.loadClass(className);
+                                    if (klass.isAnnotationPresent(OverwriteScreen.class)) {
+                                        if (!Screen.class.isAssignableFrom(klass)) {
+                                            LOGGER.warn("@OverwriteScreen requires the annotated type to extend Screen (avoid.net.screen)");
+                                            continue;
+                                        }
+
+                                        //noinspection unchecked
+                                        Screens.overwrite(
+                                                klass.getDeclaredAnnotation(OverwriteScreen.class).value(),
+                                                (Class<? extends Screen>) klass
+                                        );
+                                    }
+                                }
+                            } while (entries.hasMoreElements());
 
                             if (!AvoidMod.class.isAssignableFrom(klassUnc)) {
                                 LOGGER.error("Main class of mod must extend AvoidMod: {}", mod.toAbsolutePath());
