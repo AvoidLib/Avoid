@@ -55,6 +55,7 @@ import pl.olafcio.avoid.net.item.component.values.MapItemColor;
 import pl.olafcio.avoid.net.item.component.values.MapPostProcessing;
 import pl.olafcio.avoid.net.item.component.values.SwingAnimation;
 import pl.olafcio.avoid.net.item.component.values.TooltipDisplay;
+import pl.olafcio.avoid.net.item.component.values.Weapon;
 
 import java.util.HashMap;
 import java.util.List;
@@ -94,7 +95,7 @@ public class ItemComponents {
     public static final ItemComponentType<UseCooldown> USE_COOLDOWN = register("use_cooldown");
     public static final ItemComponentType<DamageResistant> DAMAGE_RESISTANT = register("damage_resistant");
     public static final ItemComponentType<Tool> TOOL = register("tool");
-    public static final ItemComponentType<Weapon> WEAPON = register("weapon");
+    public static final ItemComponentType<Weapon> WEAPON = register("weapon", new Weapon.Controller());
     public static final ItemComponentType<AttackRange> ATTACK_RANGE = register("attack_range");
     public static final ItemComponentType<Enchantable> ENCHANTABLE = register("enchantable", new Enchantable.Controller());
     public static final ItemComponentType<Equippable> EQUIPPABLE = register("equippable");
