@@ -52,6 +52,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.values.*;
 import pl.olafcio.avoid.net.item.component.values.MapItemColor;
+import pl.olafcio.avoid.net.item.component.values.MapPostProcessing;
 import pl.olafcio.avoid.net.item.component.values.SwingAnimation;
 import pl.olafcio.avoid.net.item.component.values.TooltipDisplay;
 
@@ -110,7 +111,7 @@ public class ItemComponents {
     public static final ItemComponentType<MapItemColor> MAP_COLOR = register("map_color", new MapItemColor.Controller());
     public static final ItemComponentType<MapId> MAP_ID = register("map_id", new MapId.Controller());
     public static final ItemComponentType<MapDecorations> MAP_DECORATIONS = register("map_decorations");
-    public static final ItemComponentType<MapPostProcessing> MAP_POST_PROCESSING = register("map_post_processing");
+    public static final ItemComponentType<MapPostProcessing> MAP_POST_PROCESSING = register("map_post_processing", new MapPostProcessing.Controller());
     public static final ItemComponentType<ChargedProjectiles> CHARGED_PROJECTILES = register("charged_projectiles");
     public static final ItemComponentType<BundleContents> BUNDLE_CONTENTS = register("bundle_contents");
     public static final ItemComponentType<PotionContents> POTION_CONTENTS = register("potion_contents");
