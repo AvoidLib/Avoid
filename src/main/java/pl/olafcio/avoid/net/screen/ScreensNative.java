@@ -4,6 +4,7 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.mixininterface.IMinecraft;
+import pl.olafcio.avoid.mixininterface.IScreen;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -16,16 +17,16 @@ public final class ScreensNative {
     private ScreensNative() {}
 
     public static void overwrite(ScreenMarker oldScreen, Supplier<Screen> newScreen) {
-        ((IMinecraft) Avoid.mc).avoidlib$overwrites().put(oldScreen.get(), () -> new AvoidScreen(newScreen.get()));
+        ((IMinecraft) Avoid.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), () -> new AvoidScreen(newScreen.get()));
 
-        if (oldScreen.is(Avoid.mc.screen))
+        if (oldScreen.is((IScreen) Avoid.mc.screen))
             Avoid.mc.setScreen(new AvoidScreen(newScreen.get()));
     }
 
     public static void overwrite(ScreenMarker oldScreen, Screen newScreen) {
-        ((IMinecraft) Avoid.mc).avoidlib$overwrites().put(oldScreen.get(), () -> new AvoidScreen(newScreen));
+        ((IMinecraft) Avoid.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), () -> new AvoidScreen(newScreen));
 
-        if (oldScreen.is(Avoid.mc.screen))
+        if (oldScreen.is((IScreen) Avoid.mc.screen))
             Avoid.mc.setScreen(new AvoidScreen(newScreen));
     }
 
@@ -47,9 +48,9 @@ public final class ScreensNative {
             }
         };
 
-        ((IMinecraft) Avoid.mc).avoidlib$overwrites().put(oldScreen.get(), make);
+        ((IMinecraft) Avoid.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), make);
 
-        if (oldScreen.is(Avoid.mc.screen))
+        if (oldScreen.is((IScreen) Avoid.mc.screen))
             Avoid.mc.setScreen(make.get());
     }
 

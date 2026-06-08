@@ -3,6 +3,7 @@ package pl.olafcio.avoid;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -98,6 +99,11 @@ public class Avoid implements ModInitializer {
                                     if (klass.isAnnotationPresent(OverwriteScreen.class)) {
                                         if (!Screen.class.isAssignableFrom(klass)) {
                                             LOGGER.warn("@OverwriteScreen requires the annotated type to extend Screen (avoid.net.screen)");
+                                            continue;
+                                        }
+
+                                        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) {
+                                            LOGGER.warn("@OverwriteScreen({}) on server, skipping", klass.getDeclaredAnnotation(OverwriteScreen.class).value().name());
                                             continue;
                                         }
 

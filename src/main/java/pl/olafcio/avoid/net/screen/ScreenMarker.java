@@ -1,19 +1,11 @@
 package pl.olafcio.avoid.net.screen;
 
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.*;
-import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
-import net.minecraft.client.gui.screens.multiplayer.SafetyScreen;
-import net.minecraft.client.gui.screens.options.AccessibilityOptionsScreen;
-import net.minecraft.client.gui.screens.options.LanguageSelectScreen;
-import net.minecraft.client.gui.screens.options.OptionsScreen;
-import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
-import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.mixininterface.IScreen;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 
 @ApiStatus.Experimental
 public enum ScreenMarker {
@@ -30,34 +22,17 @@ public enum ScreenMarker {
     /** The accessibility settings screen. */ ACCESSIBILITY_OPTIONS,
     /** The language selection screen. */ LANGUAGE_SELECT;
 
-    static final HashMap<ScreenMarker, Class<? extends Screen>> LOOKUP
-           = new HashMap<>();
-
-    static {
-        LOOKUP.put(TITLESCREEN, TitleScreen.class);
-        LOOKUP.put(SINGLEPLAYER_SELECTION, SelectWorldScreen.class);
-        LOOKUP.put(MULTIPLAYER_SELECTION, JoinMultiplayerScreen.class);
-        LOOKUP.put(MULTIPLAYER_NOT_MONITORED, SafetyScreen.class);
-        LOOKUP.put(CREATE_WORLD, CreateWorldScreen.class);
-        LOOKUP.put(DIRECT_CONNECT, DirectJoinServerScreen.class);
-        LOOKUP.put(MANAGE_SERVER, ManageServerScreen.class);
-        LOOKUP.put(CONNECT, ConnectScreen.class);
-        LOOKUP.put(CONFIRM, ConfirmScreen.class);
-        LOOKUP.put(OPTIONS, OptionsScreen.class);
-        LOOKUP.put(ACCESSIBILITY_OPTIONS, AccessibilityOptionsScreen.class);
-        LOOKUP.put(LANGUAGE_SELECT, LanguageSelectScreen.class);
+    boolean is(IScreen screen) {
+        return ScreenMarkerNative.LOOKUP.get(this).isInstance(screen);
     }
 
-    boolean is(Screen screen) {
-        return LOOKUP.get(this).isInstance(screen);
-    }
-
-    Class<? extends Screen> get() {
-        return LOOKUP.get(this);
+    @SuppressWarnings("unchecked")
+    Class<? extends IScreen> get() {
+        return (Class<? extends IScreen>) ScreenMarkerNative.LOOKUP.get(this);
     }
 
     public final pl.olafcio.avoid.net.screen.Screen create() {
-        var screen = LOOKUP.get(this);
+        var screen = ScreenMarkerNative.LOOKUP.get(this);
 
         try {
             var constructors = screen.getDeclaredConstructors();
@@ -66,11 +41,11 @@ public enum ScreenMarker {
                 if (con.getParameterCount() == 0) {
                     con.setAccessible(true);
 
-                    return new NativeScreen((Screen) con.newInstance());
-                } else if (con.getParameterCount() == 1 && Screen.class.isAssignableFrom(con.getParameters()[0].getType())) {
+                    return new NativeScreen((IScreen) con.newInstance());
+                } else if (con.getParameterCount() == 1 && IScreen.class.isAssignableFrom(con.getParameters()[0].getType())) {
                     con.setAccessible(true);
 
-                    return new NativeScreen((Screen) con.newInstance(Avoid.mc.screen));
+                    return new NativeScreen((IScreen) con.newInstance(Avoid.mc.screen));
                 }
             }
 
