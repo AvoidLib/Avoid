@@ -56,6 +56,7 @@ import pl.olafcio.avoid.net.item.component.values.MapItemColor;
 import pl.olafcio.avoid.net.item.component.values.MapPostProcessing;
 import pl.olafcio.avoid.net.item.component.values.SwingAnimation;
 import pl.olafcio.avoid.net.item.component.values.TooltipDisplay;
+import pl.olafcio.avoid.net.item.component.values.UseEffects;
 import pl.olafcio.avoid.net.item.component.values.Weapon;
 
 import java.util.HashMap;
@@ -72,7 +73,7 @@ public class ItemComponents {
     public static final ItemComponentType<Integer> MAX_DAMAGE = register("max_damage");
     public static final ItemComponentType<Integer> DAMAGE = register("damage");
     public static final ItemComponentType<Empty> UNBREAKABLE = register("unbreakable", new Empty.Controller());
-    public static final ItemComponentType<UseEffects> USE_EFFECTS = register("use_effects");
+    public static final ItemComponentType<UseEffects> USE_EFFECTS = register("use_effects", new UseEffects.Controller());
     public static final ItemComponentType<BaseComponent<?>> CUSTOM_NAME = register("custom_name", COFromNative::from, COToNative::from);
     public static final ItemComponentType<Float> MINIMUM_ATTACK_CHARGE = register("minimum_attack_charge");
     public static final ItemComponentType<EitherHolder<DamageType>> DAMAGE_TYPE = register("damage_type");
