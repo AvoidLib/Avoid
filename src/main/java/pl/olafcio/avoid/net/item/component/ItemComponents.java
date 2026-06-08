@@ -51,6 +51,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.values.*;
 import pl.olafcio.avoid.net.item.component.values.DyedItemColor;
+import pl.olafcio.avoid.net.item.component.values.ItemLore;
 import pl.olafcio.avoid.net.item.component.values.MapItemColor;
 import pl.olafcio.avoid.net.item.component.values.MapPostProcessing;
 import pl.olafcio.avoid.net.item.component.values.SwingAnimation;
@@ -77,7 +78,7 @@ public class ItemComponents {
     public static final ItemComponentType<EitherHolder<DamageType>> DAMAGE_TYPE = register("damage_type");
     public static final ItemComponentType<BaseComponent<?>> ITEM_NAME = register("item_name", COFromNative::from, COToNative::from);
     public static final ItemComponentType<Identification> ITEM_MODEL = register("item_model", IdentificationNative::convertFrom, IdentificationNative::convert);
-    public static final ItemComponentType<ItemLore> LORE = register("lore");
+    public static final ItemComponentType<ItemLore> LORE = register("lore", new ItemLore.Controller());
     public static final ItemComponentType<Rarity> RARITY = register("rarity", new Rarity.Controller());
     public static final ItemComponentType<ItemEnchantments> ENCHANTMENTS = register("enchantments");
     public static final ItemComponentType<AdventureModePredicate> CAN_PLACE_ON = register("can_place_on");
