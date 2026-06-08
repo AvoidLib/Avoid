@@ -51,6 +51,7 @@ import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.values.*;
+import pl.olafcio.avoid.net.item.component.values.DyedItemColor;
 import pl.olafcio.avoid.net.item.component.values.MapItemColor;
 import pl.olafcio.avoid.net.item.component.values.MapPostProcessing;
 import pl.olafcio.avoid.net.item.component.values.SwingAnimation;
@@ -107,7 +108,7 @@ public class ItemComponents {
     public static final ItemComponentType<KineticWeapon> KINETIC_WEAPON = register("kinetic_weapon");
     public static final ItemComponentType<SwingAnimation> SWING_ANIMATION = register("swing_animation", new SwingAnimation.Controller());
     public static final ItemComponentType<ItemEnchantments> STORED_ENCHANTMENTS = register("stored_enchantments");
-    public static final ItemComponentType<DyedItemColor> DYED_COLOR = register("dyed_color");
+    public static final ItemComponentType<DyedItemColor> DYED_COLOR = register("dyed_color", new DyedItemColor.Controller());
     public static final ItemComponentType<MapItemColor> MAP_COLOR = register("map_color", new MapItemColor.Controller());
     public static final ItemComponentType<MapId> MAP_ID = register("map_id", new MapId.Controller());
     public static final ItemComponentType<MapDecorations> MAP_DECORATIONS = register("map_decorations");
