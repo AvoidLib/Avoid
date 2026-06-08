@@ -97,7 +97,8 @@ public class Avoid implements ModInitializer {
                                                         name, author, description,
                                                         klass);
 
-                            // TODO: Make mods' metadata accessible through a ModManager class
+                            ///TIP: Access mod metadata by using {@link AvoidManager#getLoadedAddons()}
+                            AvoidManager.metadatas.put(id, meta);
 
                             var constructor = klass.getDeclaredConstructor();
                             constructor.setAccessible(true);
