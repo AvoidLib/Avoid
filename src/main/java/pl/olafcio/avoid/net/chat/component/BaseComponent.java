@@ -10,6 +10,7 @@ import pl.olafcio.avoid.net.chat.component.type.ParentComponent;
 import pl.olafcio.avoid.net.id.Identification;
 
 import java.awt.*;
+import java.util.function.Consumer;
 
 @WillRefactor(aspect = "name")
 public abstract class BaseComponent<T extends BaseComponent<T>> {
@@ -134,6 +135,12 @@ public abstract class BaseComponent<T extends BaseComponent<T>> {
     @ApiStatus.Experimental
     public ChatStyle style() {
         return this.style;
+    }
+
+    @ApiStatus.Experimental
+    public BaseComponent<T> style(Consumer<ChatStyle> modifier) {
+        modifier.accept(this.style);
+        return this;
     }
 
     // ///////////////// //
