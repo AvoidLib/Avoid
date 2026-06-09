@@ -8,7 +8,9 @@ public final class NativeScreen extends Screen {
 
     NativeScreen(IScreen castScreen) {
         super(COFromNative.from(((net.minecraft.client.gui.screens.Screen) castScreen).getTitle()));
+
         this.realScreen = (net.minecraft.client.gui.screens.Screen) castScreen;
+        this.realScreen.added();
     }
 
     @Override
