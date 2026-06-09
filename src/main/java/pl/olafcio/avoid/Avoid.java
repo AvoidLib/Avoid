@@ -12,7 +12,10 @@ import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModMeta;
+import pl.olafcio.avoid.mods.annotation_processor.AutoCommand;
 import pl.olafcio.avoid.mods.annotation_processor.OverwriteScreen;
+import pl.olafcio.avoid.net.command.Command;
+import pl.olafcio.avoid.net.command.CommandManager;
 import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.screen.Screens;
 
@@ -96,6 +99,7 @@ public class Avoid implements ModInitializer {
                                                       .replace("/", ".");
 
                                     var klass = classLoader.loadClass(className);
+
                                     if (klass.isAnnotationPresent(OverwriteScreen.class)) {
                                         if (!Screen.class.isAssignableFrom(klass)) {
                                             LOGGER.warn("@OverwriteScreen requires the annotated type to extend Screen (avoid.net.screen)");
@@ -112,6 +116,15 @@ public class Avoid implements ModInitializer {
                                                 klass.getDeclaredAnnotation(OverwriteScreen.class).value(),
                                                 (Class<? extends Screen>) klass
                                         );
+                                    }
+
+                                    if (klass.isAnnotationPresent(AutoCommand.class)) {
+                                        if (!Command.class.isAssignableFrom(klass)) {
+                                            LOGGER.warn("@AutoCommand requires the annotated type to extend Command (avoid.net.command)");
+                                            continue;
+                                        }
+
+                                        CommandManager.add((Command) klass.getDeclaredConstructor().newInstance());
                                     }
                                 }
                             } while (entries.hasMoreElements());

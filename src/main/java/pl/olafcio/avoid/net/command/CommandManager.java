@@ -32,7 +32,9 @@ public final class CommandManager {
 
     public static void add(Command cmd) {
         if (frozen.get())
-            throw new TooLateException("[CommandManager#add] CommandManager was already frozen");
+            throw new TooLateException("[CommandManager#add] CommandManager was already frozen; either:" +
+                                       "\n - annotate your command with @AutoCommand," +
+                                       "\n - call this method in your addon's onEnable method instead.");
 
         var syntaxes = new SyntaxTree();
         var methods = cmd.getClass().getMethods();
