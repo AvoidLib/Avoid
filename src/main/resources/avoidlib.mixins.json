@@ -4,6 +4,9 @@
   "package": "pl.olafcio.avoid.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "CommandsMixin",
+    "accessors.ICommandContext",
+    "accessors.ICommandManager"
   ],
   "client": [
     "MinecraftMixin",
