@@ -15,6 +15,9 @@ public final class NativeScreen extends Screen {
 
     @Override
     public void init() {
+        realScreen.width = width;
+        realScreen.height = height;
+
         realScreen.init();
     }
 
