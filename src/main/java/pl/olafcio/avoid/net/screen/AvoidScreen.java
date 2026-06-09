@@ -38,6 +38,8 @@ public class AvoidScreen extends Screen {
 
         screen.width = width;
         screen.height = height;
+
+        screen.init();
     }
 
     @Override
