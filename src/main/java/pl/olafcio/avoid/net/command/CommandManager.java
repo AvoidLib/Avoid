@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.command;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.command.annotation.Syntax;
 import pl.olafcio.avoid.net.command.annotation.Unknown;
@@ -154,6 +155,16 @@ public final class CommandManager {
 
     static CommandMetadata get(Command cmd) {
         return commands.get(cmd);
+    }
+
+    @Nullable
+    static Command getByName(String name) {
+        var keys = commands.keySet();
+        for (Command key : keys)
+            if (key.getName().equalsIgnoreCase(name))
+                return key;
+
+        return null;
     }
 
     private static void each(Consumer<Command> callback) {
