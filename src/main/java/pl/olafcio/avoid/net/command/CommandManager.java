@@ -84,13 +84,31 @@ public final class CommandManager {
                     if (inTag) {
                         if (ch == '>') {
                             var tagName = value.toString();
-                            var tagType = CommandParameters.queryTag(tagName);
+                            var paramName = tagName;
 
+                            boolean renamed = false;
+
+                            if (tagName.contains(" = ")) {
+                                var split = tagName.split(" = ", 2);
+
+                                tagName = split[1];
+                                paramName = split[0];
+
+                                if (!paramName.startsWith("'") || !paramName.endsWith("'"))
+                                    throw new InvalidSyntaxException("Parameter name must be surrounded with 'apostrophes'");
+
+                                paramName = paramName.substring(1, paramName.length() - 1);
+                                renamed = true;
+                            }
+
+                            var tagType = CommandParameters.queryTag(tagName);
                             if (tagType == null)
                                 throw new InvalidSyntaxException("Unrecognized tag '%s'".formatted(tagName));
 
-                            var paramName = tagName;
                             if (taken.contains(paramName)) {
+                                if (renamed)
+                                    throw new InvalidSyntaxException("Parameter name already taken");
+
                                 int i = 2;
 
                                 while (true) {
