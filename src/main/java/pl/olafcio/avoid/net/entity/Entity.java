@@ -58,8 +58,7 @@ public abstract class Entity {
                 "type=" + type + ", " +
                 "position=" + position + ", " +
                 "velocity=" + velocity + ", " +
-                "uuid=" + uuid + ", " +
-                "uuidString=" + uuidString + ", " +
-                "name=" + uuid + ']';
+                "uuid=" + uuidString + ", " +
+                "name=" + name + ']';
     }
 }
