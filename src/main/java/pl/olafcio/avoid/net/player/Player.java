@@ -17,10 +17,10 @@ public class Player extends Entity implements Executor {
     private final ServerGamePacketListenerImpl connection;
 
     public Player(
-            int id, EntityType type, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
+            int id, EntityType type, IVect3 pos, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
             PlayerProfile profile, ServerGamePacketListenerImpl connection
     ) {
-        super(id, type, velocity, uuid, uuidString, name);
+        super(id, type, pos, velocity, uuid, uuidString, name);
 
         this.profile = profile;
         this.connection = connection;

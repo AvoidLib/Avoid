@@ -6,17 +6,19 @@ import pl.olafcio.avoid.net.world.IVect3;
 
 import java.util.UUID;
 
-public class Entity {
+public abstract class Entity {
     private final int id;
     private final EntityType type;
+    private final IVect3 position;
     private final IVect3 velocity;
     private final UUID uuid;
     private final String uuidString;
     private final BaseComponent<?> name;
 
-    public Entity(int id, EntityType type, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name) {
+    public Entity(int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name) {
         this.id = id;
         this.type = type;
+        this.position = position;
         this.velocity = velocity;
         this.uuid = uuid;
         this.uuidString = uuidString;
@@ -31,6 +33,9 @@ public class Entity {
         return type;
     }
 
+    public IVect3 position() {
+        return position;
+    }
     public IVect3 velocity() {
         return velocity;
     }
@@ -38,7 +43,6 @@ public class Entity {
     public UUID uuid() {
         return uuid;
     }
-
     public String uuidString() {
         return uuidString;
     }
@@ -52,6 +56,7 @@ public class Entity {
         return "Entity[" +
                 "id=" + id + ", " +
                 "type=" + type + ", " +
+                "position=" + position + ", " +
                 "velocity=" + velocity + ", " +
                 "uuid=" + uuid + ", " +
                 "uuidString=" + uuidString + ", " +

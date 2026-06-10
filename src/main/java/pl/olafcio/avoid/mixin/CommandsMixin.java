@@ -156,6 +156,7 @@ public class CommandsMixin {
                             player.getId(),
                             EntityTypeNative.convertFrom(player.getType()),
                             Vect3Native.convert(player.position()),
+                            Vect3Native.convert(player.getDeltaMovement()),
                             player.getUUID(),
                             player.getStringUUID(),
                             COFromNative.from(player.getName()),
