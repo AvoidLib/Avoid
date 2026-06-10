@@ -1,6 +1,6 @@
 package pl.olafcio.avoid.net.world;
 
-public record Vect3(double x, double y, double z) {
+public record Vect3(double x, double y, double z) implements IVect3 {
     public static final Vect3 ZERO = new Vect3(0d, 0d, 0d);
 
     public Vect3 add(double x, double y, double z) {
