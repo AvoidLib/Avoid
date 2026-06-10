@@ -33,11 +33,11 @@ import pl.olafcio.avoid.net.command.parameter.ShouldParse;
 import pl.olafcio.avoid.net.command.parameter.impl.StringParameter;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.player.PlayerProfile;
+import pl.olafcio.avoid.net.world.Vect3Native;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
@@ -155,7 +155,7 @@ public class CommandsMixin {
                     executor = new pl.olafcio.avoid.net.player.Player(
                             player.getId(),
                             EntityTypeNative.convertFrom(player.getType()),
-                            player.position(),
+                            Vect3Native.convert(player.position()),
                             player.getUUID(),
                             player.getStringUUID(),
                             COFromNative.from(player.getName()),

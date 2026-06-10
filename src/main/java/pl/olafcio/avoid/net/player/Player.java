@@ -2,13 +2,13 @@ package pl.olafcio.avoid.net.player;
 
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity_type.EntityType;
+import pl.olafcio.avoid.net.world.Vect3;
 
 import java.util.UUID;
 
@@ -17,7 +17,7 @@ public class Player extends Entity implements Executor {
     private final ServerGamePacketListenerImpl connection;
 
     public Player(
-            int id, EntityType type, Vec3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
+            int id, EntityType type, Vect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
             PlayerProfile profile, ServerGamePacketListenerImpl connection
     ) {
         super(id, type, velocity, uuid, uuidString, name);
