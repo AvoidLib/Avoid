@@ -14,6 +14,7 @@ import pl.olafcio.avoid.net.command.parameter.CommandParameter;
 import pl.olafcio.avoid.net.command.parameter.CommandParameters;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -64,6 +65,7 @@ public final class CommandManager {
                                       .toCharArray();
 
                 var node = syntaxes;
+                var taken = new ArrayList<String>();
 
                 var value = new StringBuilder();
                 var inTag = false;
@@ -79,11 +81,27 @@ public final class CommandManager {
                             if (tagType == null)
                                 throw new InvalidSyntaxException("Unrecognized tag '%s'".formatted(tagName));
 
+                            var paramName = tagName;
+                            if (taken.contains(paramName)) {
+                                int i = 2;
+
+                                while (true) {
+                                    String newName = paramName + "-" + (i++);
+
+                                    if (!taken.contains(newName)) {
+                                        paramName = newName;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            taken.add(paramName);
+
                             CommandParameter<?> param;
 
                             try {
                                 param = CommandParameters.queryTagConstructor(tagName)
-                                                         .newInstance(tagName);
+                                                         .newInstance(paramName);
                             } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
                                 throw new SyntaxInitException("Failed to construct tag '%s'".formatted(tagName), e);
                             }
