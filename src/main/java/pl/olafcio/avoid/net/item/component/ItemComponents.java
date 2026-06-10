@@ -56,6 +56,7 @@ import pl.olafcio.avoid.net.item.component.values.MapItemColor;
 import pl.olafcio.avoid.net.item.component.values.MapPostProcessing;
 import pl.olafcio.avoid.net.item.component.values.SwingAnimation;
 import pl.olafcio.avoid.net.item.component.values.TooltipDisplay;
+import pl.olafcio.avoid.net.item.component.values.UseCooldown;
 import pl.olafcio.avoid.net.item.component.values.UseEffects;
 import pl.olafcio.avoid.net.item.component.values.Weapon;
 
@@ -94,7 +95,7 @@ public class ItemComponents {
     public static final ItemComponentType<FoodProperties> FOOD = register("food");
     public static final ItemComponentType<Consumable> CONSUMABLE = register("consumable");
     public static final ItemComponentType<UseRemainder> USE_REMAINDER = register("use_remainder");
-    public static final ItemComponentType<UseCooldown> USE_COOLDOWN = register("use_cooldown");
+    public static final ItemComponentType<UseCooldown> USE_COOLDOWN = register("use_cooldown", new UseCooldown.Controller());
     public static final ItemComponentType<DamageResistant> DAMAGE_RESISTANT = register("damage_resistant");
     public static final ItemComponentType<Tool> TOOL = register("tool");
     public static final ItemComponentType<Weapon> WEAPON = register("weapon", new Weapon.Controller());
