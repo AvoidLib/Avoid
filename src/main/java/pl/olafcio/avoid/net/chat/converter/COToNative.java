@@ -71,10 +71,10 @@ public final class COToNative {
         if (src.shadow != null) dest = dest.withShadowColor(src.shadow.getRGB());
 
         if (src.bold != null) dest = dest.withBold(src.bold);
-        if (src.italic != null) dest = dest.withBold(src.italic);
-        if (src.underlined != null) dest = dest.withBold(src.underlined);
-        if (src.strikethrough != null) dest = dest.withBold(src.strikethrough);
-        if (src.obfuscated != null) dest = dest.withBold(src.obfuscated);
+        if (src.italic != null) dest = dest.withItalic(src.italic);
+        if (src.underlined != null) dest = dest.withUnderlined(src.underlined);
+        if (src.strikethrough != null) dest = dest.withStrikethrough(src.strikethrough);
+        if (src.obfuscated != null) dest = dest.withObfuscated(src.obfuscated);
 
         if (src.font != null) dest = dest.withFont(new FontDescription.Resource(IdentificationNative.convert(src.font)));
 
