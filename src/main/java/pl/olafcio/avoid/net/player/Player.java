@@ -8,7 +8,7 @@ import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity_type.EntityType;
-import pl.olafcio.avoid.net.world.Vect3;
+import pl.olafcio.avoid.net.world.IVect3;
 
 import java.util.UUID;
 
@@ -17,7 +17,7 @@ public class Player extends Entity implements Executor {
     private final ServerGamePacketListenerImpl connection;
 
     public Player(
-            int id, EntityType type, Vect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
+            int id, EntityType type, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
             PlayerProfile profile, ServerGamePacketListenerImpl connection
     ) {
         super(id, type, velocity, uuid, uuidString, name);
