@@ -3,6 +3,7 @@ package pl.olafcio.avoid.net.command.parameter;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.net.command.parameter.impl.IntegerParameter;
 import pl.olafcio.avoid.net.command.parameter.impl.StringParameter;
 import pl.olafcio.avoid.net.command.parameter.pattern.PatternSyntaxError;
@@ -12,6 +13,10 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * A main namespace where command parameters are defined and registered.<br/>
+ * Of course, you may register your own (using the {@link #register(String, Class)} method) in your {@link AvoidMod#onEnable()} method.
+ */
 @ApiStatus.Experimental
 public final class CommandParameters {
     @ApiStatus.Internal
@@ -28,6 +33,18 @@ public final class CommandParameters {
         register("int[eger]", IntegerParameter.class);
     }
 
+    /**
+     * Registers a tag using the given pattern.
+     * <br/><br/>
+     * This method compiles the provided pattern into a list of strings,
+     * and calls {@link #registerSingle} for each of them.
+     * <br/><br/>
+     * The pattern language is a custom-written one for these,
+     * and only contains the <u>[ optional ]</u> expression.
+     *
+     * @param tagPattern The tag pattern itself, e.g. {@code [rgb][_]color}.
+     * @param parameterType Class of the parameter type you want to register, e.g. {@code RGBColorParameter.class}.
+     */
     public static void register(String tagPattern, Class<? extends CommandParameter<?>> parameterType) {
         if (!tagPattern.contains("[")) {
             Avoid.LOGGER.warn("[CommandParameters#register] Non-pattern tags should be registered with registerSingle(...) instead");
@@ -118,6 +135,12 @@ public final class CommandParameters {
             registerSingle(res, parameterType);
     }
 
+    /**
+     * Registers a tag with the specified name.
+     *
+     * @param tagName The tag name, e.g. {@code rgbcolor}.
+     * @param parameterType Class of the parameter type you want to register, e.g. {@code RGBColorParameter.class}.
+     */
     public static void registerSingle(String tagName, Class<? extends CommandParameter<?>> parameterType) {
         try {
             map.put(tagName, parameterType);

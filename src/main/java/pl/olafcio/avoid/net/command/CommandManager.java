@@ -21,6 +21,13 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
+/**
+ * A namespace for managing commands.
+ * <br/><br/>
+ * To register a command, use {@link #add(Command)}.<br/>
+ * To get metadata of a command instance, use {@link #get(Command)}.<br/>
+ * To get a command instance from its name, use {@link #getByName(String)}.
+ */
 @WillRefactor(aspect = "name")
 public final class CommandManager {
     @ApiStatus.Internal

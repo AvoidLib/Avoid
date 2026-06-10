@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Called when no @Syntax method defines this usage.
+ * Annotates a method that will be called when no @Syntax method defines the current usage.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

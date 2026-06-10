@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Called when the provided usage is used.
+ * Annotates a method that will be called when the provided usage is used.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
