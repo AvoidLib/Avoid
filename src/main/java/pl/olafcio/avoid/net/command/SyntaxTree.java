@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 
 public final class SyntaxTree extends LinkedHashMap<CommandParameter<?>, SyntaxTree> {
     public CommandHandler method;
+    public Command cmd;
 
     public SyntaxTree() {
         super();

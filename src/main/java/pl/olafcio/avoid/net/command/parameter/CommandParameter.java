@@ -3,6 +3,7 @@ package pl.olafcio.avoid.net.command.parameter;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.net.command.exception.use.CommandSyntaxException;
 
 import java.util.HashMap;
 
@@ -27,7 +28,7 @@ public abstract class CommandParameter<T> {
         this.name = name;
     }
 
-    public abstract @NotNull T parse(String text);
+    public abstract @NotNull T parse(String text) throws CommandSyntaxException;
     public abstract @Nullable String[] tabcomplete();
 
     public ShouldParse shouldParse() {

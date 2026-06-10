@@ -115,6 +115,8 @@ public final class CommandManager {
                         throw new CannotCallException("Reflection failure", e);
                     }
                 };
+
+                node.cmd = cmd;
             } else if (method.isAnnotationPresent(Unknown.class)) {
                 if (unknownhandler != null)
                     throw new DuplicateSyntaxException("@Unknown method present twice");

@@ -12,7 +12,7 @@ public class IntegerParameter extends CommandParameter<Integer> {
 
     @Override
     @NotNull
-    public Integer parse(String text) {
+    public Integer parse(String text) throws CommandSyntaxException {
         try {
             return Integer.parseInt(text);
         } catch (NumberFormatException e) {
