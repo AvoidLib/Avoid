@@ -160,7 +160,8 @@ public class CommandsMixin {
                             var map = profile.properties().asMap();
                             this.putAll(map);
                         }}),
-                        player.connection
+                        player.connection,
+                        player
                 );
             } else {
                 executor = new UnknownExecutor() {

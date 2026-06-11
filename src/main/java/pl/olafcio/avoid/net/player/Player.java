@@ -18,9 +18,10 @@ public class Player extends Entity implements Executor {
 
     public Player(
             int id, EntityType type, IVect3 pos, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
-            PlayerProfile profile, ServerGamePacketListenerImpl connection
+            PlayerProfile profile, ServerGamePacketListenerImpl connection,
+            net.minecraft.world.entity.player.Player player
     ) {
-        super(id, type, pos, velocity, uuid, uuidString, name);
+        super(id, type, pos, velocity, uuid, uuidString, name, player);
 
         this.profile = profile;
         this.connection = connection;
