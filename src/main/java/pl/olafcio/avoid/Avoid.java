@@ -116,12 +116,12 @@ public class Avoid implements ModInitializer {
 
                                 if (klass.isAnnotationPresent(OverwriteScreen.class)) {
                                     if (!Screen.class.isAssignableFrom(klass)) {
-                                        LOGGER.warn("@OverwriteScreen requires the annotated type to extend Screen (avoid.net.screen)");
+                                        LOGGER.error("@OverwriteScreen requires the annotated type to extend Screen (avoid.net.screen)");
                                         continue;
                                     }
 
                                     if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) {
-                                        LOGGER.warn("@OverwriteScreen({}) on server, skipping", klass.getDeclaredAnnotation(OverwriteScreen.class).value().name());
+                                        LOGGER.debug("@OverwriteScreen({}) on server, skipping", klass.getDeclaredAnnotation(OverwriteScreen.class).value().name());
                                         continue;
                                     }
 
@@ -134,7 +134,7 @@ public class Avoid implements ModInitializer {
 
                                 if (klass.isAnnotationPresent(AutoCommand.class)) {
                                     if (!Command.class.isAssignableFrom(klass)) {
-                                        LOGGER.warn("@AutoCommand requires the annotated type to extend Command (avoid.net.command)");
+                                        LOGGER.error("@AutoCommand requires the annotated type to extend Command (avoid.net.command)");
                                         continue;
                                     }
 
