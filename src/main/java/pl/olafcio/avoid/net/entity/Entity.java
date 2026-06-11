@@ -315,22 +315,42 @@ public abstract class Entity {
         return null;
     }
 
+    /**
+     * Ignites the entity for 15 seconds if it's not immune to fire (dependent on {@link #fireImmune()}).
+     */
     public void lavaIgnite() {
         underlyingEntity.lavaIgnite();
     }
 
+    /**
+     * Ignites the player for the given amount of seconds.
+     * <br/><br/>
+     * This method actually just converts the seconds to ticks using the {@code x * 20} formula.
+     */
     public void igniteForSeconds(float seconds) {
         underlyingEntity.igniteForSeconds(seconds);
     }
 
+    /**
+     * Ignites the player for the given amount of ticks.
+     * <br/><br/>
+     * A tick is a 1/20 part of a second - which means a second has 20 ticks.
+     */
     public void igniteForTicks(int ticks) {
         underlyingEntity.igniteForTicks(ticks);
     }
 
+    /**
+     * Extinguishes the entity off fire (which stops him from burning) and plays sound.
+     */
     public void extinguishFire() {
         underlyingEntity.extinguishFire();
     }
 
+    /**
+     * Extinguishes the entity off fire (which stops him from burning) <b>without playing a sound</b>.<br/>
+     * You probably want to use {@link #extinguishFire()} instead.
+     */
     public void clearFire() {
         underlyingEntity.clearFire();
     }
