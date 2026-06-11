@@ -142,38 +142,38 @@ public class CommandsMixin {
             } else
                 warn = List.of();
 
-            Executor executor = null;
+            Executor executor;
+
+            var source = ctx.getSource();
+            if (source.getPlayer() instanceof ServerPlayer player) {
+                var profile = player.getGameProfile();
+
+                executor = new pl.olafcio.avoid.net.player.Player(
+                        player.getId(),
+                        EntityTypeNative.convertFrom(player.getType()),
+                        Vect3Native.convert(player.position()),
+                        Vect3Native.convert(player.getDeltaMovement()),
+                        player.getUUID(),
+                        player.getStringUUID(),
+                        COFromNative.from(player.getName()),
+                        new PlayerProfile(profile.id(), profile.name(), new HashMap<>() {{
+                            var map = profile.properties().asMap();
+                            this.putAll(map);
+                        }}),
+                        player.connection
+                );
+            } else {
+                executor = new UnknownExecutor() {
+                    @Override
+                    public void sendMessage(BaseComponent<?> component) {
+                        source.sendSystemMessage(COToNative.from(component));
+                    }
+                };
+            }
 
             for (var entry : args.entrySet()) {
                 var key = entry.getKey();
                 var arg = entry.getValue();
-
-                var source = ctx.getSource();
-                if (source.getPlayer() instanceof ServerPlayer player) {
-                    var profile = player.getGameProfile();
-
-                    executor = new pl.olafcio.avoid.net.player.Player(
-                            player.getId(),
-                            EntityTypeNative.convertFrom(player.getType()),
-                            Vect3Native.convert(player.position()),
-                            Vect3Native.convert(player.getDeltaMovement()),
-                            player.getUUID(),
-                            player.getStringUUID(),
-                            COFromNative.from(player.getName()),
-                            new PlayerProfile(profile.id(), profile.name(), new HashMap<>() {{
-                                var map = profile.properties().asMap();
-                                this.putAll(map);
-                            }}),
-                            player.connection
-                    );
-                } else {
-                    executor = new UnknownExecutor() {
-                        @Override
-                        public void sendMessage(BaseComponent<?> component) {
-                            source.sendSystemMessage(COToNative.from(component));
-                        }
-                    };
-                }
 
                 try {
                     entry.setValue(mappings.get(key).parse((String) ((ParsedArgument<CommandSourceStack, ?>) arg).getResult()));
