@@ -1,7 +1,9 @@
 package pl.olafcio.avoid.net.command;
 
+import net.minecraft.server.DebugLoggedPrintStream;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.command.annotation.Syntax;
 import pl.olafcio.avoid.net.command.annotation.Unknown;
@@ -14,6 +16,10 @@ import pl.olafcio.avoid.net.command.handling.CommandHandler;
 import pl.olafcio.avoid.net.command.parameter.CommandParameter;
 import pl.olafcio.avoid.net.command.parameter.CommandParameters;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -156,6 +162,10 @@ public final class CommandManager {
                     try {
                         method.invoke(cmd, input);
                     } catch (IllegalAccessException | InvocationTargetException e) {
+                        var out = new StringWriter();
+                        e.printStackTrace(new PrintWriter(out));
+                        Avoid.LOGGER.debug("Couldn't invoke syntax method\n{}", out);
+
                         throw new CannotCallException("Reflection failure", e);
                     }
                 };
@@ -169,6 +179,10 @@ public final class CommandManager {
                     try {
                         method.invoke(cmd, in);
                     } catch (IllegalAccessException | InvocationTargetException e) {
+                        var out = new StringWriter();
+                        e.printStackTrace(new PrintWriter(out));
+                        Avoid.LOGGER.debug("Couldn't invoke @Unknown method\n{}", out);
+
                         throw new CannotCallException("Reflection failure", e);
                     }
                 };
