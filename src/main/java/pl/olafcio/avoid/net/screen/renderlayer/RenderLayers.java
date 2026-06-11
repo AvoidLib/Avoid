@@ -24,8 +24,13 @@ public final class RenderLayers {
                     continue;
 
                 int modifiers = field.getModifiers();
-                if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers))
-                    PRESENT.put(field.getName(), (RenderPipeline) field.get(null));
+                if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
+                    RenderPipeline pipeline = (RenderPipeline) field.get(null);
+                    String path = pipeline.getLocation().getPath();
+
+                    if (path.startsWith("pipeline/"))
+                        PRESENT.put(path.substring(9), pipeline);
+                }
             } catch (IllegalAccessException | ClassCastException e) {
                 Avoid.LOGGER.error("Couldn't register RenderPipeline '{}'; ignoring", field);
             }
