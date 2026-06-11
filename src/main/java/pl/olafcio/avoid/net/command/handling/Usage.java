@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.command.handling;
 
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.net.command.annotation.Syntax;
 import pl.olafcio.avoid.net.command.annotation.Unknown;
 import pl.olafcio.avoid.net.command.executor.Executor;
@@ -22,6 +23,11 @@ public final class Usage {
     public Usage(Map<String, Object> args, @Nullable Executor executor) {
         this.args = args;
         this.executor = executor;
+    }
+
+    @UnknownNullability
+    public Executor getExecutor() {
+        return executor;
     }
 
     @SuppressWarnings({"unchecked", "unused"})
