@@ -7,7 +7,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import pl.olafcio.avoid.mods.AvoidMod;
@@ -32,9 +31,6 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public class Avoid implements ModInitializer {
-    @ApiStatus.Internal
-    public static Minecraft mc;
-
     @ApiStatus.Internal
     public static final Logger LOGGER
                       = LogUtils.getLogger();

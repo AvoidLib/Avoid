@@ -1,8 +1,8 @@
 package pl.olafcio.avoid.net.chat;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 
@@ -13,12 +13,12 @@ public final class ChatNative {
     private ChatNative() {}
 
     public static void sendToServer(String data) {
-        Avoid.mc.player.connection.sendChat(data);
+        AvoidLibClient.mc.player.connection.sendChat(data);
     }
 
     public static void sendToClient(BaseComponent<?> data) {
-        Avoid.mc.execute(() -> {
-            Avoid.mc.gui.getChat().addMessage(COToNative.from(data));
+        AvoidLibClient.mc.execute(() -> {
+            AvoidLibClient.mc.gui.getChat().addMessage(COToNative.from(data));
         });
     }
 }

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mixininterface.IMinecraft;
 
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 public class MinecraftMixin implements IMinecraft {
     @Inject(at = @At("CTOR_HEAD"), method = "<init>")
     public void construct(GameConfig gameConfig, CallbackInfo ci) {
-        Avoid.mc = (Minecraft) (Object) this;
+        AvoidLibClient.mc = (Minecraft) (Object) this;
     }
 
     @WrapMethod(method = "setScreen")

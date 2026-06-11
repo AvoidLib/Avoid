@@ -19,7 +19,7 @@ import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.ApiStatus;
 import org.joml.Matrix3x2f;
 import org.jspecify.annotations.Nullable;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.id.Identification;
@@ -193,7 +193,7 @@ public final class Drawer {
     }
 
     public void drawStringWithBackdrop(Font font, BaseComponent<?> component, int i, int j, int k, int l) {
-        int m = Avoid.mc.options.getBackgroundColor(0.0F);
+        int m = AvoidLibClient.mc.options.getBackgroundColor(0.0F);
         if (m != 0) {
             int n = 2;
             int var10001 = i - 2;
@@ -238,7 +238,7 @@ public final class Drawer {
     }
 
     private void innerBlit(RenderLayer renderLayer, Identification identifier, int i, int j, int k, int l, float f, float g, float h, float m, int n) {
-        AbstractTexture abstractTexture = Avoid.mc.getTextureManager().getTexture(IdentificationNative.convert(identifier));
+        AbstractTexture abstractTexture = AvoidLibClient.mc.getTextureManager().getTexture(IdentificationNative.convert(identifier));
         this.submitBlit(renderLayer, abstractTexture.getTextureView(), abstractTexture.getSampler(), i, k, j, l, f, g, h, m, n);
     }
 

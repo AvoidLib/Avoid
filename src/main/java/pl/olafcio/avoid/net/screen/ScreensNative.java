@@ -1,8 +1,8 @@
 package pl.olafcio.avoid.net.screen;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mixininterface.IMinecraft;
 import pl.olafcio.avoid.mixininterface.IScreen;
 
@@ -17,17 +17,17 @@ public final class ScreensNative {
     private ScreensNative() {}
 
     public static void overwrite(ScreenMarker oldScreen, Supplier<Screen> newScreen) {
-        ((IMinecraft) Avoid.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), () -> new AvoidScreen(newScreen.get()));
+        ((IMinecraft) AvoidLibClient.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), () -> new AvoidScreen(newScreen.get()));
 
-        if (oldScreen.is((IScreen) Avoid.mc.screen))
-            Avoid.mc.setScreen(new AvoidScreen(newScreen.get()));
+        if (oldScreen.is((IScreen) AvoidLibClient.mc.screen))
+            AvoidLibClient.mc.setScreen(new AvoidScreen(newScreen.get()));
     }
 
     public static void overwrite(ScreenMarker oldScreen, Screen newScreen) {
-        ((IMinecraft) Avoid.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), () -> new AvoidScreen(newScreen));
+        ((IMinecraft) AvoidLibClient.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), () -> new AvoidScreen(newScreen));
 
-        if (oldScreen.is((IScreen) Avoid.mc.screen))
-            Avoid.mc.setScreen(new AvoidScreen(newScreen));
+        if (oldScreen.is((IScreen) AvoidLibClient.mc.screen))
+            AvoidLibClient.mc.setScreen(new AvoidScreen(newScreen));
     }
 
     public static void overwrite(ScreenMarker oldScreen, Class<? extends Screen> newScreen) {
@@ -48,25 +48,25 @@ public final class ScreensNative {
             }
         };
 
-        ((IMinecraft) Avoid.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), make);
+        ((IMinecraft) AvoidLibClient.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), make);
 
-        if (oldScreen.is((IScreen) Avoid.mc.screen))
-            Avoid.mc.setScreen(make.get());
+        if (oldScreen.is((IScreen) AvoidLibClient.mc.screen))
+            AvoidLibClient.mc.setScreen(make.get());
     }
 
     public static void open(Screen screen) {
-        Avoid.mc.setScreen(new AvoidScreen(screen));
+        AvoidLibClient.mc.setScreen(new AvoidScreen(screen));
     }
 
     public static void open(ScreenMarker screen) {
-        Avoid.mc.setScreen(new AvoidScreen(screen.create()));
+        AvoidLibClient.mc.setScreen(new AvoidScreen(screen.create()));
     }
 
     public static void openWithoutHandler(NativeScreen screen) {
-        Avoid.mc.setScreen(screen.realScreen);
+        AvoidLibClient.mc.setScreen(screen.realScreen);
     }
 
     public static void close() {
-        Avoid.mc.setScreen(null);
+        AvoidLibClient.mc.setScreen(null);
     }
 }

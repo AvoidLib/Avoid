@@ -1,8 +1,7 @@
 package pl.olafcio.avoid.net.screen;
 
-import net.minecraft.client.gui.screens.*;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mixininterface.IScreen;
 
 import java.lang.reflect.InvocationTargetException;
@@ -45,7 +44,7 @@ public enum ScreenMarker {
                 } else if (con.getParameterCount() == 1 && IScreen.class.isAssignableFrom(con.getParameters()[0].getType())) {
                     con.setAccessible(true);
 
-                    return new NativeScreen((IScreen) con.newInstance(Avoid.mc.screen));
+                    return new NativeScreen((IScreen) con.newInstance(AvoidLibClient.mc.screen));
                 }
             }
 
