@@ -2,9 +2,8 @@ package pl.olafcio.avoid.net.player;
 
 import net.minecraft.network.protocol.game.ClientboundSetHealthPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.food.FoodData;
 import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
@@ -54,5 +53,25 @@ public class Player extends Entity implements Executor {
         var food = cast.getFoodData();
 
         connection.send(new ClientboundSetHealthPacket(health, food.getFoodLevel(), food.getSaturationLevel()));
+    }
+
+    public void setFoodLevel(int food) {
+        __cast(net.minecraft.world.entity.player.Player.class).getFoodData().setFoodLevel(food);
+    }
+
+    public void setFoodSaturation(float saturation) {
+        __cast(net.minecraft.world.entity.player.Player.class).getFoodData().setSaturation(saturation);
+    }
+
+    public int getFoodLevel() {
+        return __cast(net.minecraft.world.entity.player.Player.class).getFoodData().getFoodLevel();
+    }
+
+    public float getFoodSaturation() {
+        return __cast(net.minecraft.world.entity.player.Player.class).getFoodData().getSaturationLevel();
+    }
+
+    public void tickHunger() {
+        __cast(net.minecraft.world.entity.player.Player.class).getFoodData().tick(__cast(ServerPlayer.class));
     }
 }

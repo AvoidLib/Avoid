@@ -19,6 +19,9 @@ public abstract class Entity {
     private final BaseComponent<?> name;
 
     protected final net.minecraft.world.entity.Entity underlyingEntity;
+    protected final <T> T __cast(Class<T> cls) {
+        return cls.cast(underlyingEntity);
+    }
 
     public Entity(
             int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
