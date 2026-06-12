@@ -10,6 +10,7 @@
     "accessors.ICommandManager"
   ],
   "client": [
+    "ChatHudMixin",
     "MinecraftMixin",
     "ScreenMixin"
   ],
