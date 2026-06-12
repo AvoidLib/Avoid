@@ -12,6 +12,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mixininterface.IMinecraft;
+import pl.olafcio.avoid.mixininterface.IScreen;
+import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.net.screen.event.ScreenOpenEvent;
+import pl.olafcio.avoid.net.screen.event.ScreenOpenEventNative;
 
 import java.util.HashMap;
 import java.util.function.Supplier;
@@ -23,12 +27,19 @@ public class MinecraftMixin implements IMinecraft {
         AvoidLibClient.mc = (Minecraft) (Object) this;
     }
 
+    @SuppressWarnings("MixinExtrasOperationParameters")
     @WrapMethod(method = "setScreen")
     public void setScreen(Screen screen, Operation<Void> original) {
         if (screen != null && OVERWRITES.containsKey(screen.getClass()))
             screen = OVERWRITES.get(screen.getClass()).get();
 
-        original.call(screen);
+        ScreenOpenEvent event = new ScreenOpenEvent((IScreen) screen);
+        EventManager.fire(event);
+
+        if (event.isCancelled())
+            return;
+
+        original.call(ScreenOpenEventNative.getScreen(event));
     }
 
     @Unique

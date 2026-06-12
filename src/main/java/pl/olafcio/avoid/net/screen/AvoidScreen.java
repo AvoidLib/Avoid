@@ -11,7 +11,7 @@ import pl.olafcio.avoid.net.chat.converter.COToNative;
 @NullMarked
 @ApiStatus.Internal
 public class AvoidScreen extends Screen {
-    private final pl.olafcio.avoid.net.screen.Screen screen;
+    public final pl.olafcio.avoid.net.screen.Screen screen;
 
     private final Drawer drawer;
     private final MouseEvent mouse;

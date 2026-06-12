@@ -4,7 +4,7 @@ import pl.olafcio.avoid.mixininterface.IScreen;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
 
 public final class NativeScreen extends Screen {
-    final net.minecraft.client.gui.screens.Screen realScreen;
+    public final net.minecraft.client.gui.screens.Screen realScreen;
 
     NativeScreen(IScreen castScreen) {
         super(COFromNative.from(((net.minecraft.client.gui.screens.Screen) castScreen).getTitle()));
