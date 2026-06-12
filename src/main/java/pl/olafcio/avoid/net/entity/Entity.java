@@ -73,7 +73,7 @@ public abstract class Entity {
 
     public float getMaxHealth() {
         if (underlyingEntity instanceof LivingEntity le)
-            return le.getHealth();
+            return le.getMaxHealth();
 
         return 0;
     }
