@@ -31,7 +31,7 @@ public class Player extends Entity implements Executor {
 
     @Override
     public @NotNull String getName() {
-        return "";
+        return getNick().replace("§", "");
     }
 
     public String getNick() {

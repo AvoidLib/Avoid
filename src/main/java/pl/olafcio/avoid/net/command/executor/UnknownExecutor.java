@@ -7,7 +7,7 @@ public abstract class UnknownExecutor implements Executor {
     @Override
     @NotNull
     public String getName() {
-        return "Unknown";
+        return "unknown";
     }
 
     @Override
