@@ -1,8 +1,11 @@
 package pl.olafcio.avoid.net.command;
 
+import pl.olafcio.avoid.net.command.annotation.Permission;
+import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.handling.CommandHandler;
 import pl.olafcio.avoid.net.command.parameter.CommandParameter;
 
+import java.lang.annotation.Annotation;
 import java.util.LinkedHashMap;
 
 /**
@@ -38,17 +41,35 @@ public final class SyntaxTree extends LinkedHashMap<CommandParameter<?>, SyntaxT
     public CommandHandler method;
     public Command cmd;
 
+    private Annotation permission;
+
     public SyntaxTree() {
         super();
+
         this.method = null;
+        this.permission = null;
     }
 
     public SyntaxTree(CommandHandler method) {
         super();
+
         this.method = method;
+        this.permission = null;
     }
 
     public boolean isNodeExecutable() {
         return method != null;
+    }
+
+    public void setPermission(Permission perm) {
+        this.permission = perm;
+    }
+
+    public void setPermission(PermissionLevel perm) {
+        this.permission = perm;
+    }
+
+    public Annotation getPermission() {
+        return permission;
     }
 }

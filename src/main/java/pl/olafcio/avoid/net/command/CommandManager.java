@@ -1,12 +1,14 @@
 package pl.olafcio.avoid.net.command;
 
-import net.minecraft.server.DebugLoggedPrintStream;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
+import pl.olafcio.avoid.net.command.annotation.Permission;
+import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.annotation.Syntax;
 import pl.olafcio.avoid.net.command.annotation.Unknown;
+import pl.olafcio.avoid.net.command.exception.DuplicatePermissionDeclaration;
 import pl.olafcio.avoid.net.command.exception.DuplicateSyntaxException;
 import pl.olafcio.avoid.net.command.exception.InvalidSyntaxException;
 import pl.olafcio.avoid.net.command.exception.SyntaxInitException;
@@ -16,10 +18,9 @@ import pl.olafcio.avoid.net.command.handling.CommandHandler;
 import pl.olafcio.avoid.net.command.parameter.CommandParameter;
 import pl.olafcio.avoid.net.command.parameter.CommandParameters;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +54,8 @@ public final class CommandManager {
 
         var syntaxes = new SyntaxTree();
         var methods = cmd.getClass().getMethods();
+
+        markPermission(cmd.getClass(), syntaxes);
 
         String lastNameRecorded = null;
         CommandHandler unknownhandler = null;
@@ -171,6 +174,8 @@ public final class CommandManager {
                 };
 
                 node.cmd = cmd;
+
+                markPermission(method, node);
             } else if (method.isAnnotationPresent(Unknown.class)) {
                 if (unknownhandler != null)
                     throw new DuplicateSyntaxException("@Unknown method present twice");
@@ -190,6 +195,19 @@ public final class CommandManager {
         }
 
         commands.put(cmd, new CommandMetadata(lastNameRecorded.substring(1), syntaxes, unknownhandler));
+    }
+
+    private static void markPermission(AnnotatedElement element, SyntaxTree node) {
+        if (element.isAnnotationPresent(PermissionLevel.class))
+            node.setPermission(element.getAnnotation(PermissionLevel.class));
+        else if (element.isAnnotationPresent(Permission.class))
+            node.setPermission(element.getAnnotation(Permission.class));
+
+        if (
+                element.isAnnotationPresent(PermissionLevel.class) &&
+                element.isAnnotationPresent(Permission.class)
+        )
+            throw new DuplicatePermissionDeclaration("Both @Permission and @PermissionLevel are present");
     }
 
     static CommandMetadata get(Command cmd) {

@@ -10,6 +10,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permission;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,6 +23,7 @@ import pl.olafcio.avoid.mixin.accessors.ICommandContext;
 import pl.olafcio.avoid.mixin.accessors.ICommandManager;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
+import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.command.SyntaxTree;
 import pl.olafcio.avoid.net.command.exception.use.CommandSyntaxException;
@@ -56,6 +58,8 @@ public class CommandsMixin {
             var root = Commands.literal(name);
             var tree = cmd.getSyntaxTree();
 
+            root = addNodePermissions(tree, root);
+
             if (tree.isNodeExecutable())
                 root = root.executes(executing(tree, EMPTY, name));
 
@@ -81,6 +85,8 @@ public class CommandsMixin {
 
             entryStack.put(entry.getKey().getName(), entry.getKey());
 
+            node = addNodePermissions(entry.getValue(), node);
+
             if (entry.getValue().isNodeExecutable()) {
                 node = node.suggests((ctx, builder) -> {
                     var suggestions = entry.getKey().tabcomplete();
@@ -101,6 +107,38 @@ public class CommandsMixin {
         }
 
         return root;
+    }
+
+    private static <T extends ArgumentBuilder<CommandSourceStack, T>> T addNodePermissions(SyntaxTree entry, T node) {
+        var perm = entry.getPermission();
+        if (perm != null) {
+            if (perm instanceof pl.olafcio.avoid.net.command.annotation.Permission cast) {
+                var atom = Permission.Atom.create(cast.value());
+
+                node = node.requires(ctx -> {
+                    if (!ctx.isPlayer())
+                        return true;
+
+                    var perms = ctx.getPlayer().permissions();
+                    return perms.hasPermission(atom);
+                });
+            } else if (perm instanceof PermissionLevel cast) {
+                var atom = Permission.Atom.create(cast.value());
+                var cmdLevel = new Permission.HasCommandLevel(cast.level().__get());
+
+                node = node.requires(ctx -> {
+                    if (!ctx.isPlayer())
+                        return true;
+
+                    var perms = ctx.getPlayer().permissions();
+                    return perms.hasPermission(atom) || perms.hasPermission(cmdLevel);
+                });
+            } else {
+                throw new RuntimeException("Invalid command permission");
+            }
+        }
+
+        return node;
     }
 
     @Unique
