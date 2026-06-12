@@ -157,8 +157,10 @@ public class CommandsMixin {
                 var key = entry.getKey();
                 var arg = entry.getValue();
 
+                CommandParameter<?> param = mappings.get(key);
+
                 try {
-                    entry.setValue(mappings.get(key).parse((String) ((ParsedArgument<CommandSourceStack, ?>) arg).getResult()));
+                    entry.setValue(param.parse((String) ((ParsedArgument<CommandSourceStack, ?>) arg).getResult()));
                 } catch (CommandSyntaxException e) {
                     if (!warn.contains(key)) {
                         if (repeat)
@@ -184,7 +186,7 @@ public class CommandsMixin {
                         }
                     }
 
-                    tree.cmd.sendSyntaxException(executor, ctx);
+                    tree.cmd.sendSyntaxException(executor, ctx, param);
 
                     return 2;
                 }

@@ -1,9 +1,14 @@
 package pl.olafcio.avoid.net.command.parameter;
 
+import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.commands.CommandSourceStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.net.chat.component.Colors;
+import pl.olafcio.avoid.net.chat.component.Components;
 import pl.olafcio.avoid.net.command.exception.use.CommandSyntaxException;
+import pl.olafcio.avoid.net.command.executor.Executor;
 
 import java.util.HashMap;
 
@@ -33,6 +38,13 @@ public abstract class CommandParameter<T> {
 
     public ShouldParse shouldParse() {
         return ShouldParse.TRY;
+    }
+
+    public boolean sendSyntaxException(
+            @NotNull Executor executor,
+            @NotNull CommandContext<CommandSourceStack> ctx
+    ) {
+        return false;
     }
 
     private final String name;
