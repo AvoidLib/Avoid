@@ -1,0 +1,16 @@
+import net.minecraft.client.multiplayer.chat.GuiMessageSource
+
+{
+    addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V
+    addMessage
+}
+
+{
+    net.minecraft.client.GuiMessageTag
+    net.minecraft.client.multiplayer.chat.GuiMessageTag
+}
+
+{
+    void addMessage(Component component, MessageSignature messageSignature, GuiMessageTag guiMessageTag, CallbackInfo ci)
+    void addMessage(Component component, MessageSignature messageSignature, GuiMessageSource source, GuiMessageTag guiMessageTag, CallbackInfo ci)
+}

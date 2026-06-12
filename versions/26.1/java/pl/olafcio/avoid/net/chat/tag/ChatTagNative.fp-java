@@ -1,0 +1,4 @@
+{
+    net.minecraft.client.GuiMessageTag
+    net.minecraft.client.multiplayer.chat.GuiMessageTag
+}
