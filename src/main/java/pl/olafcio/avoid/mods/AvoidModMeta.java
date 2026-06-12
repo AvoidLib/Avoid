@@ -13,6 +13,8 @@ public record AvoidModMeta(
         String author,
         String description,
 
+        ModEnvironment environment,
+
         Class<? extends AvoidMod> mainClass
 ) {
     @ApiStatus.Experimental

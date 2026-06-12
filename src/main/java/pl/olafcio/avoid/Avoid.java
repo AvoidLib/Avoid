@@ -11,6 +11,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModMeta;
+import pl.olafcio.avoid.mods.ModEnvironment;
 import pl.olafcio.avoid.mods.annotation_processor.AutoCommand;
 import pl.olafcio.avoid.mods.annotation_processor.OverwriteScreen;
 import pl.olafcio.avoid.net.command.Command;
@@ -96,6 +97,22 @@ public class Avoid implements ModInitializer {
                         String author      = manifest.get("author").getAsString();
                         String description = manifest.get("description").getAsString();
 
+                        ModEnvironment env = manifest.has("environment")
+                                                ? ModEnvironment.valueOf(manifest.get("environment").getAsString().toUpperCase())
+                                                : ModEnvironment.ALL;
+
+                        if (env == ModEnvironment.CLIENT) {
+                            if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) {
+                                LOGGER.warn("Skipping client-only mod: {} [{}]", name, id);
+                                return;
+                            }
+                        } else if (env == ModEnvironment.SERVER) {
+                            if (FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER) {
+                                LOGGER.warn("Skipping server-only mod: {} [{}]", name, id);
+                                return;
+                            }
+                        }
+
                         var classLoader = URLClassLoader.newInstance(
                                 new URL[]{ mod.toUri().toURL() },
                                 Avoid.class.getClassLoader()
@@ -154,7 +171,7 @@ public class Avoid implements ModInitializer {
 
                         var meta = new AvoidModMeta(id, version, versionSystem,
                                                     name, author, description,
-                                                    klass);
+                                                    env, klass);
 
                         ///TIP: Access mod metadata by using {@link AvoidManager#getLoadedAddons()}
                         AvoidManager.metadatas.put(id, meta);
