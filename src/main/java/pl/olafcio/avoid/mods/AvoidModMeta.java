@@ -1,8 +1,9 @@
 package pl.olafcio.avoid.mods;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 
-@ApiStatus.Experimental
+@WillRefactor(aspect = "name")
 public record AvoidModMeta(
         String id,
         String version,
@@ -13,4 +14,7 @@ public record AvoidModMeta(
         String description,
 
         Class<? extends AvoidMod> mainClass
-) {}
+) {
+    @ApiStatus.Experimental
+    public AvoidModMeta {}
+}
