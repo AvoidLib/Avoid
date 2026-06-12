@@ -1,0 +1,9 @@
+{
+    import net.minecraft.world.item.EitherHolder;
+    // import net.minecraft.world.item.EitherHolder;
+}
+
+{
+    EitherHolder
+    Holder
+}

@@ -1,0 +1,9 @@
+{
+    GuiGraphics
+    GuiGraphicsExtractor
+}
+
+{
+    void render
+    void extractRenderState
+}

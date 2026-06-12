@@ -1,0 +1,6 @@
+import net.minecraft.world.item.ItemStackTemplate;
+
+{
+    src.hover instanceof Hover.ViewItem(ItemStack item) ? new HoverEvent.ShowItem(ItemStackNative.convert(item)) :
+    src.hover instanceof Hover.ViewItem(ItemStack item) ? new HoverEvent.ShowItem(pl.olafcio.avoid.net.item.stack.ItemStackTemplateNative.convert(item)) :
+}

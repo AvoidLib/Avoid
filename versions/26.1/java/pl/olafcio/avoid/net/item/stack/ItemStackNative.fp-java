@@ -1,0 +1,6 @@
+import net.minecraft.core.Holder
+
+{
+    new ItemStack(ItemNative.convert(item.getItem()), item.getAmount(), map2)
+    new ItemStack(Holder.direct(ItemNative.convert(item.getItem())), item.getAmount(), map2.asPatch())
+}
