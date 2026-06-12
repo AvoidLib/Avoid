@@ -14,6 +14,7 @@ import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.ModEnvironment;
 import pl.olafcio.avoid.mods.annotation_processor.AutoCommand;
 import pl.olafcio.avoid.mods.annotation_processor.OverwriteScreen;
+import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.command.Command;
 import pl.olafcio.avoid.net.command.CommandManager;
 import pl.olafcio.avoid.net.screen.Screen;
@@ -157,6 +158,8 @@ public class Avoid implements ModInitializer {
 
                                     CommandManager.add((Command) klass.getDeclaredConstructor().newInstance());
                                 }
+
+                                EventManager.collect(klass);
                             }
                         } while (entries.hasMoreElements());
 
