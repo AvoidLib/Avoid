@@ -13,4 +13,8 @@ public final class FontNative {
     public static Font convert(pl.olafcio.avoid.net.screen.font.Font font) {
         return font.font;
     }
+
+    public static pl.olafcio.avoid.net.screen.font.Font convertFrom(Font font) {
+        return new pl.olafcio.avoid.net.screen.font.Font(font);
+    }
 }

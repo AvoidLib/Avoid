@@ -123,13 +123,17 @@ public abstract class BaseComponent<T extends BaseComponent<T>> {
     // ///////////////// //
 
     @ApiStatus.Experimental
-    public void styleFrom(BaseComponent<?> component) {
+    @SuppressWarnings("unchecked")
+    public T styleFrom(BaseComponent<?> component) {
         this.style = component.style;
+        return (T) this;
     }
 
     @ApiStatus.Experimental
-    public void styleAs(ChatStyle style) {
+    @SuppressWarnings("unchecked")
+    public T styleAs(ChatStyle style) {
         this.style = style;
+        return (T) this;
     }
 
     @ApiStatus.Experimental

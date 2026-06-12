@@ -20,6 +20,11 @@ public class ParentComponent extends BaseComponent<ParentComponent> {
     }
 
     @ApiStatus.Internal
+    public static ParentComponent of() {
+        return new ParentComponent(new ArrayList<>());
+    }
+
+    @ApiStatus.Internal
     public static ParentComponent of(BaseComponent<?> child) {
         return new ParentComponent(new ArrayList<>() {{
             add(child);
