@@ -86,7 +86,7 @@ public class CommandsMixin {
                     var suggestions = entry.getKey().tabcomplete();
                     if (suggestions != null)
                         for (var sug : suggestions)
-                            if (builder.getInput().startsWith(sug))
+                            if (sug.startsWith(builder.getRemaining()))
                                 builder.suggest(sug);
 
                     return CompletableFuture.completedFuture(builder.build());
