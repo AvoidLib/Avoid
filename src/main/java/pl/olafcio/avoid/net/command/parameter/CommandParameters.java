@@ -96,19 +96,24 @@ public final class CommandParameters {
 
         Avoid.LOGGER.debug("Calculating pattern tags '{}'", tagPattern);
 
-        int index = 2;
+        int index = 1;
         for (var opt : placeholders) {
-            var arr = marked.toString().split("\\?", index);
-            var arr2 = marked.toString().split("\\?", index);
+            var markstr = marked.toString();
+            var lastIndex = 0;
 
-            arr[index - 1] = opt.string();
-            arr2[index - 1] = "";
+            for (int i = 0; i < index; i++) {
+                int newIndex = markstr.indexOf('?', lastIndex);
+                if (newIndex == -1)
+                    throw new RuntimeException("? without placeholder");
+
+                lastIndex = newIndex;
+            }
 
             var texts = new ArrayList<String>();
             var texts2 = new ArrayList<String>();
 
-            texts.add(String.join("", arr));
-            texts2.add(String.join("", arr2));
+            texts.add(markstr.substring(0, lastIndex) + opt.string() + markstr.substring(lastIndex + 1));
+            texts2.add(markstr.substring(0, lastIndex) + "" + markstr.substring(lastIndex + 1));
 
             for (var opt2 : placeholders) {
                 int i = 0;
