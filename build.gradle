@@ -1,7 +1,25 @@
-plugins {
-    id 'fabric-loom' version '1.16-SNAPSHOT'
-    id 'maven-publish'
+buildscript {
+    repositories {
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath 'net.fabricmc:fabric-loom:1.16-SNAPSHOT'
+    }
 }
+
+if (rootProject.file('gradle.properties').text.contains("omit_mappings")) {
+    apply plugin: 'net.fabricmc.fabric-loom'
+} else {
+    apply plugin: 'fabric-loom'
+}
+
+apply plugin: 'maven-publish'
 
 version = project.mod_version
 group = project.maven_group
@@ -25,9 +43,18 @@ repositories {
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
+    if ("omit_mappings" !in project.getProperties()) {
+        /// 1.21.11
+
+        mappings loom.officialMojangMappings()
+        modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    } else {
+        /// 26.1
+
+        implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    }
 }
 
 processResources {
