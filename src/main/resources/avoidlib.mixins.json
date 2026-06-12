@@ -6,6 +6,7 @@
   "mixins": [
     "CommandsMixin",
     "MinecraftServerMixin",
+    "PlayerListMixin",
     "ServerPlayerMixin",
     "accessors.ICommandContext",
     "accessors.ICommandManager"
