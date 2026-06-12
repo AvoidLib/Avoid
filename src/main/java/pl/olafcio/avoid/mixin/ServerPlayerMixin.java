@@ -1,6 +1,8 @@
 package pl.olafcio.avoid.mixin;
 
+import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.OutgoingChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,6 +33,21 @@ public class ServerPlayerMixin {
         EventManager.fire(new ServerChatSentEvent(
                 PlayerNative.convertFrom((ServerPlayer) (Object) this),
                 COFromNative.from(component)
+        ));
+    }
+
+    @Inject(
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/network/chat/OutgoingChatMessage;sendToPlayer(Lnet/minecraft/server/level/ServerPlayer;ZLnet/minecraft/network/chat/ChatType$Bound;)V",
+                    shift = At.Shift.AFTER
+            ),
+            method = "sendChatMessage"
+    )
+    public void sendChatMessage(OutgoingChatMessage outgoingChatMessage, boolean bl, ChatType.Bound bound, CallbackInfo ci) {
+        EventManager.fire(new ServerChatSentEvent(
+                PlayerNative.convertFrom((ServerPlayer) (Object) this),
+                COFromNative.from(outgoingChatMessage.content())
         ));
     }
 }
