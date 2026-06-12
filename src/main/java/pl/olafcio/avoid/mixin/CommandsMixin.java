@@ -21,7 +21,6 @@ import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.mixin.accessors.ICommandContext;
 import pl.olafcio.avoid.mixin.accessors.ICommandManager;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
-import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.command.SyntaxTree;
@@ -31,9 +30,7 @@ import pl.olafcio.avoid.net.command.handling.Usage;
 import pl.olafcio.avoid.net.command.parameter.CommandParameter;
 import pl.olafcio.avoid.net.command.parameter.ShouldParse;
 import pl.olafcio.avoid.net.command.parameter.impl.StringParameter;
-import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
-import pl.olafcio.avoid.net.player.PlayerProfile;
-import pl.olafcio.avoid.net.world.Vect3Native;
+import pl.olafcio.avoid.net.player.PlayerNative;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -146,23 +143,7 @@ public class CommandsMixin {
 
             var source = ctx.getSource();
             if (source.getPlayer() instanceof ServerPlayer player) {
-                var profile = player.getGameProfile();
-
-                executor = new pl.olafcio.avoid.net.player.Player(
-                        player.getId(),
-                        EntityTypeNative.convertFrom(player.getType()),
-                        Vect3Native.convert(player.position()),
-                        Vect3Native.convert(player.getDeltaMovement()),
-                        player.getUUID(),
-                        player.getStringUUID(),
-                        COFromNative.from(player.getName()),
-                        new PlayerProfile(profile.id(), profile.name(), new HashMap<>() {{
-                            var map = profile.properties().asMap();
-                            this.putAll(map);
-                        }}),
-                        player.connection,
-                        player
-                );
+                executor = PlayerNative.convertFrom(player);
             } else {
                 executor = new UnknownExecutor() {
                     @Override

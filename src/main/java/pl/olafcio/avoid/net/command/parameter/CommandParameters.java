@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.net.command.parameter.impl.IntegerParameter;
+import pl.olafcio.avoid.net.command.parameter.impl.PlayerParameter;
 import pl.olafcio.avoid.net.command.parameter.impl.StringParameter;
 import pl.olafcio.avoid.net.command.parameter.pattern.PatternSyntaxError;
 import pl.olafcio.avoid.net.command.parameter.pattern.WrappedString;
@@ -31,6 +32,7 @@ public final class CommandParameters {
     static {
         registerSingle("string", StringParameter.class);
         register("int[eger]", IntegerParameter.class);
+        register("[server]player", PlayerParameter.class);
     }
 
     /**

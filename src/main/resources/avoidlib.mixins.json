@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "CommandsMixin",
+    "MinecraftServerMixin",
     "accessors.ICommandContext",
     "accessors.ICommandManager"
   ],
