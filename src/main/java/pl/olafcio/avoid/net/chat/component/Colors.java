@@ -27,7 +27,6 @@ public enum Colors {
     GREEN("green", 'a', 10, new Color(0x55ff55)),
     AQUA("aqua", 'b', 11, new Color(0x55ffff)),
     RED("red", 'c', 12, new Color(0xff5555)),
-    @Untested(specifically = "MiniMessage tag might not be correct")
     LIGHT_PURPLE("light_purple", 'd', 13, new Color(0xff55ff)),
     YELLOW("yellow", 'e', 14, new Color(0xffff55)),
     WHITE("white", 'f', 15, new Color(0xffffff)),
