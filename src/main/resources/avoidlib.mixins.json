@@ -11,6 +11,7 @@
   ],
   "client": [
     "ChatHudMixin",
+    "ChatScreenMixin",
     "MinecraftMixin",
     "ScreenMixin"
   ],
