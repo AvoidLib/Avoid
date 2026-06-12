@@ -1,7 +1,10 @@
 package pl.olafcio.avoid.net.player;
 
+import net.minecraft.network.protocol.game.ClientboundSetHealthPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.food.FoodData;
 import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
@@ -38,5 +41,18 @@ public class Player extends Entity implements Executor {
 
     public void sendMessage(BaseComponent<?> component) {
         connection.send(new ClientboundSystemChatPacket(COToNative.from(component), false));
+    }
+
+    /**
+     * Sets the player's health and sends a SetHealthC2SPacket.<br/>
+     * This looks more smooth than just a {@code setHealth} call on the client.
+     */
+    public void updateHealth(float health) {
+        super.setHealth(health);
+
+        var cast = (net.minecraft.world.entity.player.Player) underlyingEntity;
+        var food = cast.getFoodData();
+
+        connection.send(new ClientboundSetHealthPacket(health, food.getFoodLevel(), food.getSaturationLevel()));
     }
 }

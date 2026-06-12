@@ -18,7 +18,7 @@ public abstract class Entity {
     private final String uuidString;
     private final BaseComponent<?> name;
 
-    private final net.minecraft.world.entity.Entity underlyingEntity;
+    protected final net.minecraft.world.entity.Entity underlyingEntity;
 
     public Entity(
             int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
