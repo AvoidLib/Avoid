@@ -19,7 +19,6 @@ public final class Chat {
         ChatNative.sendToServer(data);
     }
 
-    @ThreadSafe
     public static void receiveMessage(BaseComponent<?> data) {
         if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
             throw new ImproperEnvironment("Cannot Chat#receiveMessage from the server!");
