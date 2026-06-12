@@ -1,0 +1,19 @@
+{
+    GuiGraphics
+    GuiGraphicsExtractor
+}
+
+{
+    GuiGraphicsExtractorMixin
+    GuiGraphicsMixin
+}
+
+{
+    renderOutline
+    outline
+}
+
+{
+    drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)V
+    text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)V
+}
