@@ -48,11 +48,17 @@ public class Player extends Entity implements Executor {
      */
     public void updateHealth(float health) {
         super.setHealth(health);
+        this.updateHealthAndFood();
+    }
 
+    /**
+     * Sends a SetHealthC2SPacket.
+     */
+    public void updateHealthAndFood() {
         var cast = (net.minecraft.world.entity.player.Player) underlyingEntity;
         var food = cast.getFoodData();
 
-        connection.send(new ClientboundSetHealthPacket(health, food.getFoodLevel(), food.getSaturationLevel()));
+        connection.send(new ClientboundSetHealthPacket(getHealth(), food.getFoodLevel(), food.getSaturationLevel()));
     }
 
     public void setFoodLevel(int food) {
@@ -61,6 +67,16 @@ public class Player extends Entity implements Executor {
 
     public void setFoodSaturation(float saturation) {
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().setSaturation(saturation);
+    }
+
+    public void updateFoodLevel(int food) {
+        setFoodLevel(food);
+        updateHealthAndFood();
+    }
+
+    public void updateFoodSaturation(float saturation) {
+        setFoodSaturation(saturation);
+        updateHealthAndFood();
     }
 
     public int getFoodLevel() {
