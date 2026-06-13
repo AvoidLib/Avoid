@@ -5,4 +5,6 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface IgnitedByLava {}
+public @interface _destroyTime {
+    float value();
+}

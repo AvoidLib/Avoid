@@ -51,74 +51,74 @@ public final class Blocks {
     private static Properties getProperties(Class<? extends pl.olafcio.avoid.net.block.Block> block) {
         var properties = Properties.of();
 
-        if (block.isAnnotationPresent(RandomlyTicking.class))
+        if (block.isAnnotationPresent(_randomlyTicking.class))
             properties = properties.randomTicks();
 
-        if (block.isAnnotationPresent(Instabreak.class)) {
+        if (block.isAnnotationPresent(_instabreak.class)) {
             properties = properties.instabreak();
 
-            if (block.isAnnotationPresent(Strength.class) || block.isAnnotationPresent(DestroyTime.class) || block.isAnnotationPresent(ExplosionResistance.class)) {
-                Avoid.LOGGER.warn("Block has @Instabreak, other strength-related attributes are ignored (@Strength &/ @DestroyTime &/ @ExplosionResistance)");
+            if (block.isAnnotationPresent(_strength.class) || block.isAnnotationPresent(_destroyTime.class) || block.isAnnotationPresent(_explosionResistance.class)) {
+                Avoid.LOGGER.warn("Block has @_instabreak, other strength-related attributes are ignored (@_strength &/ @_destroyTime &/ @_explosionResistance)");
             }
         } else {
-            if (block.isAnnotationPresent(Strength.class))
-                properties = properties.strength(block.getAnnotation(Strength.class)
+            if (block.isAnnotationPresent(_strength.class))
+                properties = properties.strength(block.getAnnotation(_strength.class)
                                        .value());
 
-            if (block.isAnnotationPresent(DestroyTime.class))
-                properties = properties.destroyTime(block.getAnnotation(DestroyTime.class)
+            if (block.isAnnotationPresent(_destroyTime.class))
+                properties = properties.destroyTime(block.getAnnotation(_destroyTime.class)
                                        .value());
 
-            if (block.isAnnotationPresent(ExplosionResistance.class))
-                properties = properties.destroyTime(block.getAnnotation(ExplosionResistance.class)
+            if (block.isAnnotationPresent(_explosionResistance.class))
+                properties = properties.destroyTime(block.getAnnotation(_explosionResistance.class)
                                        .value());
 
-            if (block.isAnnotationPresent(DestroyTime.class) && block.isAnnotationPresent(ExplosionResistance.class) && block.isAnnotationPresent(Strength.class))
-                Avoid.LOGGER.warn("Block has @Strength, @DestroyTime and @ExplosionResistance at the same time; strength definition is unnecessary");
+            if (block.isAnnotationPresent(_destroyTime.class) && block.isAnnotationPresent(_explosionResistance.class) && block.isAnnotationPresent(_strength.class))
+                Avoid.LOGGER.warn("Block has @_strength, @_destroyTime and @_explosionResistance at the same time; strength definition is unnecessary");
         }
 
-        if (block.isAnnotationPresent(Friction.class))
-            properties = properties.friction(block.getAnnotation(Friction.class)
+        if (block.isAnnotationPresent(_friction.class))
+            properties = properties.friction(block.getAnnotation(_friction.class)
                                                   .value());
 
-        if (block.isAnnotationPresent(SpeedFactor.class))
-            properties = properties.speedFactor(block.getAnnotation(SpeedFactor.class)
+        if (block.isAnnotationPresent(_speedFactor.class))
+            properties = properties.speedFactor(block.getAnnotation(_speedFactor.class)
                                                      .value());
 
-        if (block.isAnnotationPresent(JumpFactor.class))
-            properties = properties.jumpFactor(block.getAnnotation(JumpFactor.class)
+        if (block.isAnnotationPresent(_jumpFactor.class))
+            properties = properties.jumpFactor(block.getAnnotation(_jumpFactor.class)
                                                     .value());
 
-        if (block.isAnnotationPresent(NoCollision.class))
+        if (block.isAnnotationPresent(_noCollision.class))
             properties = properties.noCollision();
 
-        if (block.isAnnotationPresent(Liquid.class))
+        if (block.isAnnotationPresent(_liquid.class))
             properties = properties.liquid();
 
-        if (block.isAnnotationPresent(IgnitedByLava.class))
+        if (block.isAnnotationPresent(_ignitedByLava.class))
             properties = properties.ignitedByLava();
 
-        if (block.isAnnotationPresent(NoTerrainParticles.class))
+        if (block.isAnnotationPresent(_noTerrainParticles.class))
             properties = properties.noTerrainParticles();
 
-        if (block.isAnnotationPresent(Replaceable.class))
+        if (block.isAnnotationPresent(_replaceable.class))
             properties = properties.replaceable();
 
-        if (block.isAnnotationPresent(RequiresCorrectToolForDrops.class))
+        if (block.isAnnotationPresent(_requiresCorrectToolForDrops.class))
             properties = properties.requiresCorrectToolForDrops();
 
-        if (block.isAnnotationPresent(ForceSolid.class))
+        if (block.isAnnotationPresent(_forceSolid.class))
             properties = properties.forceSolidOn();
 
-        if (block.isAnnotationPresent(NoDrops.class))
+        if (block.isAnnotationPresent(_noDrops.class))
             properties = properties.noLootTable();
 
-        if (block.isAnnotationPresent(RequiresCorrectToolForDrops.class) && block.isAnnotationPresent(NoDrops.class))
-            Avoid.LOGGER.warn("@RequiresCorrectToolForDrops and @NoDrops present; only-tool drop declaration is unnecessary");
+        if (block.isAnnotationPresent(_requiresCorrectToolForDrops.class) && block.isAnnotationPresent(_noDrops.class))
+            Avoid.LOGGER.warn("@_requiresCorrectToolForDrops and @_noDrops present; only-tool drop declaration is unnecessary");
 
-        if (block.isAnnotationPresent(Instrument.class))
+        if (block.isAnnotationPresent(_instrument.class))
             properties = properties.instrument(NoteBlockInstrumentNative.convert(
-                    block.getAnnotation(Instrument.class)
+                    block.getAnnotation(_instrument.class)
                          .value()
             ));
 

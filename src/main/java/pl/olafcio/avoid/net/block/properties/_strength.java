@@ -5,4 +5,6 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface RequiresCorrectToolForDrops {}
+public @interface _strength {
+    float value();
+}

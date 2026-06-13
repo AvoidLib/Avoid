@@ -5,6 +5,4 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface JumpFactor {
-    float value();
-}
+public @interface _requiresCorrectToolForDrops {}
