@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.world;
+package pl.olafcio.avoid.net.world.vect3;
 
 import java.util.Objects;
 

@@ -1,0 +1,88 @@
+package pl.olafcio.avoid.net.world;
+
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.Untested;
+import pl.olafcio.avoid.net.block.pos.BlockPos;
+import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid.net.entity.Entity;
+import pl.olafcio.avoid.net.entity.EntityNative;
+import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid.net.id.IdentificationNative;
+
+import java.util.UUID;
+
+@SuppressWarnings("ClassCanBeRecord")
+@ApiStatus.Experimental
+public final class World {
+    private final Level level;
+
+    World(Level level) {
+        this.level = level;
+    }
+
+    public Entity getEntity(int id) {
+        return EntityNative.convertFrom(level.getEntity(id));
+    }
+
+    @ApiStatus.Experimental
+    public Entity getEntity(UUID uuid) {
+        return EntityNative.convertFrom(level.getEntity(uuid));
+    }
+
+    public Identification getID() {
+        return IdentificationNative.convertFrom(level.dimension().identifier());
+    }
+
+    public Identification getTypeID() {
+        return IdentificationNative.convertFrom(level.dimensionTypeRegistration().unwrapKey().orElseThrow().identifier());
+    }
+
+    @Untested
+    public boolean autoSave() {
+        return !level.noSave();
+    }
+
+    public boolean isOverworld() {
+        return level.dimensionTypeRegistration().is(BuiltinDimensionTypes.OVERWORLD);
+    }
+
+    public boolean isNether() {
+        return level.dimensionTypeRegistration().is(BuiltinDimensionTypes.NETHER);
+    }
+
+    public boolean isEnd() {
+        return level.dimensionTypeRegistration().is(BuiltinDimensionTypes.END);
+    }
+
+    public boolean isVanilla() {
+        return isOverworld() || isNether() || isEnd();
+    }
+
+    public Identification getBiomeAt(BlockPos pos) {
+        return IdentificationNative.convertFrom(level.getBiomeManager().getBiome(BlockPosNative.convertFrom(pos)).unwrapKey().orElseThrow().identifier());
+    }
+
+    public long getDayTime() {
+        return level.getDayTime();
+    }
+
+    public long getGameTime() {
+        return level.getGameTime();
+    }
+
+    @ApiStatus.Experimental
+    public int getMinY() {
+        return level.getMinY();
+    }
+
+    @ApiStatus.Experimental
+    public int getMaxY() {
+        return level.getMaxY();
+    }
+
+    public int getHeight() {
+        return level.getHeight();
+    }
+}

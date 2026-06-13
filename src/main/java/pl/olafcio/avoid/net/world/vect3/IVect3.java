@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.world;
+package pl.olafcio.avoid.net.world.vect3;
 
 public sealed interface IVect3 permits Vect3, Vect3o {
     double x();

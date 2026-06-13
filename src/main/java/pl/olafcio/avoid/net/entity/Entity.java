@@ -6,7 +6,7 @@ import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.entity_type.EntityType;
-import pl.olafcio.avoid.net.world.IVect3;
+import pl.olafcio.avoid.net.world.vect3.IVect3;
 
 import java.util.Set;
 import java.util.UUID;

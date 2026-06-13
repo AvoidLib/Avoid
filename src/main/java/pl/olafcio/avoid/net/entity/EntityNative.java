@@ -5,7 +5,7 @@ import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
-import pl.olafcio.avoid.net.world.Vect3Native;
+import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 @Native
 @ApiStatus.Internal

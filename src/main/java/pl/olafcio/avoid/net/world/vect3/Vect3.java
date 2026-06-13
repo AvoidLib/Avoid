@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.world;
+package pl.olafcio.avoid.net.world.vect3;
 
 public record Vect3(double x, double y, double z) implements IVect3 {
     public static final Vect3 ZERO = new Vect3(0d, 0d, 0d);

@@ -17,7 +17,7 @@ import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.player.exception.UncontrollablePlayerException;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
 import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
-import pl.olafcio.avoid.net.world.IVect3;
+import pl.olafcio.avoid.net.world.vect3.IVect3;
 
 import java.util.UUID;
 
