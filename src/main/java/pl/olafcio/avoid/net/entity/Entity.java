@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.entity;
 
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
@@ -68,6 +69,7 @@ public abstract class Entity {
         return uuidString;
     }
 
+    @Nullable
     public BaseComponent<?> getDisplayName() {
         return name;
     }
