@@ -5,18 +5,36 @@ buildscript {
             url = 'https://maven.fabricmc.net/'
         }
 
+        maven {
+            name = 'NeoForge'
+            url = 'https://maven.neoforged.net/releases'
+        }
+
         gradlePluginPortal()
     }
 
     dependencies {
         classpath 'net.fabricmc:fabric-loom:1.16-SNAPSHOT'
+        classpath 'net.neoforged.gradle:userdev:7.1.37'
     }
 }
 
-if (rootProject.file('gradle.properties').text.contains("omit_mappings")) {
+var neoforge = false
+var fabric = false
+
+if (rootProject.file('gradle.properties').text.contains("neoforge")) {
+    apply plugin: 'java-library'
+    apply plugin: 'net.neoforged.gradle.userdev'
+
+    neoforge = true
+} else if (rootProject.file('gradle.properties').text.contains("omit_mappings")) {
     apply plugin: 'net.fabricmc.fabric-loom'
+
+    fabric = true
 } else {
     apply plugin: 'fabric-loom'
+
+    fabric = true
 }
 
 apply plugin: 'maven-publish'
@@ -28,8 +46,16 @@ base {
     archivesName = project.archives_base_name
 }
 
-loom {
-    accessWidenerPath = rootProject.file("src/main/resources/avoidlib.accesswidener")
+if (fabric) {
+    loom {
+        accessWidenerPath = rootProject.file("src/main/resources/avoidlib.accesswidener")
+    }
+} else {
+    minecraft {
+        accessTransformers {
+            file "src/main/resources/META-INF/accesstransformer.cfg"
+        }
+    }
 }
 
 repositories {
@@ -40,20 +66,66 @@ repositories {
     // for more information about repositories.
 }
 
+if (neoforge) {
+    runs {
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            systemProperty 'forge.logging.console.level', 'debug'
+
+            workingDirectory project.layout.projectDirectory.dir('run').dir(name)
+
+            modSource project.sourceSets.main
+        }
+
+        client {
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            systemProperty 'neoforge.enabledGameTestNamespaces', "avoidlib"
+        }
+
+        server {
+            systemProperty 'neoforge.enabledGameTestNamespaces', "avoidlib"
+            argument '--nogui'
+        }
+
+        // This run config launches GameTestServer and runs all registered gametests, then exits.
+        // By default, the server will crash when no gametests are provided.
+        // The gametest system is also enabled by default for other run configs under the /test command.
+        gameTestServer {
+            systemProperty 'neoforge.enabledGameTestNamespaces', "avoidlib"
+        }
+
+        clientData {
+            // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
+            // workingDirectory project.file('run-data')
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            arguments.addAll '--mod', "avoidlib", '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+    }
+
+    configurations {
+        runtimeClasspath.extendsFrom localRuntime
+    }
+}
+
 dependencies {
-    // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-
-    if ("omit_mappings" !in project.getProperties()) {
-        /// 1.21.11
-
-        mappings loom.officialMojangMappings()
-        modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
+    if (neoforge) {
+        implementation "net.neoforged:neoforge:${project.neo_version}"
     } else {
-        /// 26.1
+        // To change the versions see the gradle.properties file
+        minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
-        implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+        if ("omit_mappings" !in project.getProperties()) {
+            /// 1.21.11
+
+            mappings loom.officialMojangMappings()
+            modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+        } else {
+            /// 26.1
+
+            implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+        }
     }
 }
 
@@ -61,12 +133,14 @@ processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "loader_version", project.loader_version
-    filteringCharset "UTF-8"
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version,
-                "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
+    if ('neo_version' in project.properties) {
+        inputs.property "neo_version", project.neo_version
+    }
+
+    filteringCharset "UTF-8"
+    filesMatching(["fabric.mod.json", "META-INF/neoforge.mods.toml"]) {
+        expand inputs.properties
     }
 }
 
@@ -83,10 +157,8 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
+    toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+
     // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
     // if it is present.
     // If you remove this line, sources will not be generated.

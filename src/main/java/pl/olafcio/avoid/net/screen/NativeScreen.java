@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.screen;
 
+import pl.olafcio.avoid.A4;
 import pl.olafcio.avoid.mixininterface.IScreen;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
 
@@ -18,7 +19,7 @@ public final class NativeScreen extends Screen {
         realScreen.width = width;
         realScreen.height = height;
 
-        realScreen.init();
+        A4.init(realScreen);
     }
 
     @Override
