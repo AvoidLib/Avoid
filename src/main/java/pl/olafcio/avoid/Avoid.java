@@ -11,6 +11,7 @@ import pl.olafcio.avoid.mods.ModEnvironment;
 import pl.olafcio.avoid.mods.annotation_processor.AutoCommand;
 import pl.olafcio.avoid.mods.annotation_processor.OverwriteScreen;
 import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.net.block.values.NoteBlockInstrument;
 import pl.olafcio.avoid.net.command.Command;
 import pl.olafcio.avoid.net.command.CommandManager;
 import pl.olafcio.avoid.net.screen.Screen;
@@ -23,6 +24,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -36,7 +38,37 @@ public class Avoid {
     private static final Gson GSON
                    = new Gson();
 
+    @ApiStatus.Internal
+    public static final Avoid INSTANCE
+                  = new Avoid();
+
+    private Avoid() {}
+
+    private boolean Initialized = false;
+    private final List<Runnable> Initializers
+            = new ArrayList<>();
+
+    private void Schedule(Runnable code) {
+        if (Initialized)
+            code.run();
+        else Initializers.add(code);
+    }
+
+    private void Realize() {
+        for (var init : Initializers)
+            init.run();
+
+        Initialized = true;
+    }
+
     public void onInitialize() {
+        NoteBlockInstrument.clinit();
+        Realize();
+
+        // TODO: Call a method on all mods
+    }
+
+    public void onEarlyInit() {
         try {
             var loadedMods = AvoidWrappedLoader.getModsPaths();
             var avoidMods = new ArrayList<String>();
@@ -54,7 +86,7 @@ public class Avoid {
         }
     }
 
-    private static void loadFrom(Path modsDir, Set<Path> loadedMods, ArrayList<String> avoidMods) throws IOException {
+    private void loadFrom(Path modsDir, Set<Path> loadedMods, ArrayList<String> avoidMods) throws IOException {
         if (!Files.isDirectory(modsDir))
             return;
 
@@ -141,11 +173,15 @@ public class Avoid {
                                         continue;
                                     }
 
-                                    //noinspection unchecked
-                                    Screens.overwrite(
-                                            klass.getDeclaredAnnotation(OverwriteScreen.class).value(),
-                                            (Class<? extends Screen>) klass
-                                    );
+                                    LOGGER.debug("Scheduling screen overwrite: {} ({})", className, mod.getFileName().toString());
+
+                                    Schedule(() -> {
+                                        //noinspection unchecked
+                                        Screens.overwrite(
+                                                klass.getDeclaredAnnotation(OverwriteScreen.class).value(),
+                                                (Class<? extends Screen>) klass
+                                        );
+                                    });
                                 }
 
                                 if (klass.isAnnotationPresent(AutoCommand.class)) {

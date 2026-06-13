@@ -31,7 +31,7 @@ public final class A4NeoForge {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        new Avoid().onInitialize();
+        Avoid.INSTANCE.onInitialize();
     }
 
 //    // Add the example block item to the building blocks tab

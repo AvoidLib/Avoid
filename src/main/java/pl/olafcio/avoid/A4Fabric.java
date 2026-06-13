@@ -5,6 +5,6 @@ import net.fabricmc.api.ModInitializer;
 public final class A4Fabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        new Avoid().onInitialize();
+        Avoid.INSTANCE.onInitialize();
     }
 }

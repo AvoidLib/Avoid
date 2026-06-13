@@ -16,6 +16,7 @@
     "ChatHudMixin",
     "ChatScreenMixin",
     "GuiGraphicsMixin",
+    "BlocksMixin",
     "MinecraftMixin",
     "ScreenMixin"
   ],
