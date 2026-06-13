@@ -92,6 +92,9 @@ public final class Blocks {
         if (block.isAnnotationPresent(_noCollision.class))
             properties = properties.noCollision();
 
+        if (block.isAnnotationPresent(_noOcclusion.class))
+            properties = properties.noOcclusion();
+
         if (block.isAnnotationPresent(_liquid.class))
             properties = properties.liquid();
 
