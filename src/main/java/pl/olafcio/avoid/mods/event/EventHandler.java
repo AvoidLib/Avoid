@@ -12,4 +12,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @ApiStatus.Experimental
-public @interface EventHandler {}
+public @interface EventHandler {
+    boolean ignoreCancelled() default false;
+}

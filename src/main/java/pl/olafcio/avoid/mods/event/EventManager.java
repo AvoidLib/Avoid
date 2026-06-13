@@ -56,8 +56,17 @@ public final class EventManager {
                 var type = params[0].getType();
                 var typeName = type.getSimpleName();
 
+                boolean ignoreCancelled = m.getAnnotation(EventHandler.class)
+                                           .ignoreCancelled();
+
+                if (ignoreCancelled && !Cancellable.class.isAssignableFrom(klass))
+                    LOGGER.debug("@EventHandler(ignoreCancelled = true) on a non-cancellable event ({}#{})", className, methodName);
+
                 register(type, obj -> {
                     try {
+                        if (ignoreCancelled && obj instanceof Cancellable can && can.isCancelled())
+                            return;
+
                         m.invoke(null, obj);
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         LOGGER.error("Failed to invoke static {} for {}#{}", typeName, className, methodName);
@@ -85,8 +94,17 @@ public final class EventManager {
                 var type = params[0].getType();
                 var typeName = type.getSimpleName();
 
+                boolean ignoreCancelled = m.getAnnotation(EventHandler.class)
+                                           .ignoreCancelled();
+
+                if (ignoreCancelled && !Cancellable.class.isAssignableFrom(klass))
+                    LOGGER.debug("@EventHandler(ignoreCancelled = true) on a non-cancellable event ({}#{})", className, methodName);
+
                 register(type, obj -> {
                     try {
+                        if (ignoreCancelled && obj instanceof Cancellable can && can.isCancelled())
+                            return;
+
                         m.invoke(instance, obj);
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         LOGGER.error("Failed to invoke {} for {}#{}", typeName, className, methodName);
