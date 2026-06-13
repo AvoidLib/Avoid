@@ -3,10 +3,6 @@ package pl.olafcio.avoid;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import pl.olafcio.avoid.mods.AvoidMod;
@@ -27,12 +23,11 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
-public class Avoid implements ModInitializer {
+public class Avoid {
     @ApiStatus.Internal
     public static final Logger LOGGER
                       = LogUtils.getLogger();
@@ -41,20 +36,16 @@ public class Avoid implements ModInitializer {
     private static final Gson GSON
                    = new Gson();
 
-    @Override
     public void onInitialize() {
         try {
-            var loadedMods = FabricLoader.getInstance().getAllMods().stream().map(ModContainer::getRootPaths)
-                                                                             .flatMap(Collection::stream)
-                                                                    .collect(Collectors.toSet());
-
+            var loadedMods = AvoidWrappedLoader.getModsPaths();
             var avoidMods = new ArrayList<String>();
 
-            loadFrom(FabricLoader.getInstance().getGameDir().resolve("mods"), loadedMods, avoidMods);
-            loadFrom(FabricLoader.getInstance().getGameDir().resolve("plugins"), loadedMods, avoidMods);
-            loadFrom(FabricLoader.getInstance().getGameDir().resolve("avoidmods"), loadedMods, avoidMods);
-            loadFrom(FabricLoader.getInstance().getGameDir().resolve("avoidplugins"), loadedMods, avoidMods);
-            loadFrom(FabricLoader.getInstance().getGameDir().resolve("avoidaddons"), loadedMods, avoidMods);
+            loadFrom(AvoidWrappedLoader.getGameDir().resolve("mods"), loadedMods, avoidMods);
+            loadFrom(AvoidWrappedLoader.getGameDir().resolve("plugins"), loadedMods, avoidMods);
+            loadFrom(AvoidWrappedLoader.getGameDir().resolve("avoidmods"), loadedMods, avoidMods);
+            loadFrom(AvoidWrappedLoader.getGameDir().resolve("avoidplugins"), loadedMods, avoidMods);
+            loadFrom(AvoidWrappedLoader.getGameDir().resolve("avoidaddons"), loadedMods, avoidMods);
 
             LOGGER.info("Loaded {} addons:{}", avoidMods.size(), avoidMods.stream().map(text -> "\n - " + text)
                                                                           .collect(Collectors.joining("")));
@@ -103,12 +94,12 @@ public class Avoid implements ModInitializer {
                                                 : ModEnvironment.ALL;
 
                         if (env == ModEnvironment.CLIENT) {
-                            if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) {
+                            if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
                                 LOGGER.warn("Skipping client-only mod: {} [{}]", name, id);
                                 return;
                             }
                         } else if (env == ModEnvironment.SERVER) {
-                            if (FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER) {
+                            if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.SERVER) {
                                 LOGGER.warn("Skipping server-only mod: {} [{}]", name, id);
                                 return;
                             }
@@ -145,7 +136,7 @@ public class Avoid implements ModInitializer {
                                         continue;
                                     }
 
-                                    if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) {
+                                    if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
                                         LOGGER.debug("@OverwriteScreen({}) on server, skipping", klass.getDeclaredAnnotation(OverwriteScreen.class).value().name());
                                         continue;
                                     }

@@ -11,10 +11,9 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "pl.olafcio.avoid.client.AvoidLibClient"
     ],
     "main": [
-      "pl.olafcio.avoid.Avoid"
+      "pl.olafcio.avoid.A4Fabric"
     ]
   },
   "mixins": [

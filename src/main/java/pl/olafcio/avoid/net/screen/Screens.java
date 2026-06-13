@@ -1,9 +1,9 @@
 package pl.olafcio.avoid.net.screen;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.RunningEnv;
 
 import java.util.function.Supplier;
 
@@ -20,7 +20,7 @@ public final class Screens {
      * This effectively causes the new screen to open every time the old one does.
      */
     public static void overwrite(ScreenMarker oldScreen, Screen newScreen) {
-        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#overwrite from the server!");
 
         ScreensNative.overwrite(oldScreen, newScreen);
@@ -31,7 +31,7 @@ public final class Screens {
      * This effectively causes the new screen to open every time the old one does.
      */
     public static void overwrite(ScreenMarker oldScreen, Supplier<Screen> newScreen) {
-        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#overwrite from the server!");
 
         ScreensNative.overwrite(oldScreen, newScreen);
@@ -42,7 +42,7 @@ public final class Screens {
      * This effectively causes the new screen to open every time the old one does.
      */
     public static void overwrite(ScreenMarker oldScreen, Class<? extends Screen> newScreen) {
-        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#overwrite from the server!");
 
         ScreensNative.overwrite(oldScreen, newScreen);
@@ -52,7 +52,7 @@ public final class Screens {
      * Sets the active screen.
      */
     public static void open(Screen newScreen) {
-        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#open from the server!");
 
         ScreensNative.open(newScreen);
@@ -64,7 +64,7 @@ public final class Screens {
      * Sets the active screen.
      */
     public static void open(ScreenMarker newScreen) {
-        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#open from the server!");
 
         ScreensNative.open(newScreen);
@@ -76,7 +76,7 @@ public final class Screens {
      * Otherwise, this brings up the title screen.
      */
     public static void close() {
-        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#close from the server!");
 
         ScreensNative.close();
