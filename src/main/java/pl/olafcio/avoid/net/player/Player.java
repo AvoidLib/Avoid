@@ -5,11 +5,14 @@ import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity_type.EntityType;
+import pl.olafcio.avoid.net.player.gamemode.GameMode;
+import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
 import pl.olafcio.avoid.net.world.IVect3;
 
 import java.util.UUID;
@@ -89,5 +92,19 @@ public class Player extends Entity implements Executor {
 
     public void tickHunger() {
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().tick(__cast(ServerPlayer.class));
+    }
+
+    @UnknownNullability
+    public GameMode getGameMode() {
+        var gm = __cast(net.minecraft.world.entity.player.Player.class).gameMode();
+        if (gm == null)
+            return null;
+
+        return GameModeNative.convertFrom(gm);
+    }
+
+    public void setGameMode(@NotNull GameMode gamemode) {
+        __castEnv(ServerPlayer.class, "[Player#setGameMode] This method can only be ran on server players!")
+                .setGameMode(GameModeNative.convert(gamemode));
     }
 }

@@ -2,6 +2,7 @@ package pl.olafcio.avoid.net.entity;
 
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.UnknownNullability;
+import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.world.IVect3;
@@ -21,6 +22,14 @@ public abstract class Entity {
     protected final net.minecraft.world.entity.Entity underlyingEntity;
     protected final <T> T __cast(Class<T> cls) {
         return cls.cast(underlyingEntity);
+    }
+
+    protected final <T> T __castEnv(Class<T> cls, String errorMessage) {
+        try {
+            return cls.cast(underlyingEntity);
+        } catch (ClassCastException e) {
+            throw new ImproperEnvironment(errorMessage);
+        }
     }
 
     public Entity(
