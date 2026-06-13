@@ -1,5 +1,6 @@
 package pl.olafcio.avoid;
 
+import com.google.common.base.CaseFormat;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
@@ -8,16 +9,22 @@ import org.slf4j.Logger;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.ModEnvironment;
+import pl.olafcio.avoid.mods.annotation_processor.AutoBlock;
 import pl.olafcio.avoid.mods.annotation_processor.AutoCommand;
+import pl.olafcio.avoid.mods.annotation_processor.AutoID;
 import pl.olafcio.avoid.mods.annotation_processor.OverwriteScreen;
 import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.net.block.Block;
+import pl.olafcio.avoid.net.block.Blocks;
 import pl.olafcio.avoid.net.block.values.NoteBlockInstrument;
 import pl.olafcio.avoid.net.command.Command;
 import pl.olafcio.avoid.net.command.CommandManager;
+import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.screen.Screens;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -191,6 +198,45 @@ public class Avoid {
                                     }
 
                                     CommandManager.add((Command) klass.getDeclaredConstructor().newInstance());
+                                }
+
+                                if (klass.isAnnotationPresent(AutoBlock.class)) {
+                                    if (!Block.class.isAssignableFrom(klass)) {
+                                        LOGGER.error("@AutoBlock requires the annotated type to extend Block (avoid.net.block)");
+                                        continue;
+                                    }
+
+                                    if (!klass.isAnnotationPresent(AutoID.class)) {
+                                        LOGGER.error("@AutoBlock requires the annotated type to be also annotated with @AutoID");
+                                        continue;
+                                    }
+
+                                    var simpleName = klass.getSimpleName();
+
+                                    suffixRemover:
+                                    {
+                                        if (!simpleName.endsWith("Block")) {
+                                            LOGGER.warn("All block classes should end with 'Block', found non-matching: {} ({})", simpleName, className);
+                                            break suffixRemover;
+                                        }
+
+                                        simpleName = simpleName.substring(0, simpleName.length() - 5);
+                                    }
+
+                                    var constructor = klass.getDeclaredConstructor();
+                                    var idstr = id + ":" + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, simpleName);
+
+                                    LOGGER.debug("Registering block '{}'", idstr);
+
+                                    Blocks.register(Identification.of(idstr), () -> {
+                                        try {
+                                            return (Block) constructor.newInstance();
+                                        } catch (InstantiationException | IllegalAccessException e) {
+                                            throw new RuntimeException("Failed to construct block (%s)".formatted(idstr), e);
+                                        } catch (InvocationTargetException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    });
                                 }
 
                                 EventManager.collect(klass);
