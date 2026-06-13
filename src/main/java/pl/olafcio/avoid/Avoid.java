@@ -237,6 +237,8 @@ public class Avoid {
                                             throw new RuntimeException(e);
                                         }
                                     });
+                                } else if (klass.isAnnotationPresent(AutoID.class)) {
+                                    LOGGER.warn("@AutoID not applicable ({})", className);
                                 }
 
                                 EventManager.collect(klass);
