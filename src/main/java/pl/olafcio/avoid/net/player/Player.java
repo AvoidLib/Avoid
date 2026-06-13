@@ -107,4 +107,9 @@ public class Player extends Entity implements Executor {
         __castEnv(ServerPlayer.class, "[Player#setGameMode] This method can only be ran on server players!")
                 .setGameMode(GameModeNative.convert(gamemode));
     }
+
+    public String getIP() {
+        return __castEnv(ServerPlayer.class, "[Player#getIP] This method can only be ran on server players!")
+                       .getIpAddress();
+    }
 }
