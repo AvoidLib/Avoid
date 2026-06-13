@@ -130,7 +130,14 @@ public class Avoid implements ModInitializer {
                                 var className = fn.substring(0, fn.length() - 6)
                                                   .replace("/", ".");
 
-                                var klass = classLoader.loadClass(className);
+                                Class<?> klass;
+
+                                try {
+                                    klass = classLoader.loadClass(className);
+                                } catch (Exception e) {
+                                    LOGGER.error("Failed to load class {} ({})", className, mod.getFileName().toString());
+                                    continue;
+                                }
 
                                 if (klass.isAnnotationPresent(OverwriteScreen.class)) {
                                     if (!Screen.class.isAssignableFrom(klass)) {
