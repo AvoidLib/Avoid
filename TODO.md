@@ -1,0 +1,26 @@
+# TODO List
+Major:
+- [x] Block Creation
+- [ ] Item Creation
+- [ ] Creative Menu (Block)Item Addition
+- [ ] Creative Menu Category Addition
+- [ ] Assets
+- [ ] Resource Overrides
+
+Events:
+- [ ] Screen init
+- [ ] Screen render
+- [ ] Screen mouse click
+- [ ] Screen mouse move
+- [ ] Screen mouse release
+- [ ] Screen mouse scroll
+- [ ] Creative action
+
+Misc:
+- [ ] More documentation
+- [ ] More @NeverRemoval-s
+
+Soon:
+- [ ] Packet API
+- [ ] Sound API
+- [ ] Entity Type Creation
