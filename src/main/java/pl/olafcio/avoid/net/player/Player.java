@@ -1,6 +1,8 @@
 package pl.olafcio.avoid.net.player;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.game.ClientboundSetHealthPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,6 +15,7 @@ import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity_type.EntityType;
+import pl.olafcio.avoid.net.player.exception.UncontrollablePlayerException;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
 import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
 import pl.olafcio.avoid.net.world.IVect3;
@@ -43,11 +46,13 @@ public class Player extends Entity implements Executor {
         return profile.name();
     }
 
-    @ServerOnly
     public void sendMessage(BaseComponent<?> component) {
-        __castEnv(ServerPlayer.class, "[Player#sendMessage] This method can only be ran on server players!");
-
-        connection.send(new ClientboundSystemChatPacket(COToNative.from(component), false));
+        if (underlyingEntity instanceof ServerPlayer)
+            connection.send(new ClientboundSystemChatPacket(COToNative.from(component), false));
+        else if (underlyingEntity instanceof LocalPlayer client)
+            client.displayClientMessage(COToNative.from(component), false);
+        else
+            throw new UncontrollablePlayerException("[Player#sendMessage] Remote players can't be controlled from the client");
     }
 
     /**
