@@ -13,6 +13,7 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.net.block.properties.*;
 import pl.olafcio.avoid.net.block.values.NoteBlockInstrumentNative;
+import pl.olafcio.avoid.net.block.values.PushReactionNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
@@ -122,6 +123,12 @@ public final class Blocks {
         if (block.isAnnotationPresent(_instrument.class))
             properties = properties.instrument(NoteBlockInstrumentNative.convert(
                     block.getAnnotation(_instrument.class)
+                         .value()
+            ));
+
+        if (block.isAnnotationPresent(_pushReaction.class))
+            properties = properties.pushReaction(PushReactionNative.convert(
+                    block.getAnnotation(_pushReaction.class)
                          .value()
             ));
 
