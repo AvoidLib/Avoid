@@ -10,9 +10,12 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import pl.olafcio.avoid.AvoidManager;
 import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mixininterface.IMinecraft;
 import pl.olafcio.avoid.mixininterface.IScreen;
+import pl.olafcio.avoid.mods.AvoidMod;
+import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.screen.event.ScreenOpenEvent;
 import pl.olafcio.avoid.net.screen.event.ScreenOpenEventNative;
@@ -49,5 +52,13 @@ public class MinecraftMixin implements IMinecraft {
     @Override
     public HashMap<Class<? extends Screen>, Supplier<Screen>> avoidlib$overwrites() {
         return OVERWRITES;
+    }
+
+    @Inject(at = @At("HEAD"), method = "close")
+    public void close(CallbackInfo ci) {
+        var addons = AvoidManager.getLoadedAddons();
+        for (AvoidModMeta mod : addons)
+            AvoidManager.getLoadedAddonClass(mod)
+                        .onDisable();
     }
 }

@@ -217,6 +217,7 @@ public class Avoid {
                         constructor.setAccessible(true);
 
                         var instance = constructor.newInstance();
+                        AvoidManager.instances.put(meta, instance);
                         instance.onLoad();
 
                         Schedule(instance::onEnable);
