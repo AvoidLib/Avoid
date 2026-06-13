@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -21,13 +20,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.mixin.accessors.ICommandContext;
 import pl.olafcio.avoid.mixin.accessors.ICommandManager;
-import pl.olafcio.avoid.net.chat.component.BaseComponent;
-import pl.olafcio.avoid.net.chat.converter.COToNative;
+import pl.olafcio.avoid.mixinclass.MyUnknownExecutor;
+import pl.olafcio.avoid.mixinclass.Overload;
 import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.command.SyntaxTree;
 import pl.olafcio.avoid.net.command.exception.use.CommandSyntaxException;
-import pl.olafcio.avoid.net.command.executor.UnknownExecutor;
 import pl.olafcio.avoid.net.command.handling.Usage;
 import pl.olafcio.avoid.net.command.parameter.CommandParameter;
 import pl.olafcio.avoid.net.command.parameter.ShouldParse;
@@ -36,7 +34,6 @@ import pl.olafcio.avoid.net.player.PlayerNative;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.BiFunction;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
@@ -141,13 +138,6 @@ public class CommandsMixin {
         return node;
     }
 
-    @Unique
-    private static final class Overload {
-        public BiFunction<CommandContext<CommandSourceStack>, Boolean, Integer> load;
-        public Command<CommandSourceStack> execute;
-        public LinkedHashMap<String, CommandParameter<?>> mappings;
-    }
-
     private final HashMap<String, ArrayList<Overload>> executioners
             = new HashMap<>();
 
@@ -183,12 +173,7 @@ public class CommandsMixin {
             if (source.getPlayer() instanceof ServerPlayer player) {
                 executor = PlayerNative.convertFrom(player);
             } else {
-                executor = new UnknownExecutor() {
-                    @Override
-                    public void sendMessage(BaseComponent<?> component) {
-                        source.sendSystemMessage(COToNative.from(component));
-                    }
-                };
+                executor = new MyUnknownExecutor(source);
             }
 
             for (var entry : args.entrySet()) {
