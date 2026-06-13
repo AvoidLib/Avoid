@@ -16,10 +16,25 @@ public enum ScreenMarker {
     /** The multiplayer "Direct Connect" screen. */ DIRECT_CONNECT,
     /** The multiplayer "Add Server" and "Edit Server" screen. */ MANAGE_SERVER,
     /** The screen that shows when you are connecting to a server. */ CONNECT,
-    /** The screen that shows when Minecrarft wants you to confirm a decision. */ CONFIRM,
+    /** The screen that shows when Minecraft wants you to confirm a decision. */ CONFIRM,
     /** The settings screen. */ OPTIONS,
     /** The accessibility settings screen. */ ACCESSIBILITY_OPTIONS,
-    /** The language selection screen. */ LANGUAGE_SELECT;
+    /** The language selection screen. */ LANGUAGE_SELECT,
+    /** The skin customization screen. */ SKIN_CUSTOMIZATION,
+    /** The music & sound options screen. */ MUSIC_AND_SOUNDS,
+    /** The video settings screen. */ VIDEO_SETTINGS,
+    /** The general controls settings screen. */ CONTROLS_SCREEN,
+    /** The {@code Controls} -> {@code Mouse Settings} screen. */ MOUSE_SETTINGS_SCREEN,
+    /** The {@code Controls} -> {@code Key Binds} screen. */ KEYBINDS_SCREEN,
+    /** The chat settings screen. */ CHAT_SETTINGS,
+    /** The general "Credits and Attribution" settings screen. */ CREDITS_AND_ATTRIBUTION,
+    /** The credits screen showing after you finish the end fight. */ ENDGAME,
+    /** The chat screen you can enter by clicking {@code T} ingame. */ CHAT,
+    /** The inventory screen that shows when you click {@code E} while in creative mode. */ CREATIVE_INVENTORY,
+    /** The screen that shows when you click "Open to LAN" in the pause menu while in a singleplayer world. */ OPEN_TO_LAN,
+    /** The screen that shows when you click "Advancements" in the pause menu. */ ADVANCEMENTS,
+    /** The resource-pack or data-pack selection screen. */ PACK_SELECTION,
+    /** The {@code Server Links} settings screen, only visible on servers that have it on. */ SERVER_LINKS;
 
     boolean is(IScreen screen) {
         return ScreenMarkerNative.LOOKUP.get(this).isInstance(screen);
