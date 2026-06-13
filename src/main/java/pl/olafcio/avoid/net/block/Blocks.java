@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.AvoidPackageOnly;
 import pl.olafcio.avoid.net.block.properties.*;
 import pl.olafcio.avoid.net.block.values.NoteBlockInstrumentNative;
 import pl.olafcio.avoid.net.block.values.PushReactionNative;
@@ -47,6 +48,31 @@ public final class Blocks {
             Block.BLOCK_STATE_REGISTRY.add(blockState);
             blockState.initCache();
         }
+    }
+
+    @ApiStatus.Internal
+    public static void register(Identification blockID, Supplier<? extends pl.olafcio.avoid.net.block.Block> constructor, AvoidPackageOnly<Block> interceptor) {
+        var id = IdentificationNative.convert(blockID);
+
+        Function<Properties, Block> callback = properties -> BlockNative.make(
+                constructor.get(),
+                properties
+        );
+
+        var block = net.minecraft.world.level.block.Blocks.register(
+                ResourceKey.create(Registries.BLOCK, id),
+                callback,
+                getProperties(constructor.get().getClass())
+        );
+
+        Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
+
+        for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
+            Block.BLOCK_STATE_REGISTRY.add(blockState);
+            blockState.initCache();
+        }
+
+        interceptor.value = block;
     }
 
     private static Properties getProperties(Class<? extends pl.olafcio.avoid.net.block.Block> block) {

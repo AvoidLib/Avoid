@@ -4,15 +4,13 @@ import com.google.common.base.CaseFormat;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.ModEnvironment;
-import pl.olafcio.avoid.mods.annotation_processor.AutoBlock;
-import pl.olafcio.avoid.mods.annotation_processor.AutoCommand;
-import pl.olafcio.avoid.mods.annotation_processor.AutoID;
-import pl.olafcio.avoid.mods.annotation_processor.OverwriteScreen;
+import pl.olafcio.avoid.mods.annotation_processor.*;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.Blocks;
@@ -228,6 +226,8 @@ public class Avoid {
 
                                     LOGGER.debug("Registering block '{}'", idstr);
 
+                                    var interceptor = new AvoidPackageOnly<net.minecraft.world.level.block.Block>();
+
                                     Blocks.register(Identification.of(idstr), () -> {
                                         try {
                                             return (Block) constructor.newInstance();
@@ -236,7 +236,12 @@ public class Avoid {
                                         } catch (InvocationTargetException e) {
                                             throw new RuntimeException(e);
                                         }
-                                    });
+                                    }, interceptor);
+
+                                    if (klass.isAnnotationPresent(AutoBlockItem.class)) {
+                                        LOGGER.debug("Registering block item '{}'", idstr);
+                                        Items.registerBlock(interceptor.value);
+                                    }
                                 } else if (klass.isAnnotationPresent(AutoID.class)) {
                                     LOGGER.warn("@AutoID not applicable ({})", className);
                                 }
