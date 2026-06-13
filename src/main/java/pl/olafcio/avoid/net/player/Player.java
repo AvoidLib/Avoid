@@ -1,13 +1,12 @@
 package pl.olafcio.avoid.net.player;
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.game.ClientboundSetHealthPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
@@ -22,6 +21,11 @@ import pl.olafcio.avoid.net.world.IVect3;
 
 import java.util.UUID;
 
+/**
+ * A client or server player.
+ * <br/><br/>
+ * This is mixed to ease massive refactorings in Minecraft code for AvoidLib.
+ */
 public class Player extends Entity implements Executor {
     private final PlayerProfile profile;
     private final ServerGamePacketListenerImpl connection;
@@ -46,6 +50,12 @@ public class Player extends Entity implements Executor {
         return profile.name();
     }
 
+    /**
+     * Sends a message to the player.<br/><br/>
+     * This only works from the server and on the local player.
+     * If you try using it on remote players from the client,
+     * it will throw an exception.
+     */
     public void sendMessage(BaseComponent<?> component) {
         if (underlyingEntity instanceof ServerPlayer)
             connection.send(new ClientboundSystemChatPacket(COToNative.from(component), false));
@@ -102,10 +112,23 @@ public class Player extends Entity implements Executor {
         updateHealthAndFood();
     }
 
+    /**
+     * Returns the player's food level.
+     * <br/><br/>
+     * This value is normally in range 0-20.<br/><br/>
+     * 0 means the player is starving, while <br/>20 means the player is full.
+     */
+    @Range(from = 0, to = 20)
     public int getFoodLevel() {
         return __cast(net.minecraft.world.entity.player.Player.class).getFoodData().getFoodLevel();
     }
 
+    /**
+     * Returns the player's food saturation level.
+     * <br/><br/>
+     * I have honestly no clue what this value is,<br/>
+     * but I think it's also 0-20, like the food level.
+     */
     public float getFoodSaturation() {
         return __cast(net.minecraft.world.entity.player.Player.class).getFoodData().getSaturationLevel();
     }
@@ -115,6 +138,12 @@ public class Player extends Entity implements Executor {
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().tick(__cast(ServerPlayer.class));
     }
 
+    /**
+     * Returns the player's gamemode.
+     * <br/><br/>
+     * This value may be null if the player's connection has not been fully initialized yet -
+     * for example, when the player hasn't been spawned onto the world.
+     */
     @UnknownNullability
     public GameMode getGameMode() {
         var gm = __cast(net.minecraft.world.entity.player.Player.class).gameMode();
@@ -124,12 +153,24 @@ public class Player extends Entity implements Executor {
         return GameModeNative.convertFrom(gm);
     }
 
+    /**
+     * Sets the player's gamemode.
+     * <br/><br/>
+     * This method only works on the server.<br/>
+     * Spoofing a player's gamemode on the client hasn't been implemented.<br/><br/>
+     * If you need it, feel free to <a href="https://github.com/AvoidLib/Avoid/issues">make a GitHub feature request</a>.
+     */
     @ServerOnly
     public void setGameMode(@NotNull GameMode gamemode) {
         __castEnv(ServerPlayer.class, "[Player#setGameMode] This method can only be ran on server players!")
                 .setGameMode(GameModeNative.convert(gamemode));
     }
 
+    /**
+     * Gets the player's IP address.
+     * <br/><br/>
+     * This method only works on the server.
+     */
     @ServerOnly
     public String getIP() {
         return __castEnv(ServerPlayer.class, "[Player#getIP] This method can only be ran on server players!")
