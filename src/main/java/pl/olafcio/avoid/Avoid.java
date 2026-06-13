@@ -217,7 +217,9 @@ public class Avoid {
                         constructor.setAccessible(true);
 
                         var instance = constructor.newInstance();
-                        instance.onEnable();
+                        instance.onLoad();
+
+                        Schedule(instance::onEnable);
 
                         avoidMods.add(meta.name() + " " + meta.version());
                     } catch (IOException e) {
