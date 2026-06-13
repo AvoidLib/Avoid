@@ -1,11 +1,13 @@
 package pl.olafcio.avoid.net.player;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.protocol.game.ClientboundSetHealthPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnknownNullability;
+import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
@@ -41,7 +43,10 @@ public class Player extends Entity implements Executor {
         return profile.name();
     }
 
+    @ServerOnly
     public void sendMessage(BaseComponent<?> component) {
+        __castEnv(ServerPlayer.class, "[Player#sendMessage] This method can only be ran on server players!");
+
         connection.send(new ClientboundSystemChatPacket(COToNative.from(component), false));
     }
 
@@ -49,7 +54,10 @@ public class Player extends Entity implements Executor {
      * Sets the player's health and sends a SetHealthC2SPacket.<br/>
      * This looks more smooth than just a {@code setHealth} call on the client.
      */
+    @ServerOnly
     public void updateHealth(float health) {
+        __castEnv(ServerPlayer.class, "[Player#updateHealth] This method can only be ran on server players!");
+
         super.setHealth(health);
         this.updateHealthAndFood();
     }
@@ -57,8 +65,9 @@ public class Player extends Entity implements Executor {
     /**
      * Sends a SetHealthC2SPacket.
      */
+    @ServerOnly
     public void updateHealthAndFood() {
-        var cast = (net.minecraft.world.entity.player.Player) underlyingEntity;
+        var cast = __castEnv(ServerPlayer.class, "[Player#updateHealthAndFood] This method can only be ran on server players!");
         var food = cast.getFoodData();
 
         connection.send(new ClientboundSetHealthPacket(getHealth(), food.getFoodLevel(), food.getSaturationLevel()));
@@ -72,12 +81,18 @@ public class Player extends Entity implements Executor {
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().setSaturation(saturation);
     }
 
+    @ServerOnly
     public void updateFoodLevel(int food) {
+        __castEnv(ServerPlayer.class, "[Player#updateFoodLevel] This method can only be ran on server players!");
+
         setFoodLevel(food);
         updateHealthAndFood();
     }
 
+    @ServerOnly
     public void updateFoodSaturation(float saturation) {
+        __castEnv(ServerPlayer.class, "[Player#updateFoodSaturation] This method can only be ran on server players!");
+
         setFoodSaturation(saturation);
         updateHealthAndFood();
     }
@@ -90,6 +105,7 @@ public class Player extends Entity implements Executor {
         return __cast(net.minecraft.world.entity.player.Player.class).getFoodData().getSaturationLevel();
     }
 
+    @ServerOnly
     public void tickHunger() {
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().tick(__cast(ServerPlayer.class));
     }
@@ -103,11 +119,13 @@ public class Player extends Entity implements Executor {
         return GameModeNative.convertFrom(gm);
     }
 
+    @ServerOnly
     public void setGameMode(@NotNull GameMode gamemode) {
         __castEnv(ServerPlayer.class, "[Player#setGameMode] This method can only be ran on server players!")
                 .setGameMode(GameModeNative.convert(gamemode));
     }
 
+    @ServerOnly
     public String getIP() {
         return __castEnv(ServerPlayer.class, "[Player#getIP] This method can only be ran on server players!")
                        .getIpAddress();
