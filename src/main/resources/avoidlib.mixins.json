@@ -9,7 +9,6 @@
     "LivingEntityMixin",
     "LlamaMixin",
     "MinecraftServerMixin",
-    "MobMixin",
     "PlayerListMixin",
     "ServerPlayerMixin",
     "accessors.ICommandContext",
