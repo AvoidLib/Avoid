@@ -4,7 +4,7 @@ import net.minecraft.util.RandomSource;
 
 @SuppressWarnings("ClassCanBeRecord")
 public final class RandomProvider {
-    private final RandomSource source;
+    final RandomSource source;
 
     RandomProvider(RandomSource source) {
         this.source = source;

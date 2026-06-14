@@ -13,4 +13,8 @@ public final class RandomProviderNative {
     public static RandomProvider create(RandomSource source) {
         return new RandomProvider(source);
     }
+
+    public static RandomSource convert(RandomProvider provider) {
+        return provider.source;
+    }
 }

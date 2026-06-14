@@ -16,10 +16,18 @@ import java.util.UUID;
 @SuppressWarnings("ClassCanBeRecord")
 @ApiStatus.Experimental
 public final class World {
-    private final Level level;
+    final Level level;
 
     World(Level level) {
         this.level = level;
+    }
+
+    public Identification getBlockID(BlockPos pos) {
+        return IdentificationNative.convertFrom(level.getBlockState(BlockPosNative.convertFrom(pos)).getBlockHolder().unwrapKey().orElseThrow().identifier());
+    }
+
+    public BlockData getBlock(BlockPos pos) {
+        return new BlockData(level.getBlockState(BlockPosNative.convertFrom(pos)));
     }
 
     public Entity getEntity(int id) {

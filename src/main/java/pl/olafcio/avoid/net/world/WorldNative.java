@@ -13,4 +13,8 @@ public final class WorldNative {
     public static World make(Level level) {
         return new World(level);
     }
+
+    public static Level convert(World level) {
+        return level.level;
+    }
 }
