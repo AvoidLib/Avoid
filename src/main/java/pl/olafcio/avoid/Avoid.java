@@ -22,7 +22,6 @@ import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.screen.Screens;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -31,6 +30,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
@@ -91,6 +91,235 @@ public class Avoid {
         }
     }
 
+    private final class ModLoad {
+        private final Path mod;
+        private final Set<Path> loadedMods;
+        private final ArrayList<String> avoidMods;
+
+        private ModLoad(Path mod, Set<Path> loadedMods, ArrayList<String> avoidMods) {
+            this.mod = mod;
+            this.loadedMods = loadedMods;
+            this.avoidMods = avoidMods;
+        }
+
+        public void load() {
+            try (var jar = new JarFile(mod.toFile())) {
+                var manifestFile = jar.getEntry("avoid.mod.json");
+                if (manifestFile == null)
+                    return;
+
+                byte[] manifestData = jar.getInputStream(manifestFile)
+                        .readAllBytes();
+
+                var manifest = GSON.fromJson(new String(manifestData), JsonObject.class);
+                if (manifest == null) {
+                    LOGGER.error("Failed to read Avoid mod manifest: {}", mod.toAbsolutePath());
+                    return;
+                }
+
+                int schema = manifest.get("__schema").getAsInt();
+                if (schema != 1) {
+                    LOGGER.error("Invalid Avoid mod manifest __schema: {} [{}]", schema, mod.toAbsolutePath());
+                    return;
+                }
+
+                String id            = manifest.get("id").getAsString();
+                String version       = manifest.get("version").getAsString();
+                String versionSystem = manifest.get("version-system").getAsString();
+
+                String name        = manifest.get("name").getAsString();
+                String author      = manifest.get("author").getAsString();
+                String description = manifest.get("description").getAsString();
+
+                ModEnvironment env = manifest.has("environment")
+                                        ? ModEnvironment.valueOf(manifest.get("environment").getAsString().toUpperCase())
+                                        : ModEnvironment.ALL;
+
+                if (env == ModEnvironment.CLIENT) {
+                    if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
+                        LOGGER.warn("Skipping client-only mod: {} [{}]", name, id);
+                        return;
+                    }
+                } else if (env == ModEnvironment.SERVER) {
+                    if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.SERVER) {
+                        LOGGER.warn("Skipping server-only mod: {} [{}]", name, id);
+                        return;
+                    }
+                }
+
+                var classLoader = URLClassLoader.newInstance(
+                        new URL[]{ mod.toUri().toURL() },
+                        Avoid.class.getClassLoader()
+                );
+
+                String klassName = manifest.get("main-class").getAsString();
+                Class<?> klassUnc = classLoader.loadClass(klassName);
+
+                scanAllClasses(jar, classLoader, id);
+
+                if (!AvoidMod.class.isAssignableFrom(klassUnc)) {
+                    LOGGER.error("Main class of mod must extend AvoidMod: {}", mod.toAbsolutePath());
+                    return;
+                }
+
+                //noinspection unchecked
+                var klass = (Class<? extends AvoidMod>)
+                        klassUnc;
+
+                var meta = new AvoidModMeta(id, version, versionSystem,
+                                            name, author, description,
+                                            env, klass);
+
+                ///TIP: Access mod metadata by using {@link AvoidManager#getLoadedAddons()}
+                AvoidManager.metadatas.put(id, meta);
+
+                var constructor = klass.getDeclaredConstructor();
+                constructor.setAccessible(true);
+
+                var instance = constructor.newInstance();
+                AvoidManager.instances.put(meta, instance);
+                instance.onLoad();
+
+                Schedule(instance::onEnable);
+
+                avoidMods.add(meta.name() + " " + meta.version());
+            } catch (IOException e) {
+                LOGGER.error("Failed to read mod .jar file [IOException]: {}", mod.toAbsolutePath(), e);
+            } catch (NullPointerException e) {
+                LOGGER.error("Failed to read mod .jar avoid-manifest [NullPE]: {}", mod.toAbsolutePath(), e);
+            } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
+                     InstantiationException | IllegalAccessException e)
+            {
+                LOGGER.error("Failed to enable Avoid mod: {}", mod.toAbsolutePath(), e);
+            }
+        }
+
+        private void scanAllClasses(JarFile jar, URLClassLoader classLoader, String id) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+            var entries = jar.entries();
+            do {
+                var el = entries.nextElement();
+                var fn = el.getRealName();
+                if (!el.isDirectory() && fn.endsWith(".class")) {
+                    var className = fn.substring(0, fn.length() - 6)
+                            .replace("/", ".");
+
+                    Class<?> klass;
+
+                    try {
+                        klass = classLoader.loadClass(className);
+                    } catch (Exception e) {
+                        LOGGER.error("Failed to load class {} ({})", className, mod.getFileName().toString());
+                        continue;
+                    }
+
+                    if (registerScreenOverwrite(klass, className))
+                        continue;
+
+                    if (registerAutoCommand(klass))
+                        continue;
+
+                    var usedAutoID = new AtomicBoolean(false);
+                    if (registerAutoBlock(id, klass, className, usedAutoID))
+                        continue;
+
+                    if (!usedAutoID.get() && klass.isAnnotationPresent(AutoID.class))
+                        LOGGER.warn("@AutoID not applicable ({})", className);
+
+                    EventManager.collect(klass);
+                }
+            } while (entries.hasMoreElements());
+        }
+
+        private boolean registerAutoBlock(String id, Class<?> klass, String className, AtomicBoolean usedAutoID) throws NoSuchMethodException {
+            if (klass.isAnnotationPresent(AutoBlock.class)) {
+                if (!Block.class.isAssignableFrom(klass)) {
+                    LOGGER.error("@AutoBlock requires the annotated type to extend Block (avoid.net.block)");
+                    return true;
+                }
+
+                if (!klass.isAnnotationPresent(AutoID.class)) {
+                    LOGGER.error("@AutoBlock requires the annotated type to be also annotated with @AutoID");
+                    return true;
+                }
+
+                usedAutoID.set(true);
+
+                var simpleName = klass.getSimpleName();
+
+                suffixRemover:
+                {
+                    if (!simpleName.endsWith("Block")) {
+                        LOGGER.warn("All block classes should end with 'Block', found non-matching: {} ({})", simpleName, className);
+                        break suffixRemover;
+                    }
+
+                    simpleName = simpleName.substring(0, simpleName.length() - 5);
+                }
+
+                var constructor = klass.getDeclaredConstructor();
+                var idstr = id + ":" + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, simpleName);
+
+                LOGGER.debug("Registering block '{}'", idstr);
+
+                var interceptor = new AvoidPackageOnly<net.minecraft.world.level.block.Block>();
+
+                Blocks.register(Identification.of(idstr), () -> {
+                    try {
+                        return (Block) constructor.newInstance();
+                    } catch (InstantiationException | IllegalAccessException e) {
+                        throw new RuntimeException("Failed to construct block (%s)".formatted(idstr), e);
+                    } catch (InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, interceptor);
+
+                if (klass.isAnnotationPresent(AutoBlockItem.class)) {
+                    LOGGER.debug("Registering block item '{}'", idstr);
+                    Items.registerBlock(interceptor.value);
+                }
+            }
+
+            return false;
+        }
+
+        private boolean registerAutoCommand(Class<?> klass) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+            if (klass.isAnnotationPresent(AutoCommand.class)) {
+                if (!Command.class.isAssignableFrom(klass)) {
+                    LOGGER.error("@AutoCommand requires the annotated type to extend Command (avoid.net.command)");
+                    return true;
+                }
+
+                CommandManager.add((Command) klass.getDeclaredConstructor().newInstance());
+            }
+            return false;
+        }
+
+        private boolean registerScreenOverwrite(Class<?> klass, String className) {
+            if (klass.isAnnotationPresent(OverwriteScreen.class)) {
+                if (!Screen.class.isAssignableFrom(klass)) {
+                    LOGGER.error("@OverwriteScreen requires the annotated type to extend Screen (avoid.net.screen)");
+                    return true;
+                }
+
+                if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
+                    LOGGER.debug("@OverwriteScreen({}) on server, skipping", klass.getDeclaredAnnotation(OverwriteScreen.class).value().name());
+                    return true;
+                }
+
+                LOGGER.debug("Scheduling screen overwrite: {} ({})", className, mod.getFileName().toString());
+
+                Schedule(() -> {
+                    //noinspection unchecked
+                    Screens.overwrite(
+                            klass.getDeclaredAnnotation(OverwriteScreen.class).value(),
+                            (Class<? extends Screen>) klass
+                    );
+                });
+            }
+            return false;
+        }
+    }
+
     private void loadFrom(Path modsDir, Set<Path> loadedMods, ArrayList<String> avoidMods) throws IOException {
         if (!Files.isDirectory(modsDir))
             return;
@@ -98,193 +327,7 @@ public class Avoid {
         try (var mods = Files.list(modsDir)) {
             mods.forEach(mod -> {
                 if (mod.toString().endsWith(".jar") && !loadedMods.contains(mod)) {
-                    try (var jar = new JarFile(mod.toFile())) {
-                        var manifestFile = jar.getEntry("avoid.mod.json");
-                        if (manifestFile == null)
-                            return;
-
-                        byte[] manifestData = jar.getInputStream(manifestFile)
-                                                 .readAllBytes();
-
-                        var manifest = GSON.fromJson(new String(manifestData), JsonObject.class);
-                        if (manifest == null) {
-                            LOGGER.error("Failed to read Avoid mod manifest: {}", mod.toAbsolutePath());
-                            return;
-                        }
-
-                        int schema = manifest.get("__schema").getAsInt();
-                        if (schema != 1) {
-                            LOGGER.error("Invalid Avoid mod manifest __schema: {} [{}]", schema, mod.toAbsolutePath());
-                            return;
-                        }
-
-                        String id            = manifest.get("id").getAsString();
-                        String version       = manifest.get("version").getAsString();
-                        String versionSystem = manifest.get("version-system").getAsString();
-
-                        String name        = manifest.get("name").getAsString();
-                        String author      = manifest.get("author").getAsString();
-                        String description = manifest.get("description").getAsString();
-
-                        ModEnvironment env = manifest.has("environment")
-                                                ? ModEnvironment.valueOf(manifest.get("environment").getAsString().toUpperCase())
-                                                : ModEnvironment.ALL;
-
-                        if (env == ModEnvironment.CLIENT) {
-                            if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
-                                LOGGER.warn("Skipping client-only mod: {} [{}]", name, id);
-                                return;
-                            }
-                        } else if (env == ModEnvironment.SERVER) {
-                            if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.SERVER) {
-                                LOGGER.warn("Skipping server-only mod: {} [{}]", name, id);
-                                return;
-                            }
-                        }
-
-                        var classLoader = URLClassLoader.newInstance(
-                                new URL[]{ mod.toUri().toURL() },
-                                Avoid.class.getClassLoader()
-                        );
-
-                        String klassName = manifest.get("main-class").getAsString();
-                        Class<?> klassUnc = classLoader.loadClass(klassName);
-
-                        var entries = jar.entries();
-                        do {
-                            var el = entries.nextElement();
-                            var fn = el.getRealName();
-                            if (!el.isDirectory() && fn.endsWith(".class")) {
-                                var className = fn.substring(0, fn.length() - 6)
-                                                  .replace("/", ".");
-
-                                Class<?> klass;
-
-                                try {
-                                    klass = classLoader.loadClass(className);
-                                } catch (Exception e) {
-                                    LOGGER.error("Failed to load class {} ({})", className, mod.getFileName().toString());
-                                    continue;
-                                }
-
-                                if (klass.isAnnotationPresent(OverwriteScreen.class)) {
-                                    if (!Screen.class.isAssignableFrom(klass)) {
-                                        LOGGER.error("@OverwriteScreen requires the annotated type to extend Screen (avoid.net.screen)");
-                                        continue;
-                                    }
-
-                                    if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
-                                        LOGGER.debug("@OverwriteScreen({}) on server, skipping", klass.getDeclaredAnnotation(OverwriteScreen.class).value().name());
-                                        continue;
-                                    }
-
-                                    LOGGER.debug("Scheduling screen overwrite: {} ({})", className, mod.getFileName().toString());
-
-                                    Schedule(() -> {
-                                        //noinspection unchecked
-                                        Screens.overwrite(
-                                                klass.getDeclaredAnnotation(OverwriteScreen.class).value(),
-                                                (Class<? extends Screen>) klass
-                                        );
-                                    });
-                                }
-
-                                if (klass.isAnnotationPresent(AutoCommand.class)) {
-                                    if (!Command.class.isAssignableFrom(klass)) {
-                                        LOGGER.error("@AutoCommand requires the annotated type to extend Command (avoid.net.command)");
-                                        continue;
-                                    }
-
-                                    CommandManager.add((Command) klass.getDeclaredConstructor().newInstance());
-                                }
-
-                                if (klass.isAnnotationPresent(AutoBlock.class)) {
-                                    if (!Block.class.isAssignableFrom(klass)) {
-                                        LOGGER.error("@AutoBlock requires the annotated type to extend Block (avoid.net.block)");
-                                        continue;
-                                    }
-
-                                    if (!klass.isAnnotationPresent(AutoID.class)) {
-                                        LOGGER.error("@AutoBlock requires the annotated type to be also annotated with @AutoID");
-                                        continue;
-                                    }
-
-                                    var simpleName = klass.getSimpleName();
-
-                                    suffixRemover:
-                                    {
-                                        if (!simpleName.endsWith("Block")) {
-                                            LOGGER.warn("All block classes should end with 'Block', found non-matching: {} ({})", simpleName, className);
-                                            break suffixRemover;
-                                        }
-
-                                        simpleName = simpleName.substring(0, simpleName.length() - 5);
-                                    }
-
-                                    var constructor = klass.getDeclaredConstructor();
-                                    var idstr = id + ":" + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, simpleName);
-
-                                    LOGGER.debug("Registering block '{}'", idstr);
-
-                                    var interceptor = new AvoidPackageOnly<net.minecraft.world.level.block.Block>();
-
-                                    Blocks.register(Identification.of(idstr), () -> {
-                                        try {
-                                            return (Block) constructor.newInstance();
-                                        } catch (InstantiationException | IllegalAccessException e) {
-                                            throw new RuntimeException("Failed to construct block (%s)".formatted(idstr), e);
-                                        } catch (InvocationTargetException e) {
-                                            throw new RuntimeException(e);
-                                        }
-                                    }, interceptor);
-
-                                    if (klass.isAnnotationPresent(AutoBlockItem.class)) {
-                                        LOGGER.debug("Registering block item '{}'", idstr);
-                                        Items.registerBlock(interceptor.value);
-                                    }
-                                } else if (klass.isAnnotationPresent(AutoID.class)) {
-                                    LOGGER.warn("@AutoID not applicable ({})", className);
-                                }
-
-                                EventManager.collect(klass);
-                            }
-                        } while (entries.hasMoreElements());
-
-                        if (!AvoidMod.class.isAssignableFrom(klassUnc)) {
-                            LOGGER.error("Main class of mod must extend AvoidMod: {}", mod.toAbsolutePath());
-                            return;
-                        }
-
-                        //noinspection unchecked
-                        var klass = (Class<? extends AvoidMod>)
-                                     klassUnc;
-
-                        var meta = new AvoidModMeta(id, version, versionSystem,
-                                                    name, author, description,
-                                                    env, klass);
-
-                        ///TIP: Access mod metadata by using {@link AvoidManager#getLoadedAddons()}
-                        AvoidManager.metadatas.put(id, meta);
-
-                        var constructor = klass.getDeclaredConstructor();
-                        constructor.setAccessible(true);
-
-                        var instance = constructor.newInstance();
-                        AvoidManager.instances.put(meta, instance);
-                        instance.onLoad();
-
-                        Schedule(instance::onEnable);
-
-                        avoidMods.add(meta.name() + " " + meta.version());
-                    } catch (IOException e) {
-                        LOGGER.error("Failed to read mod .jar file [IOException]: {}", mod.toAbsolutePath(), e);
-                    } catch (NullPointerException e) {
-                        LOGGER.error("Failed to read mod .jar avoid-manifest [NullPE]: {}", mod.toAbsolutePath(), e);
-                    } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
-                             InstantiationException | IllegalAccessException e)
-                    {
-                        LOGGER.error("Failed to enable Avoid mod: {}", mod.toAbsolutePath(), e);
-                    }
+                    new ModLoad(mod, loadedMods, avoidMods).load();
                 }
             });
         }
