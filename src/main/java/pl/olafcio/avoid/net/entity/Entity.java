@@ -11,6 +11,8 @@ import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.entity_type.EntityType;
+import pl.olafcio.avoid.net.world.World;
+import pl.olafcio.avoid.net.world.WorldNative;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 
 import java.util.Set;
@@ -397,6 +399,13 @@ public abstract class Entity {
     // TODO: What does this actually mean?
     public void resetLastActionTime() {
         __cast(LivingEntity.class).setNoActionTime(0);
+    }
+
+    /**
+     * Returns a world object representing the world the entity is currently in.
+     */
+    public World getWorld() {
+        return WorldNative.make(__cast(LivingEntity.class).level());
     }
 
     @Override
