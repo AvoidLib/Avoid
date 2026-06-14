@@ -1,0 +1,6 @@
+import net.minecraft.world.phys.Vec3
+
+{
+    void interact(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir)
+    void interact(Player player, InteractionHand hand, Vec3 location, CallbackInfoReturnable<InteractionResult> cir)
+}
