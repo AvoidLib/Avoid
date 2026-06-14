@@ -7,6 +7,7 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 
 @ApiStatus.Experimental
@@ -16,6 +17,9 @@ public final class AvoidManager {
            = new HashMap<>();
 
     static final HashMap<AvoidModMeta, AvoidMod> instances
+           = new HashMap<>();
+
+    static final HashMap<AvoidModMeta, Path> files
            = new HashMap<>();
 
     private AvoidManager() {}
@@ -34,6 +38,11 @@ public final class AvoidManager {
     @UnknownNullability
     public static AvoidMod getLoadedAddonClass(AvoidModMeta meta) {
         return instances.get(meta);
+    }
+
+    @UnknownNullability
+    public static Path getLoadedAddonFile(AvoidModMeta meta) {
+        return files.get(meta);
     }
 
     public static AvoidModMeta[] getLoadedAddons() {

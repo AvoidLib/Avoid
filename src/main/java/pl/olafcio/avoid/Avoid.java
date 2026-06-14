@@ -168,6 +168,7 @@ public class Avoid extends LateInitializer {
 
                 ///TIP: Access mod metadata by using {@link AvoidManager#getLoadedAddons()}
                 AvoidManager.metadatas.put(id, meta);
+                AvoidManager.files.put(meta, mod);
 
                 var constructor = klass.getDeclaredConstructor();
                 constructor.setAccessible(true);

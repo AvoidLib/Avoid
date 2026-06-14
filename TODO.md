@@ -4,7 +4,7 @@ Major:
 - [ ] Item Creation
 - [ ] Creative Menu (Block)Item Addition
 - [ ] Creative Menu Category Addition
-- [ ] Assets
+- [x] Assets
 - [ ] Resource Overrides
 
 Events:

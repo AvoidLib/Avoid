@@ -13,10 +13,11 @@
     "accessors.ICommandManager"
   ],
   "client": [
+    "BlocksMixin",
     "ChatHudMixin",
     "ChatScreenMixin",
+    "BuiltInPackSourceMixin",
     "GuiGraphicsMixin",
-    "BlocksMixin",
     "MinecraftMixin",
     "ScreenMixin"
   ],
