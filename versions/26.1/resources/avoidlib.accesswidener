@@ -4,3 +4,5 @@ accessible field net/minecraft/client/gui/GuiGraphicsExtractor scissorStack Lnet
 accessible class net/minecraft/client/gui/GuiGraphicsExtractor$ScissorStack
 accessible method net/minecraft/client/gui/screens/Screen init ()V
 accessible method net/minecraft/world/level/block/Blocks register (Lnet/minecraft/resources/ResourceKey;Ljava/util/function/Function;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)Lnet/minecraft/world/level/block/Block;
+accessible method net/minecraft/world/item/Items registerBlock (Lnet/minecraft/world/level/block/Block;)Lnet/minecraft/world/item/Item;
+accessible method net/minecraft/world/item/Items registerItem (Lnet/minecraft/resources/ResourceKey;Ljava/util/function/Function;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;

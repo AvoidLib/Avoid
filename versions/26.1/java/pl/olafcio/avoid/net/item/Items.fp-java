@@ -1,0 +1,6 @@
+import pl.olafcio.avoid.net.chat.component.Components
+
+{
+    COFromNative.from(item.getName())
+    Components.literal(item.toString())
+}

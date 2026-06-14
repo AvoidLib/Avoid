@@ -1,0 +1,9 @@
+{
+    getDayTime()
+    getDefaultClockTime()
+}
+
+{
+    getBlockHolder()
+    typeHolder()
+}

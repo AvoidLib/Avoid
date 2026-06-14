@@ -1,0 +1,4 @@
+{
+    displayClientMessage(COToNative.from(component), false)
+    sendSystemMessage(COToNative.from(component))
+}
