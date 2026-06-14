@@ -176,4 +176,15 @@ public class Player extends Entity implements Executor {
         return __castEnv(ServerPlayer.class, "[Player#getIP] This method can only be ran on server players!")
                        .getIpAddress();
     }
+
+    /**
+     * Returns {@code true} if the player allows to be listed in the server's MOTD hover list.
+     * <br/><br/>
+     * This method only works on the server.
+     */
+    @ServerOnly
+    public boolean allowsListing() {
+        return __castEnv(ServerPlayer.class, "[Player#allowsListing] This method can only be ran on server players!")
+                       .allowsListing();
+    }
 }
