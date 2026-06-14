@@ -10,6 +10,7 @@
     "LlamaMixin",
     "MinecraftServerMixin",
     "PlayerListMixin",
+    "ServerGamePacketListenerImplMixin",
     "ServerPlayerMixin",
     "accessors.ICommandContext",
     "accessors.ICommandManager"
