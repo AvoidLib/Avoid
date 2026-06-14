@@ -153,7 +153,7 @@ publishMods {
         accessToken = providers.environmentVariable("MODRINTH_API_KEY")
         projectId = "LitgU0gE"
         minecraftVersions.add(minecraft_version)
-        setAdditionalFiles(files(("omit_mappings" !in project.getProperties() ? remapSourcesJar.archiveFile : sourcesJar.archiveFile).get().asFile.toPath()))
+//        setAdditionalFiles(files(("omit_mappings" !in project.getProperties() ? remapSourcesJar.archiveFile : sourcesJar.archiveFile).get().asFile.toPath()))
     }
 }
 
