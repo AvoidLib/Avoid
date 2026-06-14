@@ -22,6 +22,7 @@ import pl.olafcio.avoid.net.command.CommandManager;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.screen.Screens;
+import pl.olafcio.avoid_lateinit.LateInitializer;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -36,7 +37,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
-public class Avoid {
+public class Avoid extends LateInitializer {
     @ApiStatus.Internal
     public static final Logger LOGGER
                       = LogUtils.getLogger();
@@ -50,23 +51,6 @@ public class Avoid {
                   = new Avoid();
 
     private Avoid() {}
-
-    private boolean Initialized = false;
-    private final List<Runnable> Initializers
-            = new ArrayList<>();
-
-    private void Schedule(Runnable code) {
-        if (Initialized)
-            code.run();
-        else Initializers.add(code);
-    }
-
-    private void Realize() {
-        for (var init : Initializers)
-            init.run();
-
-        Initialized = true;
-    }
 
     public void onInitialize() {
         NoteBlockInstrument.clinit();
@@ -111,7 +95,7 @@ public class Avoid {
                     return;
 
                 byte[] manifestData = jar.getInputStream(manifestFile)
-                        .readAllBytes();
+                                         .readAllBytes();
 
                 var manifest = GSON.fromJson(new String(manifestData), JsonObject.class);
                 if (manifest == null) {
