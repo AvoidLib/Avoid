@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.player;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
@@ -18,6 +19,14 @@ public final class PlayerNative {
     public static Player convertFrom(net.minecraft.world.entity.player.Player player) {
         var profile = player.getGameProfile();
 
+        Component name;
+
+        try {
+            name = player.getName();
+        } catch (Exception e) {
+            name = null;
+        }
+
         return new Player(
                 player.getId(),
                 EntityTypeNative.convertFrom(player.getType()),
@@ -25,7 +34,7 @@ public final class PlayerNative {
                 Vect3Native.convert(player.getDeltaMovement()),
                 player.getUUID(),
                 player.getStringUUID(),
-                COFromNative.from(player.getName()),
+                name == null ? null : COFromNative.from(name),
                 new PlayerProfile(profile.id(), profile.name(), new HashMap<>() {{
                     var map = profile.properties().asMap();
                     this.putAll(map);
