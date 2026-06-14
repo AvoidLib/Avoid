@@ -187,4 +187,17 @@ public class Player extends Entity implements Executor {
         return __castEnv(ServerPlayer.class, "[Player#allowsListing] This method can only be ran on server players!")
                        .allowsListing();
     }
+
+    /**
+     * Removes all the player's effects.
+     * <br/>
+     * Returns {@code true} if the player had any effect; otherwise, returns {@code false}.
+     * <br/><br/>
+     * This method only works on the server.
+     */
+    @ServerOnly
+    public boolean removeAllEffects() {
+        return __castEnv(ServerPlayer.class, "[Player#removeAllEffects] This method can only be ran on server players!")
+                       .removeAllEffects();
+    }
 }
