@@ -2,6 +2,8 @@ package pl.olafcio.avoid;
 
 import com.google.common.base.CaseFormat;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.Items;
@@ -147,15 +149,25 @@ public class Avoid {
                     }
                 }
 
+                List<String> skipClasses = manifest.has("skip-classes")
+                                            ? manifest.get("skip-classes").getAsJsonArray().asList().stream()
+                                                                          .map(JsonElement::getAsString)
+                                                                          .toList()
+                                            : List.of();
+
                 var classLoader = URLClassLoader.newInstance(
                         new URL[]{ mod.toUri().toURL() },
                         Avoid.class.getClassLoader()
                 );
 
                 String klassName = manifest.get("main-class").getAsString();
+
+                if (skipClasses.contains(klassName))
+                    LOGGER.warn("Main class of mod cannot be skipped; loading anyways");
+
                 Class<?> klassUnc = classLoader.loadClass(klassName);
 
-                scanAllClasses(jar, classLoader, id);
+                scanAllClasses(jar, classLoader, id, skipClasses);
 
                 if (!AvoidMod.class.isAssignableFrom(klassUnc)) {
                     LOGGER.error("Main class of mod must extend AvoidMod: {}", mod.toAbsolutePath());
@@ -194,14 +206,21 @@ public class Avoid {
             }
         }
 
-        private void scanAllClasses(JarFile jar, URLClassLoader classLoader, String id) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        private void scanAllClasses(JarFile jar, URLClassLoader classLoader, String id, List<String> skipClasses)
+                throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
+        {
             var entries = jar.entries();
             do {
                 var el = entries.nextElement();
                 var fn = el.getRealName();
                 if (!el.isDirectory() && fn.endsWith(".class")) {
                     var className = fn.substring(0, fn.length() - 6)
-                            .replace("/", ".");
+                                      .replace("/", ".");
+
+                    if (skipClasses.contains(className)) {
+                        LOGGER.debug("Skipping class: {}", className);
+                        continue;
+                    }
 
                     Class<?> klass;
 
