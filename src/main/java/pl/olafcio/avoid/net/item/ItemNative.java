@@ -15,4 +15,9 @@ public final class ItemNative {
     public static pl.olafcio.avoid.net.item.Item convert(Item item) {
         return new pl.olafcio.avoid.net.item.Item(item);
     }
+
+    public static Item make(pl.olafcio.avoid.net.item.custom.Item item, Item.Properties properties) {
+        // TODO: Add some Item methods
+        return new Item(properties) {};
+    }
 }

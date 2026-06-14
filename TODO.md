@@ -1,7 +1,7 @@
 # TODO List
 Major:
 - [x] Block Creation
-- [ ] Item Creation
+- [x] Item Creation
 - [ ] Creative Menu (Block)Item Addition
 - [ ] Creative Menu Category Addition
 - [x] Assets

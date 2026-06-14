@@ -1,16 +1,18 @@
 package pl.olafcio.avoid.net.item;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.map.ItemComponentMap;
+import pl.olafcio.avoid.net.item.custom.AbstractItem;
 
 @NeverRemoval
-@SuppressWarnings("ClassCanBeRecord")
-public final class Item {
+public final class Item extends AbstractItem {
     final net.minecraft.world.item.Item item;
 
     Item(net.minecraft.world.item.Item item) {
@@ -20,6 +22,11 @@ public final class Item {
     @NeverRemoval
     public BaseComponent<?> getName() {
         return COFromNative.from(item.getName());
+    }
+
+    @ApiStatus.Experimental
+    public Identification getID() {
+        return IdentificationNative.convertFrom(BuiltInRegistries.ITEM.getKey(item));
     }
 
     @NeverRemoval
