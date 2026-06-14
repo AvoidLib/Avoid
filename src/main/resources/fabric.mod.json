@@ -16,6 +16,9 @@
       "pl.olafcio.avoid.A4Fabric"
     ]
   },
+  "languageAdapters": {
+    "avoid": "pl.olafcio.avoid.A4FabricEarly"
+  },
   "mixins": [
     "avoidlib.mixins.json"
   ],
