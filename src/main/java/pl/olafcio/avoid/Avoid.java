@@ -2,7 +2,6 @@ package pl.olafcio.avoid;
 
 import com.google.common.base.CaseFormat;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
@@ -19,6 +18,8 @@ import pl.olafcio.avoid.net.block.Blocks;
 import pl.olafcio.avoid.net.block.values.NoteBlockInstrument;
 import pl.olafcio.avoid.net.command.Command;
 import pl.olafcio.avoid.net.command.CommandManager;
+import pl.olafcio.avoid.net.entity_selector.EntitySelector;
+import pl.olafcio.avoid.net.entity_selector.EntitySelectors;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.item.custom.Item;
 import pl.olafcio.avoid.net.screen.Screen;
@@ -234,6 +235,14 @@ public class Avoid extends LateInitializer {
                     if (!usedAutoID.get() && klass.isAnnotationPresent(AutoID.class))
                         LOGGER.warn("@AutoID not applicable ({})", className);
 
+                    var usedAutoChar = new AtomicBoolean(false);
+
+                    if (registerAutoSelector(id, klass, className, usedAutoChar))
+                        continue;
+
+                    if (!usedAutoChar.get() && klass.isAnnotationPresent(AutoChar.class))
+                        LOGGER.warn("@AutoChar not applicable ({})", className);
+
                     EventManager.collect(klass);
                 }
             } while (entries.hasMoreElements());
@@ -331,6 +340,45 @@ public class Avoid extends LateInitializer {
                         return (Item) constructor.newInstance();
                     } catch (InstantiationException | IllegalAccessException e) {
                         throw new RuntimeException("Failed to construct item (%s)".formatted(idstr), e);
+                    } catch (InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+
+            return false;
+        }
+
+        private boolean registerAutoSelector(String id, Class<?> klass, String className, AtomicBoolean usedAutoChar)
+                throws NoSuchMethodException
+        {
+            if (klass.isAnnotationPresent(AutoSelector.class)) {
+                if (!EntitySelector.class.isAssignableFrom(klass)) {
+                    LOGGER.error("@AutoSelector requires the annotated type to extend EntitySelector (avoid.net.entity_selector)");
+                    return true;
+                }
+
+                if (!klass.isAnnotationPresent(AutoChar.class)) {
+                    LOGGER.error("@AutoSelector requires the annotated type to be also annotated with @AutoChar");
+                    return true;
+                }
+
+                var simpleName = klass.getSimpleName();
+                if (!simpleName.endsWith("Selector")) {
+                    LOGGER.warn("All selector classes should end with 'Selector', found non-matching: {} ({})", simpleName, className);
+                }
+
+                var constructor = klass.getDeclaredConstructor();
+                var ch = klass.getAnnotation(AutoChar.class)
+                              .value();
+
+                LOGGER.debug("Registering selector '@{}' ({})", ch, id);
+
+                EntitySelectors.register(ch, () -> {
+                    try {
+                        return (EntitySelector) constructor.newInstance();
+                    } catch (InstantiationException | IllegalAccessException e) {
+                        throw new RuntimeException("Failed to construct entity selector (@%s) [%s]".formatted(ch, id), e);
                     } catch (InvocationTargetException e) {
                         throw new RuntimeException(e);
                     }
