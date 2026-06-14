@@ -49,7 +49,7 @@ public class Player extends Entity implements Executor {
     }
 
     public String getNick() {
-        return profile.name();
+        return profile == null ? null : profile.name();
     }
 
     /**

@@ -16,6 +16,7 @@ public final class PlayerNative {
     @ApiStatus.Internal
     private PlayerNative() {}
 
+    @SuppressWarnings("ConstantValue")
     public static Player convertFrom(net.minecraft.world.entity.player.Player player) {
         var profile = player.getGameProfile();
 
@@ -35,7 +36,7 @@ public final class PlayerNative {
                 player.getUUID(),
                 player.getStringUUID(),
                 name == null ? null : COFromNative.from(name),
-                new PlayerProfile(profile.id(), profile.name(), new HashMap<>() {{
+                profile == null ? null : new PlayerProfile(profile.id(), profile.name(), new HashMap<>() {{
                     var map = profile.properties().asMap();
                     this.putAll(map);
                 }}),
