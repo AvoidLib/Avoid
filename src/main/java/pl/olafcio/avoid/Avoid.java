@@ -233,7 +233,9 @@ public class Avoid extends LateInitializer {
             } while (entries.hasMoreElements());
         }
 
-        private boolean registerAutoBlock(String id, Class<?> klass, String className, AtomicBoolean usedAutoID) throws NoSuchMethodException {
+        private boolean registerAutoBlock(String id, Class<?> klass, String className, AtomicBoolean usedAutoID)
+                throws NoSuchMethodException
+        {
             if (klass.isAnnotationPresent(AutoBlock.class)) {
                 if (!Block.class.isAssignableFrom(klass)) {
                     LOGGER.error("@AutoBlock requires the annotated type to extend Block (avoid.net.block)");
@@ -285,7 +287,9 @@ public class Avoid extends LateInitializer {
             return false;
         }
 
-        private boolean registerAutoCommand(Class<?> klass) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        private boolean registerAutoCommand(Class<?> klass)
+                throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
+        {
             if (klass.isAnnotationPresent(AutoCommand.class)) {
                 if (!Command.class.isAssignableFrom(klass)) {
                     LOGGER.error("@AutoCommand requires the annotated type to extend Command (avoid.net.command)");
@@ -294,6 +298,7 @@ public class Avoid extends LateInitializer {
 
                 CommandManager.add((Command) klass.getDeclaredConstructor().newInstance());
             }
+
             return false;
         }
 
@@ -319,11 +324,14 @@ public class Avoid extends LateInitializer {
                     );
                 });
             }
+
             return false;
         }
     }
 
-    private void loadFrom(Path modsDir, Set<Path> loadedMods, ArrayList<String> avoidMods) throws IOException {
+    private void loadFrom(Path modsDir, Set<Path> loadedMods, ArrayList<String> avoidMods)
+            throws IOException
+    {
         if (!Files.isDirectory(modsDir))
             return;
 
