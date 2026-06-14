@@ -31,8 +31,8 @@ public final class EntitySelectors {
                          .value();
 
         SELECTOR_TYPES.put(ch, new EntitySelectorMeta(self, maxResults,
-                                                order, target,
-                                                type));
+                                                      order, target,
+                                                      instance));
     }
 
     public static HashMap<Character, EntitySelectorMeta> getAll() {

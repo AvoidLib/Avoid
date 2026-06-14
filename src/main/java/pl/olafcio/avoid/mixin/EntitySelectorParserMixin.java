@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.commands.arguments.selector.EntitySelectorParser;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.entity_selector.EntitySelectorMeta;
 import pl.olafcio.avoid.net.entity_selector.EntitySelectors;
 import pl.olafcio.avoid.net.entity_selector.properties.SelectorOrder;
@@ -128,5 +130,13 @@ public abstract class EntitySelectorParserMixin {
             this.suggestions = this::suggestOptionsKeyOrClose;
             this.parseOptions();
         }
+    }
+
+    @Inject(at = @At("TAIL"), method = "fillSelectorSuggestions")
+    private static void fillSelectorSuggestions(SuggestionsBuilder suggestionsBuilder, CallbackInfo ci) {
+        var map = EntitySelectors.getAll();
+
+        for (Map.Entry<Character, EntitySelectorMeta> meta : map.entrySet())
+            suggestionsBuilder.suggest("@" + meta.getKey(), COToNative.from(meta.getValue().selectorClass().getTranslation()));
     }
 }

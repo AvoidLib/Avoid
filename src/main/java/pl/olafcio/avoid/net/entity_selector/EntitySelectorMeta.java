@@ -10,5 +10,5 @@ public record EntitySelectorMeta(
         SelectorOrder.Enum order,
         SelectorTarget.Enum target,
 
-        Class<? extends EntitySelector> selectorClass
+        EntitySelector selectorClass
 ) {}
