@@ -1,9 +1,12 @@
 package pl.olafcio.avoid.net.world;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.Untested;
+import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.entity.Entity;
@@ -92,5 +95,18 @@ public final class World {
 
     public int getHeight() {
         return level.getHeight();
+    }
+
+    /**
+     * Wakes up all players currently sleeping in the world.
+     * <br/><br/>
+     * This method works only on the server.
+     */
+    @ServerOnly
+    public void wakeUpAllPlayers() {
+        if (this.level instanceof ServerLevel cast)
+            cast.wakeUpAllPlayers();
+        else
+            throw new ImproperEnvironment("[World#wakeUpAllPlayers] This method can only be ran on server worlds!");
     }
 }

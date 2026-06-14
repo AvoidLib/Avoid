@@ -5,3 +5,4 @@ accessible field net/minecraft/client/gui/GuiGraphics scissorStack Lnet/minecraf
 accessible class net/minecraft/client/gui/GuiGraphics$ScissorStack
 accessible method net/minecraft/client/gui/screens/Screen init ()V
 accessible method net/minecraft/world/level/block/Blocks register (Lnet/minecraft/resources/ResourceKey;Ljava/util/function/Function;Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)Lnet/minecraft/world/level/block/Block;
+accessible method net/minecraft/server/level/ServerLevel wakeUpAllPlayers ()V
