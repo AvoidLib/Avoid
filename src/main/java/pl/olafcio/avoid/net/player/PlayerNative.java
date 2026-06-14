@@ -15,7 +15,7 @@ public final class PlayerNative {
     @ApiStatus.Internal
     private PlayerNative() {}
 
-    public static Player convertFrom(ServerPlayer player) {
+    public static Player convertFrom(net.minecraft.world.entity.player.Player player) {
         var profile = player.getGameProfile();
 
         return new Player(
@@ -30,7 +30,7 @@ public final class PlayerNative {
                     var map = profile.properties().asMap();
                     this.putAll(map);
                 }}),
-                player.connection,
+                player instanceof ServerPlayer sp ? sp.connection : null,
                 player
         );
     }

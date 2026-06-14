@@ -6,6 +6,7 @@ import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
@@ -33,7 +34,7 @@ public class Player extends Entity implements Executor {
 
     public Player(
             int id, EntityType type, IVect3 pos, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
-            PlayerProfile profile, ServerGamePacketListenerImpl connection,
+            PlayerProfile profile, @Nullable ServerGamePacketListenerImpl connection,
             net.minecraft.world.entity.player.Player player
     ) {
         super(id, type, pos, velocity, uuid, uuidString, name, player);
