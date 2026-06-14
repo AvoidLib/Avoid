@@ -33,7 +33,9 @@ omit_mappings=1
 
 # neoforge-26.1.1
 ! neoforge
+: 26.1
 : 26.1.1
+! neoforge-26.1_compat
 neoforge=1
 neo_version=26.1.1.15-beta
 
@@ -47,6 +49,9 @@ omit_mappings=1
 
 # neoforge-26.1.2
 ! neoforge
+: 26.1
+: 26.1.1
 : 26.1.2
+! neoforge-26.1_compat
 neoforge=1
 neo_version=26.1.2.76
