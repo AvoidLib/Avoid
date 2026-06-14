@@ -20,6 +20,7 @@ import pl.olafcio.avoid.net.block.values.NoteBlockInstrument;
 import pl.olafcio.avoid.net.command.Command;
 import pl.olafcio.avoid.net.command.CommandManager;
 import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid.net.item.custom.Item;
 import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.screen.Screens;
 import pl.olafcio.avoid_lateinit.LateInitializer;
@@ -223,7 +224,11 @@ public class Avoid extends LateInitializer {
                         continue;
 
                     var usedAutoID = new AtomicBoolean(false);
+
                     if (registerAutoBlock(id, klass, className, usedAutoID))
+                        continue;
+
+                    if (registerAutoItem(id, klass, className, usedAutoID))
                         continue;
 
                     if (!usedAutoID.get() && klass.isAnnotationPresent(AutoID.class))
@@ -283,6 +288,53 @@ public class Avoid extends LateInitializer {
                     LOGGER.debug("Registering block item '{}'", idstr);
                     Items.registerBlock(interceptor.value);
                 }
+            }
+
+            return false;
+        }
+
+        private boolean registerAutoItem(String id, Class<?> klass, String className, AtomicBoolean usedAutoID)
+                throws NoSuchMethodException
+        {
+            if (klass.isAnnotationPresent(AutoItem.class)) {
+                if (!Item.class.isAssignableFrom(klass)) {
+                    LOGGER.error("@AutoItem requires the annotated type to extend Item (avoid.net.item.custom)");
+                    return true;
+                }
+
+                if (!klass.isAnnotationPresent(AutoID.class)) {
+                    LOGGER.error("@AutoItem requires the annotated type to be also annotated with @AutoID");
+                    return true;
+                }
+
+                usedAutoID.set(true);
+
+                var simpleName = klass.getSimpleName();
+
+                suffixRemover:
+                {
+                    if (!simpleName.endsWith("Item")) {
+                        LOGGER.warn("All item classes should end with 'Item', found non-matching: {} ({})", simpleName, className);
+                        break suffixRemover;
+                    }
+
+                    simpleName = simpleName.substring(0, simpleName.length() - 4);
+                }
+
+                var constructor = klass.getDeclaredConstructor();
+                var idstr = id + ":" + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, simpleName);
+
+                LOGGER.debug("Registering item '{}'", idstr);
+
+                pl.olafcio.avoid.net.item.Items.register(Identification.of(idstr), () -> {
+                    try {
+                        return (Item) constructor.newInstance();
+                    } catch (InstantiationException | IllegalAccessException e) {
+                        throw new RuntimeException("Failed to construct item (%s)".formatted(idstr), e);
+                    } catch (InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
 
             return false;
