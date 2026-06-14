@@ -54,6 +54,11 @@ public abstract class Entity {
         this.underlyingEntity = underlyingEntity;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj.getClass() == this.getClass() && ((Entity) obj).underlyingEntity == this.underlyingEntity;
+    }
+
     public int id() {
         return id;
     }
