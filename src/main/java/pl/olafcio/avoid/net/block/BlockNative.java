@@ -15,6 +15,7 @@ import pl.olafcio.avoid.net.world.WorldNative;
 @Native
 @ApiStatus.Internal
 public final class BlockNative {
+    private void use() {}
     @ApiStatus.Internal
     private BlockNative() {}
 

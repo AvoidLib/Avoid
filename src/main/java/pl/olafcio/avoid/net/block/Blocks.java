@@ -25,6 +25,7 @@ import static net.minecraft.world.level.block.state.BlockBehaviour.simpleCodec;
 
 @ApiStatus.Experimental
 public final class Blocks {
+    private void use() {}
     @ApiStatus.Internal
     private Blocks() {}
 

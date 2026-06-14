@@ -6,6 +6,7 @@ import pl.olafcio.avoid.net.block.values.MapColor;
 import pl.olafcio.avoid.net.world.World;
 
 public abstract class Block {
+    private void use() {}
     public abstract MapColor getMapColor();
 
     public void tick(World world, BlockPos blockPos, RandomProvider randomProvider) {}
