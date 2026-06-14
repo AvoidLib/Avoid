@@ -4,7 +4,7 @@ AvoidLib is a wrapper around Minecraft's API (+ additional features), that resol
 - 🔃 Environmental classloading issues
 - ↪️ Version incompatibilities
 - 🔀 Copyright disputes
-- ◀️ Modloader dependence
+- ⬅️ Modloader dependence
 
 **🏳️‍🌈 AvoidLib stands for the LGBTQIA+ community.**
 
