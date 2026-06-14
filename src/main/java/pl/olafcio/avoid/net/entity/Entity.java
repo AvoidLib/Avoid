@@ -391,6 +391,14 @@ public abstract class Entity {
         return le.removeAllEffects();
     }
 
+    /**
+     * Resets the entity's last action time.
+     */
+    // TODO: What does this actually mean?
+    public void resetLastActionTime() {
+        __cast(LivingEntity.class).setNoActionTime(0);
+    }
+
     @Override
     public String toString() {
         return "Entity[" +
