@@ -5,8 +5,10 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "CommandsMixin",
+    "EntityMixin",
     "LivingEntityMixin",
     "MinecraftServerMixin",
+    "MobMixin",
     "PlayerListMixin",
     "ServerPlayerMixin",
     "accessors.ICommandContext",
@@ -14,9 +16,9 @@
   ],
   "client": [
     "BlocksMixin",
+    "BuiltInPackSourceMixin",
     "ChatHudMixin",
     "ChatScreenMixin",
-    "BuiltInPackSourceMixin",
     "GuiGraphicsMixin",
     "MinecraftMixin",
     "ScreenMixin"
