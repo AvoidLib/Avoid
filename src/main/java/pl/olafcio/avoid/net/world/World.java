@@ -25,6 +25,11 @@ public final class World {
         this.level = level;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof World world && world.level == this.level;
+    }
+
     public Identification getBlockID(BlockPos pos) {
         return IdentificationNative.convertFrom(level.getBlockState(BlockPosNative.convertFrom(pos)).getBlockHolder().unwrapKey().orElseThrow().identifier());
     }
