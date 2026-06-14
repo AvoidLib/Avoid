@@ -167,12 +167,12 @@ public class Avoid {
 
                 Class<?> klassUnc = classLoader.loadClass(klassName);
 
-                scanAllClasses(jar, classLoader, id, skipClasses);
-
                 if (!AvoidMod.class.isAssignableFrom(klassUnc)) {
                     LOGGER.error("Main class of mod must extend AvoidMod: {}", mod.toAbsolutePath());
                     return;
                 }
+
+                scanAllClasses(jar, classLoader, id, skipClasses);
 
                 //noinspection unchecked
                 var klass = (Class<? extends AvoidMod>)
