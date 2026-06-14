@@ -8,7 +8,7 @@ Major:
 - [ ] Resource Overrides
 
 Events:
-- [ ] Screen init
+- [x] Screen init
 - [ ] Screen render
 - [ ] Screen mouse click
 - [ ] Screen mouse move
