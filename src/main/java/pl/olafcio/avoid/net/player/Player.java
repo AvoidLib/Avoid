@@ -189,19 +189,6 @@ public class Player extends Entity implements Executor {
     }
 
     /**
-     * Removes all the player's effects.
-     * <br/>
-     * Returns {@code true} if the player had any effect; otherwise, returns {@code false}.
-     * <br/><br/>
-     * This method only works on the server.
-     */
-    @ServerOnly
-    public boolean removeAllEffects() {
-        return __castEnv(ServerPlayer.class, "[Player#removeAllEffects] This method can only be ran on server players!")
-                       .removeAllEffects();
-    }
-
-    /**
      * Returns the player's configured view distance.
      * <br/><br/>
      * This method only works on the server.

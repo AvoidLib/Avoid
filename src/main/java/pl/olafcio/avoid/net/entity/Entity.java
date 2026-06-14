@@ -1,9 +1,14 @@
 package pl.olafcio.avoid.net.entity;
 
+import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
+import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
@@ -367,6 +372,23 @@ public abstract class Entity {
      */
     public void clearFire() {
         underlyingEntity.clearFire();
+    }
+
+    /**
+     * Removes all the entity's effects.
+     * <br/>
+     * Returns {@code true} if the entity had any effect; otherwise, returns {@code false}.
+     * <br/><br/>
+     * This method only works on the server.
+     */
+    @ServerOnly
+    @SuppressWarnings("resource")
+    public boolean removeAllEffects() {
+        var le = __cast(LivingEntity.class);
+        if (le.level().isClientSide())
+            throw new ImproperEnvironment("[Entity#removeAllEffects] This method can only be ran on server entities!");
+
+        return le.removeAllEffects();
     }
 
     @Override
