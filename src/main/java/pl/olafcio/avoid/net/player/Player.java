@@ -200,4 +200,15 @@ public class Player extends Entity implements Executor {
         return __castEnv(ServerPlayer.class, "[Player#removeAllEffects] This method can only be ran on server players!")
                        .removeAllEffects();
     }
+
+    /**
+     * Returns the player's configured view distance.
+     * <br/><br/>
+     * This method only works on the server.
+     */
+    @ServerOnly
+    public int requestedViewDistance() {
+        return __castEnv(ServerPlayer.class, "[Player#requestedViewDistance] This method can only be ran on server players!")
+                       .requestedViewDistance();
+    }
 }
