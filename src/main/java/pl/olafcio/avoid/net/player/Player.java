@@ -17,6 +17,7 @@ import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.player.exception.UncontrollablePlayerException;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
 import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
+import pl.olafcio.avoid.net.player_server.ChatVisibility;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 
 import java.util.UUID;
@@ -197,5 +198,18 @@ public class Player extends Entity implements Executor {
     public int requestedViewDistance() {
         return __castEnv(ServerPlayer.class, "[Player#requestedViewDistance] This method can only be ran on server players!")
                        .requestedViewDistance();
+    }
+
+    /**
+     * Returns the player's configured chat visibility.
+     * <br/><br/>
+     * This method only works on the server.
+     */
+    @ServerOnly
+    public ChatVisibility chatVisibility() {
+        return ChatVisibility.from(
+                __castEnv(ServerPlayer.class, "[Player#chatVisibility] This method can only be ran on server players!")
+                        .getChatVisibility()
+        );
     }
 }
