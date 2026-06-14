@@ -5,36 +5,24 @@ buildscript {
             url = 'https://maven.fabricmc.net/'
         }
 
-        maven {
-            name = 'NeoForge'
-            url = 'https://maven.neoforged.net/releases'
-        }
-
         gradlePluginPortal()
     }
 
     dependencies {
         classpath 'net.fabricmc:fabric-loom:1.16-SNAPSHOT'
-        classpath 'net.neoforged.gradle:userdev:7.1.37'
     }
 }
 
 var neoforge = false
-var fabric = false
 
 if (rootProject.file('gradle.properties').text.contains("neoforge")) {
-    apply plugin: 'java-library'
-    apply plugin: 'net.neoforged.gradle.userdev'
-
     neoforge = true
-} else if (rootProject.file('gradle.properties').text.contains("omit_mappings")) {
-    apply plugin: 'net.fabricmc.fabric-loom'
+}
 
-    fabric = true
+if (rootProject.file('gradle.properties').text.contains("omit_mappings")) {
+    apply plugin: 'net.fabricmc.fabric-loom'
 } else {
     apply plugin: 'fabric-loom'
-
-    fabric = true
 }
 
 apply plugin: 'maven-publish'
@@ -46,75 +34,33 @@ base {
     archivesName = project.archives_base_name
 }
 
-if (fabric) {
-    loom {
-        accessWidenerPath = rootProject.file("src/main/resources/avoidlib.accesswidener")
-    }
-} else {
-    minecraft {
-        accessTransformers {
-            file "src/main/resources/META-INF/accesstransformer.cfg"
-        }
-    }
+loom {
+    accessWidenerPath = rootProject.file("src/main/resources/avoidlib.accesswidener")
 }
 
 repositories {
-    // Add repositories to retrieve artifacts from in here.
-    // You should only use this when depending on other mods because
-    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-    // for more information about repositories.
-}
-
-if (neoforge) {
-    runs {
-        configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            systemProperty 'forge.logging.console.level', 'debug'
-
-            modSource project.sourceSets.main
-        }
-
-        client {
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            systemProperty 'neoforge.enabledGameTestNamespaces', "avoidlib"
-            workingDirectory project.layout.projectDirectory.dir('run')
-        }
-
-        server {
-            systemProperty 'neoforge.enabledGameTestNamespaces', "avoidlib"
-            workingDirectory project.layout.projectDirectory.dir('run-server')
-            argument '--nogui'
-        }
-
-        // This run config launches GameTestServer and runs all registered gametests, then exits.
-        // By default, the server will crash when no gametests are provided.
-        // The gametest system is also enabled by default for other run configs under the /test command.
-        gameTestServer {
-            systemProperty 'neoforge.enabledGameTestNamespaces', "avoidlib"
-        }
-
-        clientData {
-            // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
-            // workingDirectory project.file('run-data')
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            arguments.addAll '--mod', "avoidlib", '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
-    }
-
-    configurations {
-        runtimeClasspath.extendsFrom localRuntime
+    maven {
+        name 'jitpack'
+        url 'https://jitpack.io/'
     }
 }
 
 dependencies {
-    if (neoforge) {
-        implementation "net.neoforged:neoforge:${project.neo_version}"
-    } else {
-        // To change the versions see the gradle.properties file
-        minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    // To change the versions see the gradle.properties file
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
+    if (neoforge) {
+        compileOnly fileTree(rootProject.file("libs"))
+
+        compileOnly "net.fabricmc:sponge-mixin:0.17.3+mixin.0.8.7"
+        compileOnly "io.github.llamalad7:mixinextras-fabric:0.5.4"
+
+        if ("omit_mappings" !in project.getProperties()) {
+            /// 1.21.11
+
+            mappings loom.officialMojangMappings()
+        }
+    } else {
         if ("omit_mappings" !in project.getProperties()) {
             /// 1.21.11
 
