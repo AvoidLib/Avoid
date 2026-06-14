@@ -1,6 +1,8 @@
 package pl.olafcio.avoid.net.player.exception;
 
-public class UncontrollablePlayerException extends RuntimeException {
+import pl.olafcio.avoid.ImproperEnvironment;
+
+public class UncontrollablePlayerException extends ImproperEnvironment {
     public UncontrollablePlayerException(String message) {
         super(message);
     }
