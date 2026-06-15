@@ -9,71 +9,26 @@
 - NeoForge
 
 **🪵 Changelog:**
-- [Server Entity] Llama spit event
-- [Server Entity] Interact event
-- [World API] #getBlock, #getBlockID
-- [ModLoader] @AutoItem annotation
-- [ModLoader] Mod assets
-- Downgrade 1.21.11 Fabricversion to 0.19.1
-- [ModLoader] More code cleanup (indentation)
-- [ModLoader] More code cleanup (lateinit separation)
-- [ModLoader] Move main class validation before class scanning
-- [ModLoader] 'skip-classes' metakey
-- [ModLoader] Cleanup code
-- [Screen API] Screen init event
-- TODO List
-- [ModLoader] @AutoBlockItem annotation
-- [ModLoader] Alone @AutoID warning
-- [Screen API] Lots of new markers
-- [Block Creation API] @_pushReaction property
-- [Block Creation API] @_noOcclusion property
-- [ModLoader] Annotation for auto-block register
-- [Block Creation API] Property annotation refactor
-- [ModLoader] Calling AvoidMod#onDisable()
-- [ModLoader] AvoidMod#onLoad() and correct #onEnable() timing
-- [ModLoader] Move addon loading early for registry injection
-- (...internal changes)
-- [Event API] EventHandler#ignoreCancelled
-- [Documentation] @ServerOnly and @ClientOnly
-- [Documentation] Some Player methods
-- [Player API] Make #sendMessage work on the client local player
-- [Player API] Server-only markings
-- [Annotations] ClientOnly & ServerOnly
-- [Player API] #getIP
-- [Player API] GameMode change event
-- [Player API] GameMode
-- [Server Entity] Create event
-- [Server Entity] Item drop event
-- [ModLoader] Allow loading even with broken classes
-
-**🪵 Changelog (v1.3 — non-released version):**
-- [Screen API] Screen open event
-- [GUI] RenderTextEvent
-
-**🪵 Changelog (v1.3/prerelease):**
-- [GUI] RenderOutlineEvent
-- [Screen API] DrawerNative#create
-- [Event API] Cancellable
-- [Client Chat] [26.1] Corrections
-- [Documentation] Server Chat events
-- [Server Chat] Fire the 'ServerChatSentEvent' when a game message is sent
-- [Server Chat] Message received event
-- [Server Chat] Message send event
-- [Server Chat] Message sent event
-- [Client Chat] Command sent event
-- [Client Chat] Message sent event
-- [Client Chat] Message received event
-- Chat#receiveMessage is not thread-safe bruh
-- [ModLoader] Auto static event-collecting all classes
-- [ModLoader] Environment meta-key
-- Some ModLoader-related api status notes
+- [Player API] Nullable profile (fix for early usage)
+- [Player API] Nullable name (fix for early usage)
+- [Entity Selector API] Suggestions
+- [ModLoader] @AutoSelector annotation
+- [Server Player] Kick event
+- [Entity Native] Return a Player wrapper object instead when the entity is a player
+- [Entity API] #equals(...) method
+- [World API] #equals(...) method
+- [Entity API] #getWorld()
+- [World API] #wakeUpAllPlayers()
+- [Player] Make 'UncontrollablePlayerException' extend 'ImproperEnvironment'
+- [Player] #chatVisibility()
+- [Entity API] #resetLastActionTime()
+- Move Player#removeAllEffects to the Entity API
+- [Player API] #requestedViewDistance()
+- [Player API] #removeAllEffects()
+- [Player API] #allowsListing()
 
 **🧮 API-s:**
-- Block Creation API
-- Item Creation API
-- World API
-- Event API
-- Server Chat
+- Entity Selector API
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 <b>📚 Wiki: </b>soon™️
