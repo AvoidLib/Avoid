@@ -9,26 +9,7 @@
 - NeoForge
 
 **🪵 Changelog:**
-- [Player API] Nullable profile (fix for early usage)
-- [Player API] Nullable name (fix for early usage)
-- [Entity Selector API] Suggestions
-- [ModLoader] @AutoSelector annotation
-- [Server Player] Kick event
-- [Entity Native] Return a Player wrapper object instead when the entity is a player
-- [Entity API] #equals(...) method
-- [World API] #equals(...) method
-- [Entity API] #getWorld()
-- [World API] #wakeUpAllPlayers()
-- [Player] Make 'UncontrollablePlayerException' extend 'ImproperEnvironment'
-- [Player] #chatVisibility()
-- [Entity API] #resetLastActionTime()
-- Move Player#removeAllEffects to the Entity API
-- [Player API] #requestedViewDistance()
-- [Player API] #removeAllEffects()
-- [Player API] #allowsListing()
-
-**🧮 API-s:**
-- Entity Selector API
+- Update NeoForge Headers (they were broken)
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 <b>📚 Wiki: </b>soon™️
