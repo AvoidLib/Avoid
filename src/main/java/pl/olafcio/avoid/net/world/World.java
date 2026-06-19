@@ -114,4 +114,8 @@ public final class World {
         else
             throw new ImproperEnvironment("[World#wakeUpAllPlayers] This method can only be ran on server worlds!");
     }
+
+    public boolean canHaveWeather() {
+        return level.canHaveWeather();
+    }
 }
