@@ -5,8 +5,10 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.KeybindContents;
+import net.minecraft.network.chat.contents.ObjectContents;
 import net.minecraft.network.chat.contents.PlainTextContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.network.chat.contents.objects.PlayerSprite;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.dialog.Dialog;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +17,7 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.component.event.Click;
 import pl.olafcio.avoid.net.chat.component.event.Hover;
+import pl.olafcio.avoid.net.chat.component.type.HeadComponent;
 import pl.olafcio.avoid.net.chat.component.type.KeymapComponent;
 import pl.olafcio.avoid.net.chat.component.type.TextComponent;
 import pl.olafcio.avoid.net.chat.component.type.TranslateComponent;
@@ -42,6 +45,11 @@ public final class COFromNative {
             comp = TranslateComponent.of(content.getKey(), content.getFallback());
         else if (input.getContents() instanceof KeybindContents content)
             comp = KeymapComponent.of(content.getName());
+        else if (input.getContents() instanceof ObjectContents content)
+            if (content.contents() instanceof PlayerSprite sprite)
+                comp = HeadComponent.of(sprite.player().partialProfile().id(), sprite.hat());
+            else
+                throw new RuntimeException("Unknown minecraft object component type '" + content.contents() + "'");
         else throw new RuntimeException("Unknown minecraft component type '" + input + "'");
 
         if (input.getStyle().getColor() != null) comp.color(new Color(input.getStyle().getColor().getValue()));
