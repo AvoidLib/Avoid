@@ -13,6 +13,8 @@ import pl.olafcio.avoid.net.world.World;
  * <li>to set it to {@link Item#of(String)} with the argument set as {@code "AIR"}.</li>
  * </ul><br/>
  * (essentially equivalent to cancelling the event)
+ * <br/><br/>
+ * <b>Note:</b> This event may be called <u>A LOT</u> of times.
  */
 // TODO: Accessing items used to get the resulting itemStack.
 public final class ServerPlayerCraftSlotEvent {
