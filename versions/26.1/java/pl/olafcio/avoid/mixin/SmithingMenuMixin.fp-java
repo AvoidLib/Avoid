@@ -1,0 +1,4 @@
+{
+    smithingRecipeInput, this.level.registryAccess()
+    smithingRecipeInput
+}
