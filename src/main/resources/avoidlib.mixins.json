@@ -4,6 +4,7 @@
   "package": "pl.olafcio.avoid.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AnvilMenuMixin",
     "CommandsMixin",
     "CraftingMenuMixin",
     "EntityMixin",
@@ -32,5 +33,8 @@
   },
   "overwrites": {
     "requireAnnotations": true
+  },
+  "mixinextras": {
+    "minVersion": "0.5.3"
   }
 }

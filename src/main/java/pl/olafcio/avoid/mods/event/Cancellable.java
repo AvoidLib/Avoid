@@ -4,8 +4,8 @@ public abstract class Cancellable {
     private boolean cancelled
                     = false;
 
-    public void cancel() {
-        this.cancelled = true;
+    public final void cancel() {
+        setCancelled(true);
     }
 
     public void setCancelled(boolean value) {
