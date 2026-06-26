@@ -154,8 +154,11 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
         return value;
     }
 
-    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ResultContainer;setItem(ILnet/minecraft/world/item/ItemStack;)V"), method = "createResult")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ResultContainer;setItem(ILnet/minecraft/world/item/ItemStack;)V", ordinal = 4), method = "createResult")
     private void createResult__setItem(ResultContainer instance, int i, ItemStack itemStack, Operation<Void> original) {
+        if (itemStack.isEmpty())
+            return;
+
         var event = new ServerPlayerAnvilSuccessResultEvent(
                 ItemStackNative.convertFrom(this.inputSlots.getItem(0)),
                 ItemStackNative.convertFrom(this.inputSlots.getItem(1)),
