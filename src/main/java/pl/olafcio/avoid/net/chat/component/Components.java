@@ -2,10 +2,10 @@ package pl.olafcio.avoid.net.chat.component;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
-import pl.olafcio.avoid.net.chat.component.type.KeymapComponent;
-import pl.olafcio.avoid.net.chat.component.type.TextComponent;
-import pl.olafcio.avoid.net.chat.component.type.TranslateComponent;
-import pl.olafcio.avoid.net.chat.component.type.TranslateFormattedComponent;
+import pl.olafcio.avoid.net.chat.component.type.*;
+import pl.olafcio.avoid.net.id.Identification;
+
+import java.util.UUID;
 
 @NeverRemoval
 @ApiStatus.NonExtendable
@@ -40,5 +40,15 @@ public interface Components {
     @NeverRemoval
     static TranslateFormattedComponent translationFallback(String value, String fallback, Object... format) {
         return TranslateFormattedComponent.of(value, fallback, format);
+    }
+
+    @NeverRemoval
+    static HeadComponent head(UUID uuid, boolean withHat) {
+        return HeadComponent.of(uuid, withHat);
+    }
+
+    @NeverRemoval
+    static AtlasComponent atlas(Identification atlas, Identification sprite) {
+        return AtlasComponent.of(atlas, sprite);
     }
 }
