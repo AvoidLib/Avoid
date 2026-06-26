@@ -8,6 +8,7 @@ import net.minecraft.network.chat.contents.KeybindContents;
 import net.minecraft.network.chat.contents.ObjectContents;
 import net.minecraft.network.chat.contents.PlainTextContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.network.chat.contents.objects.AtlasSprite;
 import net.minecraft.network.chat.contents.objects.PlayerSprite;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.dialog.Dialog;
@@ -17,10 +18,8 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.component.event.Click;
 import pl.olafcio.avoid.net.chat.component.event.Hover;
-import pl.olafcio.avoid.net.chat.component.type.HeadComponent;
-import pl.olafcio.avoid.net.chat.component.type.KeymapComponent;
+import pl.olafcio.avoid.net.chat.component.type.*;
 import pl.olafcio.avoid.net.chat.component.type.TextComponent;
-import pl.olafcio.avoid.net.chat.component.type.TranslateComponent;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.stack.ItemStackNative;
@@ -48,6 +47,11 @@ public final class COFromNative {
         else if (input.getContents() instanceof ObjectContents content)
             if (content.contents() instanceof PlayerSprite sprite)
                 comp = HeadComponent.of(sprite.player().partialProfile().id(), sprite.hat());
+            else if (content.contents() instanceof AtlasSprite sprite)
+                comp = AtlasComponent.of(
+                        IdentificationNative.convertFrom(sprite.atlas()),
+                        IdentificationNative.convertFrom(sprite.sprite())
+                );
             else
                 throw new RuntimeException("Unknown minecraft object component type '" + content.contents() + "'");
         else throw new RuntimeException("Unknown minecraft component type '" + input + "'");
