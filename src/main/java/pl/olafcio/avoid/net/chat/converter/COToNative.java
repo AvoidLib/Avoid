@@ -4,7 +4,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.objects.AtlasSprite;
+import net.minecraft.network.chat.contents.objects.PlayerSprite;
 import net.minecraft.server.dialog.Dialog;
+import net.minecraft.world.item.component.ResolvableProfile;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
@@ -59,6 +62,18 @@ public final class COToNative {
 
                 for (var ch : cast.getChildren())
                     comp.append(from(ch));
+            }
+            case HeadComponent cast -> {
+                comp = Component.object(new PlayerSprite(
+                        ResolvableProfile.createUnresolved(cast.uuid()),
+                        cast.withHat()
+                ));
+            }
+            case AtlasComponent cast -> {
+                comp = Component.object(new AtlasSprite(
+                        IdentificationNative.convert(cast.atlas()),
+                        IdentificationNative.convert(cast.sprite())
+                ));
             }
 
             default -> throw new RuntimeException("Unknown Avoid component type '" + input + "'");
