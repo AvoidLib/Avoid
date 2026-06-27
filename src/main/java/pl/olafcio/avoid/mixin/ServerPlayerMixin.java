@@ -2,18 +2,25 @@ package pl.olafcio.avoid.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.mojang.datafixers.util.Either;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.OutgoingChatMessage;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.player.Input;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.chat_server.event.ServerChatSendEvent;
 import pl.olafcio.avoid.net.chat_server.event.ServerChatSentEvent;
@@ -22,9 +29,14 @@ import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
 import pl.olafcio.avoid.net.player_server.PlayerInput;
 import pl.olafcio.avoid.net.player_server.event.ServerPlayerGameModeChangeEvent;
 import pl.olafcio.avoid.net.player_server.event.ServerPlayerInputEvent;
+import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepFailEvent;
+import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepSuccessEvent;
+import pl.olafcio.avoid.net.world.WorldNative;
 
 @Mixin(ServerPlayer.class)
-public class ServerPlayerMixin {
+public abstract class ServerPlayerMixin {
+    @Shadow public abstract Level level();
+
     @Inject(at = @At("TAIL"), method = "sendSystemMessage(Lnet/minecraft/network/chat/Component;Z)V", cancellable = true)
     public void sendSystemMessage(Component component, boolean bl, CallbackInfo ci) {
         ServerChatSendEvent sendEvent = new ServerChatSendEvent(
@@ -100,5 +112,45 @@ public class ServerPlayerMixin {
         }
 
         original.call(input);
+    }
+
+    @Inject(at = @At("RETURN"), method = "startSleepInBed", cancellable = true)
+    public void startSleepInBed(BlockPos blockPos, CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir) {
+        var original = cir.getReturnValue();
+        if (original.left().isPresent()) {
+            ServerPlayerBedSleepFailEvent.Reason reason;
+
+            var error = original.left().get();
+            if (error == Player.BedSleepingProblem.OTHER_PROBLEM)
+                reason = ServerPlayerBedSleepFailEvent.Reason.INVALID_PLAYER;
+            else if (error == Player.BedSleepingProblem.TOO_FAR_AWAY)
+                reason = ServerPlayerBedSleepFailEvent.Reason.TOO_FAR_AWAY;
+            else if (error == Player.BedSleepingProblem.OBSTRUCTED)
+                reason = ServerPlayerBedSleepFailEvent.Reason.BLOCKED;
+            else if (error == Player.BedSleepingProblem.NOT_SAFE)
+                reason = ServerPlayerBedSleepFailEvent.Reason.MONSTERS_NEAR;
+            else
+                reason = ServerPlayerBedSleepFailEvent.Reason.MISC;
+
+            var event = new ServerPlayerBedSleepFailEvent(
+                    PlayerNative.convertFrom((ServerPlayer) (Object) this),
+                    reason,
+                    BlockPosNative.convert(blockPos),
+                    WorldNative.make(this.level())
+            );
+
+            EventManager.fire(event);
+
+            if (event.isCancelled())
+                cir.cancel();
+
+            return;
+        }
+
+        EventManager.fire(new ServerPlayerBedSleepSuccessEvent(
+                PlayerNative.convertFrom((ServerPlayer) (Object) this),
+                WorldNative.make(this.level()),
+                BlockPosNative.convert(blockPos)
+        ));
     }
 }
