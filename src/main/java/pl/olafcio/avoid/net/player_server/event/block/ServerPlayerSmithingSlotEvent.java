@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.player_server.event.block;
 
+import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.item.Item;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
 import pl.olafcio.avoid.net.player.Player;
@@ -17,6 +18,7 @@ import pl.olafcio.avoid.net.world.World;
  * <b>Note:</b> This event may be called <u>A LOT</u> of times.
  */
 // TODO: Accessing items used to get the resulting itemStack.
+@ApiStatus.Experimental
 public final class ServerPlayerSmithingSlotEvent {
     private final Player player;
     private final World world;

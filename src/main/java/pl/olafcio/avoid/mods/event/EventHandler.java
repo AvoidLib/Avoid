@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.mods.event;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 
 import java.lang.annotation.*;
 
@@ -11,7 +12,7 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@ApiStatus.Experimental
+@NeverRemoval
 public @interface EventHandler {
     boolean ignoreCancelled() default false;
 }

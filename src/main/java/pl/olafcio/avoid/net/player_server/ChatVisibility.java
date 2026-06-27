@@ -1,9 +1,11 @@
 package pl.olafcio.avoid.net.player_server;
 
 import net.minecraft.world.entity.player.ChatVisiblity;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.component.Components;
 
+@NeverRemoval
 public enum ChatVisibility {
     CHAT_AND_COMMANDS(0, "options.chat.visibility.full"),
     COMMAND_ONLY(1, "options.chat.visibility.system"),

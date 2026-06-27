@@ -1,11 +1,13 @@
 package pl.olafcio.avoid.net.screen.event;
 
 import org.jspecify.annotations.NullMarked;
+import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.mixininterface.IScreen;
 import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.net.screen.*;
 
 @NullMarked
+@WillRefactor(aspect = "'null' acceptance")
 public final class ScreenOpenEvent extends Cancellable {
     IScreen screen;
 

@@ -1,5 +1,8 @@
 package pl.olafcio.avoid.mods.event;
 
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+
+@NeverRemoval
 public abstract class Cancellable {
     private boolean cancelled
                     = false;

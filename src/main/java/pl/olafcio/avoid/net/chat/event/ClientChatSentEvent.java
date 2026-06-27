@@ -1,10 +1,12 @@
 package pl.olafcio.avoid.net.chat.event;
 
 import org.jetbrains.annotations.NotNull;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.mods.event.Cancellable;
 
 import java.util.Objects;
 
+@NeverRemoval
 public final class ClientChatSentEvent extends Cancellable {
     private final @NotNull String message;
 

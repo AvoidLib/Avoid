@@ -1,7 +1,9 @@
 package pl.olafcio.avoid.net.player_server.event.block.enchanting_table;
 
+import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.mods.event.Cancellable;
 
+@ApiStatus.Experimental
 public final class ServerPlayerEnchantingTableBookshelfLimitEvent extends Cancellable {
     private int limit;
 

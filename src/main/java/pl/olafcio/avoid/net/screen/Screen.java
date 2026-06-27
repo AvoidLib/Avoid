@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.screen;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 
 /**
@@ -9,7 +10,7 @@ import pl.olafcio.avoid.net.chat.component.BaseComponent;
  * A screen is a view for the whole Minecraft window.
  * Its goal is <u>rendering</u> and <u>handling mouse and keyboard</u> events.
  */
-@ApiStatus.Experimental
+@NeverRemoval
 public abstract class Screen {
     final BaseComponent<?> accessibilityTitle;
 

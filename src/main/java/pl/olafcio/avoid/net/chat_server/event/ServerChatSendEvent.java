@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.chat_server.event;
 
 import org.jetbrains.annotations.NotNull;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.player.Player;
 
@@ -10,6 +11,7 @@ import java.util.Objects;
  * Fired when the server sends a system message to a player.<br/>
  * This event won't be fired for player-sent messages if a mod like No Chat Reports isn't installed.
  */
+@NeverRemoval
 public final class ServerChatSendEvent {
     private final @NotNull Player player;
     private final @NotNull BaseComponent<?> message;

@@ -1,12 +1,13 @@
 package pl.olafcio.avoid.net.screen;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mixininterface.IScreen;
 
 import java.lang.reflect.InvocationTargetException;
 
-@ApiStatus.Experimental
+@NeverRemoval
 public enum ScreenMarker {
     /** The game title screen.                   */ TITLESCREEN,
     /** The singleplayer world selection screen. */ SINGLEPLAYER_SELECTION,

@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.chat_server.event;
 
 import org.jetbrains.annotations.NotNull;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.player.Player;
 
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.Objects;
 /**
  * Fired when a player sends a message.
  */
+@NeverRemoval
 public final class ServerChatReceivedEvent {
     private final @NotNull String message;
     private final @NotNull Player player;

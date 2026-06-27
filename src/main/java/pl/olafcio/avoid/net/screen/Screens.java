@@ -4,13 +4,14 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 
 import java.util.function.Supplier;
 
 /**
  * A namespace used to manage client screen state.
  */
-@ApiStatus.Experimental
+@NeverRemoval
 public final class Screens {
     @ApiStatus.Internal
     private Screens() {}
@@ -19,6 +20,7 @@ public final class Screens {
      * Replaces/overwrites a screen with another one.</br>
      * This effectively causes the new screen to open every time the old one does.
      */
+    @NeverRemoval
     public static void overwrite(ScreenMarker oldScreen, Screen newScreen) {
         if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#overwrite from the server!");
@@ -30,6 +32,7 @@ public final class Screens {
      * Replaces/overwrites a screen with another one.</br>
      * This effectively causes the new screen to open every time the old one does.
      */
+    @NeverRemoval
     public static void overwrite(ScreenMarker oldScreen, Supplier<Screen> newScreen) {
         if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#overwrite from the server!");
@@ -41,6 +44,7 @@ public final class Screens {
      * Replaces/overwrites a screen with another one.</br>
      * This effectively causes the new screen to open every time the old one does.
      */
+    @NeverRemoval
     public static void overwrite(ScreenMarker oldScreen, Class<? extends Screen> newScreen) {
         if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#overwrite from the server!");
@@ -51,6 +55,7 @@ public final class Screens {
     /**
      * Sets the active screen.
      */
+    @NeverRemoval
     public static void open(Screen newScreen) {
         if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#open from the server!");
@@ -63,6 +68,7 @@ public final class Screens {
     /**
      * Sets the active screen.
      */
+    @NeverRemoval
     public static void open(ScreenMarker newScreen) {
         if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#open from the server!");
@@ -75,6 +81,7 @@ public final class Screens {
      * Ingame, this causes the player to go back to the game.<br/>
      * Otherwise, this brings up the title screen.
      */
+    @NeverRemoval
     public static void close() {
         if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Screens#close from the server!");

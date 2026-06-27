@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
@@ -28,6 +29,7 @@ import java.util.UUID;
  * <br/><br/>
  * This is mixed to ease massive refactorings in Minecraft code for AvoidLib.
  */
+@NeverRemoval
 public class Player extends Entity implements Executor {
     private final PlayerProfile profile;
     private final ServerGamePacketListenerImpl connection;

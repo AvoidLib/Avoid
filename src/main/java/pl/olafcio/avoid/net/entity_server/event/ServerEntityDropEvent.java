@@ -1,9 +1,11 @@
 package pl.olafcio.avoid.net.entity_server.event;
 
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
 
+@NeverRemoval
 public final class ServerEntityDropEvent extends Cancellable {
     public final Entity entity;
     public final ItemStack stack;

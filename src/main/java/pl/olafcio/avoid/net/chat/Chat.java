@@ -4,9 +4,10 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 
-@ApiStatus.Experimental
+@NeverRemoval
 public final class Chat {
     @ApiStatus.Internal
     private Chat() {}

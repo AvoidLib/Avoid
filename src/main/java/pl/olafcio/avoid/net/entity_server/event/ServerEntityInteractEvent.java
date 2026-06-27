@@ -1,9 +1,11 @@
 package pl.olafcio.avoid.net.entity_server.event;
 
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player.Player;
 
+@NeverRemoval
 public final class ServerEntityInteractEvent extends Cancellable {
     public final Entity victim;
     public final Player attacker;

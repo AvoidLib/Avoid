@@ -12,7 +12,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import java.awt.*;
 import java.util.function.Consumer;
 
-@WillRefactor(aspect = "name")
+@NeverRemoval
 public abstract class BaseComponent<T extends BaseComponent<T>> {
     ChatStyle style
               = new ChatStyle();

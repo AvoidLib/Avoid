@@ -2,12 +2,14 @@ package pl.olafcio.avoid.net.chat.event;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.tag.ChatTag;
 
 import java.util.Objects;
 
+@NeverRemoval
 public final class ClientChatReceivedEvent extends Cancellable {
     private final @NotNull BaseComponent<?> message;
     private final @Nullable ChatTag tag;

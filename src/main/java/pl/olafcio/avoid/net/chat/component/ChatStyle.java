@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.chat.component;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.event.Click;
 import pl.olafcio.avoid.net.chat.component.event.Hover;
 import pl.olafcio.avoid.net.id.Identification;
@@ -8,7 +9,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import java.awt.*;
 import java.util.function.Function;
 
-@ApiStatus.Experimental
+@NeverRemoval
 public final class ChatStyle {
     public Color color = null;
     public Color shadow = null;

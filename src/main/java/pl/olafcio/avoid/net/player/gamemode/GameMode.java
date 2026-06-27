@@ -1,9 +1,9 @@
 package pl.olafcio.avoid.net.player.gamemode;
 
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 
-@ApiStatus.Experimental
+@NeverRemoval
 public enum GameMode {
     SURVIVAL(0, "survival"),
     CREATIVE(1, "creative"),

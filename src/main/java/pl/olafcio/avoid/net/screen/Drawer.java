@@ -19,6 +19,7 @@ import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.ApiStatus;
 import org.joml.Matrix3x2f;
 import org.jspecify.annotations.Nullable;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
@@ -33,7 +34,7 @@ import pl.olafcio.avoid.net.util.Coloring;
 
 import java.util.Objects;
 
-@ApiStatus.Experimental
+@NeverRemoval
 public final class Drawer {
     GuiGraphics graphics;
 
