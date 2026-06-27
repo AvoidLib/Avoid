@@ -15,8 +15,16 @@ import pl.olafcio.avoid.net.chat.tag.ChatTagNative;
 
 @Mixin(ChatComponent.class)
 public class ChatHudMixin {
-    @Inject(at = @At("HEAD"), method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V")
+    @Inject(at = @At("HEAD"), method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V", cancellable = true)
     public void addMessage(Component component, MessageSignature messageSignature, GuiMessageTag guiMessageTag, CallbackInfo ci) {
-        EventManager.fire(new ClientChatReceivedEvent(COFromNative.from(component), guiMessageTag == null ? null : ChatTagNative.convertFrom(guiMessageTag)));
+        var event = new ClientChatReceivedEvent(
+                COFromNative.from(component),
+                guiMessageTag == null ? null : ChatTagNative.convertFrom(guiMessageTag)
+        );
+
+        EventManager.fire(event);
+
+        if (event.isCancelled())
+            ci.cancel();
     }
 }
