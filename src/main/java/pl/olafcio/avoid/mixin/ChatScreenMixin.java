@@ -11,9 +11,12 @@ import pl.olafcio.avoid.net.chat.event.ClientChatSentEvent;
 
 @Mixin(ChatScreen.class)
 public class ChatScreenMixin {
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;sendChat(Ljava/lang/String;)V"), method = "handleChatInput")
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;sendChat(Ljava/lang/String;)V"), method = "handleChatInput", cancellable = true)
     public void handleChatInput__sendChatMessage(String string, boolean bl, CallbackInfo ci) {
-        EventManager.fire(new ClientChatSentEvent(string));
+        ClientChatSentEvent event = new ClientChatSentEvent(string);
+        EventManager.fire(event);
+        if (event.isCancelled())
+            ci.cancel();
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;sendCommand(Ljava/lang/String;)V"), method = "handleChatInput")
