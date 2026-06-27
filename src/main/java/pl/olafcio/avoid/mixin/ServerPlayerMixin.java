@@ -30,6 +30,7 @@ import pl.olafcio.avoid.net.player_server.PlayerInput;
 import pl.olafcio.avoid.net.player_server.event.ServerPlayerGameModeChangeEvent;
 import pl.olafcio.avoid.net.player_server.event.ServerPlayerInputEvent;
 import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepFailEvent;
+import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepStopEvent;
 import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepSuccessEvent;
 import pl.olafcio.avoid.net.world.WorldNative;
 
@@ -152,5 +153,20 @@ public abstract class ServerPlayerMixin {
                 WorldNative.make(this.level()),
                 BlockPosNative.convert(blockPos)
         ));
+    }
+
+    @Inject(at = @At("HEAD"), method = "stopSleepInBed", cancellable = true)
+    public void stopSleepInBed(boolean bl, boolean bl2, CallbackInfo ci) {
+        var event = new ServerPlayerBedSleepStopEvent(
+                PlayerNative.convertFrom((ServerPlayer) (Object) this),
+                WorldNative.make(this.level()),
+                bl2,
+                bl
+        );
+
+        EventManager.fire(event);
+
+        if (event.isCancelled())
+            ci.cancel();
     }
 }
