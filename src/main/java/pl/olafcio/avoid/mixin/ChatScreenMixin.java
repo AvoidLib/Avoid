@@ -19,8 +19,11 @@ public class ChatScreenMixin {
             ci.cancel();
     }
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;sendCommand(Ljava/lang/String;)V"), method = "handleChatInput")
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;sendCommand(Ljava/lang/String;)V"), method = "handleChatInput", cancellable = true)
     public void handleChatInput__sendCommand(String string, boolean bl, CallbackInfo ci) {
-        EventManager.fire(new ClientChatCommandEvent(string));
+        ClientChatCommandEvent event = new ClientChatCommandEvent(string);
+        EventManager.fire(event);
+        if (event.isCancelled())
+            ci.cancel();
     }
 }
