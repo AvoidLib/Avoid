@@ -9,17 +9,14 @@
 - NeoForge
 
 **🪵 Changelog:**
-- [Chat Components] Support Avoid object(Head & Atlas) conversion
-- [Chat Components] Support Minecraft object(AtlasSprite) conversion
-- [Chat Components] Support Minecraft object(PlayerSprite) conversion
-- [Server Player] [Player Anvil Events] Call AnvilSuccess only when actually success
-- [Server Player] Player Anvil XP40 Events
-- [Server Player] Player Anvil Events
-- Little note for those 2 ServerPlayer slot events
-- [Server Player] Player Smithing Slot Event
-- [Server Player] Player Craft Slot Event
-- [Server Player] Player Input Event
-- [World API] #canHaveWeather()
+- Some API status notes
+- [Client Chat] [CommandEvent] Cancellability
+- [Client Chat] [SentEvent] Cancellability
+- [Client Chat] [ReceivedEvent] Cancellability
+- [Server Player] Player Bed Sleep Stop Event
+- [Server Player] Player Bed Events
+- [Server Player] Player Enchanting Table Events
+- [Chat Components] Head & Atlas factory methods
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
