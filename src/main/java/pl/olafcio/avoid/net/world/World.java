@@ -13,6 +13,8 @@ import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid.net.world.block_data.BlockData;
+import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
 
 import java.util.UUID;
 
@@ -35,7 +37,7 @@ public final class World {
     }
 
     public BlockData getBlock(BlockPos pos) {
-        return new BlockData(level.getBlockState(BlockPosNative.convertFrom(pos)));
+        return BlockDataNative.convertFrom(level.getBlockState(BlockPosNative.convertFrom(pos)));
     }
 
     public Entity getEntity(int id) {
