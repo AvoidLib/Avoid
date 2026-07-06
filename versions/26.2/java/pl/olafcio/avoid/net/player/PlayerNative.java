@@ -1,0 +1,53 @@
+package pl.olafcio.avoid.net.player;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.net.chat.converter.COFromNative;
+import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
+import pl.olafcio.avoid.net.world.vect3.Vect3Native;
+
+import java.util.HashMap;
+
+@Native
+@ApiStatus.Internal
+public final class PlayerNative {
+    @ApiStatus.Internal
+    private PlayerNative() {}
+
+    public static Player convertFrom(net.minecraft.world.entity.player.Player player) {
+        return convertFrom(player, null);
+    }
+
+    @SuppressWarnings("ConstantValue")
+    public static Player convertFrom(net.minecraft.world.entity.player.Player player, Integer idOverride) {
+        var profile = player.getGameProfile();
+
+        Component name;
+
+        try {
+            name = player.getName();
+        } catch (Exception e) {
+            name = null;
+        }
+
+        return new Player(
+                idOverride != null
+                        ? idOverride
+                        : player.getId(),
+                EntityTypeNative.convertFrom(player.getType()),
+                Vect3Native.convert(player.position()),
+                Vect3Native.convert(player.getDeltaMovement()),
+                player.getUUID(),
+                player.getStringUUID(),
+                name == null ? null : COFromNative.from(name),
+                profile == null ? null : new PlayerProfile(profile.id(), profile.name(), new HashMap<>() {{
+                    var map = profile.properties().asMap();
+                    this.putAll(map);
+                }}),
+                player instanceof ServerPlayer sp ? sp.connection : null,
+                player
+        );
+    }
+}

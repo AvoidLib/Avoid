@@ -1,0 +1,4 @@
+{
+    EntityNative.convertFrom((LivingEntity) (Object) this)
+    EntityNative.convertFrom((LivingEntity) (Object) this, 0)
+}
