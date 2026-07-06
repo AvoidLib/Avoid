@@ -22,12 +22,14 @@ import pl.olafcio.avoid.net.entity_selector.EntitySelector;
 import pl.olafcio.avoid.net.entity_selector.EntitySelectors;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.item.custom.Item;
+import pl.olafcio.avoid.net.keyboard.event.ClientKeyPressEvent;
 import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.screen.Screens;
 import pl.olafcio.avoid_lateinit.LateInitializer;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
@@ -244,6 +246,52 @@ public class Avoid extends LateInitializer {
                         LOGGER.warn("@AutoChar not applicable ({})", className);
 
                     EventManager.collect(klass);
+
+                    var methods = klass.getDeclaredMethods();
+                    for (var m : methods) {
+                        if (m.isAnnotationPresent(KeyHandler.class)) {
+                            var name = klass.getName() + "::" + m.getName();
+
+                            if (!Modifier.isStatic(m.getModifiers())) {
+                                LOGGER.warn("@KeyHandler not applicable to non-static method ({})", name);
+                                continue;
+                            }
+
+                            m.setAccessible(true);
+
+                            LOGGER.debug("Registering keyhandler '{}'", name);
+
+                            var key = m.getAnnotation(KeyHandler.class)
+                                       .value();
+
+                            if (m.getParameterCount() == 0)
+                                EventManager.register(ClientKeyPressEvent.class, event -> {
+                                    if (event.getKey() == key) {
+                                        try {
+                                            m.invoke(null);
+                                        } catch (IllegalAccessException e) {
+                                            throw new RuntimeException("Failed to call keyhandler (%s)".formatted(name), e);
+                                        } catch (InvocationTargetException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }
+                                });
+                            else if (m.getParameterCount() == 1 && m.getParameters()[0].getType() == ClientKeyPressEvent.class)
+                                EventManager.register(ClientKeyPressEvent.class, event -> {
+                                    if (event.getKey() == key) {
+                                        try {
+                                            m.invoke(null, event);
+                                        } catch (IllegalAccessException e) {
+                                            throw new RuntimeException("Failed to call keyhandler (%s)".formatted(name), e);
+                                        } catch (InvocationTargetException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }
+                                });
+                            else
+                                LOGGER.error("Failed to understand keyhandler's parameters ('{}'): {}", name, m.getParameters());
+                        }
+                    }
                 }
             } while (entries.hasMoreElements());
         }
