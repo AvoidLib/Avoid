@@ -2,3 +2,8 @@
     "createResult"
     "createResultInternal"
 }
+
+{
+    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;hasInfiniteMaterials()Z", ordinal = 1)
+    @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;hasInfiniteMaterials()Z", ordinal = 0)
+}
