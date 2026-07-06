@@ -27,6 +27,7 @@
     "ChatHudMixin",
     "ChatScreenMixin",
     "GuiGraphicsMixin",
+    "KeyboardMixin",
     "MinecraftMixin",
     "ScreenMixin"
   ],
