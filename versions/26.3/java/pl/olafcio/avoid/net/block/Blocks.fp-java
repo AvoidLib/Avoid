@@ -1,0 +1,14 @@
+{
+    import static net.minecraft.world.level.block.state.BlockBehaviour.simpleCodec;
+    // import static net.minecraft.world.level.block.state.BlockBehaviour.simpleCodec;
+}
+
+{
+    Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
+    // Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
+}
+
+{
+    Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
+    // Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
+}
