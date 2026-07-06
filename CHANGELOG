@@ -10,14 +10,7 @@
 - NeoForge
 
 **🪵 Changelog:**
-- Some API status notes
-- [Client Chat] [CommandEvent] Cancellability
-- [Client Chat] [SentEvent] Cancellability
-- [Client Chat] [ReceivedEvent] Cancellability
-- [Server Player] Player Bed Sleep Stop Event
-- [Server Player] Player Bed Events
-- [Server Player] Player Enchanting Table Events
-- [Chat Components] Head & Atlas factory methods
+- Fix NeoForge incompatibilities *(present since AvoidLib v1.6)*
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
