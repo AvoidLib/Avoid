@@ -32,3 +32,11 @@ minecraft_version_range=26.2
 loader_version=0.19.3
 fabric_version=0.154.0+26.2
 omit_mappings=1
+
+# neoforge-26.2
+! neoforge
+: 26.1
+: 26.2
+! neoforge-26.2_compat
+neoforge=1
+neo_version=26.2.0.8-beta
