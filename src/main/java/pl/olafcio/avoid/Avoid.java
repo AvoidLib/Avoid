@@ -363,6 +363,8 @@ public class Avoid extends LateInitializer {
                     return true;
                 }
 
+                usedAutoChar.set(true);
+
                 var simpleName = klass.getSimpleName();
                 if (!simpleName.endsWith("Selector")) {
                     LOGGER.warn("All selector classes should end with 'Selector', found non-matching: {} ({})", simpleName, className);
