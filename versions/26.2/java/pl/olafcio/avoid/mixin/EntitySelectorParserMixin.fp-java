@@ -1,0 +1,6 @@
+import net.minecraft.world.entity.EntityTypes
+
+{
+    EntityType.PLAYER
+    EntityTypes.PLAYER
+}

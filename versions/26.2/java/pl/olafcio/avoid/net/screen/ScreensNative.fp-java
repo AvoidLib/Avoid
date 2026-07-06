@@ -1,0 +1,9 @@
+{
+    mc.screen
+    mc.gui.screen()
+}
+
+{
+    mc.setScreen
+    mc.gui.setScreen
+}

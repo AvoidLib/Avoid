@@ -55,3 +55,13 @@ omit_mappings=1
 ! neoforge-26.1_compat
 neoforge=1
 neo_version=26.1.2.76
+
+# 26.2
+: 26.1
+: 26.1.1
+: 26.1.2
+minecraft_version=26.2
+minecraft_version_range=26.2
+loader_version=0.19.3
+fabric_version=0.154.0+26.2
+omit_mappings=1

@@ -1,0 +1,9 @@
+import net.minecraft.references.BlockItemId;
+import net.minecraft.resources.Identifier;
+
+{
+    Items.registerBlock(interceptor.value);
+
+    var idnt = Identifier.fromNamespaceAndPath(id, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, simpleName));
+    Items.registerBlock(BlockItemId.create(idnt, idnt), interceptor.value);
+}
