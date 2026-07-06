@@ -1,0 +1,43 @@
+package pl.olafcio.avoid.mixin;
+
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.screens.Screen;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import pl.olafcio.avoid.mixininterface.IMinecraft;
+import pl.olafcio.avoid.mixininterface.IScreen;
+import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.net.screen.event.ScreenOpenEvent;
+import pl.olafcio.avoid.net.screen.event.ScreenOpenEventNative;
+
+import java.util.HashMap;
+import java.util.function.Supplier;
+
+@Mixin(Gui.class)
+public class GuiMixin implements IMinecraft {
+    @SuppressWarnings("MixinExtrasOperationParameters")
+    @WrapMethod(method = "setScreen")
+    public void setScreen(Screen screen, Operation<Void> original) {
+        if (screen != null && OVERWRITES.containsKey(screen.getClass()))
+            screen = OVERWRITES.get(screen.getClass()).get();
+
+        ScreenOpenEvent event = new ScreenOpenEvent((IScreen) screen);
+        EventManager.fire(event);
+
+        if (event.isCancelled())
+            return;
+
+        original.call(ScreenOpenEventNative.getScreen(event));
+    }
+
+    @Unique
+    private final HashMap<Class<? extends Screen>, Supplier<Screen>> OVERWRITES
+            = new HashMap<>();
+
+    @Override
+    public HashMap<Class<? extends Screen>, Supplier<Screen>> avoidlib$overwrites() {
+        return OVERWRITES;
+    }
+}
