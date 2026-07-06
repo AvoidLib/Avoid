@@ -6,15 +6,19 @@ import pl.olafcio.avoid.annotations.Native;
 
 @Native
 @ApiStatus.Internal
-public final class ClientKeyPressEventNative {
+public final class ClientKeyEventNative {
     @ApiStatus.Internal
-    private ClientKeyPressEventNative() {}
+    private ClientKeyEventNative() {}
 
-    public static ClientKeyPressEvent create() {
+    public static ClientKeyPressEvent createPress() {
         return new ClientKeyPressEvent();
     }
 
-    public static void change(ClientKeyPressEvent avoidevent, KeyEvent mcevent) {
+    public static ClientKeyReleaseEvent createRelease() {
+        return new ClientKeyReleaseEvent();
+    }
+
+    public static void change(ClientKeyEvent avoidevent, KeyEvent mcevent) {
         avoidevent.event = mcevent;
     }
 }

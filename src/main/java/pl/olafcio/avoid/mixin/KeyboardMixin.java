@@ -13,7 +13,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.keyboard.event.ClientKeyPressEvent;
-import pl.olafcio.avoid.net.keyboard.event.ClientKeyPressEventNative;
+import pl.olafcio.avoid.net.keyboard.event.ClientKeyEventNative;
+import pl.olafcio.avoid.net.keyboard.event.ClientKeyReleaseEvent;
 
 @Mixin(KeyboardHandler.class)
 public class KeyboardMixin {
@@ -23,15 +24,22 @@ public class KeyboardMixin {
 
     @Unique
     private static final ClientKeyPressEvent KEYPRESS
-                       = ClientKeyPressEventNative.create();
+                       = ClientKeyEventNative.createPress();
+
+    @Unique
+    private static final ClientKeyReleaseEvent KEYRELEASE
+                       = ClientKeyEventNative.createRelease();
 
     @Inject(at = @At("HEAD"), method = "keyPress")
     public void keyPress(long window, int action, KeyEvent event, CallbackInfo ci) {
         var gameWindow = this.minecraft.getWindow();
         if (window == gameWindow.handle()) {
             if (action == GLFW.GLFW_PRESS) {
-                ClientKeyPressEventNative.change(KEYPRESS, event);
+                ClientKeyEventNative.change(KEYPRESS, event);
                 EventManager.fire(KEYPRESS);
+            } else if (action == GLFW.GLFW_RELEASE) {
+                ClientKeyEventNative.change(KEYRELEASE, event);
+                EventManager.fire(KEYRELEASE);
             }
         }
     }
