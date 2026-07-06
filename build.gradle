@@ -82,6 +82,7 @@ dependencies {
 processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "minecraft_version_range", ('minecraft_version_range' in project.properties ? project.minecraft_version_range : project.minecraft_version)
     inputs.property "loader_version", project.loader_version
 
     if ('neo_version' in project.properties) {
