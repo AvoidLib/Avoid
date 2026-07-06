@@ -22,7 +22,7 @@ public class MyFormattedCharSequence implements FormattedCharSequence {
             var el = (TextComponent) array.get(index);
 
             formattedCharSink.accept(index, COToNative.from(Components.literal("")
-                                                      .styleAs(el.style())).getStyle(), el.text().charAt(0));
+                                                      .styleAs(el.style())).getStyle(), el.text().codePointAt(0));
         }
 
         return true;

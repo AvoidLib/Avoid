@@ -39,7 +39,7 @@ public class GuiGraphicsMixin {
         var array = component.getChildren();
 
         formattedCharSequence.accept((index, style, ch) -> {
-            component.append(COFromNative.from(Component.literal(Character.toString((char) ch))
+            component.append(COFromNative.from(Component.literal(Character.toString(ch))
                                                         .withStyle(style)));
             return true;
         });
