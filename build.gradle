@@ -1,3 +1,6 @@
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+
 import java.nio.file.Files
 
 buildscript {
@@ -153,7 +156,12 @@ publishMods {
         displayName = "Avoid v${project.version} [${minecraft_version}]"
         accessToken = providers.environmentVariable("MODRINTH_API_KEY")
         projectId = "LitgU0gE"
-        minecraftVersions.add(minecraft_version)
+
+        if ("minecraft_version_list" !in project.getProperties())
+            minecraftVersions.add(minecraft_version)
+        else
+            minecraftVersions.addAll(new Gson().fromJson((String) project.minecraft_version_list, JsonArray.class).asList().collect { e -> e.getAsString() })
+
 //        setAdditionalFiles(files(("omit_mappings" !in project.getProperties() ? remapSourcesJar.archiveFile : sourcesJar.archiveFile).get().asFile.toPath()))
     }
 }

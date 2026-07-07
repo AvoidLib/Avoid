@@ -13,6 +13,7 @@ neo_version=21.11.42
 # 26.1
 minecraft_version=26.1
 minecraft_version_range=~26.1
+minecraft_version_list=["26.1", "26.1.1", "26.1.2"]
 loader_version=0.19.3
 fabric_version=0.140.0+26.1
 java_version=25
@@ -29,6 +30,7 @@ neo_version=26.1.0.19-beta
 : 26.1
 minecraft_version=26.2
 minecraft_version_range=26.2
+minecraft_version_list=["26.2"]
 loader_version=0.19.3
 fabric_version=0.154.0+26.2
 omit_mappings=1
@@ -46,6 +48,7 @@ neo_version=26.2.0.8-beta
 ! 26.3
 minecraft_version=26.3-snapshot-2
 minecraft_version_range=26.3-alpha.2
+minecraft_version_list=["26.3-alpha.2"]
 loader_version=0.19.3
 fabric_version=0.154.1+26.3
 omit_mappings=1
