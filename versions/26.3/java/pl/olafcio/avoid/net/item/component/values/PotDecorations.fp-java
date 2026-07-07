@@ -1,0 +1,12 @@
+import net.minecraft.world.item.ItemStackTemplate;
+import pl.olafcio.avoid.net.item.stack.ItemStackTemplateNative;
+
+{
+    ().map(ItemNative::convert)
+    ().map(v -> ItemStackTemplateNative.convertFrom(v).getItem())
+}
+
+{
+    .map(ItemNative::convert)
+    .map(v -> new ItemStackTemplate(ItemNative.convert(v)))
+}
