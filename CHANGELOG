@@ -4,13 +4,26 @@
 - 26.1.1
 - 26.1.2
 - 26.2
+- 26.3-snapshot-2
 
 **🔌 Supported ModLoaders:**
 - Fabric
 - NeoForge
 
 **🪵 Changelog:**
-- Fix NeoForge incompatibilities *(present since AvoidLib v1.6)*
+- [Item Components] Transform OMINOUS_BOTTLE_AMPLIFIER
+- [Item Components] Transform POT_DECORATIONS
+- [Item Components] Transform CUSTOM_MODEL_DATA
+- [Item Components] Transform FOOD
+- [ModLoader] [@KeyHandler] 'trigger()' property
+- [GUI] [RenderTextEvent] Add codepoint support
+- [Server Entity] Block Trample event
+- [World API] BlockData refactor
+- [ModLoader] @KeyHandler annotation
+- [ModLoader] Fix the false "@AutoChar not applicable" warning when using Entity Selector API
+- [Keyboard] A class listing all the key constants
+- [Keyboard] ClientKeyReleaseEvent
+- [Keyboard] ClientKeyPressEvent
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
