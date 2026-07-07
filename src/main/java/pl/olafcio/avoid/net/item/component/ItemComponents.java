@@ -53,6 +53,7 @@ import pl.olafcio.avoid.net.item.component.values.DyedItemColor;
 import pl.olafcio.avoid.net.item.component.values.ItemLore;
 import pl.olafcio.avoid.net.item.component.values.MapItemColor;
 import pl.olafcio.avoid.net.item.component.values.MapPostProcessing;
+import pl.olafcio.avoid.net.item.component.values.OminousBottleAmplifier;
 import pl.olafcio.avoid.net.item.component.values.SwingAnimation;
 import pl.olafcio.avoid.net.item.component.values.TooltipDisplay;
 import pl.olafcio.avoid.net.item.component.values.UseCooldown;
@@ -129,7 +130,7 @@ public class ItemComponents {
     public static final ItemComponentType<TypedEntityData<BlockEntityType<?>>> BLOCK_ENTITY_DATA = register("block_entity_data");
     public static final ItemComponentType<InstrumentComponent> INSTRUMENT = register("instrument");
     public static final ItemComponentType<ProvidesTrimMaterial> PROVIDES_TRIM_MATERIAL = register("provides_trim_material");
-    public static final ItemComponentType<OminousBottleAmplifier> OMINOUS_BOTTLE_AMPLIFIER = register("ominous_bottle_amplifier");
+    public static final ItemComponentType<OminousBottleAmplifier> OMINOUS_BOTTLE_AMPLIFIER = register("ominous_bottle_amplifier", new OminousBottleAmplifier.Controller());
     public static final ItemComponentType<JukeboxPlayable> JUKEBOX_PLAYABLE = register("jukebox_playable");
     public static final ItemComponentType<TagKey<BannerPattern>> PROVIDES_BANNER_PATTERNS = register("provides_banner_patterns");
     public static final ItemComponentType<List<ResourceKey<Recipe<?>>>> RECIPES = register("recipes");
