@@ -39,7 +39,6 @@ import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.PotDecorations;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
@@ -141,7 +140,7 @@ public class ItemComponents {
     public static final ItemComponentType<Identification> NOTE_BLOCK_SOUND = register("note_block_sound", IdentificationNative::convertFrom, IdentificationNative::convert);
     public static final ItemComponentType<BannerPatternLayers> BANNER_PATTERNS = register("banner_patterns");
     public static final ItemComponentType<DyeColor> BASE_COLOR = register("base_color", new DyeColor.Controller());
-    public static final ItemComponentType<PotDecorations> POT_DECORATIONS = register("pot_decorations");
+    public static final ItemComponentType<PotDecorations> POT_DECORATIONS = register("pot_decorations", new PotDecorations.Controller());
     public static final ItemComponentType<ItemContainerContents> CONTAINER = register("container");
     public static final ItemComponentType<BlockItemStateProperties> BLOCK_STATE = register("block_state");
     public static final ItemComponentType<Bees> BEES = register("bees");
