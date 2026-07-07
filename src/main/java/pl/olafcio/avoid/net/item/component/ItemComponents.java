@@ -49,6 +49,7 @@ import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.values.*;
+import pl.olafcio.avoid.net.item.component.values.CustomModelData;
 import pl.olafcio.avoid.net.item.component.values.DyedItemColor;
 import pl.olafcio.avoid.net.item.component.values.ItemLore;
 import pl.olafcio.avoid.net.item.component.values.MapItemColor;
@@ -85,7 +86,7 @@ public class ItemComponents {
     public static final ItemComponentType<AdventureModePredicate> CAN_PLACE_ON = register("can_place_on");
     public static final ItemComponentType<AdventureModePredicate> CAN_BREAK = register("can_break");
     public static final ItemComponentType<ItemAttributeModifiers> ATTRIBUTE_MODIFIERS = register("attribute_modifiers");
-    public static final ItemComponentType<CustomModelData> CUSTOM_MODEL_DATA = register("custom_model_data");
+    public static final ItemComponentType<CustomModelData> CUSTOM_MODEL_DATA = register("custom_model_data", new CustomModelData.Controller());
     public static final ItemComponentType<TooltipDisplay> TOOLTIP_DISPLAY = register("tooltip_display", new TooltipDisplay.Controller());
     public static final ItemComponentType<Integer> REPAIR_COST = register("repair_cost");
     public static final ItemComponentType<Empty> CREATIVE_SLOT_LOCK = register("creative_slot_lock", new Empty.Controller());
