@@ -10,7 +10,10 @@ import pl.olafcio.avoid.net.screen.font.Font;
 public final class RenderTextEvent extends Cancellable {
     private final Drawer drawer;
 
+    @Deprecated(forRemoval = true)
     public Font font;
+
+    @Deprecated(forRemoval = true)
     public final BaseComponent<?> component;
 
     public int x;
@@ -31,5 +34,49 @@ public final class RenderTextEvent extends Cancellable {
 
     public Drawer getDrawer() {
         return drawer;
+    }
+
+    public Font getFont() {
+        return font;
+    }
+
+    public BaseComponent<?> getComponent() {
+        return component;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public boolean getShadow() {
+        return shadow;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public void setShadow(boolean shadow) {
+        this.shadow = shadow;
     }
 }

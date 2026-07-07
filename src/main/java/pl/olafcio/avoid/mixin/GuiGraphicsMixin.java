@@ -56,6 +56,6 @@ public class GuiGraphicsMixin {
         if (event.isCancelled())
             return;
 
-        original.call(FontNative.convert(event.font), new MyFormattedCharSequence(array), i, j, k, bl);
+        original.call(FontNative.convert(event.getFont()), new MyFormattedCharSequence(array), event.x, event.y, event.color, event.shadow);
     }
 }
