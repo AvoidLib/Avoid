@@ -26,7 +26,6 @@ import net.minecraft.world.entity.animal.wolf.WolfSoundVariant;
 import net.minecraft.world.entity.animal.wolf.WolfVariant;
 import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.entity.npc.villager.VillagerType;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.AdventureModePredicate;
 import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.JukeboxPlayable;
@@ -92,7 +91,7 @@ public class ItemComponents {
     public static final ItemComponentType<Empty> CREATIVE_SLOT_LOCK = register("creative_slot_lock", new Empty.Controller());
     public static final ItemComponentType<Boolean> ENCHANTMENT_GLINT_OVERRIDE = register("enchantment_glint_override");
     public static final ItemComponentType<Empty> INTANGIBLE_PROJECTILE = register("intangible_projectile", new Empty.Controller());
-    public static final ItemComponentType<FoodProperties> FOOD = register("food");
+    public static final ItemComponentType<FoodProperties> FOOD = register("food", new FoodProperties.Controller());
     public static final ItemComponentType<Consumable> CONSUMABLE = register("consumable");
     public static final ItemComponentType<UseRemainder> USE_REMAINDER = register("use_remainder");
     public static final ItemComponentType<UseCooldown> USE_COOLDOWN = register("use_cooldown", new UseCooldown.Controller());
