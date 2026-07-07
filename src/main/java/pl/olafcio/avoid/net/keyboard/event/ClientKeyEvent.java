@@ -4,9 +4,9 @@ import net.minecraft.client.input.KeyEvent;
 import pl.olafcio.avoid.net.screen.eventinterface.KeyInterface;
 import pl.olafcio.avoid.net.screen.eventinterface.ModifierInterface;
 
-sealed abstract class ClientKeyEvent
-                implements ModifierInterface, KeyInterface
-                permits ClientKeyPressEvent, ClientKeyReleaseEvent
+public sealed abstract class ClientKeyEvent
+                       implements ModifierInterface, KeyInterface
+                       permits ClientKeyPressEvent, ClientKeyReleaseEvent
 {
     KeyEvent event;
 

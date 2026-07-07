@@ -23,6 +23,7 @@ import pl.olafcio.avoid.net.entity_selector.EntitySelectors;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.item.custom.Item;
 import pl.olafcio.avoid.net.keyboard.event.ClientKeyPressEvent;
+import pl.olafcio.avoid.net.keyboard.event.ClientKeyReleaseEvent;
 import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.screen.Screens;
 import pl.olafcio.avoid_lateinit.LateInitializer;
@@ -261,11 +262,15 @@ public class Avoid extends LateInitializer {
 
                             LOGGER.debug("Registering keyhandler '{}'", name);
 
-                            var key = m.getAnnotation(KeyHandler.class)
-                                       .value();
+                            var annotation = m.getAnnotation(KeyHandler.class);
+
+                            var key = annotation.value();
+                            var trigger = annotation.trigger() == KeyHandler.Trigger.PRESS
+                                                ? ClientKeyPressEvent.class
+                                                : ClientKeyReleaseEvent.class;
 
                             if (m.getParameterCount() == 0)
-                                EventManager.register(ClientKeyPressEvent.class, event -> {
+                                EventManager.register(trigger, event -> {
                                     if (event.getKey() == key) {
                                         try {
                                             m.invoke(null);
@@ -276,8 +281,8 @@ public class Avoid extends LateInitializer {
                                         }
                                     }
                                 });
-                            else if (m.getParameterCount() == 1 && m.getParameters()[0].getType() == ClientKeyPressEvent.class)
-                                EventManager.register(ClientKeyPressEvent.class, event -> {
+                            else if (m.getParameterCount() == 1 && m.getParameters()[0].getType() == trigger)
+                                EventManager.register(trigger, event -> {
                                     if (event.getKey() == key) {
                                         try {
                                             m.invoke(null, event);

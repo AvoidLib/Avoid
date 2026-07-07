@@ -3,7 +3,6 @@ package pl.olafcio.avoid.mods.annotation_processor;
 import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.keyboard.Keyboard;
-import pl.olafcio.avoid.net.screen.ScreenMarker;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -16,4 +15,11 @@ import java.lang.annotation.Target;
 public @interface KeyHandler {
     @MagicConstant(valuesFromClass = Keyboard.class)
     int value();
+
+    Trigger trigger() default Trigger.PRESS;
+
+    enum Trigger {
+        PRESS,
+        RELEASE
+    }
 }
