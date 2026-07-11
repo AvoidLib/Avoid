@@ -30,6 +30,7 @@
     "ChatScreenMixin",
     "GuiGraphicsMixin",
     "KeyboardMixin",
+    "LayerDefinitionsMixin",
     "MinecraftMixin",
     "ScreenMixin"
   ],
