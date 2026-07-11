@@ -2,6 +2,7 @@
 Major:
 - [x] Block Creation
 - [x] Item Creation
+- [x] Entity Type Creation
 - [ ] Creative Menu (Block)Item Addition
 - [ ] Creative Menu Category Addition
 - [x] Assets
@@ -23,4 +24,3 @@ Misc:
 Soon:
 - [ ] Packet API
 - [ ] Sound API
-- [ ] Entity Type Creation
