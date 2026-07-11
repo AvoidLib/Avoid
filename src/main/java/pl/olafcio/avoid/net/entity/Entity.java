@@ -10,6 +10,8 @@ import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
+import pl.olafcio.avoid.net.entity.values.Hand;
+import pl.olafcio.avoid.net.entity.values.HandNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.WorldNative;
@@ -487,6 +489,14 @@ public abstract class Entity {
      */
     public World getWorld() {
         return WorldNative.make(__cast(LivingEntity.class).level());
+    }
+
+    /**
+     * Returns the main hand of the entity.
+     */
+    public Hand getMainHand() {
+        return HandNative.convert(__cast(LivingEntity.class)
+                                                     .getMainArm());
     }
 
     @Override
