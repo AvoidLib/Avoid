@@ -1,13 +1,10 @@
 package pl.olafcio.avoid.net.entity;
 
-import net.minecraft.server.level.ServerEntity;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
-import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
-import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.entity_type.EntityType;
@@ -18,6 +15,20 @@ import pl.olafcio.avoid.net.world.vect3.IVect3;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * A Minecraft Entity object.
+ * <br/><br/>
+ * <b>Properties:</b><br/>
+ * <ul>
+ *     <li>int &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&emsp;&ensp;{@linkplain Entity#id()}</li>
+ *     <li>EntityType &nbsp;&nbsp;&emsp;&emsp;{@linkplain Entity#type()}</li>
+ *     <li>IVect3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&emsp;&nbsp;&emsp;{@linkplain Entity#position()}</li>
+ *     <li>IVect3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&emsp;&emsp;{@linkplain Entity#velocity()}</li>
+ *     <li>UUID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ensp;{@linkplain Entity#uuid()}</li>
+ *     <li>BaseComponent {@linkplain Entity#getDisplayName()}</li>
+ * </ul>
+ */
+@ApiStatus.NonExtendable
 public abstract class Entity {
     private final int id;
     private final EntityType type;
