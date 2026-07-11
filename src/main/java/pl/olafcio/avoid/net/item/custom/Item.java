@@ -17,6 +17,6 @@ public abstract class Item extends AbstractItem {
 
     @Override
     public final String toString() {
-        return "Block{%s}".formatted(getID());
+        return "Item{%s}".formatted(getID());
     }
 }
