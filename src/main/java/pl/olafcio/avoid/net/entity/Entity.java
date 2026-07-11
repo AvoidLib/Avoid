@@ -163,14 +163,23 @@ public abstract class Entity {
         return 0;
     }
 
+    /**
+     * Adds a scoreboard tag to the entity.
+     */
     public void addTag(String tag) {
         underlyingEntity.addTag(tag);
     }
 
+    /**
+     * Returns all scoreboard tags used on the entity.
+     */
     public Set<String> getTags() {
         return underlyingEntity.getTags();
     }
 
+    /**
+     * Removes a scoreboard tag from the entity.
+     */
     public void removeTag(String tag) {
         underlyingEntity.removeTag(tag);
     }
@@ -295,14 +304,26 @@ public abstract class Entity {
         return underlyingEntity.isCurrentlyGlowing();
     }
 
+    /**
+     * Returns whether the entity is crawling.<br/>
+     * The internal state this checks is whether the entity is <i>swimming</i>, while <b>not</b> in water.
+     */
+    // I have to admit it is quite funny
     public boolean isVisuallyCrawling() {
         return underlyingEntity.isVisuallyCrawling();
     }
 
+    /**
+     * Returns whether the entity is crawling or swimming.<br/>
+     * The internal state this checks is whether the entity is <i>"swimming"</i> - as crawling also qualifies.
+     */
     public boolean isVisuallySwimming() {
         return underlyingEntity.isVisuallySwimming();
     }
 
+    /**
+     * Returns whether the entity has velocity on.
+     */
     public boolean isPushable() {
         return underlyingEntity.isPushable();
     }
@@ -311,18 +332,30 @@ public abstract class Entity {
         return underlyingEntity.isPushedByFluid();
     }
 
+    /**
+     * Returns whether any passengers are on this entity.
+     */
     public boolean isVehicle() {
         return underlyingEntity.isVehicle();
     }
 
+    /**
+     * Returns whether this entity is naturally capable of being a vehicle <i>(entity with passengers)</i> that a controlling passenger can fly with.
+     */
     public boolean isFlyingVehicle() {
         return underlyingEntity.isFlyingVehicle();
     }
 
+    /**
+     * Returns whether the entity is riding any other entity.
+     */
     public boolean isPassenger() {
         return underlyingEntity.isPassenger();
     }
 
+    /**
+     * Returns whether the entity can be picked up as an item (usually by a player).
+     */
     public boolean isPickable() {
         return underlyingEntity.isPickable();
     }
@@ -331,26 +364,47 @@ public abstract class Entity {
         return underlyingEntity.isFreezing();
     }
 
+    /**
+     * Returns whether the entity has a safe-walk mode on.<br/>
+     * This, in vanilla, is equal to whether the entity is a player (or maybe mannequin) that is sneaking.
+     */
     public boolean isSteppingCarefully() {
         return underlyingEntity.isSteppingCarefully();
     }
 
+    /**
+     * Returns whether the entity has a no-Y-bounce mode on.<br/>
+     * This, in vanilla, is equal to whether the entity is a player (or maybe mannequin) that is sneaking.
+     */
     public boolean isSuppressingBounce() {
         return underlyingEntity.isSuppressingBounce();
     }
 
+    /**
+     * Returns whether the entity is rideable in water.
+     */
     public boolean dismountsUnderwater() {
         return underlyingEntity.dismountsUnderwater();
     }
 
+    /**
+     * Returns whether the entity has a passenger that is controlling it.
+     */
     public boolean canControlVehicle() {
         return underlyingEntity.canControlVehicle();
     }
 
+    /**
+     * Returns whether the entity is immune to fire.
+     */
     public boolean fireImmune() {
         return underlyingEntity.fireImmune();
     }
 
+    /**
+     * Returns whether he entity is sensitive to water.<br/>
+     * Returns null if the entity is dead ({@link Entity#isAlive()} returns {@code false}).
+     */
     @UnknownNullability
     public Boolean isSensitiveToWater() {
         if (underlyingEntity instanceof LivingEntity le)
