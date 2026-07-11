@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.UnknownNullability;
+import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
@@ -60,6 +61,7 @@ public class Player extends Entity implements Executor {
      * If you try using it on remote players from the client,
      * it will throw an exception.
      */
+    @NeverRemoval
     public void sendMessage(BaseComponent<?> component) {
         if (underlyingEntity instanceof ServerPlayer)
             connection.send(new ClientboundSystemChatPacket(COToNative.from(component), false));
@@ -92,22 +94,56 @@ public class Player extends Entity implements Executor {
         connection.send(new ClientboundSetHealthPacket(getHealth(), food.getFoodLevel(), food.getSaturationLevel()));
     }
 
-    public void setFoodLevel(int food) {
+    /**
+     * Sets the player's food level.
+     * <br/><br/>
+     * This value is normally in range 0-20.<br/><br/>
+     * 0 means the player is starving, while <br/>20 means the player is full.
+     * <br/><br/>
+     * Using this method on the client may pose desync risks and/or other issues.
+     */
+    @ClientUnsafe
+    public void setFoodLevel(@Range(from = 0, to = 20) int food) {
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().setFoodLevel(food);
     }
 
+    /**
+     * Sets the player's food saturation.
+     * <br/><br/>
+     * I have honestly no clue what this value is,<br/>
+     * but I think it's also 0-20, like the food level.
+     * <br/><br/>
+     * Using this method on the client may pose desync risks and/or other issues.
+     */
+    @ClientUnsafe
     public void setFoodSaturation(float saturation) {
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().setSaturation(saturation);
     }
 
+    /**
+     * Updates (sets & syncs) the player's food level.
+     * <br/><br/>
+     * This value is normally in range 0-20.<br/><br/>
+     * 0 means the player is starving, while <br/>20 means the player is full.
+     * <br/><br/>
+     * This method only works on the server.
+     */
     @ServerOnly
-    public void updateFoodLevel(int food) {
+    public void updateFoodLevel(@Range(from = 0, to = 20) int food) {
         __castEnv(ServerPlayer.class, "[Player#updateFoodLevel] This method can only be ran on server players!");
 
         setFoodLevel(food);
         updateHealthAndFood();
     }
 
+    /**
+     * Updates (sets & syncs) the player's food saturation.
+     * <br/><br/>
+     * I have honestly no clue what this value is,<br/>
+     * but I think it's also 0-20, like the food level.
+     * <br/><br/>
+     * This method only works on the server.
+     */
     @ServerOnly
     public void updateFoodSaturation(float saturation) {
         __castEnv(ServerPlayer.class, "[Player#updateFoodSaturation] This method can only be ran on server players!");
@@ -137,6 +173,13 @@ public class Player extends Entity implements Executor {
         return __cast(net.minecraft.world.entity.player.Player.class).getFoodData().getSaturationLevel();
     }
 
+    /**
+     * Ticks the player's food counters.
+     * <br/><br/>
+     * This is kind-of like {@code /tick step}, but for hunger.
+     * <br/><br/>
+     * This method only works on the server.
+     */
     @ServerOnly
     public void tickHunger() {
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().tick(__cast(ServerPlayer.class));
