@@ -2,11 +2,13 @@ package pl.olafcio.avoid.net.entity;
 
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.WorldNative;
@@ -95,6 +97,11 @@ public abstract class Entity {
     @Nullable
     public BaseComponent<?> getDisplayName() {
         return name;
+    }
+
+    @NotNull
+    public BaseComponent<?> getNameComponent() {
+        return COFromNative.from(underlyingEntity.getName());
     }
 
     public boolean isAlive() {
