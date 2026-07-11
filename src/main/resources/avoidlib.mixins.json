@@ -7,6 +7,7 @@
     "AnvilMenuMixin",
     "CommandsMixin",
     "CraftingMenuMixin",
+    "DefaultAttributesMixin",
     "EnchantmentHelperMixin",
     "EnchantmentMenuMixin",
     "EntityMixin",

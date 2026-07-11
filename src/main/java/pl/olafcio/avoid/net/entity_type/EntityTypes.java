@@ -7,25 +7,31 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Util;
-import net.minecraft.world.entity.EntityAttachments;
-import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.net.entity.custom.Entity;
 import pl.olafcio.avoid.net.entity.custom_internal.AvoidEntity;
+import pl.olafcio.avoid.net.entity.custom_internal.AvoidLivingEntity;
 import pl.olafcio.avoid.net.entity.custom_internal.EntityConstructor;
 import pl.olafcio.avoid.net.entity_type.properties.*;
 import pl.olafcio.avoid.net.entity_type.properties.attachment.AttachmentOperation;
+import pl.olafcio.avoid.net.entity_type.properties.attribute.AttributeBase;
 import pl.olafcio.avoid.net.entity_type.values.AttachmentTypeNative;
 import pl.olafcio.avoid.net.entity_type.values.Category;
 import pl.olafcio.avoid.net.entity_type.values.CategoryNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -37,7 +43,6 @@ public final class EntityTypes {
 
     public static void register(Identification entityTypeID, Class<? extends Entity> klass, EntityConstructor constructor) {
         var id = IdentificationNative.convert(entityTypeID);
-        var resourceKey = ResourceKey.create(Registries.ENTITY_TYPE, id);
 
         var category = klass.getAnnotation(_category.class)
                             .value();
@@ -91,9 +96,46 @@ public final class EntityTypes {
             }
         }
 
+        boolean living = klass.isAnnotationPresent(_living.class);
+
+        if (living) {
+            var Type = createType(
+                    klass,
+                    id,
+                    (EntityType<@NotNull LivingEntity> type, Level level)
+                        -> new AvoidLivingEntity(type, level, constructor),
+                    category,
+                    dimensions,
+                    attachments
+            );
+
+            LIVING_ENTITIES.put(Type, () -> createAttributes(klass));
+        } else {
+            createType(
+                    klass,
+                    id,
+                    (EntityType<net.minecraft.world.entity.@NotNull Entity> type, Level level)
+                            -> new AvoidEntity(type, level, constructor),
+                    category,
+                    dimensions,
+                    attachments
+            );
+        }
+    }
+
+    private static <T extends net.minecraft.world.entity.Entity> @NotNull EntityType<T> createType(
+            Class<? extends Entity> klass,
+            Identifier id,
+            EntityType.EntityFactory<T> factory,
+            Category category,
+            EntityDimensions dimensions,
+            EntityAttachments.Builder attachments
+    ) {
+        EntityType<T> Type;
+
         // TODO: Should I use the builder? Guess we'll see when there are issues in cross-version compatibility ;d
-        Registry.register(BuiltInRegistries.ENTITY_TYPE, id, new EntityType<AvoidEntity>(
-                (EntityType<AvoidEntity> type, Level level) -> new AvoidEntity(type, level, constructor),
+        Registry.register(BuiltInRegistries.ENTITY_TYPE, id, Type = new EntityType<T>(
+                factory,
                 CategoryNative.convertFrom(category),
                 !klass.isAnnotationPresent(_noSave.class),
                 !klass.isAnnotationPresent(_noSummon.class),
@@ -114,10 +156,10 @@ public final class EntityTypes {
                         ? klass.getAnnotation(_updateInterval.class)
                                .value()
                         : 3,  // default 'update_interval' as in EntityType\Builder
-                Util.makeDescriptionId("entity", resourceKey.identifier()),
+                Util.makeDescriptionId("entity", id),
                 klass.isAnnotationPresent(_noLootTable.class)
                         ? Optional.empty()
-                        : Optional.of(ResourceKey.create(Registries.LOOT_TABLE, resourceKey.identifier().withPrefix("entities/"))),
+                        : Optional.of(ResourceKey.create(Registries.LOOT_TABLE, id.withPrefix("entities/"))),
                 klass.isAnnotationPresent(_featureFlags.class)
                         ? FeatureFlags.REGISTRY.fromNames(Arrays.stream(klass.getAnnotation(_featureFlags.class)
                                                                              .value())
@@ -126,5 +168,23 @@ public final class EntityTypes {
                         : FeatureFlags.VANILLA_SET,
                 !klass.isAnnotationPresent(_notInPeaceful.class)
         ));
+
+        return Type;
     }
+
+    private static AttributeSupplier createAttributes(Class<? extends Entity> klass) {
+        var attributes = klass.getAnnotation(_attributes.class);
+        var builder = attributes.base() == AttributeBase.LIVING_ENTITY ? LivingEntity.createLivingAttributes() :
+                      attributes.base() == AttributeBase.ANIMAL        ? Animal.createAnimalAttributes()       :
+                                                                         Mob.createMobAttributes();
+
+        var values = attributes.attributes();
+        for (var entry : values)
+            builder.add(entry.type().getMinecraft(), entry.value());
+
+        return builder.build();
+    }
+
+    static HashMap<EntityType<? extends LivingEntity>, Supplier<AttributeSupplier>> LIVING_ENTITIES
+     = new HashMap<>();
 }

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
@@ -24,6 +25,19 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
                 (net.minecraft.world.entity.Entity) args[6]
         );
     }
+
+    //======================//
+    //==== Overrideable ====//
+    //======================//
+
+    @Override
+    public Hand getMainHand() {
+        return Hand.LEFT;
+    }
+
+    //================//
+    //==== Parent ====//
+    //================//
 
     @Override
     public final int id() {
