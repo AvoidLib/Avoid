@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
+import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
@@ -192,8 +193,11 @@ public abstract class Entity {
         return underlyingEntity.hasGlowingTag();
     }
 
+    @IncompatibleChange(reason = "This method had inverted behaviour.",
+                        change = "return value",
+                        since = "v1.9")
     public boolean hasPhysics() {
-        return underlyingEntity.noPhysics;
+        return !underlyingEntity.noPhysics;
     }
 
     public boolean isInWall() {
