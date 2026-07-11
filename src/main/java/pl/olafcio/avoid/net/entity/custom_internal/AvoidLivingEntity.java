@@ -45,12 +45,12 @@ public final class AvoidLivingEntity extends LivingEntity {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        //
+        super.defineSynchedData(builder);
     }
 
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
-        return false;
+        return super.hurtServer(serverLevel, damageSource, f);
     }
 
     @Override
@@ -60,11 +60,11 @@ public final class AvoidLivingEntity extends LivingEntity {
 
     @Override
     protected void readAdditionalSaveData(ValueInput valueInput) {
-        //
+        super.readAdditionalSaveData(valueInput);
     }
 
     @Override
     protected void addAdditionalSaveData(ValueOutput valueOutput) {
-        //
+        super.addAdditionalSaveData(valueOutput);
     }
 }
