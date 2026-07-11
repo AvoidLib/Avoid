@@ -64,6 +64,9 @@ What you should use instead is the custom AvoidLib mod format
 
    After doing that, your mod .jar should work in the game's mods folder, if it also has Avoid installed.
 
+
+**Take a look at the [wiki](https://github.com/AvoidLib/Avoid/wiki) next.**
+
 ## 💥 Avoid mods crash with my modloader
 
 Try moving them onto a new directory called `avoidmods` in your game folder.<br/>
