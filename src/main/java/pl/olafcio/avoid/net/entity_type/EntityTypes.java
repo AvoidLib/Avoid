@@ -83,16 +83,21 @@ public final class EntityTypes {
                     if (x == Double.MIN_VALUE) x = 0;
                     if (y == Double.MIN_VALUE) y = 0;
                     if (z == Double.MIN_VALUE) z = 0;
+
+                    x += fallback.x();
+                    y += fallback.y();
+                    z += fallback.z();
                 } else if (attachment.op() == AttachmentOperation.MULTIPLY) {
                     if (x == Double.MIN_VALUE) x = 1;
                     if (y == Double.MIN_VALUE) y = 1;
                     if (z == Double.MIN_VALUE) z = 1;
+
+                    x *= fallback.x();
+                    y *= fallback.y();
+                    z *= fallback.z();
                 }
 
-                attachments.attach(type, attachment.op() == AttachmentOperation.SET      ? new Vec3(x, y, z) :
-                                         attachment.op() == AttachmentOperation.ADD      ? new Vec3(x, y, z) :
-                                         attachment.op() == AttachmentOperation.MULTIPLY ? new Vec3(x, y, z) :
-                                                                                           null);
+                attachments.attach(type, new Vec3(x, y, z));
             }
         }
 
