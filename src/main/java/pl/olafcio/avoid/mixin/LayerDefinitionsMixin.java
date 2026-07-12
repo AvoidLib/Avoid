@@ -24,6 +24,10 @@ public class LayerDefinitionsMixin {
     ) {
         BakerNative.LOCATIONS = new HashMap<>();
 
+        ModelLayers.ALL_MODELS.forEach(loc -> {
+            BakerNative.LOCATIONS.put(loc.model() + "#" + loc.layer(), loc);
+        });
+
         var layers = EntityLayersNative.getAndFreeze();
         for (var layer : layers) {
             var loc = new ModelLayerLocation(
@@ -34,7 +38,7 @@ public class LayerDefinitionsMixin {
             ModelLayers.ALL_MODELS.add(loc);
 
             BakerNative.LOCATIONS.put(layer.supplier().getClass(), loc);
-            BakerNative.LOCATIONS.put(layer.id() + "/" + layer.element(), loc);
+            BakerNative.LOCATIONS.put(layer.id() + "#" + layer.element(), loc);
 
             instance.put(loc, layer.supplier().make().getMinecraft());
         }
