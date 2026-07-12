@@ -3,7 +3,7 @@ package pl.olafcio.avoid.net.entity_renderer;
 import pl.olafcio.avoid.net._3d.model.ModelPart;
 
 public abstract class EntityModel<S> {
-    private final ModelPart modelPart;
+    final ModelPart modelPart;
 
     public EntityModel(ModelPart modelPart) {
         this.modelPart = modelPart;

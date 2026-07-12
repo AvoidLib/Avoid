@@ -1,17 +1,20 @@
 package pl.olafcio.avoid.net.entity_renderer;
 
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
+import pl.olafcio.avoid.net._3d.model.ModelPartNative;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @NullMarked
@@ -45,40 +48,42 @@ public final class EntityRenderers {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends pl.olafcio.avoid.net.entity.Entity, S> void registerLiving(EntityType type, Supplier<? extends LivingEntityRenderer<T, S>> supplier, Supplier<S> stateSupplier) {
-        var renderer = supplier.get();
-
+    public static <T extends pl.olafcio.avoid.net.entity.Entity, S> void registerLiving(EntityType type, Function<Baker, ? extends LivingEntityRenderer<T, S>> supplier, Supplier<S> stateSupplier) {
         net.minecraft.client.renderer.entity.EntityRenderers.register(
                 (net.minecraft.world.entity.EntityType<? extends LivingEntity>)
                 EntityTypeNative.convert(type),
 
-                context -> new net.minecraft.client.renderer.entity.LivingEntityRenderer<
-                                           LivingEntity,
-                                           AvoidLivingRenderState<S>,
-                                           EntityModel<AvoidLivingRenderState<S>>
-                                   >(context, createModel(renderer.model), renderer.shadowRadius) {
-                                       @Override
-                                       public Identifier getTextureLocation(AvoidLivingRenderState<S> state) {
-                                           return IdentificationNative.convert(renderer.getTextureLocation(state.wrappedState));
-                                       }
+                context -> {
+                    var renderer = supplier.apply(new Baker(context));
 
-                                       @Override
-                                       @SuppressWarnings("unchecked")
-                                       public void extractRenderState(LivingEntity entity, AvoidLivingRenderState<S> state, float f) {
-                                           super.extractRenderState(entity, state, f);
-                                           renderer.render((T) EntityNative.convertFrom(entity), state.wrappedState, f);
-                                       }
+                    return new net.minecraft.client.renderer.entity.LivingEntityRenderer<
+                            LivingEntity,
+                            AvoidLivingRenderState<S>,
+                            EntityModel<AvoidLivingRenderState<S>>
+                            >(context, createModel(renderer.model), renderer.shadowRadius) {
+                        @Override
+                        public Identifier getTextureLocation(AvoidLivingRenderState<S> state) {
+                            return IdentificationNative.convert(renderer.getTextureLocation(state.wrappedState));
+                        }
 
-                                       @Override
-                                       public AvoidLivingRenderState<S> createRenderState() {
-                                           return new AvoidLivingRenderState<>(stateSupplier.get());
-                                       }
-                                   }
+                        @Override
+                        @SuppressWarnings("unchecked")
+                        public void extractRenderState(LivingEntity entity, AvoidLivingRenderState<S> state, float f) {
+                            super.extractRenderState(entity, state, f);
+                            renderer.render((T) EntityNative.convertFrom(entity), state.wrappedState, f);
+                        }
+
+                        @Override
+                        public AvoidLivingRenderState<S> createRenderState() {
+                            return new AvoidLivingRenderState<>(stateSupplier.get());
+                        }
+                    };
+                }
         );
     }
 
     private static <S> EntityModel<AvoidLivingRenderState<S>> createModel(pl.olafcio.avoid.net.entity_renderer.EntityModel<S> model) {
-        return new EntityModel<AvoidLivingRenderState<S>>(modelPart) {
+        return new EntityModel<AvoidLivingRenderState<S>>(ModelPartNative.convertFrom(model.modelPart)) {
             @Override
             public void setupAnim(AvoidLivingRenderState<S> state) {
                 model.setupAnim(state.wrappedState);

@@ -1,14 +1,18 @@
-package pl.olafcio.avoid.net._3d;
+package pl.olafcio.avoid.net._3d.stack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import org.joml.*;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 
 public class MatrixStack {
-    private final PoseStack stack;
+    final PoseStack stack;
 
     public MatrixStack() {
         this.stack = new PoseStack();
+    }
+
+    MatrixStack(PoseStack stack) {
+        this.stack = stack;
     }
 
     public void translate(double x, double y, double z) {
@@ -60,13 +64,13 @@ public class MatrixStack {
     }
 
     public static final class Matrix {
-        private final PoseStack.Pose pose;
+        final PoseStack.Pose pose;
 
         public Matrix() {
             this.pose = new PoseStack.Pose();
         }
 
-        private Matrix(PoseStack.Pose pose) {
+        Matrix(PoseStack.Pose pose) {
             this.pose = pose;
         }
 
