@@ -15,10 +15,10 @@ public abstract class LivingEntityRenderer<T extends Entity, S>
     private ArrayList<LivingOp> operations
       = new ArrayList<>();
 
-    final EntityModel model;
+    final EntityModel<S> model;
     final float shadowRadius;
 
-    public LivingEntityRenderer(EntityModel model, float shadowRadius) {
+    public LivingEntityRenderer(Baker baker, EntityModel<S> model, float shadowRadius) {
         this.model = model;
         this.shadowRadius = shadowRadius;
     }

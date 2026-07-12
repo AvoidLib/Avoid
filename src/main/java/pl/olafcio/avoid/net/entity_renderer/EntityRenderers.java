@@ -53,7 +53,7 @@ public final class EntityRenderers {
                                            LivingEntity,
                                            AvoidLivingRenderState<S>,
                                            EntityModel<AvoidLivingRenderState<S>>
-                                   >(context, renderer.model, renderer.shadowRadius) {
+                                   >(context, createModel(renderer.model), renderer.shadowRadius) {
                                        @Override
                                        public Identifier getTextureLocation(AvoidLivingRenderState<S> state) {
                                            return IdentificationNative.convert(renderer.getTextureLocation(state.wrappedState));
@@ -72,5 +72,14 @@ public final class EntityRenderers {
                                        }
                                    }
         );
+    }
+
+    private static <S> EntityModel<AvoidLivingRenderState<S>> createModel(pl.olafcio.avoid.net.entity_renderer.EntityModel<S> model) {
+        return new EntityModel<AvoidLivingRenderState<S>>(modelPart) {
+            @Override
+            public void setupAnim(AvoidLivingRenderState<S> state) {
+                model.setupAnim(state.wrappedState);
+            }
+        };
     }
 }
