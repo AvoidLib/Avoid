@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.entity_layer.builders;
+package pl.olafcio.avoid.net._3d.layer;
 
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDefinition;

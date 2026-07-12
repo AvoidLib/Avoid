@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.entity_layer.builders;
+package pl.olafcio.avoid.net._3d.layer;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

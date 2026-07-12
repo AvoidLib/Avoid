@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.entity_layer.builders;
+package pl.olafcio.avoid.net._3d.layer;
 
 import org.jetbrains.annotations.ApiStatus;
 
@@ -14,7 +14,7 @@ public record PartTransform(float x, float y, float z, float rotateX, float rota
         return PartTransform._trans_rot(0.0f, 0.0f, 0.0f, x, y, z);
     }
 
-    private static PartTransform _trans_rot(float x, float y, float z, float rotateX, float rotateY, float rotateZ) {
+    public static PartTransform _trans_rot(float x, float y, float z, float rotateX, float rotateY, float rotateZ) {
         return new PartTransform(x, y, z, rotateX, rotateY, rotateZ, 1.0f, 1.0f, 1.0f);
     }
 
