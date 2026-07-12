@@ -12,6 +12,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid.AvoidInternal;
+import pl.olafcio.avoid.AvoidManager;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.mods.AvoidModMeta;
 
 import java.net.Proxy;
 
@@ -20,5 +24,16 @@ public class MinecraftServerMixin {
     @Inject(at = @At("CTOR_HEAD"), method = "<init>")
     public void ctor(Thread thread, LevelStorageSource.LevelStorageAccess levelStorageAccess, PackRepository packRepository, WorldStem worldStem, Proxy proxy, DataFixer dataFixer, Services services, LevelLoadListener levelLoadListener, CallbackInfo ci) {
         AvoidInternal.server = (MinecraftServer) (Object) this;
+    }
+
+    @Inject(at = @At("HEAD"), method = "stopServer")
+    public void stopServer(CallbackInfo ci) {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
+            return;
+
+        var addons = AvoidManager.getLoadedAddons();
+        for (AvoidModMeta mod : addons)
+            AvoidManager.getLoadedAddonClass(mod)
+                        .onDisable();
     }
 }
