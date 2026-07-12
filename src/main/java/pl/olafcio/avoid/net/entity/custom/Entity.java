@@ -409,4 +409,14 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     public final World getWorld() {
         return super.getWorld();
     }
+
+    @Override
+    public final boolean isClient() {
+        return super.isClient();
+    }
+
+    @Override
+    public final boolean isServer() {
+        return super.isServer();
+    }
 }

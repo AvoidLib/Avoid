@@ -499,6 +499,20 @@ public abstract class Entity {
                                                      .getMainArm());
     }
 
+    /**
+     * Returns whether the entity object is client-sided.
+     */
+    public boolean isClient() {
+        return underlyingEntity.level().isClientSide();
+    }
+
+    /**
+     * Returns whether the entity object is server-sided.
+     */
+    public boolean isServer() {
+        return !underlyingEntity.level().isClientSide();
+    }
+
     @Override
     public String toString() {
         return "Entity[" +
