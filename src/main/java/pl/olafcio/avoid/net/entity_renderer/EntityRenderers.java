@@ -60,7 +60,11 @@ public final class EntityRenderers {
                             LivingEntity,
                             AvoidLivingRenderState<S>,
                             EntityModel<AvoidLivingRenderState<S>>
-                            >(context, createModel(renderer.model), renderer.shadowRadius) {
+                    >(context, createModel(renderer.model), renderer.shadowRadius) {
+                        {
+                            renderer.finishInit(this, context, context.getModelSet(), context.getPlayerSkinRenderCache());
+                        }
+
                         @Override
                         public Identifier getTextureLocation(AvoidLivingRenderState<S> state) {
                             return IdentificationNative.convert(renderer.getTextureLocation(state.wrappedState));
