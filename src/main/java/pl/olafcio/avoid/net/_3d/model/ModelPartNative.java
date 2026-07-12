@@ -22,6 +22,6 @@ public final class ModelPartNative {
                 )).toList().toArray(ModelPart.Figure[]::new),
                 cube.minX, cube.minY, cube.minZ,
                 cube.maxX, cube.maxY, cube.maxZ
-        )), Maps.transformValues(part.children, ModelPartNative::convert));
+        )).toList(), Maps.transformValues(part.children, ModelPartNative::convert));
     }
 }

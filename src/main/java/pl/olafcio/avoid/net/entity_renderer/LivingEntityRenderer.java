@@ -26,7 +26,7 @@ public abstract class LivingEntityRenderer<T extends Entity, S>
     public abstract Identification getTextureLocation(S state);
 
     public final void addCustomHead() {
-        operations.add((obj, context) -> {
+        operations.add((obj, context, c, d) -> {
             obj.addLayer(new CustomHeadLayer(obj, context.getModelSet(), context.getPlayerSkinRenderCache()));
         });
     }

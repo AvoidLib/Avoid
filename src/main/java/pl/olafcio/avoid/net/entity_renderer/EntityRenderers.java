@@ -44,11 +44,14 @@ public final class EntityRenderers {
         );
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends pl.olafcio.avoid.net.entity.Entity, S> void registerLiving(EntityType type, Supplier<? extends LivingEntityRenderer<T, S>> supplier, Supplier<S> stateSupplier) {
         var renderer = supplier.get();
 
         net.minecraft.client.renderer.entity.EntityRenderers.register(
+                (net.minecraft.world.entity.EntityType<? extends LivingEntity>)
                 EntityTypeNative.convert(type),
+
                 context -> new net.minecraft.client.renderer.entity.LivingEntityRenderer<
                                            LivingEntity,
                                            AvoidLivingRenderState<S>,
