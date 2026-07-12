@@ -2,6 +2,8 @@ package pl.olafcio.avoid.net.entity_layer;
 
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.RunningEnv;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ public final class EntityLayers {
     }
 
     public static List<EntityLayer> getAll() {
-        if (!frozen)
+        if (!frozen && AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.SERVER)
             throw new UnsupportedOperationException("[EntityLayers#getAll] This operation is not permitted while the registry is not yet frozen");
 
         return LAYERS;
