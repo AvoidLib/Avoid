@@ -15,8 +15,13 @@ import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 @ApiStatus.Internal
-public final class AvoidEntity extends Entity {
+public final class AvoidEntity extends Entity implements IAvoidEntity {
     private final pl.olafcio.avoid.net.entity.custom.Entity wrappedEntity;
+
+    @Override
+    public pl.olafcio.avoid.net.entity.custom.Entity getAvoidEntity() {
+        return wrappedEntity;
+    }
 
     public AvoidEntity(EntityType<?> entityType, Level level, EntityConstructor constructor) {
         super(entityType, level);
