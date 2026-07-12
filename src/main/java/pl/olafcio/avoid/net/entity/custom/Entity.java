@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.entity.custom_internal.IAvoidEntity;
 import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.world.World;
@@ -33,6 +34,11 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     @Override
     public Hand getMainHand() {
         return Hand.LEFT;
+    }
+
+    @Override
+    public void tick() {
+        __cast(IAvoidEntity.class).parentTick();
     }
 
     //================//
@@ -192,11 +198,6 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     @Override
     public final boolean isNoGravity() {
         return super.isNoGravity();
-    }
-
-    @Override
-    public final void tick() {
-        super.tick();
     }
 
     @Override

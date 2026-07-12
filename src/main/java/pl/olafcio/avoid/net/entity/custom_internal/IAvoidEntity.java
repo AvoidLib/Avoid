@@ -4,4 +4,5 @@ import pl.olafcio.avoid.net.entity.custom.Entity;
 
 public interface IAvoidEntity {
     Entity getAvoidEntity();
+    void parentTick();
 }

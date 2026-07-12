@@ -57,6 +57,16 @@ public final class AvoidEntity extends Entity implements IAvoidEntity {
     }
 
     @Override
+    public void parentTick() {
+        super.tick();
+    }
+
+    @Override
+    public void tick() {
+        wrappedEntity.tick();
+    }
+
+    @Override
     protected void readAdditionalSaveData(ValueInput valueInput) {
         //
     }

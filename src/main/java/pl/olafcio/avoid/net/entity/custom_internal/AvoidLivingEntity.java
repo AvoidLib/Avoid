@@ -59,6 +59,16 @@ public final class AvoidLivingEntity extends LivingEntity implements IAvoidEntit
     }
 
     @Override
+    public void parentTick() {
+        super.tick();
+    }
+
+    @Override
+    public void tick() {
+        wrappedEntity.tick();
+    }
+
+    @Override
     public HumanoidArm getMainArm() {
         return HandNative.convertFrom(wrappedEntity.getMainHand());
     }
