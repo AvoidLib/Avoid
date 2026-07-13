@@ -9,19 +9,38 @@
 - NeoForge
 
 **🪵 Changelog:**
-- [Item Components] Transform OMINOUS_BOTTLE_AMPLIFIER
-- [Item Components] Transform POT_DECORATIONS
-- [Item Components] Transform CUSTOM_MODEL_DATA
-- [Item Components] Transform FOOD
-- [ModLoader] [@KeyHandler] 'trigger()' property
-- [GUI] [RenderTextEvent] Add codepoint support
-- [Server Entity] Block Trample event
-- [World API] BlockData refactor
-- [ModLoader] @KeyHandler annotation
-- [ModLoader] Fix the false "@AutoChar not applicable" warning when using Entity Selector API
-- [Keyboard] A class listing all the key constants
-- [Keyboard] ClientKeyReleaseEvent
-- [Keyboard] ClientKeyPressEvent
+- [MC 26.3] Delta tracking; @_noDeltaTracking
+- [MC 26.1] Keep Entity#getTags() method name
+- [Screen API] Drawer#matrixStack()
+- [ModLoader] [Events] AllModsEnabledEvent
+- [ModLoader] [Events] AllModsLoadedEvent
+- [World API] #areFeaturesEnabled([ids])
+- [ModLoader] Call 'onDisable' on server close
+- [Entity API] #isClient(), #isServer()
+- [Entity Layer API] Skip loading on the server
+- [Entity Renderer Creation API] Skip loading on the server
+- [Entity Type Creation API] 'tick' overridability
+- [Entity Type Creation API] Persist object through operations
+- EntityLayer locating improvements
+- [Entity Renderer Creation API] Call 'finishInit'
+- Entity Renderer Creation API
+- Categorize EntityLayer builders under a new API
+- Entity Layer API
+- [Entity Creation API] Call parent data-related methods in living entities
+- [Entity Creation API] Fix 'ADD' & 'MULTIPLY' attachment operations
+- [Entity Creation API] LivingEntity support
+- [Entity API] #getMainHand()
+- [ModLoader] @AutoEntity annotation
+- Entity Type Creation API
+- [Item Creation API] Correct the return value of Item#toString
+- [Entity API] Fix inverted behaviour of #hasPhysics()
+- [Annotations] [Refactor] @IncompatibleChange
+- [Documentation] The Entity class methods
+- [Entity API] #getNameComponent()
+- [Documentation] The Player class
+- [Documentation] @ClientUnsafe
+- [Documentation] The Entity class
+- [GUI] [RenderTextEvent] Use getters and setters for 'font' & 'component', deprecate direct access
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
