@@ -18,6 +18,7 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.ApiStatus;
 import org.joml.Matrix3x2f;
+import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.client.AvoidLibClient;
@@ -255,5 +256,10 @@ public final class Drawer {
                 n,
                 this.graphics.scissorStack.peek()
         ));
+    }
+
+    @ApiStatus.Experimental
+    public Matrix3x2fStack matrixStack() {
+        return this.graphics.pose();
     }
 }
