@@ -13,6 +13,7 @@ import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.ModEnvironment;
 import pl.olafcio.avoid.mods.annotation_processor.*;
 import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.mods.events_loader.AllModsEnabledEvent;
 import pl.olafcio.avoid.mods.events_loader.AllModsLoadedEvent;
 import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.Blocks;
@@ -65,6 +66,7 @@ public class Avoid extends LateInitializer {
         EventManager.fire(new AllModsLoadedEvent());
 
         Realize();
+        EventManager.fire(new AllModsEnabledEvent());
     }
 
     public void onEarlyInit() {
