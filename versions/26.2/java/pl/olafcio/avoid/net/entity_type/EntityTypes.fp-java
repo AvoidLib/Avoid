@@ -1,0 +1,6 @@
+import net.minecraft.tags.BlockTags;
+
+{
+    ImmutableSet.of()
+    BlockTags.DEFAULT_IMMUNE_TO
+}
