@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.world;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import org.jetbrains.annotations.ApiStatus;
@@ -16,6 +17,7 @@ import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
 import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 @SuppressWarnings("ClassCanBeRecord")
@@ -119,5 +121,10 @@ public final class World {
 
     public boolean canHaveWeather() {
         return level.canHaveWeather();
+    }
+
+    public boolean areFeaturesEnabled(Identification... id) {
+        return FeatureFlags.REGISTRY.fromNames(Arrays.stream(id).map(IdentificationNative::convert).toList())
+                                    .isSubsetOf(level.enabledFeatures());
     }
 }
