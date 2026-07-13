@@ -5,6 +5,7 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
+import pl.olafcio.avoid.net.entity.custom_internal.IAvoidEntity;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.vect3.Vect3Native;
@@ -22,6 +23,8 @@ public final class EntityNative {
     public static Entity convertFrom(net.minecraft.world.entity.Entity entity, Integer idOverride) {
         if (entity instanceof Player player)
             return PlayerNative.convertFrom(player, idOverride);
+        else if (entity instanceof IAvoidEntity wrapper)
+            return wrapper.getAvoidEntity();
 
         BaseComponent<?> name;
 
