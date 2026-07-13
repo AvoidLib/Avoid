@@ -1,0 +1,5 @@
+{
+    @Override public VertexConsumer setUv2(int i, int j)                 { return null; }
+    @Override public VertexConsumer setUv2(int i, int j)                 { return null; }
+    @Override public VertexConsumer setUv3(float i, float j)                 { return null; }
+}
