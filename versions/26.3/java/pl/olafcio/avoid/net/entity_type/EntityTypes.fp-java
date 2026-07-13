@@ -1,0 +1,5 @@
+{
+    !klass.isAnnotationPresent(_notInPeaceful.class)
+    !klass.isAnnotationPresent(_notInPeaceful.class),
+    !klass.isAnnotationPresent(_noDeltaTracking.class)
+}
