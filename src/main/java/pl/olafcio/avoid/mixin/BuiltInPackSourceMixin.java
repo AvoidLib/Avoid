@@ -11,8 +11,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pl.olafcio.avoid.AvoidManager;
-import pl.olafcio.avoid.mods.AvoidMod;
+import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class BuiltInPackSourceMixin {
         if (modPacks == null) {
             modPacks = new ArrayList<>();
 
-            var addons = AvoidManager.getLoadedAddons();
+            var addons = AvoidModLoader.getLoadedAddons();
             for (AvoidModMeta addon : addons)
                 modPacks.add(
                         new Pack(
@@ -40,7 +39,7 @@ public class BuiltInPackSourceMixin {
                                         PackSource.create(x -> x, true),
                                         Optional.of(new KnownPack("avoidlib_res", addon.id(), "1"))
                                 ),
-                                new FilePackResources.FileResourcesSupplier(AvoidManager.getLoadedAddonFile(addon)),
+                                new FilePackResources.FileResourcesSupplier(AvoidModLoader.getLoadedAddonFile(addon)),
                                 new Pack.Metadata(Component.literal("(Mod resources)"), PackCompatibility.COMPATIBLE, FeatureFlagSet.of(), List.of()),
                                 new PackSelectionConfig(true, Pack.Position.TOP, false)
                         )

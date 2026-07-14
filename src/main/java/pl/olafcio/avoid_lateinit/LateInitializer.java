@@ -26,7 +26,7 @@ public class LateInitializer {
      * If {@link #Realize()} has already been called,<br/>
      * the callback will be invoked immediately.
      */
-    protected final void Schedule(Runnable code) {
+    public final void Schedule(Runnable code) {
         if (Initialized)
             code.run();
         else Initializers.add(code);

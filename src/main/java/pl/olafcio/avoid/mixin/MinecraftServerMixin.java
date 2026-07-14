@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid.AvoidInternal;
-import pl.olafcio.avoid.AvoidManager;
+import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.mods.AvoidModMeta;
@@ -31,9 +31,9 @@ public class MinecraftServerMixin {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
             return;
 
-        var addons = AvoidManager.getLoadedAddons();
+        var addons = AvoidModLoader.getLoadedAddons();
         for (AvoidModMeta mod : addons)
-            AvoidManager.getLoadedAddonClass(mod)
+            AvoidModLoader.getLoadedAddonClass(mod)
                         .onDisable();
     }
 }

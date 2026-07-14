@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.Avoid;
-import pl.olafcio.avoid.AvoidPackageOnly;
+import pl.olafcio.avoid.mods.loader.AvoidPackageOnly;
 import pl.olafcio.avoid.net.block.properties.*;
 import pl.olafcio.avoid.net.block.values.NoteBlockInstrumentNative;
 import pl.olafcio.avoid.net.block.values.PushReactionNative;
