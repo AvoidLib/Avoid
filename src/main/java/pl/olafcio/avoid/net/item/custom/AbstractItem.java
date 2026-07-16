@@ -7,6 +7,7 @@ import pl.olafcio.avoid.net.item.Item;
 
 @ApiStatus.Experimental
 public abstract class AbstractItem {
+    @ApiStatus.Internal
     protected AbstractItem() {
         if (this.getClass() != Item.class && !(this instanceof pl.olafcio.avoid.net.item.custom.Item))
             throw new UnsupportedOperationException("AbstractItem can be only extended by internal AvoidLib classes; " +
