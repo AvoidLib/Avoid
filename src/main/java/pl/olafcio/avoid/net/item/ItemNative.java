@@ -1,7 +1,10 @@
 package pl.olafcio.avoid.net.item;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import pl.olafcio.avoid.net.item.stack.ItemStackNative;
 
 @ApiStatus.Internal
 public final class ItemNative {
@@ -18,6 +21,17 @@ public final class ItemNative {
 
     public static Item make(pl.olafcio.avoid.net.item.custom.Item item, Item.Properties properties) {
         // TODO: Add some Item methods
-        return new Item(properties) {};
+        return new Item(properties) {
+            @Override
+            @NotNull
+            public ItemStack getDefaultInstance() {
+                var stack = super.getDefaultInstance();
+                var converted = ItemStackNative.convertFrom(stack);
+
+                converted = item.newStack(converted);
+
+                return ItemStackNative.convert(converted);
+            }
+        };
     }
 }
