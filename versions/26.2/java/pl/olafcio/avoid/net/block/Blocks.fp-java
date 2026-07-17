@@ -1,0 +1,9 @@
+{
+    var mapColor = instance.getMapColor();
+
+    if (block.isAnnotationPresent(_bounceRestitution.class))
+        properties = properties.bounceRestitution(block.getAnnotation(_bounceRestitution.class)
+                                                       .value());
+
+    var mapColor = instance.getMapColor();
+}
