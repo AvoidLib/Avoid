@@ -33,7 +33,6 @@ import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.*;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.item.enchantment.Repairable;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.level.block.entity.BannerPattern;
@@ -102,7 +101,7 @@ public class ItemComponents {
     public static final ItemComponentType<AttackRange> ATTACK_RANGE = register("attack_range");
     public static final ItemComponentType<Enchantable> ENCHANTABLE = register("enchantable", new Enchantable.Controller());
     public static final ItemComponentType<Equippable> EQUIPPABLE = register("equippable");
-    public static final ItemComponentType<Repairable> REPAIRABLE = register("repairable");
+    public static final ItemComponentType<Repairable> REPAIRABLE = register("repairable", new Repairable.Controller());
     public static final ItemComponentType<Empty> GLIDER = register("glider", new Empty.Controller());
     public static final ItemComponentType<Identification> TOOLTIP_STYLE = register("tooltip_style", IdentificationNative::convertFrom, IdentificationNative::convert);
     public static final ItemComponentType<DeathProtection> DEATH_PROTECTION = register("death_protection");

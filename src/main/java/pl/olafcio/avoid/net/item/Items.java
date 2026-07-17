@@ -26,8 +26,8 @@ public final class Items {
     @ApiStatus.Internal
     private Items() {}
 
-    private static final HashMap<Item, net.minecraft.world.item.Item> CUSTOM_MAP
-                   = new HashMap<>();
+    static final HashMap<Item, net.minecraft.world.item.Item> CUSTOM_MAP
+           = new HashMap<>();
 
     public static BaseComponent<?> getName(Item customItem) {
         var item = CUSTOM_MAP.get(customItem);
