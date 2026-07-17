@@ -36,10 +36,11 @@ public final class Blocks {
                 properties
         );
 
+        var inst = constructor.get();
         var block = net.minecraft.world.level.block.Blocks.register(
                 ResourceKey.create(Registries.BLOCK, id),
                 callback,
-                getProperties(constructor.get().getClass())
+                getProperties(inst, inst.getClass())
         );
 
         Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
@@ -59,10 +60,11 @@ public final class Blocks {
                 properties
         );
 
+        var inst = constructor.get();
         var block = net.minecraft.world.level.block.Blocks.register(
                 ResourceKey.create(Registries.BLOCK, id),
                 callback,
-                getProperties(constructor.get().getClass())
+                getProperties(inst, inst.getClass())
         );
 
         Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
@@ -75,7 +77,7 @@ public final class Blocks {
         interceptor.value = block;
     }
 
-    private static Properties getProperties(Class<? extends pl.olafcio.avoid.net.block.Block> block) {
+    private static <T extends pl.olafcio.avoid.net.block.Block> Properties getProperties(T instance, Class<? extends T> block) {
         var properties = Properties.of();
 
         if (block.isAnnotationPresent(_randomlyTicking.class))
@@ -161,6 +163,10 @@ public final class Blocks {
         if (block.isAnnotationPresent(_air.class))
             properties = properties.air();
 
-        return properties.mapColor(MapColor.GRASS).sound(SoundType.GRASS);
+        var mapColor = instance.getMapColor();
+        if (mapColor == null)
+            Avoid.LOGGER.warn("Overriding the 'getMapColor()' method to return a specific value is heavily recommended");
+
+        return properties.mapColor(mapColor == null ? MapColor.GRASS : MapColor.byId(mapColor.id())).sound(SoundType.GRASS);
     }
 }
