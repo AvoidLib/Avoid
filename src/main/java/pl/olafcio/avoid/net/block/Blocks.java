@@ -158,6 +158,9 @@ public final class Blocks {
                          .value()
             ));
 
+        if (block.isAnnotationPresent(_air.class))
+            properties = properties.air();
+
         return properties.mapColor(MapColor.GRASS).sound(SoundType.GRASS);
     }
 }
