@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.command.annotation;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,10 +15,12 @@ import java.util.HashMap;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@NeverRemoval
 public @interface PermissionLevel {
     String value();
     Enum level();
 
+    @NeverRemoval
     enum Enum {
         ALL("all", 0),
         MODERATORS("moderators", 1),

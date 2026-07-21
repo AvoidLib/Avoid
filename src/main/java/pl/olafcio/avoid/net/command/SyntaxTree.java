@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.command;
 
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.command.annotation.Permission;
 import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.handling.CommandHandler;
@@ -37,6 +38,7 @@ import java.util.LinkedHashMap;
  * <br/>
  * <p style="color: #585e79">(notice the indentation)</p>
  */
+@NeverRemoval
 public final class SyntaxTree extends LinkedHashMap<CommandParameter<?>, SyntaxTree> {
     public CommandHandler method;
     public Command cmd;

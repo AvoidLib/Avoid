@@ -1,5 +1,7 @@
 package pl.olafcio.avoid.net.command.annotation;
 
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -10,6 +12,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
+@NeverRemoval
 public @interface Syntax {
     String value();
 }

@@ -1,11 +1,14 @@
 package pl.olafcio.avoid.net.item.custom;
 
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.item.Items;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
 
+@NeverRemoval
 public abstract class Item extends AbstractItem {
+    @NeverRemoval
     public ItemStack newStack(ItemStack stack) {
         return stack;
     }

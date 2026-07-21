@@ -5,6 +5,7 @@ import net.minecraft.commands.CommandSourceStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.Colors;
 import pl.olafcio.avoid.net.chat.component.Components;
 import pl.olafcio.avoid.net.command.executor.Executor;
@@ -14,8 +15,9 @@ import pl.olafcio.avoid.net.command.parameter.CommandParameter;
 /**
  * Specifies the extending class is ready to register as a server command.
  */
-@ApiStatus.Experimental
+@NeverRemoval
 public abstract class Command {
+    @NeverRemoval
     public void sendSyntaxException(
             @NotNull Executor executor,
             @NotNull CommandContext<CommandSourceStack> ctx,
@@ -37,6 +39,7 @@ public abstract class Command {
     /**
      * <b>Note:</b> This method works only after registering the class.
      */
+    @NeverRemoval
     public final String getName() {
         return CommandManager.get(this).name();
     }
@@ -44,6 +47,7 @@ public abstract class Command {
     /**
      * <b>Note:</b> This method works only after registering the class.
      */
+    @NeverRemoval
     public final SyntaxTree getSyntaxTree() {
         return CommandManager.get(this).syntaxes();
     }
@@ -51,6 +55,7 @@ public abstract class Command {
     /**
      * <b>Note:</b> This method works only after registering the class.
      */
+    @NeverRemoval
     public final CommandHandler getUnknownHandler() {
         return CommandManager.get(this).unknownhandler();
     }

@@ -1,11 +1,12 @@
 package pl.olafcio.avoid.net.item.custom;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.item.Item;
 
-@ApiStatus.Experimental
+@NeverRemoval
 public abstract class AbstractItem {
     @ApiStatus.Internal
     protected AbstractItem() {
@@ -14,7 +15,8 @@ public abstract class AbstractItem {
                                                     "if you wanted to create a custom item, extend Item (avoid.net.item.custom)");
     }
 
-    public abstract BaseComponent<?> getName();
-    public abstract Identification getID();
+    @NeverRemoval public abstract BaseComponent<?> getName();
+    @NeverRemoval public abstract Identification getID();
+
     public abstract String toString();
 }
