@@ -1,3 +1,160 @@
+import pl.olafcio.avoid.net.keyboard.Keyboard
+import org.lwjgl.sdl.SDLKeycode
+
+{
+    ClientKeyEvent() {}
+
+    private static final int[] GL_TO_SDL = new int[349];
+    static {
+        /** Printable keys. */
+            GL_TO_SDL[Keyboard.SPACE] = SDLKeycode.SDLK_SPACE;
+            GL_TO_SDL[Keyboard.APOSTROPHE] = SDLKeycode.SDLK_APOSTROPHE;
+            GL_TO_SDL[Keyboard.COMMA] = SDLKeycode.SDLK_COMMA;
+            GL_TO_SDL[Keyboard.MINUS] = SDLKeycode.SDLK_MINUS;
+            GL_TO_SDL[Keyboard.PERIOD] = SDLKeycode.SDLK_PERIOD;
+            GL_TO_SDL[Keyboard.SLASH] = SDLKeycode.SDLK_SLASH;
+
+        /** Digit keys. */
+            GL_TO_SDL[Keyboard.NUM_0] = SDLKeycode.SDLK_0;
+            GL_TO_SDL[Keyboard.NUM_1] = SDLKeycode.SDLK_1;
+            GL_TO_SDL[Keyboard.NUM_2] = SDLKeycode.SDLK_2;
+            GL_TO_SDL[Keyboard.NUM_3] = SDLKeycode.SDLK_3;
+            GL_TO_SDL[Keyboard.NUM_4] = SDLKeycode.SDLK_4;
+            GL_TO_SDL[Keyboard.NUM_5] = SDLKeycode.SDLK_5;
+            GL_TO_SDL[Keyboard.NUM_6] = SDLKeycode.SDLK_6;
+            GL_TO_SDL[Keyboard.NUM_7] = SDLKeycode.SDLK_7;
+            GL_TO_SDL[Keyboard.NUM_8] = SDLKeycode.SDLK_8;
+            GL_TO_SDL[Keyboard.NUM_9] = SDLKeycode.SDLK_9;
+
+        /** Printable keys. */
+            GL_TO_SDL[Keyboard.SEMICOLON] = SDLKeycode.SDLK_SEMICOLON;
+            GL_TO_SDL[Keyboard.EQUAL] = SDLKeycode.SDLK_EQUALS;
+
+        /** Letter keys. */
+            GL_TO_SDL[Keyboard.A] = SDLKeycode.SDLK_A;
+            GL_TO_SDL[Keyboard.B] = SDLKeycode.SDLK_B;
+            GL_TO_SDL[Keyboard.C] = SDLKeycode.SDLK_C;
+            GL_TO_SDL[Keyboard.D] = SDLKeycode.SDLK_D;
+            GL_TO_SDL[Keyboard.E] = SDLKeycode.SDLK_E;
+            GL_TO_SDL[Keyboard.F] = SDLKeycode.SDLK_F;
+            GL_TO_SDL[Keyboard.G] = SDLKeycode.SDLK_G;
+            GL_TO_SDL[Keyboard.H] = SDLKeycode.SDLK_H;
+            GL_TO_SDL[Keyboard.I] = SDLKeycode.SDLK_I;
+            GL_TO_SDL[Keyboard.J] = SDLKeycode.SDLK_J;
+            GL_TO_SDL[Keyboard.K] = SDLKeycode.SDLK_K;
+            GL_TO_SDL[Keyboard.L] = SDLKeycode.SDLK_L;
+            GL_TO_SDL[Keyboard.M] = SDLKeycode.SDLK_M;
+            GL_TO_SDL[Keyboard.N] = SDLKeycode.SDLK_N;
+            GL_TO_SDL[Keyboard.O] = SDLKeycode.SDLK_O;
+            GL_TO_SDL[Keyboard.P] = SDLKeycode.SDLK_P;
+            GL_TO_SDL[Keyboard.Q] = SDLKeycode.SDLK_Q;
+            GL_TO_SDL[Keyboard.R] = SDLKeycode.SDLK_R;
+            GL_TO_SDL[Keyboard.S] = SDLKeycode.SDLK_S;
+            GL_TO_SDL[Keyboard.T] = SDLKeycode.SDLK_T;
+            GL_TO_SDL[Keyboard.U] = SDLKeycode.SDLK_U;
+            GL_TO_SDL[Keyboard.V] = SDLKeycode.SDLK_V;
+            GL_TO_SDL[Keyboard.W] = SDLKeycode.SDLK_W;
+            GL_TO_SDL[Keyboard.X] = SDLKeycode.SDLK_X;
+            GL_TO_SDL[Keyboard.Y] = SDLKeycode.SDLK_Y;
+            GL_TO_SDL[Keyboard.Z] = SDLKeycode.SDLK_Z;
+
+        /** Printable keys. */
+            GL_TO_SDL[Keyboard.LEFT_BRACKET] = SDLKeycode.SDLK_LEFTBRACKET;
+            GL_TO_SDL[Keyboard.BACKSLASH] = SDLKeycode.SDLK_BACKSLASH;
+            GL_TO_SDL[Keyboard.RIGHT_BRACKET] = SDLKeycode.SDLK_RIGHTBRACKET;
+            GL_TO_SDL[Keyboard.GRAVE_ACCENT] = SDLKeycode.SDLK_GRAVE;
+            GL_TO_SDL[Keyboard.WORLD_1] = SDLKeycode.SDLK_LHYPER; // Is this right?
+            GL_TO_SDL[Keyboard.WORLD_2] = SDLKeycode.SDLK_RHYPER; // Is it?
+
+        /** Function keys. */
+            GL_TO_SDL[Keyboard.ESCAPE] = SDLKeycode.SDLK_ESCAPE;
+            GL_TO_SDL[Keyboard.ENTER] = SDLKeycode.SDLK_RETURN;
+            GL_TO_SDL[Keyboard.TAB] = SDLKeycode.SDLK_TAB;
+            GL_TO_SDL[Keyboard.BACKSPACE] = SDLKeycode.SDLK_BACKSPACE;
+            GL_TO_SDL[Keyboard.INSERT] = SDLKeycode.SDLK_INSERT;
+            GL_TO_SDL[Keyboard.DELETE] = SDLKeycode.SDLK_DELETE;
+            GL_TO_SDL[Keyboard.RIGHT] = SDLKeycode.SDLK_RIGHT;
+            GL_TO_SDL[Keyboard.LEFT] = SDLKeycode.SDLK_LEFT;
+            GL_TO_SDL[Keyboard.DOWN] = SDLKeycode.SDLK_DOWN;
+            GL_TO_SDL[Keyboard.UP] = SDLKeycode.SDLK_UP;
+            GL_TO_SDL[Keyboard.PAGE_UP] = SDLKeycode.SDLK_PAGEUP;
+            GL_TO_SDL[Keyboard.PAGE_DOWN] = SDLKeycode.SDLK_PAGEDOWN;
+            GL_TO_SDL[Keyboard.HOME] = SDLKeycode.SDLK_HOME;
+            GL_TO_SDL[Keyboard.END] = SDLKeycode.SDLK_END;
+            GL_TO_SDL[Keyboard.CAPS_LOCK] = SDLKeycode.SDLK_CAPSLOCK;
+            GL_TO_SDL[Keyboard.SCROLL_LOCK] = SDLKeycode.SDLK_SCROLLLOCK;
+            GL_TO_SDL[Keyboard.NUM_LOCK] = SDLKeycode.SDLK_NUMLOCKCLEAR;
+            GL_TO_SDL[Keyboard.PRINT_SCREEN] = SDLKeycode.SDLK_PRINTSCREEN;
+            GL_TO_SDL[Keyboard.PAUSE] = SDLKeycode.SDLK_PAUSE;
+
+        /** F-keys. */
+            GL_TO_SDL[Keyboard.F1] = SDLKeycode.SDLK_F1;
+            GL_TO_SDL[Keyboard.F2] = SDLKeycode.SDLK_F2;
+            GL_TO_SDL[Keyboard.F3] = SDLKeycode.SDLK_F3;
+            GL_TO_SDL[Keyboard.F4] = SDLKeycode.SDLK_F4;
+            GL_TO_SDL[Keyboard.F5] = SDLKeycode.SDLK_F5;
+            GL_TO_SDL[Keyboard.F6] = SDLKeycode.SDLK_F6;
+            GL_TO_SDL[Keyboard.F7] = SDLKeycode.SDLK_F7;
+            GL_TO_SDL[Keyboard.F8] = SDLKeycode.SDLK_F8;
+            GL_TO_SDL[Keyboard.F9] = SDLKeycode.SDLK_F9;
+            GL_TO_SDL[Keyboard.F10] = SDLKeycode.SDLK_F10;
+            GL_TO_SDL[Keyboard.F11] = SDLKeycode.SDLK_F11;
+            GL_TO_SDL[Keyboard.F12] = SDLKeycode.SDLK_F12;
+            GL_TO_SDL[Keyboard.F13] = SDLKeycode.SDLK_F13;
+            GL_TO_SDL[Keyboard.F14] = SDLKeycode.SDLK_F14;
+            GL_TO_SDL[Keyboard.F15] = SDLKeycode.SDLK_F15;
+            GL_TO_SDL[Keyboard.F16] = SDLKeycode.SDLK_F16;
+            GL_TO_SDL[Keyboard.F17] = SDLKeycode.SDLK_F17;
+            GL_TO_SDL[Keyboard.F18] = SDLKeycode.SDLK_F18;
+            GL_TO_SDL[Keyboard.F19] = SDLKeycode.SDLK_F19;
+            GL_TO_SDL[Keyboard.F20] = SDLKeycode.SDLK_F20;
+            GL_TO_SDL[Keyboard.F21] = SDLKeycode.SDLK_F21;
+            GL_TO_SDL[Keyboard.F22] = SDLKeycode.SDLK_F22;
+            GL_TO_SDL[Keyboard.F23] = SDLKeycode.SDLK_F23;
+            GL_TO_SDL[Keyboard.F24] = SDLKeycode.SDLK_F24;
+            GL_TO_SDL[Keyboard.F25] = SDLKeycode.SDLK_F24;
+
+        /** Numpad keys. */
+            GL_TO_SDL[Keyboard.NUMPAD_0] = SDLKeycode.SDLK_KP_0;
+            GL_TO_SDL[Keyboard.NUMPAD_1] = SDLKeycode.SDLK_KP_1;
+            GL_TO_SDL[Keyboard.NUMPAD_2] = SDLKeycode.SDLK_KP_2;
+            GL_TO_SDL[Keyboard.NUMPAD_3] = SDLKeycode.SDLK_KP_3;
+            GL_TO_SDL[Keyboard.NUMPAD_4] = SDLKeycode.SDLK_KP_4;
+            GL_TO_SDL[Keyboard.NUMPAD_5] = SDLKeycode.SDLK_KP_5;
+            GL_TO_SDL[Keyboard.NUMPAD_6] = SDLKeycode.SDLK_KP_6;
+            GL_TO_SDL[Keyboard.NUMPAD_7] = SDLKeycode.SDLK_KP_7;
+            GL_TO_SDL[Keyboard.NUMPAD_8] = SDLKeycode.SDLK_KP_8;
+            GL_TO_SDL[Keyboard.NUMPAD_9] = SDLKeycode.SDLK_KP_9;
+            GL_TO_SDL[Keyboard.NUMPAD_DECIMAL] = SDLKeycode.SDLK_KP_DECIMAL;
+            GL_TO_SDL[Keyboard.NUMPAD_DIVIDE] = SDLKeycode.SDLK_KP_DIVIDE;
+            GL_TO_SDL[Keyboard.NUMPAD_MULTIPLY] = SDLKeycode.SDLK_KP_MULTIPLY;
+            GL_TO_SDL[Keyboard.NUMPAD_SUBTRACT] = SDLKeycode.SDLK_KP_MINUS;
+            GL_TO_SDL[Keyboard.NUMPAD_ADD] = SDLKeycode.SDLK_KP_PLUS;
+            GL_TO_SDL[Keyboard.NUMPAD_ENTER] = SDLKeycode.SDLK_KP_ENTER;
+            GL_TO_SDL[Keyboard.NUMPAD_EQUAL] = SDLKeycode.SDLK_KP_EQUALS;
+
+        /** Modifier keys. */
+            GL_TO_SDL[Keyboard.LEFT_SHIFT] = SDLKeycode.SDLK_LSHIFT;
+            GL_TO_SDL[Keyboard.LEFT_CONTROL] = SDLKeycode.SDLK_LCTRL;
+            GL_TO_SDL[Keyboard.LEFT_ALT] = SDLKeycode.SDLK_LALT;
+            GL_TO_SDL[Keyboard.LEFT_SUPER] = SDLKeycode.SDLK_LMETA;
+            GL_TO_SDL[Keyboard.RIGHT_SHIFT] = SDLKeycode.SDLK_RSHIFT;
+            GL_TO_SDL[Keyboard.RIGHT_CONTROL] = SDLKeycode.SDLK_RCTRL;
+            GL_TO_SDL[Keyboard.RIGHT_ALT] = SDLKeycode.SDLK_RALT;
+            GL_TO_SDL[Keyboard.RIGHT_SUPER] = SDLKeycode.SDLK_RMETA;
+
+        /** Menu key. */
+            GL_TO_SDL[Keyboard.MENU] = SDLKeycode.SDLK_MENU;
+    }
+
+    ClientKeyEvent() {}
+}
+
+{
+    return event.key();
+    return GL_TO_SDL[event.key()];
+}
+
 {
     return event.scancode();
     return event.keycode();
