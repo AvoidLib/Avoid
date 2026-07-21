@@ -2,45 +2,27 @@
 - 1.21.11 *[LTS]*
 - 26.1 & 26.1.1 & 26.1.2
 - 26.2
-- 26.3-snapshot-2 *[TS]*
+- 26.3-snapshot-5 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
 - NeoForge
 
 **🪵 Changelog:**
-- [MC 26.3] Delta tracking; @_noDeltaTracking
-- [MC 26.1] Keep Entity#getTags() method name
-- [Screen API] Drawer#matrixStack()
-- [ModLoader] [Events] AllModsEnabledEvent
-- [ModLoader] [Events] AllModsLoadedEvent
-- [World API] #areFeaturesEnabled([ids])
-- [ModLoader] Call 'onDisable' on server close
-- [Entity API] #isClient(), #isServer()
-- [Entity Layer API] Skip loading on the server
-- [Entity Renderer Creation API] Skip loading on the server
-- [Entity Type Creation API] 'tick' overridability
-- [Entity Type Creation API] Persist object through operations
-- EntityLayer locating improvements
-- [Entity Renderer Creation API] Call 'finishInit'
-- Entity Renderer Creation API
-- Categorize EntityLayer builders under a new API
-- Entity Layer API
-- [Entity Creation API] Call parent data-related methods in living entities
-- [Entity Creation API] Fix 'ADD' & 'MULTIPLY' attachment operations
-- [Entity Creation API] LivingEntity support
-- [Entity API] #getMainHand()
-- [ModLoader] @AutoEntity annotation
-- Entity Type Creation API
-- [Item Creation API] Correct the return value of Item#toString
-- [Entity API] Fix inverted behaviour of #hasPhysics()
-- [Annotations] [Refactor] @IncompatibleChange
-- [Documentation] The Entity class methods
-- [Entity API] #getNameComponent()
-- [Documentation] The Player class
-- [Documentation] @ClientUnsafe
-- [Documentation] The Entity class
-- [GUI] [RenderTextEvent] Use getters and setters for 'font' & 'component', deprecate direct access
+- [ModLoader] Refactor
+- [ModLoader] Annotation neverremovals
+- [Documentation] For AvoidWrappedLoader
+- [Documentation] Mark AbstractItem constructor as internal
+- Item#newStack
+- [Item Components] Transform REPAIRABLE
+- [Block Creation API] @_air
+- [Block Creation API] Care about 'getMapColor()' override
+- [Documentation] Most block properties
+- [Item Creation API] Bounce restitution
+- [Item Creation API] Fall distance reduction
+- [Block Creation API] Fix MapColor
+- 26.3-snapshot-5 update
+- Remove usings of deprecated items in 26.2 MinecraftMixin
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
