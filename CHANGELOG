@@ -9,20 +9,7 @@
 - NeoForge
 
 **🪵 Changelog:**
-- [ModLoader] Refactor
-- [ModLoader] Annotation neverremovals
-- [Documentation] For AvoidWrappedLoader
-- [Documentation] Mark AbstractItem constructor as internal
-- Item#newStack
-- [Item Components] Transform REPAIRABLE
-- [Block Creation API] @_air
-- [Block Creation API] Care about 'getMapColor()' override
-- [Documentation] Most block properties
-- [Item Creation API] Bounce restitution
-- [Item Creation API] Fall distance reduction
-- [Block Creation API] Fix MapColor
-- 26.3-snapshot-5 update
-- Remove usings of deprecated items in 26.2 MinecraftMixin
+- Correct most missing layers for >=26.1
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
