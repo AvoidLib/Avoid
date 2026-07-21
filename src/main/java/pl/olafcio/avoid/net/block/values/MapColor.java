@@ -66,13 +66,8 @@ public record MapColor(int id, int col) {
     public static final MapColor RAW_IRON = new MapColor(60, 0xd8af93);
     public static final MapColor GLOW_LICHEN = new MapColor(61, 0x7fa796);
 
-    private static final HashMap<Integer, MapColor> MATERIAL_COLORS
-            = new HashMap<>();
-
     public MapColor(int id, int col) {
         this.id = id;
         this.col = col;
-
-        MATERIAL_COLORS.put(id, this);
     }
 }
