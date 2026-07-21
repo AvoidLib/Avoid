@@ -1,0 +1,4 @@
+{
+    item.components().entrySet()
+    item.components().map.entrySet()
+}
