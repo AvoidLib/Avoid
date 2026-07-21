@@ -9,11 +9,6 @@
 }
 
 {
-    Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
-    // Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
-}
-
-{
     var mapColor = instance.getMapColor();
 
     if (block.isAnnotationPresent(_fallDistanceReduction.class))
