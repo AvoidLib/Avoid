@@ -8,9 +8,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pl.olafcio.avoid.AvoidManager;
 import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mods.AvoidModMeta;
+import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 
 import java.util.HashMap;
 import java.util.function.Supplier;
@@ -24,9 +24,9 @@ public class MinecraftMixin {
 
     @Inject(at = @At("HEAD"), method = "close")
     public void close(CallbackInfo ci) {
-        var addons = AvoidManager.getLoadedAddons();
+        var addons = AvoidModLoader.getLoadedAddons();
         for (AvoidModMeta mod : addons)
-            AvoidManager.getLoadedAddonClass(mod)
-                    .onDisable();
+            AvoidModLoader.getLoadedAddonClass(mod)
+                          .onDisable();
     }
 }
