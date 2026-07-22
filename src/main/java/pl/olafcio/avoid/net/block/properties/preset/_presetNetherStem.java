@@ -7,6 +7,15 @@ import java.lang.annotation.*;
 /**
  * Applies the Nether Stem vanilla property preset.<br/>
  * Any direct property setting has priority over it.
+ * <br/><br/>
+ * <b>📐 What it sets (in MC 1.21.11):</b><br/>
+ * <ul>
+ *     <li>{@code .mapColor(mapColor)}</li>
+ *     <li>{@code .instrument(NoteBlockInstrument.BASS)}</li>
+ *     <li>{@code .strength(2.0F)}</li>
+ *     <li>{@code .sound(SoundType.STEM)} <i><u>(internal, currently unachievable otherwise)</u></i></li>
+ *     <li>{@code .noOcclusion()}</li>
+ * </ul>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

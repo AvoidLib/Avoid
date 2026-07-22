@@ -7,6 +7,18 @@ import java.lang.annotation.*;
 /**
  * Applies the Shulker Box vanilla property preset.<br/>
  * Any direct property setting has priority over it.
+ * <br/><br/>
+ * <b>📐 What it sets (in MC 1.21.11):</b><br/>
+ * <ul>
+ *     <li>{@code .mapColor(mapColor)}</li>
+ *     <li>{@code .forceSolidOn()}</li>
+ *     <li>{@code .strength(2.0F)}</li>
+ *     <li>{@code .dynamicShape()} <i><u>(internal, currently unachievable otherwise)</u></i></li>
+ *     <li>{@code .noOcclusion()}</li>
+ *     <li>{@code .isSuffocating(NOT_CLOSED_SHULKER)} <i><u>(internal, currently unachievable otherwise)</u></i></li>
+ *     <li>{@code .isViewBlocking(NOT_CLOSED_SHULKER)} <i><u>(internal, currently unachievable otherwise)</u></i></li>
+ *     <li>{@code .pushReaction(PushReaction.DESTROY)}</li>
+ * </ul>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
