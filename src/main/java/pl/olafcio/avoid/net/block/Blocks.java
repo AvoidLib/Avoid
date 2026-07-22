@@ -167,6 +167,9 @@ public final class Blocks {
         if (mapColor == null)
             Avoid.LOGGER.warn("Overriding the 'getMapColor()' method to return a specific value is heavily recommended");
 
-        return properties.mapColor(mapColor == null ? MapColor.GRASS : MapColor.byId(mapColor.id())).sound(SoundType.GRASS);
+        return properties.mapColor(mapColor == null
+                                        ? properties.mapColor
+                                        : MapColor.byId(mapColor.id()))
+                         .sound(SoundType.GRASS);
     }
 }
