@@ -15,6 +15,9 @@ public final class AvoidWrappedLoader {
     @ApiStatus.Internal
     private AvoidWrappedLoader() {}
 
+    public static boolean isFabric() { return false; }
+    public static boolean isNeoForge() { return true; }
+
     public static Path getGameDir() {
         return FMLLoader.getCurrent().getGameDir();
     }
