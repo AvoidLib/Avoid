@@ -17,10 +17,12 @@ import java.lang.annotation.*;
  *     <li>{@code .lightLevel(CandleBlock.LIGHT_EMISSION)} <i><u>(internal, currently unachievable otherwise)</u></i></li>
  *     <li>{@code .pushReaction(PushReaction.DESTROY)}</li>
  * </ul>
+ * @deprecated Preset usage looks bad in code. I will probably change their idea a bit.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Deprecated(forRemoval = true)
 public @interface _presetCandle {
     /**
      * The name of an Avoid map color.<br/>

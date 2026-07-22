@@ -16,10 +16,12 @@ import java.lang.annotation.*;
  *     <li>{@code .sound(SoundType.STEM)} <i><u>(internal, currently unachievable otherwise)</u></i></li>
  *     <li>{@code .noOcclusion()}</li>
  * </ul>
+ * @deprecated Preset usage looks bad in code. I will probably change their idea a bit.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Deprecated(forRemoval = true)
 public @interface _presetNetherStem {
     /**
      * The name of an Avoid map color.<br/>

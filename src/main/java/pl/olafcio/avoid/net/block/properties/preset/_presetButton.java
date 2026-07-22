@@ -12,8 +12,10 @@ import java.lang.annotation.*;
  *     <li>{@code .strength(0.5F)}</li>
  *     <li>{@code .pushReaction(PushReaction.DESTROY)}</li>
  * </ul>
+ * @deprecated Preset usage looks bad in code. I will probably change their idea a bit.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Deprecated(forRemoval = true)
 public @interface _presetButton {}
