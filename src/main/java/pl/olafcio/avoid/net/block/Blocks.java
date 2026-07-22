@@ -3,7 +3,9 @@ package pl.olafcio.avoid.net.block;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -25,6 +27,7 @@ import pl.olafcio.avoid.net.id.IdentificationNative;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -178,6 +181,21 @@ public final class Blocks {
                          .value()
             ));
 
+        if (block.isAnnotationPresent(_sound.class)) {
+            var soundType = block.getDeclaredAnnotation(_sound.class);
+
+            properties = properties.sound(new SoundType(
+                    soundType.volume(),
+                    soundType.pitch(),
+
+                    createSoundEvent(soundType.breakSound()),
+                    createSoundEvent(soundType.stepSound()),
+                    createSoundEvent(soundType.placeSound()),
+                    createSoundEvent(soundType.hitSound()),
+                    createSoundEvent(soundType.fallSound())
+            ));
+        }
+
         if (block.isAnnotationPresent(_air.class))
             properties = properties.air();
 
@@ -192,6 +210,19 @@ public final class Blocks {
                          .sound(SoundType.GRASS);
     }
 
+    @NotNull
+    private static SoundEvent createSoundEvent(pl.olafcio.avoid.net.block.properties.sound.SoundEvent event) {
+        var loc = event.location();
+
+        return new SoundEvent(
+                Identifier.fromNamespaceAndPath(loc.namespace(), loc.path()),
+                event.fixedRange() == Float.MIN_VALUE
+                        ? Optional.empty()
+                        : Optional.of(event.fixedRange())
+        );
+    }
+
+    @NotNull
     private static MapColor createMapColor(String colorName, int colorRGB) {
         if (!colorName.isEmpty() && MapColorNative.NAME_TO_MAP.containsKey(colorName))
             return MapColorNative.NAME_TO_MAP.get(colorName);
