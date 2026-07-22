@@ -18,6 +18,7 @@ import pl.olafcio.avoid.net.block.properties.*;
 import pl.olafcio.avoid.net.block.properties.preset.*;
 import pl.olafcio.avoid.net.block.values.MapColorNative;
 import pl.olafcio.avoid.net.block.values.NoteBlockInstrumentNative;
+import pl.olafcio.avoid.net.block.values.OffsetTypeNative;
 import pl.olafcio.avoid.net.block.values.PushReactionNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
@@ -168,6 +169,12 @@ public final class Blocks {
         if (block.isAnnotationPresent(_pushReaction.class))
             properties = properties.pushReaction(PushReactionNative.convert(
                     block.getAnnotation(_pushReaction.class)
+                         .value()
+            ));
+
+        if (block.isAnnotationPresent(_offsetType.class))
+            properties = properties.offsetType(OffsetTypeNative.convert(
+                    block.getAnnotation(_offsetType.class)
                          .value()
             ));
 
