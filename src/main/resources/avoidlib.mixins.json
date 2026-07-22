@@ -15,11 +15,13 @@
     "FarmBlockMixin",
     "LivingEntityMixin",
     "LlamaMixin",
+    "MapColorMixin",
     "MinecraftServerMixin",
     "PlayerListMixin",
     "ServerGamePacketListenerImplMixin",
     "ServerPlayerMixin",
     "SmithingMenuMixin",
+    "accessors.IBlocks",
     "accessors.ICommandContext",
     "accessors.ICommandManager"
   ],
