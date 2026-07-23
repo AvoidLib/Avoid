@@ -141,4 +141,8 @@ public final class World {
         return FeatureFlags.REGISTRY.fromNames(Arrays.stream(id).map(IdentificationNative::convert).toList())
                                     .isSubsetOf(level.enabledFeatures());
     }
+
+    public void fizz(BlockPos blockPos) {
+        level.levelEvent(1501, BlockPosNative.convertFrom(blockPos), 0);
+    }
 }
