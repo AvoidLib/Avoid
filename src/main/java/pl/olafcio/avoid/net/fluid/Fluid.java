@@ -2,6 +2,7 @@ package pl.olafcio.avoid.net.fluid;
 
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.net._3d.Direction;
+import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.properties._liquid;
 import pl.olafcio.avoid.net.block.random.RandomProvider;
@@ -22,6 +23,7 @@ import pl.olafcio.avoid.net.world.block_data.BlockData;
 @NullMarked
 public abstract class Fluid {
     public abstract Item getBucket();
+    public abstract Identification getBlockType();
 
     protected static final boolean CALL_SUPER = true;
     protected static final boolean OK = false;

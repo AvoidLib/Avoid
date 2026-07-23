@@ -3,6 +3,7 @@ package pl.olafcio.avoid.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -11,6 +12,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -23,18 +27,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pl.olafcio.avoid.mixininterface.ICamerable;
+import pl.olafcio.avoid.mixininterface.IEntity;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity_server.event.ServerEntityInteractEvent;
+import pl.olafcio.avoid.net.fluid.AvoidFluid;
 import pl.olafcio.avoid.net.fluid.Fluid;
 import pl.olafcio.avoid.net.fluid.FluidsNative;
 import pl.olafcio.avoid.net.fluid.properties._gravity;
+import pl.olafcio.avoid.net.fluid.properties._swimmable;
 import pl.olafcio.avoid.net.player.PlayerNative;
 
 import java.util.stream.Stream;
 
+import static net.minecraft.world.level.material.FlowingFluid.FALLING;
+
 @Mixin(Entity.class)
-public abstract class EntityMixin implements ICamerable {
+public abstract class EntityMixin implements ICamerable, IEntity {
     @Shadow
     public abstract Level level();
 
@@ -73,16 +82,21 @@ public abstract class EntityMixin implements ICamerable {
         if (original.call(instance, tagKey))
             return true;
 
-        for (var entry : FluidsNative.classes.entrySet())
-            if (instance.is(entry.getValue()))
-                if (entry.getKey().isAnnotationPresent(_gravity.class))
-                    return true;
+        for (var entry : FluidsNative.classes.entrySet()) {
+            if (instance.getType().isSame(entry.getValue())) {
+                if (entry.getKey().isAnnotationPresent(_gravity.class)) {
+                    //noinspection resource
+                    return (this.level().getFluidState(blockPosition.above(1)).getType().isSame(entry.getValue())) ||
+                           instance.getValue(FALLING);
+                }
+            }
+        }
 
         return false;
     }
 
     @Unique
-    private net.minecraft.world.level.material.Fluid currentFluid = null;
+    private net.minecraft.world.level.material.Fluid fluidOnEye = null;
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"), method = "updateFluidOnEyes")
     private boolean updateFluidOnEyes__isEyeInFluid(Entity instance, TagKey<net.minecraft.world.level.material.Fluid> tagKey, Operation<Boolean> original) {
@@ -91,7 +105,7 @@ public abstract class EntityMixin implements ICamerable {
 
         for (var entry : FluidsNative.classes.entrySet())
             if (entry.getKey().isAnnotationPresent(_gravity.class))
-                if (this.currentFluid == entry.getValue())
+                if (entry.getValue().isSame(this.fluidOnEye))
                     return true;
 
         return false;
@@ -99,13 +113,19 @@ public abstract class EntityMixin implements ICamerable {
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getTags()Ljava/util/stream/Stream;"), method = "updateFluidOnEyes")
     private Stream<TagKey<net.minecraft.world.level.material.Fluid>> updateFluidOnEyes__setCurrent(FluidState instance, Operation<Stream<TagKey<net.minecraft.world.level.material.Fluid>>> original) {
-        this.currentFluid = instance.getType();
+        this.fluidOnEye = instance.getType();
         return original.call(instance);
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Ljava/util/Set;clear()V", shift = At.Shift.AFTER), method = "updateFluidOnEyes")
     private void updateFluidOnEyes__clear(CallbackInfo ci) {
-        this.currentFluid = null;
+        this.fluidOnEye = null;
+    }
+
+    @Inject(at = @At("HEAD"), method = "updateInWaterStateAndDoWaterCurrentPushing")
+    void updateInWaterStateAndDoWaterCurrentPushing__updateFluidHeightAndDoFluidPushing(CallbackInfo ci) {
+        this.currentFluidHeight = 0;
+        this.currentFluidSwimmable = false;
     }
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"), method = "updateInWaterStateAndDoWaterCurrentPushing")
@@ -113,9 +133,12 @@ public abstract class EntityMixin implements ICamerable {
         if (original.call(instance, tagKey, d))
             return true;
 
-        for (var fluid : FluidsNative.instances.values())
-            if (this.updateFluidHeightAndDoFluidPushing(fluid, 0.014))
+        for (var entry : FluidsNative.classes.entrySet()) {
+            if (this.updateFluidHeightAndDoFluidPushing(entry.getValue(), 0.014)) {
+                this.currentFluidSwimmable = entry.getKey().isAnnotationPresent(_swimmable.class);
                 return true;
+            }
+        }
 
         return false;
     }
@@ -126,8 +149,11 @@ public abstract class EntityMixin implements ICamerable {
     @Shadow public abstract Vec3 getDeltaMovement();
     @Shadow public abstract void setDeltaMovement(Vec3 vec3);
 
+    @Shadow
+    private BlockPos blockPosition;
+
     @Unique
-    private boolean updateFluidHeightAndDoFluidPushing(net.minecraft.world.level.material.Fluid fluid, double d) {
+    private boolean updateFluidHeightAndDoFluidPushing(AvoidFluid fluid, double d) {
         if (this.touchingUnloadedChunk()) {
             return false;
         } else {
@@ -150,7 +176,8 @@ public abstract class EntityMixin implements ICamerable {
                     for (int r = m; r < n; r++) {
                         mutableBlockPos.set(p, q, r);
                         FluidState fluidState = this.level().getFluidState(mutableBlockPos);
-                        if (fluidState.getType().isSame(fluid)) {
+
+                        if (fluid.isSame(fluidState.getType())) {
                             double f = q + fluidState.getHeight(this.level(), mutableBlockPos);
                             if (f >= aABB.minY) {
                                 bl2 = true;
@@ -189,10 +216,41 @@ public abstract class EntityMixin implements ICamerable {
                 this.setDeltaMovement(this.getDeltaMovement().add(vec3));
             }
 
-            // this.fluidHeight.put(tagKey, e);
-            // TODO Implement?
+            this.currentFluidHeight = e;
 
             return bl2;
         }
+    }
+
+    @Unique private double currentFluidHeight = 0;
+    @Unique private boolean currentFluidSwimmable = false;
+
+    @Override
+    public double avoidlib$currentFluidHeight() {
+        return currentFluidHeight;
+    }
+
+    @Override
+    public boolean avoidlib$currentFluidSwimmable() {
+        return currentFluidSwimmable;
+    }
+
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z", ordinal = 0), method = "getBlockSpeedFactor")
+    protected boolean getBlockSpeedFactor__is__water(BlockState blockState, Block block, Operation<Boolean> original) {
+        if (original.call(blockState, block))
+            return true;
+
+        for (var fluid : FluidsNative.instances.keySet()) {
+            if (!fluid.getClass().isAnnotationPresent(_swimmable.class))
+                continue;
+
+            var id = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
+            var id2 = fluid.getBlockType();
+
+            if (id.getNamespace().equals(id2.namespace()) && id.getPath().equals(id2.path()))
+                return true;
+        }
+
+        return false;
     }
 }

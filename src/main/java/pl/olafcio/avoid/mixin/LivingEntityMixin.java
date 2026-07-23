@@ -1,5 +1,8 @@
 package pl.olafcio.avoid.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -10,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import pl.olafcio.avoid.mixininterface.IEntity;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity_server.event.ServerEntityCreateEvent;
@@ -38,5 +42,13 @@ public class LivingEntityMixin {
 
         if (event.isCancelled())
             cir.setReturnValue(null);
+    }
+
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidHeight(Lnet/minecraft/tags/TagKey;)D", ordinal = 1), method = "aiStep")
+    public double aiStep__getFluidHeight(LivingEntity instance, TagKey tagKey, Operation<Double> original) {
+        if (instance.isInWater())
+            return original.call(instance, tagKey);
+
+        return ((IEntity) instance).avoidlib$currentFluidHeight();
     }
 }

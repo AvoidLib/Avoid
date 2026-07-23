@@ -1,5 +1,7 @@
 package pl.olafcio.avoid.net.fluid;
 
+import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.InsideBlockEffectType;
@@ -17,6 +19,8 @@ import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.fluid.inside_block.InsideBlock;
 import pl.olafcio.avoid.net.fluid.inside_block.InsideBlockActionNative;
+import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.Item;
 import pl.olafcio.avoid.net.item.ItemNative;
 import pl.olafcio.avoid.net.world.World;
@@ -37,6 +41,11 @@ public final class NativeFluid extends Fluid {
     @Override
     public Item getBucket() {
         return ItemNative.convert(fluid.getBucket());
+    }
+
+    @Override
+    public Identification getBlockType() {
+        return IdentificationNative.convertFrom(BuiltInRegistries.BLOCK.getKey(((IFluid) fluid).avoid$createLegacyBlock(new net.minecraft.world.level.material.FluidState(fluid, new Reference2ObjectArrayMap<>(), null)).getBlock()));
     }
 
     @Override

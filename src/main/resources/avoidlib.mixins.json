@@ -18,6 +18,7 @@
     "MapColorMixin",
     "MinecraftServerMixin",
     "PlayerListMixin",
+    "PlayerMixin",
     "ServerGamePacketListenerImplMixin",
     "ServerPlayerMixin",
     "SmithingMenuMixin",
