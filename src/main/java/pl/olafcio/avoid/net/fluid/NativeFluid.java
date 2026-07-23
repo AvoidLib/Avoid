@@ -134,4 +134,9 @@ public final class NativeFluid extends Fluid {
                 net.minecraft.core.Direction.valueOf(direction.name())
         );
     }
+
+    @Override
+    public BlockData createBlock(FluidState state) {
+        return BlockDataNative.convertFrom(((IFluid) fluid).avoid$createLegacyBlock(state.state));
+    }
 }

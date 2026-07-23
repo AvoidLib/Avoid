@@ -52,4 +52,9 @@ public interface IFluid {
             net.minecraft.world.level.material.FluidState fluidState,
             net.minecraft.util.RandomSource randomSource
     );
+
+    @Invoker("createLegacyBlock")
+    net.minecraft.world.level.block.state.BlockState avoid$createLegacyBlock(
+            net.minecraft.world.level.material.FluidState fluidState
+    );
 }

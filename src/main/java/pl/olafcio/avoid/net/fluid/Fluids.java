@@ -6,6 +6,8 @@ import net.minecraft.resources.Identifier;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
+import java.util.HashMap;
+
 public final class Fluids {
     private Fluids() {}
 
@@ -27,5 +29,10 @@ public final class Fluids {
 
         fluid.id = IdentificationNative.convertFrom(BuiltInRegistries.FLUID.getKey(source));
         fluid.fluid = source;
+
+        instances.put(fluid.getClass(), source);
     }
+
+    static final HashMap<Class<? extends Fluid>, AvoidFluid> instances
+           = new HashMap<>();
 }

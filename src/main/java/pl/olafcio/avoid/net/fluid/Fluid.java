@@ -3,6 +3,7 @@ package pl.olafcio.avoid.net.fluid;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
+import pl.olafcio.avoid.net.block.properties._liquid;
 import pl.olafcio.avoid.net.block.random.RandomProvider;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.fluid.inside_block.InsideBlock;
@@ -108,6 +109,12 @@ public abstract class Fluid {
     public boolean isReplaceable(FluidState state, World world, BlockPos blockPos, Fluid fluid, Direction direction) {
         return false;
     }
+
+    /**
+     * Creates an instance of the fluid block.<br/>
+     * <b>NOTE:</b> The returned block type must use a fluided {@link _liquid @_liquid} annotation!
+     */
+    public abstract BlockData createBlock(FluidState state);
 
     Identification id;
     net.minecraft.world.level.material.Fluid fluid;

@@ -162,7 +162,7 @@ public abstract sealed class AvoidFluid extends FlowingFluid {
 
     @Override
     protected BlockState createLegacyBlock(FluidState fluidState) {
-        return null;
+        return BlockDataNative.convert(fluid.createBlock(new pl.olafcio.avoid.net.fluid.FluidState(fluidState)));
     }
 
     public static final class Flowing extends AvoidFluid {

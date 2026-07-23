@@ -1,5 +1,7 @@
 package pl.olafcio.avoid.net.block.properties;
 
+import pl.olafcio.avoid.net.fluid.Fluid;
+
 import java.lang.annotation.*;
 
 /**
@@ -11,4 +13,10 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface _liquid {}
+public @interface _liquid {
+    /**
+     * Set this to a fluid class to integrate with the Fluid API.<br/>
+     * It makes the block actually a liquid, not just internally.
+     */
+    Class<? extends Fluid> fluid() default Fluid.class;
+}
