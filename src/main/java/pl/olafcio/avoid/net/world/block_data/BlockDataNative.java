@@ -10,6 +10,10 @@ public final class BlockDataNative {
     @ApiStatus.Internal
     private BlockDataNative() {}
 
+    public static BlockState convert(BlockData data) {
+        return data.state;
+    }
+
     public static BlockData convertFrom(BlockState state) {
         return new BlockData(state);
     }

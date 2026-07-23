@@ -23,7 +23,9 @@
     "SmithingMenuMixin",
     "accessors.IBlocks",
     "accessors.ICommandContext",
-    "accessors.ICommandManager"
+    "accessors.ICommandManager",
+    "accessors.IFlowingFluid",
+    "accessors.IFluid"
   ],
   "client": [
     "BlocksMixin",

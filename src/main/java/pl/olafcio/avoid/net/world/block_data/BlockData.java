@@ -15,7 +15,7 @@ import pl.olafcio.avoid.net.world.WorldNative;
 
 @NeverRemoval
 public final class BlockData extends Block {
-    private final BlockState state;
+    final BlockState state;
 
     BlockData(BlockState state) {
         this.state = state;

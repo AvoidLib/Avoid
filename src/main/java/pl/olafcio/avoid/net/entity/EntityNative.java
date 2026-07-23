@@ -16,6 +16,10 @@ public final class EntityNative {
     @ApiStatus.Internal
     private EntityNative() {}
 
+    public static net.minecraft.world.entity.Entity convert(Entity entity) {
+        return entity.underlyingEntity;
+    }
+
     public static Entity convertFrom(net.minecraft.world.entity.Entity entity) {
         if (entity instanceof Player player)
             return PlayerNative.convertFrom(player);
