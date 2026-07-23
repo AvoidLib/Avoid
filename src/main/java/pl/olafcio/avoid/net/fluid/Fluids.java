@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.material.FluidState;
 import pl.olafcio.avoid.net.fluid.properties._layer;
 import pl.olafcio.avoid.net.fluid.properties.layer.ChunkLayerNative;
 import pl.olafcio.avoid.net.id.Identification;
@@ -42,6 +43,14 @@ public final class Fluids {
 
             ItemBlockRenderTypes.LAYER_BY_FLUID.put(flowing, ChunkLayerNative.convertFrom(klass.getAnnotation(_layer.class)
                                                                                                .value()));
+        }
+
+        for (FluidState fluidState : source.getStateDefinition().getPossibleStates()) {
+            net.minecraft.world.level.material.Fluid.FLUID_STATE_REGISTRY.add(fluidState);
+        }
+
+        for (FluidState fluidState : flowing.getStateDefinition().getPossibleStates()) {
+            net.minecraft.world.level.material.Fluid.FLUID_STATE_REGISTRY.add(fluidState);
         }
     }
 
