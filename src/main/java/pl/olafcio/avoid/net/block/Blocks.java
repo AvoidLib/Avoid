@@ -24,6 +24,8 @@ import pl.olafcio.avoid.net.block.values.OffsetTypeNative;
 import pl.olafcio.avoid.net.block.values.PushReactionNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid.net.world.block_data.BlockData;
+import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -37,6 +39,10 @@ import static net.minecraft.world.level.block.state.BlockBehaviour.simpleCodec;
 public final class Blocks {
     @ApiStatus.Internal
     private Blocks() {}
+
+    public static BlockData create(Identification id) {
+        return BlockDataNative.convertFrom(BuiltInRegistries.BLOCK.getValue(IdentificationNative.convert(id)).defaultBlockState());
+    }
 
     public static void register(Identification blockID, Supplier<? extends pl.olafcio.avoid.net.block.Block> constructor) {
         var id = IdentificationNative.convert(blockID);
