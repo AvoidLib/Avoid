@@ -8,8 +8,8 @@ import java.util.HashMap;
 @Native
 @ApiStatus.Internal
 public final class FluidsNative {
-    static final HashMap<Class<? extends Fluid>, AvoidFluid> classes
-           = new HashMap<>();
+    public static final HashMap<Class<? extends Fluid>, AvoidFluid> classes
+                  = new HashMap<>();
 
     public static final HashMap<Fluid, AvoidFluid> instances
                   = new HashMap<>();
