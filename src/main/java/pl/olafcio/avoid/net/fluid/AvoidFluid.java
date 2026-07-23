@@ -12,6 +12,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -162,7 +163,8 @@ public abstract sealed class AvoidFluid extends FlowingFluid {
 
     @Override
     protected BlockState createLegacyBlock(FluidState fluidState) {
-        return BlockDataNative.convert(fluid.createBlock(new pl.olafcio.avoid.net.fluid.FluidState(fluidState)));
+        return BlockDataNative.convert(fluid.createBlock(new pl.olafcio.avoid.net.fluid.FluidState(fluidState)))
+                              .setValue(LiquidBlock.LEVEL, getLegacyLevel(fluidState));
     }
 
     public static final class Flowing extends AvoidFluid {
