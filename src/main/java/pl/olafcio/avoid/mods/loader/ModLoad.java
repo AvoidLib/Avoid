@@ -35,6 +35,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -42,7 +43,7 @@ import java.util.jar.JarFile;
 
 @ApiStatus.Internal
 public final class ModLoad
-             implements LXItem, LXScreenOverwrite, LXCommand, LXSelector, LXEntity
+             implements LXItem, LXScreenOverwrite, LXCommand, LXSelector, LXEntity, LXFluid
 {
     @ApiStatus.Internal
     private static final Gson GSON
@@ -161,14 +162,17 @@ public final class ModLoad
     }
 
     private void scanAllClasses(JarFile jar, URLClassLoader classLoader, String id, List<String> skipClasses)
-            throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+            throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
+    {
+        var classes = new HashMap<Class<?>, AtomicBoolean>();
         var entries = jar.entries();
+
         do {
             var el = entries.nextElement();
             var fn = el.getRealName();
             if (!el.isDirectory() && fn.endsWith(".class")) {
                 var className = fn.substring(0, fn.length() - 6)
-                        .replace("/", ".");
+                                  .replace("/", ".");
 
                 if (skipClasses.contains(className)) {
                     Avoid.LOGGER.debug("Skipping class: {}", className);
@@ -184,87 +188,99 @@ public final class ModLoad
                     continue;
                 }
 
-                if (registerScreenOverwrite(klass, className))
-                    continue;
-
-                if (registerAutoCommand(klass))
-                    continue;
-
                 var usedAutoID = new AtomicBoolean(false);
 
-                if (registerAutoBlock(id, klass, className, usedAutoID))
+                if (registerAutoFluid(id, klass, className, usedAutoID))
                     continue;
 
-                if (registerAutoItem(id, klass, className, usedAutoID))
-                    continue;
-
-                if (registerAutoEntity(id, klass, className, usedAutoID))
-                    continue;
-
-                if (!usedAutoID.get() && klass.isAnnotationPresent(AutoID.class))
-                    Avoid.LOGGER.warn("@AutoID not applicable ({})", className);
-
-                var usedAutoChar = new AtomicBoolean(false);
-
-                if (registerAutoSelector(id, klass, className, usedAutoChar))
-                    continue;
-
-                if (!usedAutoChar.get() && klass.isAnnotationPresent(AutoChar.class))
-                    Avoid.LOGGER.warn("@AutoChar not applicable ({})", className);
-
-                EventManager.collect(klass);
-
-                var methods = klass.getDeclaredMethods();
-                for (var m : methods) {
-                    if (m.isAnnotationPresent(KeyHandler.class)) {
-                        var name = klass.getName() + "::" + m.getName();
-
-                        if (!Modifier.isStatic(m.getModifiers())) {
-                            Avoid.LOGGER.warn("@KeyHandler not applicable to non-static method ({})", name);
-                            continue;
-                        }
-
-                        m.setAccessible(true);
-
-                        Avoid.LOGGER.debug("Registering keyhandler '{}'", name);
-
-                        var annotation = m.getAnnotation(KeyHandler.class);
-
-                        var key = annotation.value();
-                        var trigger = annotation.trigger() == KeyHandler.Trigger.PRESS
-                                ? ClientKeyPressEvent.class
-                                : ClientKeyReleaseEvent.class;
-
-                        if (m.getParameterCount() == 0)
-                            EventManager.register(trigger, event -> {
-                                if (event.getKey() == key) {
-                                    try {
-                                        m.invoke(null);
-                                    } catch (IllegalAccessException e) {
-                                        throw new RuntimeException("Failed to call keyhandler (%s)".formatted(name), e);
-                                    } catch (InvocationTargetException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
-                            });
-                        else if (m.getParameterCount() == 1 && m.getParameters()[0].getType() == trigger)
-                            EventManager.register(trigger, event -> {
-                                if (event.getKey() == key) {
-                                    try {
-                                        m.invoke(null, event);
-                                    } catch (IllegalAccessException e) {
-                                        throw new RuntimeException("Failed to call keyhandler (%s)".formatted(name), e);
-                                    } catch (InvocationTargetException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
-                            });
-                        else
-                            Avoid.LOGGER.error("Failed to understand keyhandler's parameters ('{}'): {}", name, m.getParameters());
-                    }
-                }
+                classes.put(klass, usedAutoID);
             }
         } while (entries.hasMoreElements());
+
+        for (var entry : classes.entrySet()) {
+            var klass = entry.getKey();
+            var className = klass.getName();
+
+            if (registerScreenOverwrite(klass, className))
+                continue;
+
+            if (registerAutoCommand(klass))
+                continue;
+
+            var usedAutoID = entry.getValue();
+
+            if (registerAutoBlock(id, klass, className, usedAutoID))
+                continue;
+
+            if (registerAutoItem(id, klass, className, usedAutoID))
+                continue;
+
+            if (registerAutoEntity(id, klass, className, usedAutoID))
+                continue;
+
+            if (!usedAutoID.get() && klass.isAnnotationPresent(AutoID.class))
+                Avoid.LOGGER.warn("@AutoID not applicable ({})", className);
+
+            var usedAutoChar = new AtomicBoolean(false);
+
+            if (registerAutoSelector(id, klass, className, usedAutoChar))
+                continue;
+
+            if (!usedAutoChar.get() && klass.isAnnotationPresent(AutoChar.class))
+                Avoid.LOGGER.warn("@AutoChar not applicable ({})", className);
+
+            EventManager.collect(klass);
+
+            var methods = klass.getDeclaredMethods();
+            for (var m : methods) {
+                if (m.isAnnotationPresent(KeyHandler.class)) {
+                    var name = klass.getName() + "::" + m.getName();
+
+                    if (!Modifier.isStatic(m.getModifiers())) {
+                        Avoid.LOGGER.warn("@KeyHandler not applicable to non-static method ({})", name);
+                        continue;
+                    }
+
+                    m.setAccessible(true);
+
+                    Avoid.LOGGER.debug("Registering keyhandler '{}'", name);
+
+                    var annotation = m.getAnnotation(KeyHandler.class);
+
+                    var key = annotation.value();
+                    var trigger = annotation.trigger() == KeyHandler.Trigger.PRESS
+                            ? ClientKeyPressEvent.class
+                            : ClientKeyReleaseEvent.class;
+
+                    if (m.getParameterCount() == 0)
+                        EventManager.register(trigger, event -> {
+                            if (event.getKey() == key) {
+                                try {
+                                    m.invoke(null);
+                                } catch (IllegalAccessException e) {
+                                    throw new RuntimeException("Failed to call keyhandler (%s)".formatted(name), e);
+                                } catch (InvocationTargetException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        });
+                    else if (m.getParameterCount() == 1 && m.getParameters()[0].getType() == trigger)
+                        EventManager.register(trigger, event -> {
+                            if (event.getKey() == key) {
+                                try {
+                                    m.invoke(null, event);
+                                } catch (IllegalAccessException e) {
+                                    throw new RuntimeException("Failed to call keyhandler (%s)".formatted(name), e);
+                                } catch (InvocationTargetException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        });
+                    else
+                        Avoid.LOGGER.error("Failed to understand keyhandler's parameters ('{}'): {}", name, m.getParameters());
+                }
+            }
+        }
     }
 
     private boolean registerAutoBlock(String id, Class<?> klass, String className, AtomicBoolean usedAutoID)
