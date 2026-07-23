@@ -17,3 +17,4 @@ accessible field net/minecraft/client/model/geom/ModelPart cubes Ljava/util/List
 accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
 accessible field net/minecraft/world/level/block/state/BlockBehaviour$Properties mapColor Ljava/util/function/Function;
 accessible method net/minecraft/world/level/material/MapColor <init> (II)V
+accessible field net/minecraft/client/renderer/ItemBlockRenderTypes LAYER_BY_FLUID Ljava/util/Map;
