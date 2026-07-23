@@ -48,7 +48,7 @@ public interface LXFluid {
             var constructor = klass.getDeclaredConstructor();
             var idstr = id + ":" + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, simpleName);
 
-            Avoid.LOGGER.debug("Registering entity '{}'", idstr);
+            Avoid.LOGGER.debug("Registering fluid '{}'", idstr);
 
             try {
                 Fluids.register(Identification.of(idstr), (Fluid) constructor.newInstance());
