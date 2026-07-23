@@ -6,18 +6,22 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import pl.olafcio.avoid.mixininterface.ICamerable;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity_server.event.ServerEntityInteractEvent;
+import pl.olafcio.avoid.net.fluid.Fluid;
 import pl.olafcio.avoid.net.player.PlayerNative;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin {
+public abstract class EntityMixin implements ICamerable {
     @Shadow
     public abstract Level level();
 
@@ -35,5 +39,19 @@ public abstract class EntityMixin {
             if (event.isCancelled())
                 cir.setReturnValue(InteractionResult.SUCCESS);
         }
+    }
+
+    @Unique
+    @Nullable
+    private Fluid avoidFluid = null;
+
+    @Override
+    public Fluid avoidlib$inAvoidFluid() {
+        return avoidFluid;
+    }
+
+    @Override
+    public void avoidlib$inAvoidFluid(Fluid value) {
+        avoidFluid = value;
     }
 }

@@ -10,8 +10,6 @@ import pl.olafcio.avoid.net.fluid.properties.layer.ChunkLayerNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
-import java.util.HashMap;
-
 public final class Fluids {
     private Fluids() {}
 
@@ -34,7 +32,8 @@ public final class Fluids {
         fluid.id = IdentificationNative.convertFrom(BuiltInRegistries.FLUID.getKey(source));
         fluid.fluid = source;
 
-        instances.put(fluid.getClass(), source);
+        FluidsNative.classes.put(fluid.getClass(), source);
+        FluidsNative.instances.put(fluid, source);
 
         var klass = fluid.getClass();
         if (klass.isAnnotationPresent(_layer.class)) {
@@ -53,7 +52,4 @@ public final class Fluids {
             net.minecraft.world.level.material.Fluid.FLUID_STATE_REGISTRY.add(fluidState);
         }
     }
-
-    static final HashMap<Class<? extends Fluid>, AvoidFluid> instances
-           = new HashMap<>();
 }

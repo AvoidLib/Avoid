@@ -30,13 +30,16 @@
   "client": [
     "BlocksMixin",
     "BuiltInPackSourceMixin",
+    "CameraMixin",
     "ChatHudMixin",
     "ChatScreenMixin",
+    "GameRendererMixin",
     "GuiGraphicsMixin",
     "KeyboardMixin",
     "LayerDefinitionsMixin",
     "MinecraftMixin",
-    "ScreenMixin"
+    "ScreenMixin",
+    "accessors.IFogRenderer"
   ],
   "injectors": {
     "defaultRequire": 1
