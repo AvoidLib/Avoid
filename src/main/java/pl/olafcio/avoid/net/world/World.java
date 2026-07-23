@@ -3,6 +3,7 @@ package pl.olafcio.avoid.net.world;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.ImproperEnvironment;
@@ -144,5 +145,14 @@ public final class World {
 
     public void fizz(BlockPos blockPos) {
         level.levelEvent(1501, BlockPosNative.convertFrom(blockPos), 0);
+    }
+
+    public void drop(BlockPos blockPosT) {
+        var blockPos = BlockPosNative.convertFrom(blockPosT);
+
+        var blockState = level.getBlockState(blockPos);
+        var blockEntity = blockState.hasBlockEntity() ? this.level.getBlockEntity(blockPos) : null;
+
+        Block.dropResources(blockState, this.level, blockPos, blockEntity);
     }
 }
