@@ -43,7 +43,7 @@ import java.util.jar.JarFile;
 
 @ApiStatus.Internal
 public final class ModLoad
-             implements LXItem, LXScreenOverwrite, LXCommand, LXSelector, LXEntity, LXFluid
+             implements LXItem, LXScreenOverwrite, LXCommand, LXSelector, LXEntity, LXFluid, LXFog
 {
     @ApiStatus.Internal
     private static final Gson GSON
@@ -216,6 +216,9 @@ public final class ModLoad
                 continue;
 
             if (registerAutoEntity(id, klass, className, usedAutoID))
+                continue;
+
+            if (registerAutoFog(id, klass, className))
                 continue;
 
             if (!usedAutoID.get() && klass.isAnnotationPresent(AutoID.class))
