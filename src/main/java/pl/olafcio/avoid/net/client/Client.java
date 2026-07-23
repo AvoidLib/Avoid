@@ -1,19 +1,14 @@
 package pl.olafcio.avoid.net.client;
 
-import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import pl.olafcio.avoid.mixininterface.IScreen;
-import pl.olafcio.avoid.net.chat.converter.COFromNative;
-import pl.olafcio.avoid.net.client.server.PlayerEntry;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.net.client.server.ServerEntry;
 import pl.olafcio.avoid.net.player.Player;
-import pl.olafcio.avoid.net.player.PlayerNative;
-import pl.olafcio.avoid.net.screen.AvoidScreen;
-import pl.olafcio.avoid.net.screen.NativeScreenNative;
 import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.world.World;
-import pl.olafcio.avoid.net.world.WorldNative;
 
 /**
  * A class containing static utilities from the client.<br/>
@@ -27,85 +22,84 @@ public final class Client {
     @Nullable
     @ApiStatus.Experimental
     public static Player getPlayer() {
-        var player = Minecraft.getInstance().player;
-        if (player == null)
-            return null;
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
 
-        return PlayerNative.convertFrom(player);
+        return ClientNative.getPlayer();
     }
 
     @Nullable
     @ApiStatus.Experimental
     public static World getWorld() {
-        var level = Minecraft.getInstance().level;
-        if (level == null)
-            return null;
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
 
-        return WorldNative.make(level);
+        return ClientNative.getWorld();
     }
 
     @Nullable
     @ApiStatus.Experimental
     public static Screen getScreen() {
-        var screen = Minecraft.getInstance().screen;
-        if (screen == null)
-            return null;
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
 
-        return screen instanceof AvoidScreen avoid
-                ? avoid.screen
-                : NativeScreenNative.create((IScreen) screen);
+        return ClientNative.getScreen();
     }
 
     @ApiStatus.Experimental
     public static int getFPS() {
-        return Minecraft.getInstance().getFps();
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+
+        return ClientNative.getFPS();
     }
 
     @ApiStatus.Experimental
     public static boolean isWireframe() {
-        return Minecraft.getInstance().wireframe;
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+
+        return ClientNative.isWireframe();
     }
 
     @ApiStatus.Experimental
     public static boolean isWindowActive() {
-        return Minecraft.getInstance().isWindowActive();
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+
+        return ClientNative.isWindowActive();
     }
 
     @ApiStatus.Experimental
     public static boolean inSingleplayer() {
-        return Minecraft.getInstance().isLocalServer();
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+
+        return ClientNative.inSingleplayer();
     }
 
     @ApiStatus.Experimental
     public static boolean inSingleplayerPublished() {
-        return Minecraft.getInstance().isSingleplayer();
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+
+        return ClientNative.inSingleplayerPublished();
     }
 
     @ApiStatus.Experimental
     public static boolean isNameBanned() {
-        return Minecraft.getInstance().isNameBanned();
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+
+        return ClientNative.isNameBanned();
     }
 
     @Nullable
     @ApiStatus.Experimental
     public static ServerEntry getCurrentServer() {
-        var entry = Minecraft.getInstance().getCurrentServer();
-        if (entry == null)
-            return null;
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
 
-        return new ServerEntry(
-                entry.ip,
-                entry.name,
-                COFromNative.from(entry.motd),
-                entry.ping,
-                entry.playerList.stream().map(COFromNative::from).toList(),
-                entry.protocol,
-                COFromNative.from(entry.status),
-                COFromNative.from(entry.version),
-                entry.players == null ? null : entry.players.max(),
-                entry.players == null ? null : entry.players.online(),
-                entry.players == null ? null : entry.players.sample().stream().map(obj -> new PlayerEntry(obj.id(), obj.name())).toList(),
-                entry.getIconBytes()
-        );
+        return ClientNative.getCurrentServer();
     }
 }
