@@ -13,7 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
@@ -36,6 +35,7 @@ import pl.olafcio.avoid.net.fluid.Fluid;
 import pl.olafcio.avoid.net.fluid.FluidsNative;
 import pl.olafcio.avoid.net.fluid.properties._gravity;
 import pl.olafcio.avoid.net.fluid.properties._swimmable;
+import pl.olafcio.avoid.net.fluid.properties._unbreatheable;
 import pl.olafcio.avoid.net.player.PlayerNative;
 
 import java.util.stream.Stream;
@@ -126,6 +126,7 @@ public abstract class EntityMixin implements ICamerable, IEntity {
     void updateInWaterStateAndDoWaterCurrentPushing__updateFluidHeightAndDoFluidPushing(CallbackInfo ci) {
         this.currentFluidHeight = 0;
         this.currentFluidSwimmable = false;
+        this.currentFluidUnbreathable = false;
     }
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"), method = "updateInWaterStateAndDoWaterCurrentPushing")
@@ -136,6 +137,8 @@ public abstract class EntityMixin implements ICamerable, IEntity {
         for (var entry : FluidsNative.classes.entrySet()) {
             if (this.updateFluidHeightAndDoFluidPushing(entry.getValue(), 0.014)) {
                 this.currentFluidSwimmable = entry.getKey().isAnnotationPresent(_swimmable.class);
+                this.currentFluidUnbreathable = entry.getKey().isAnnotationPresent(_unbreatheable.class);
+
                 return true;
             }
         }
@@ -224,6 +227,7 @@ public abstract class EntityMixin implements ICamerable, IEntity {
 
     @Unique private double currentFluidHeight = 0;
     @Unique private boolean currentFluidSwimmable = false;
+    @Unique private boolean currentFluidUnbreathable = false;
 
     @Override
     public double avoidlib$currentFluidHeight() {
@@ -233,6 +237,11 @@ public abstract class EntityMixin implements ICamerable, IEntity {
     @Override
     public boolean avoidlib$currentFluidSwimmable() {
         return currentFluidSwimmable;
+    }
+
+    @Override
+    public boolean avoidlib$currentFluidUnbreathable() {
+        return currentFluidUnbreathable;
     }
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z", ordinal = 0), method = "getBlockSpeedFactor")
