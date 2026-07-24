@@ -1,11 +1,13 @@
 package pl.olafcio.avoid.mods.loader;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Function;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.*;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModMeta;
@@ -13,20 +15,15 @@ import pl.olafcio.avoid.mods.ModEnvironment;
 import pl.olafcio.avoid.mods.annotation_processor.*;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.mods.loader.mod.*;
+import pl.olafcio.avoid.mods.loader.mod_method.LXKeyHandler;
 import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.Blocks;
-import pl.olafcio.avoid.net.command.Command;
-import pl.olafcio.avoid.net.command.CommandManager;
-import pl.olafcio.avoid.net.entity.custom.Entity;
-import pl.olafcio.avoid.net.entity_selector.EntitySelector;
-import pl.olafcio.avoid.net.entity_selector.EntitySelectors;
-import pl.olafcio.avoid.net.entity_type.EntityTypes;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.item.custom.Item;
+import pl.olafcio.avoid.net.keyboard.bind.Category;
+import pl.olafcio.avoid.net.keyboard.bind.Keybinds;
+import pl.olafcio.avoid.net.keyboard.event.ClientKeyEvent;
 import pl.olafcio.avoid.net.keyboard.event.ClientKeyPressEvent;
 import pl.olafcio.avoid.net.keyboard.event.ClientKeyReleaseEvent;
-import pl.olafcio.avoid.net.screen.Screen;
-import pl.olafcio.avoid.net.screen.Screens;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -43,7 +40,8 @@ import java.util.jar.JarFile;
 
 @ApiStatus.Internal
 public final class ModLoad
-             implements LXItem, LXScreenOverwrite, LXCommand, LXSelector, LXEntity, LXFluid, LXFog
+             implements LXItem, LXScreenOverwrite, LXCommand, LXSelector, LXEntity, LXFluid, LXFog,
+                        LXKeyHandler
 {
     @ApiStatus.Internal
     private static final Gson GSON
@@ -237,50 +235,7 @@ public final class ModLoad
             var methods = klass.getDeclaredMethods();
             for (var m : methods) {
                 if (m.isAnnotationPresent(KeyHandler.class)) {
-                    var name = klass.getName() + "::" + m.getName();
-
-                    if (!Modifier.isStatic(m.getModifiers())) {
-                        Avoid.LOGGER.warn("@KeyHandler not applicable to non-static method ({})", name);
-                        continue;
-                    }
-
-                    m.setAccessible(true);
-
-                    Avoid.LOGGER.debug("Registering keyhandler '{}'", name);
-
-                    var annotation = m.getAnnotation(KeyHandler.class);
-
-                    var key = annotation.value();
-                    var trigger = annotation.trigger() == KeyHandler.Trigger.PRESS
-                            ? ClientKeyPressEvent.class
-                            : ClientKeyReleaseEvent.class;
-
-                    if (m.getParameterCount() == 0)
-                        EventManager.register(trigger, event -> {
-                            if (event.getKey() == key) {
-                                try {
-                                    m.invoke(null);
-                                } catch (IllegalAccessException e) {
-                                    throw new RuntimeException("Failed to call keyhandler (%s)".formatted(name), e);
-                                } catch (InvocationTargetException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        });
-                    else if (m.getParameterCount() == 1 && m.getParameters()[0].getType() == trigger)
-                        EventManager.register(trigger, event -> {
-                            if (event.getKey() == key) {
-                                try {
-                                    m.invoke(null, event);
-                                } catch (IllegalAccessException e) {
-                                    throw new RuntimeException("Failed to call keyhandler (%s)".formatted(name), e);
-                                } catch (InvocationTargetException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        });
-                    else
-                        Avoid.LOGGER.error("Failed to understand keyhandler's parameters ('{}'): {}", name, m.getParameters());
+                    registerKeyHandler(klass, m);
                 }
             }
         }

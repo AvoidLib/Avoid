@@ -26,9 +26,26 @@ public @interface KeyHandler {
     int value();
 
     Trigger trigger() default Trigger.PRESS;
+    Category category() default Category.__NOT_SET__;
+
+    String displayName() default "";
 
     enum Trigger {
         PRESS,
         RELEASE
+    }
+
+    enum Category {
+        @ApiStatus.Internal
+        __NOT_SET__,
+
+        MOVEMENT,
+        MISC,
+        MULTIPLAYER,
+        GAMEPLAY,
+        INVENTORY,
+        CREATIVE,
+        SPECTATOR,
+        DEBUG
     }
 }
