@@ -79,6 +79,8 @@ dependencies {
 
             implementation "net.fabricmc:fabric-loader:${project.loader_version}"
         }
+
+        compileOnly "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     }
 }
 
@@ -162,6 +164,8 @@ publishMods {
         else
             minecraftVersions.addAll(new Gson().fromJson((String) project.minecraft_version_list, JsonArray.class).asList().collect { e -> e.getAsString() })
 
+        if (!neoforge)
+            requires("fabric-api")
 //        setAdditionalFiles(files(("omit_mappings" !in project.getProperties() ? remapSourcesJar.archiveFile : sourcesJar.archiveFile).get().asFile.toPath()))
     }
 }
