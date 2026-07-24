@@ -500,6 +500,33 @@ public abstract class Entity {
     }
 
     /**
+     * Returns the current portal use cooldown.<br/><br/>
+     * <b>NOTE:</b> This may not report the correct value on the client.<br/>
+     * &ensp;&ensp;&emsp;&nbsp;&emsp;But who knows.
+     */
+    public int getPortalCooldown() {
+        return underlyingEntity.getPortalCooldown();
+    }
+
+    /**
+     * Sets the portal use cooldown to the default dimension value.<br/><br/>
+     * <b>NOTE:</b> This may not do much on the client.<br/>
+     * &ensp;&ensp;&emsp;&nbsp;&emsp;But who knows.
+     */
+    public void setPortalCooldown() {
+        underlyingEntity.setPortalCooldown();
+    }
+
+    /**
+     * Sets the portal use cooldown to the given value.<br/><br/>
+     * <b>NOTE:</b> This may not do much on the client.<br/>
+     * &ensp;&ensp;&emsp;&nbsp;&emsp;But who knows.
+     */
+    public void setPortalCooldown(int value) {
+        underlyingEntity.setPortalCooldown(value);
+    }
+
+    /**
      * Returns whether the entity object is client-sided.
      */
     public boolean isClient() {
