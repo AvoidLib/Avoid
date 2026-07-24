@@ -6,6 +6,7 @@ java_version=21
 
 # neoforge-1.21.11
 ! neoforge
+! neoforge-1.21.11_compat
 : 1.21.11
 neoforge=1
 neo_version=21.11.42
@@ -21,8 +22,8 @@ omit_mappings=1
 
 # neoforge-26.1
 ! neoforge
-: 26.1
 ! neoforge-26.1_compat
+: 26.1
 neoforge=1
 neo_version=26.1.0.19-beta
 
@@ -37,8 +38,7 @@ omit_mappings=1
 
 # neoforge-26.2
 ! neoforge
-: 26.1
-: 26.2
+; 26.2
 ! neoforge-26.2_compat
 neoforge=1
 neo_version=26.2.0.8-beta
