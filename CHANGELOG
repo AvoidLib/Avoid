@@ -1,6 +1,7 @@
 **🧧 Supported Versions:**
 - 1.21.11 *[LTS]*
-- 26.1 & 26.1.1 & 26.1.2
+- 26.1 *[LTS]*
+- 26.1.1 & 26.1.2
 - 26.2
 - 26.3-snapshot-5 *[TS]*
 
@@ -9,7 +10,37 @@
 - NeoForge
 
 **🪵 Changelog:**
-- Correct most missing layers for >=26.1
+- Client namespace
+- Keyboard mapping on 26.3
+- Mark ClientKeyEvent#getKey() as a constant from the Keyboard class
+- AvoidWrappedLoader#{isFabric, isNeoForge}
+- [Documentation] All ModLoader annotations
+- [Block Creation API] 'mapColor' version default instead of GRASS
+- [Block Creation API] Presets
+- [Documentation] Block Creation Presets - exact descriptions
+- [Block Creation API] @_offsetType property
+- [Block Creation API] @_sound property
+- Mark Block Creation API presets as a test idea
+- [World API] #fizz([BlockPos])
+- [World API] #drop([BlockPos])
+- Fluid API
+- `Block Creation API` integration with `Fluid API`
+- Blocks#create
+- [ModLoader] @AutoFluid annotation
+- [Fluid API] @_layer property
+- [Server Player] Player Update Abilities Event
+- Fog API *(+ with Fluid API integration)*
+- [ModLoader] @AutoFog annotation
+- Identification#is([string] namespace, [string] path)
+- [Fluid API] @_gravity property
+- [Fluid API] @_swimmable property
+- [Documentation] All fluid properties
+- [Fluid API] @_unbreathable property
+- Identification#hashCode
+- Resource overriding
+- [Fluid API] #getColor([BlockPos], [BlockData], [FluidState], [int] avgWater)
+- [Fluid API] @_model property
+- [Documentation] Most fluid methods
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
