@@ -26,14 +26,13 @@ public abstract class Command {
         // If you just want it simple:
         // > executor.sendMessage(Components.literal("§cIncorrect syntax"));
 
-        // TODO: Use translation instead
-
         if (param != null && param.sendSyntaxException(executor, ctx))
             return;
 
-        executor.sendMessage(Components.literal("§cUnknown or incomplete command. See below for error")
+        executor.sendMessage(Components.translationFallback("command.unknown.command", "Unknown or incomplete command. See below for error")
+                                       .color(Colors.RED)
                                        .append(Components.literal("\n§7" + ctx.getInput()))
-                                       .append(Components.literal("<--[HERE]").color(Colors.RED).italic(true)));
+                                       .append(Components.translationFallback("command.context.here", "<--[HERE]").color(Colors.RED).italic(true)));
     }
 
     /**
