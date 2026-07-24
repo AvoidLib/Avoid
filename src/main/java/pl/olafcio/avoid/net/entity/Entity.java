@@ -16,6 +16,8 @@ import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.WorldNative;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
+import pl.olafcio.avoid.net.world.vect3.Vect3;
+import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 import java.util.Set;
 import java.util.UUID;
@@ -524,6 +526,15 @@ public abstract class Entity {
      */
     public void setPortalCooldown(int value) {
         underlyingEntity.setPortalCooldown(value);
+    }
+
+    /**
+     * Sets the entity's velocity/delta movement.<br/><br/>
+     * This basically means the entity will tween to the position specified by {@code vel}.<br/>
+     * It, of course, cannot go through walls.
+     */
+    public void setVelocity(Vect3 vel) {
+        underlyingEntity.setDeltaMovement(Vect3Native.convertFrom(vel));
     }
 
     /**
