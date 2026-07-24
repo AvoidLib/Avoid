@@ -1,0 +1,34 @@
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
+
+{
+    for (var fluid : FluidsNative.instances.keySet())
+    for (var entry : FluidsNative.instances.entrySet())
+}
+
+{
+    avoidTrackers.put(fluid, new EntityFluidInteraction.Tracker());
+    avoidTrackers.put(entry.getKey(), new EntityFluidInteraction.Tracker(BuiltInRegistries.FLUID.wrapAsHolder(entry.getValue())));
+}
+
+{
+    public void update(Entity entity, boolean ignoreCurrent, CallbackInfo ci) {
+    public void update(Entity entity, boolean ignoreCurrent, CallbackInfoReturnable<Boolean> cir) {
+}
+
+{
+    @Inject(at = @At("HEAD"), method = "getTrackerFor", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "getOrCreateTrackerFor", cancellable = true)
+}
+
+{
+    public void getTrackerFor(net.minecraft.world.level.material.Fluid fluid, CallbackInfoReturnable<EntityFluidInteraction.Tracker> cir) {
+    public void getTrackerFor(Holder<net.minecraft.world.level.material.Fluid> fluidType, CallbackInfoReturnable<EntityFluidInteraction.Tracker> cir) {
+}
+
+{
+    if (fluid instanceof AvoidFluid avoid)
+
+    var fluid = fluidType.value();
+    if (fluid instanceof AvoidFluid avoid)
+}

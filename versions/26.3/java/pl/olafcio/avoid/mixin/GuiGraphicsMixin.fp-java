@@ -1,0 +1,13 @@
+{
+    import com.mojang.blaze3d.pipeline.RenderPipeline;
+    // import com.mojang.blaze3d.pipeline.RenderPipeline;
+}
+
+{
+    @ModifyVariable(at = @At("HEAD"), method = {"innerBlit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIFFFFI)V", "blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIIIIII)V"}, argsOnly = true)
+    @ModifyVariable(at = @At("HEAD"), method = {
+            "innerBlit(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIFFFFI)V",
+            "blitSprite(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIII)V",
+            "blitSprite(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIIIIII)V"
+    }, argsOnly = true)
+}
