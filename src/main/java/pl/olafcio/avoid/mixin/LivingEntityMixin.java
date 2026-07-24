@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pl.olafcio.avoid.mixininterface.IEntity;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.entity.EntityNative;
+import pl.olafcio.avoid.net.entity.event.ClientEntityCreateEvent;
 import pl.olafcio.avoid.net.entity_server.event.ServerEntityCreateEvent;
 import pl.olafcio.avoid.net.entity_server.event.ServerEntityDropEvent;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
@@ -34,7 +35,12 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(at = @At("CTOR_HEAD"), method = "<init>")
     public void init(EntityType<?> entityType, Level level, CallbackInfo ci) {
-        if (!level.isClientSide())
+        if (level.isClientSide())
+            EventManager.fire(new ClientEntityCreateEvent(
+                    EntityTypeNative.convertFrom(entityType),
+                    EntityNative.convertFrom((LivingEntity) (Object) this)
+            ));
+        else
             EventManager.fire(new ServerEntityCreateEvent(
                     EntityTypeNative.convertFrom(entityType),
                     EntityNative.convertFrom((LivingEntity) (Object) this)
