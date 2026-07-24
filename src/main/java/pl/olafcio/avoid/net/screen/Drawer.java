@@ -35,6 +35,12 @@ import pl.olafcio.avoid.net.util.Coloring;
 
 import java.util.Objects;
 
+/**
+ * A class used to draw on a screen.
+ * <br/><br/>
+ * To apply matrix transformations, such as scaling, rotating or offset,
+ * use {@link Drawer#matrixStack()}.
+ */
 @NeverRemoval
 public final class Drawer {
     GuiGraphics graphics;
@@ -42,6 +48,10 @@ public final class Drawer {
     @ApiStatus.Internal
     Drawer() {}
 
+    /**
+     * Draws a horizontal line, from X {@code x} to {@code x2},
+     * on Y {@code y}, using the RGBA color {@code color}.
+     */
     public void horizontalLine(int x, int y, int x2, int color) {
         if (x2 < x) {
             int m = x;
@@ -52,6 +62,10 @@ public final class Drawer {
         this.fill(x, y, x2 + 1, y + 1, color);
     }
 
+    /**
+     * Draws a vertical line, from Y {@code y} to {@code y2},
+     * on X {@code x}, using the RGBA color {@code color}.
+     */
     public void verticalLine(int x, int y, int y2, int color) {
         if (y2 < y) {
             int m = y;
@@ -62,11 +76,22 @@ public final class Drawer {
         this.fill(x, y + 1, x + 1, y2, color);
     }
 
+    /**
+     * Enables cropping.
+     * <br/><br/>
+     * This limits the further drawing region to a rectangle with the specified coordinates.<br/>
+     * To disable this effect, use {@link Drawer#disableCrop()}.
+     */
     public void enableCrop(int x, int y, int x2, int y2) {
         ScreenRectangle screenRectangle = (new ScreenRectangle(x, y, x2 - x, y2 - y)).transformAxisAligned(this.graphics.pose());
         this.graphics.scissorStack.push(screenRectangle);
     }
 
+    /**
+     * Disables cropping.
+     * <br/><br/>
+     * For more info, see: {@link Drawer#enableCrop}
+     */
     public void disableCrop() {
         this.graphics.scissorStack.pop();
     }
@@ -75,10 +100,16 @@ public final class Drawer {
         return this.graphics.scissorStack.containsPoint(x, y);
     }
 
+    /**
+     * Fills a region on the screen with the specified RGB color.
+     */
     public void fill(int x, int y, int x2, int y2, int color) {
         this.fill(RenderLayers.GUI, x, y, x2, y2, color);
     }
 
+    /**
+     * Fills a region on the screen, at the given layer, with the specified RGB color.
+     */
     public void fill(RenderLayer renderLayer, int x, int y, int x2, int y2, int color) {
         if (x < x2) {
             int n = x;
@@ -95,6 +126,9 @@ public final class Drawer {
         this.submitColoredRectangle(renderLayer, TextureSetup.noTexture(), x, y, x2, y2, color, (Integer)null);
     }
 
+    /**
+     * Draws a vertical gradient on the screen, in the specified region, with the specified RGB colors.
+     */
     public void fillGradient(int x, int y, int x2, int y2, int colorTop, int colorBottom) {
         this.submitColoredRectangle(RenderLayers.GUI, TextureSetup.noTexture(), x, y, x2, y2, colorTop, colorBottom);
     }
@@ -119,6 +153,10 @@ public final class Drawer {
         ));
     }
 
+    /**
+     * Draws a text highlight region on the screen.<br/>
+     * <b>NOTE:</b> This uses width and height, instead of x2 and y2!
+     */
     public void drawTextHighlight(int x, int y, int w, int h, boolean invert) {
         if (invert) {
             this.fill(RenderLayers.GUI_INVERT, x, y, w, h, -1);
@@ -208,6 +246,10 @@ public final class Drawer {
         this.drawString(font, component, i, j, l, true);
     }
 
+    /**
+     * Renders a stroked rectangle on the screen using the given RGB color.<br/>
+     * <b>NOTE:</b> This uses width and height, instead of x2 and y2!
+     */
     public void renderOutline(int x, int y, int w, int h, int color) {
         this.fill(x, y, x + w, y + 1, color);
         this.fill(x, y + h - 1, x + w, y + h, color);
@@ -219,22 +261,37 @@ public final class Drawer {
         return textureAtlasSprite.contents().getAdditionalMetadata(GuiMetadataSection.TYPE).orElse(GuiMetadataSection.DEFAULT).scaling();
     }
 
+    /**
+     * Renders a texture on the screen.
+     */
     public void blit(RenderLayer renderLayer, Identification id, int i, int j, float f, float g, int k, int l, int m, int n, int o) {
         this.blit(renderLayer, id, i, j, f, g, k, l, k, l, m, n, o);
     }
 
+    /**
+     * Renders a texture on the screen.
+     */
     public void blit(RenderLayer renderLayer, Identification id, int i, int j, float f, float g, int k, int l, int m, int n) {
         this.blit(renderLayer, id, i, j, f, g, k, l, k, l, m, n);
     }
 
+    /**
+     * Renders a texture on the screen.
+     */
     public void blit(RenderLayer renderLayer, Identification id, int i, int j, float f, float g, int k, int l, int m, int n, int o, int p) {
         this.blit(renderLayer, id, i, j, f, g, k, l, m, n, o, p, -1);
     }
 
+    /**
+     * Renders a texture on the screen.
+     */
     public void blit(RenderLayer renderLayer, Identification id, int i, int j, float f, float g, int k, int l, int m, int n, int o, int p, int q) {
         this.innerBlit(renderLayer, id, i, i + k, j, j + l, (f + 0.0F) / (float)o, (f + (float)m) / (float)o, (g + 0.0F) / (float)p, (g + (float)n) / (float)p, q);
     }
 
+    /**
+     * Renders a texture on the screen.
+     */
     public void blit(Identification id, int i, int j, int k, int l, float f, float g, float h, float m) {
         this.innerBlit(RenderLayers.GUI_TEXTURED, id, i, k, j, l, f, g, h, m, -1);
     }
@@ -258,6 +315,27 @@ public final class Drawer {
         ));
     }
 
+    /**
+     * Returns a screen pose object (a stack of matrix transformations).<br/>
+     * The changes to it reflect to the actual screen pose.
+     * <br/><br/>
+     * For example, when you want to implement scrolling,<br/>
+     * this is the method you want to use. Example:<br/>
+     * <pre>
+     * {@code
+     * private int scroll = 0;
+     *
+     * public void render(Drawer drawer, int mouseX, int mouseY) {
+     *     drawer.matrixStack().pushMatrix();
+     *     drawer.matrixStack().translate(0, scroll);
+     *     // render your stuff here
+     *     drawer.matrixStack().popMatrix();
+     * }
+     *
+     * // here an onscroll method that adds 1 to the 'scroll' field
+     * }
+     * </pre>
+     */
     @ApiStatus.Experimental
     public Matrix3x2fStack matrixStack() {
         return this.graphics.pose();
