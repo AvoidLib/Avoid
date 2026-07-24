@@ -26,7 +26,8 @@
     "accessors.ICommandContext",
     "accessors.ICommandManager",
     "accessors.IFlowingFluid",
-    "accessors.IFluid"
+    "accessors.IFluid",
+    "accessors.ILevel"
   ],
   "client": [
     "BlocksMixin",

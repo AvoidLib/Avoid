@@ -10,6 +10,7 @@ import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.Untested;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.mixin.accessors.ILevel;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.entity.Entity;
@@ -21,6 +22,7 @@ import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
 
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @SuppressWarnings("ClassCanBeRecord")
 @NeverRemoval
@@ -54,6 +56,14 @@ public final class World {
     @ApiStatus.Experimental
     public Entity getEntity(UUID uuid) {
         return EntityNative.convertFrom(level.getEntity(uuid));
+    }
+
+    @ApiStatus.Experimental
+    public void eachEntity(Consumer<Entity> callback) {
+        var iter = ((ILevel) level).avoid$getEntities().getAll();
+
+        for (var e : iter)
+            callback.accept(EntityNative.convertFrom(e));
     }
 
     @ApiStatus.Experimental
