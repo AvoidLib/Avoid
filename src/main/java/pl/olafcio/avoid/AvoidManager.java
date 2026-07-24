@@ -29,6 +29,7 @@ public final class AvoidManager {
      * @deprecated Use {@link AvoidModLoader#getLoadedAddon} instead.
      */
     @Nullable
+    @Deprecated(forRemoval = true, since = "v1.10")
     public static AvoidModMeta getLoadedAddon(String id) {
         return AvoidModLoader.getLoadedAddon(id);
     }
@@ -37,6 +38,7 @@ public final class AvoidManager {
      * @deprecated Use {@link AvoidModLoader#getLoadedAddonClass} instead.
      */
     @UnknownNullability
+    @Deprecated(forRemoval = true, since = "v1.10")
     public static AvoidMod getLoadedAddonClass(AvoidModMeta meta) {
         return AvoidModLoader.getLoadedAddonClass(meta);
     }
@@ -45,6 +47,7 @@ public final class AvoidManager {
      * @deprecated Use {@link AvoidModLoader#getLoadedAddonFile} instead.
      */
     @UnknownNullability
+    @Deprecated(forRemoval = true, since = "v1.10")
     public static Path getLoadedAddonFile(AvoidModMeta meta) {
         return AvoidModLoader.getLoadedAddonFile(meta);
     }
@@ -52,6 +55,7 @@ public final class AvoidManager {
     /**
      * @deprecated Use {@link AvoidModLoader#getLoadedAddons} instead.
      */
+    @Deprecated(forRemoval = true, since = "v1.10")
     public static AvoidModMeta[] getLoadedAddons() {
         return AvoidModLoader.getLoadedAddons();
     }
