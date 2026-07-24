@@ -41,6 +41,7 @@
     "LayerDefinitionsMixin",
     "LiquidBlockRendererMixin",
     "MinecraftMixin",
+    "OptionsMixin",
     "ScreenMixin",
     "ToastManagerMixin",
     "accessors.IFogRenderer"
