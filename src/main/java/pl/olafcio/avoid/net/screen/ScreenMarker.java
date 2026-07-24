@@ -107,7 +107,25 @@ public enum ScreenMarker {
                 } else if (con.getParameterCount() == 1 && IScreen.class.isAssignableFrom(con.getParameters()[0].getType())) {
                     con.setAccessible(true);
 
-                    return new NativeScreen((IScreen) con.newInstance(AvoidLibClient.mc.screen));
+                    var previous = AvoidLibClient.mc.screen;
+                    if (screen.isInstance(previous)) {
+                        var fields = screen.getDeclaredFields();
+                        for (var f : fields) {
+                            if (f.getType() == net.minecraft.client.gui.screens.Screen.class) {
+                                try {
+                                    f.setAccessible(true);
+
+                                    var prev = (net.minecraft.client.gui.screens.Screen) f.get(previous);
+                                    if (prev != null)
+                                        previous = prev;
+
+                                    break;
+                                } catch (Exception ignored) {}
+                            }
+                        }
+                    }
+
+                    return new NativeScreen((IScreen) con.newInstance(previous));
                 }
             }
 
