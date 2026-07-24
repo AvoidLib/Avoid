@@ -1,0 +1,4 @@
+{
+    EntityNative.convertFrom(entity)
+    EntityNative.convertFromTry(entity)
+}

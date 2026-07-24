@@ -24,6 +24,37 @@ public final class EntityNative {
         return convertFrom(entity, null);
     }
 
+    public static Entity convertFromTry(net.minecraft.world.entity.Entity entity) {
+        int id;
+
+        try                 { id = entity.getId(); }
+        catch (Exception e) { id = 0;              }
+
+        if (entity instanceof Player player)
+            return PlayerNative.convertFrom(player, id);
+        else if (entity instanceof IAvoidEntity wrapper)
+            return wrapper.getAvoidEntity();
+
+        BaseComponent<?> name;
+
+        try {
+            name = COFromNative.from(entity.getName());
+        } catch (Exception e) {
+            name = null;
+        }
+
+        return new Entity(
+                id,
+                EntityTypeNative.convertFrom(entity.getType()),
+                Vect3Native.convert(entity.position()),
+                Vect3Native.convert(entity.getDeltaMovement()),
+                entity.getUUID(),
+                entity.getStringUUID(),
+                name,
+                entity
+        ) {};
+    }
+
     public static Entity convertFrom(net.minecraft.world.entity.Entity entity, Integer idOverride) {
         if (entity instanceof Player player)
             return PlayerNative.convertFrom(player, idOverride);
