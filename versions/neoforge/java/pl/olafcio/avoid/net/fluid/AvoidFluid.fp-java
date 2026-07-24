@@ -1,0 +1,10 @@
+import net.neoforged.neoforge.common.CommonHooks
+import net.neoforged.neoforge.fluids.FluidType
+
+{
+    public abstract sealed class AvoidFluid extends FlowingFluid {
+    public abstract sealed class AvoidFluid extends FlowingFluid {
+        public FluidType getFluidType() {
+            return CommonHooks.getVanillaFluidType(net.minecraft.world.level.material.Fluids.WATER);
+        }
+}
