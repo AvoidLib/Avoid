@@ -258,4 +258,18 @@ public class Player extends Entity implements Executor {
                         .getChatVisibility()
         );
     }
+
+    /**
+     * Returns the player's abilities.<br/>
+     * The changes done in the returned object reflect to the player state.
+     * <br/><br/>
+     * <b>NOTE:</b> Keep in mind that updating these abilities client-side:
+     * <ol>
+     *     <li>may notify the server (and trigger the anticheat),</li>
+     *     <li>may not affect the server state.</li>
+     * </ol>
+     */
+    public Abilities getAbilities() {
+        return new Abilities(__cast(net.minecraft.world.entity.player.Player.class).getAbilities());
+    }
 }
