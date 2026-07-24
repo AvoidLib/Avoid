@@ -42,6 +42,7 @@
     "LiquidBlockRendererMixin",
     "MinecraftMixin",
     "ScreenMixin",
+    "ToastManagerMixin",
     "accessors.IFogRenderer"
   ],
   "injectors": {
