@@ -3,3 +3,8 @@
     accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
     accessible field net/minecraft/core/component/DataComponentPatch map Lit/unimi/dsi/fastutil/objects/Reference2ObjectMap;
 }
+
+{
+    accessible method net/minecraft/world/entity/EntityFluidInteraction$Tracker <init> ()V
+    accessible method net/minecraft/world/entity/EntityFluidInteraction$Tracker <init> (Lnet/minecraft/core/Holder;)V
+}
