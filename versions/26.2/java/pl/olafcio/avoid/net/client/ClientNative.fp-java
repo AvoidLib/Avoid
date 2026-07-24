@@ -1,0 +1,14 @@
+{
+    Minecraft.getInstance().screen
+    Minecraft.getInstance().gui.screen()
+}
+
+{
+    return Minecraft.getInstance().isSingleplayer();
+
+    var server = Minecraft.getInstance().getSingleplayerServer();
+    if (server == null)
+        return false;
+
+    return server.isPublished();
+}
