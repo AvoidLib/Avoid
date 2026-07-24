@@ -1,29 +1,23 @@
-package pl.olafcio.avoid.net.entity.event;
+package pl.olafcio.avoid.net.entity_server.event;
 
 import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.mods.event.UncancellableEventException;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 
-public final class EntityVelocityEvent extends Cancellable {
+public final class ServerEntityVelocityEvent extends Cancellable {
     private final Entity entity;
     private IVect3 velocity;
 
     private boolean veloChanged = false;
 
-    private final boolean cancellable;
-
-    public EntityVelocityEvent(Entity entity, IVect3 velocity, boolean cancellable) {
+    public ServerEntityVelocityEvent(Entity entity, IVect3 velocity) {
         this.entity = entity;
         this.velocity = velocity;
-        this.cancellable = cancellable;
     }
 
     @Override
     public void setCancelled(boolean value) {
-        if (!cancellable)
-            throw new UncancellableEventException("Cancelling velocity events of remote entities from the client is not permitted");
-
         super.setCancelled(value);
     }
 

@@ -33,8 +33,9 @@ import pl.olafcio.avoid.mixininterface.ICamerable;
 import pl.olafcio.avoid.mixininterface.IEntity;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.entity.EntityNative;
-import pl.olafcio.avoid.net.entity.event.EntityVelocityEvent;
+import pl.olafcio.avoid.net.entity.event.ClientEntityVelocityEvent;
 import pl.olafcio.avoid.net.entity_server.event.ServerEntityInteractEvent;
+import pl.olafcio.avoid.net.entity_server.event.ServerEntityVelocityEvent;
 import pl.olafcio.avoid.net.fluid.AvoidFluid;
 import pl.olafcio.avoid.net.fluid.Fluid;
 import pl.olafcio.avoid.net.fluid.FluidsNative;
@@ -271,19 +272,32 @@ public abstract class EntityMixin implements ICamerable, IEntity {
 
     @WrapOperation(at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;deltaMovement:Lnet/minecraft/world/phys/Vec3;", opcode = Opcodes.PUTFIELD), method = "setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V")
     public void setDeltaMovement(Entity instance, Vec3 value, Operation<Void> original) {
-        var event = new EntityVelocityEvent(
-                EntityNative.convertFrom(instance),
-                Vect3Native.convert(value),
-                (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT && EntityUtil.isLocal(instance)) ||
-                          !instance.level().isClientSide()
-        );
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT) {
+            var event = new ClientEntityVelocityEvent(
+                    EntityNative.convertFrom(instance),
+                    Vect3Native.convert(value),
+                    EntityUtil.isLocal(instance)
+            );
 
-        EventManager.fire(event);
+            EventManager.fire(event);
 
-        if (event.isCancelled())
-            return;
-        else if (event.isVelocityChanged())
-            value = Vect3Native.convertFrom(event.getVelocity());
+            if (event.isCancelled())
+                return;
+            else if (event.isVelocityChanged())
+                value = Vect3Native.convertFrom(event.getVelocity());
+        } else if (!instance.level().isClientSide()) {
+            var event = new ServerEntityVelocityEvent(
+                    EntityNative.convertFrom(instance),
+                    Vect3Native.convert(value)
+            );
+
+            EventManager.fire(event);
+
+            if (event.isCancelled())
+                return;
+            else if (event.isVelocityChanged())
+                value = Vect3Native.convertFrom(event.getVelocity());
+        }
 
         original.call(instance, value);
     }
