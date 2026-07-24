@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.client.server.ServerEntry;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.screen.Screen;
@@ -14,7 +15,7 @@ import pl.olafcio.avoid.net.world.World;
  * A class containing static utilities from the client.<br/>
  * All methods throw an error when called on the server.
  */
-@ApiStatus.Experimental
+@NeverRemoval
 public final class Client {
     @ApiStatus.Internal
     private Client() {}
@@ -29,7 +30,7 @@ public final class Client {
     }
 
     @Nullable
-    @ApiStatus.Experimental
+    @NeverRemoval
     public static Player getPlayer() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
@@ -38,7 +39,7 @@ public final class Client {
     }
 
     @Nullable
-    @ApiStatus.Experimental
+    @NeverRemoval
     public static World getWorld() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot Client#getWorld() on the server");
@@ -47,7 +48,7 @@ public final class Client {
     }
 
     @Nullable
-    @ApiStatus.Experimental
+    @NeverRemoval
     public static Screen getScreen() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot Client#getScreen() on the server");
@@ -55,7 +56,7 @@ public final class Client {
         return ClientNative.getScreen();
     }
 
-    @ApiStatus.Experimental
+    @NeverRemoval
     public static int getFPS() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot Client#getFPS() on the server");
