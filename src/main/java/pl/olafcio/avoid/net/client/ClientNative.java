@@ -23,6 +23,11 @@ final class ClientNative {
     private ClientNative() {}
 
     @Nullable
+    static String getLauncherBrand() {
+        return Minecraft.getLauncherBrand();
+    }
+
+    @Nullable
     static Player getPlayer() {
         var player = Minecraft.getInstance().player;
         if (player == null)

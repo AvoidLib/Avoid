@@ -21,6 +21,15 @@ public final class Client {
 
     @Nullable
     @ApiStatus.Experimental
+    public static String getLauncherBrand()  {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getLauncherBrand() on the server");
+
+        return ClientNative.getLauncherBrand();
+    }
+
+    @Nullable
+    @ApiStatus.Experimental
     public static Player getPlayer() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
