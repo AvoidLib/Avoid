@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
@@ -535,6 +536,16 @@ public abstract class Entity {
      */
     public void setVelocity(Vect3 vel) {
         underlyingEntity.setDeltaMovement(Vect3Native.convertFrom(vel));
+    }
+
+    /**
+     * Sets whether the entity has its gravity disabled.
+     * <br/><br/>
+     * Using this method on the client may crash your game, be a no-op or cause desync issues.
+     */
+    @ClientUnsafe
+    public void setNoGravity(boolean value) {
+        underlyingEntity.setNoGravity(value);
     }
 
     /**
