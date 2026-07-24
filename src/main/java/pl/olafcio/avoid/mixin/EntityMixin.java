@@ -18,6 +18,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -25,10 +26,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.mixinclass.EntityUtil;
 import pl.olafcio.avoid.mixininterface.ICamerable;
 import pl.olafcio.avoid.mixininterface.IEntity;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.entity.EntityNative;
+import pl.olafcio.avoid.net.entity.event.EntityVelocityEvent;
 import pl.olafcio.avoid.net.entity_server.event.ServerEntityInteractEvent;
 import pl.olafcio.avoid.net.fluid.AvoidFluid;
 import pl.olafcio.avoid.net.fluid.Fluid;
@@ -37,6 +42,7 @@ import pl.olafcio.avoid.net.fluid.properties._gravity;
 import pl.olafcio.avoid.net.fluid.properties._swimmable;
 import pl.olafcio.avoid.net.fluid.properties._unbreatheable;
 import pl.olafcio.avoid.net.player.PlayerNative;
+import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 import java.util.stream.Stream;
 
@@ -261,5 +267,24 @@ public abstract class EntityMixin implements ICamerable, IEntity {
         }
 
         return false;
+    }
+
+    @WrapOperation(at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;deltaMovement:Lnet/minecraft/world/phys/Vec3;", opcode = Opcodes.PUTFIELD), method = "setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V")
+    public void setDeltaMovement(Entity instance, Vec3 value, Operation<Void> original) {
+        var event = new EntityVelocityEvent(
+                EntityNative.convertFrom(instance),
+                Vect3Native.convert(value),
+                (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT && EntityUtil.isLocal(instance)) ||
+                          !instance.level().isClientSide()
+        );
+
+        EventManager.fire(event);
+
+        if (event.isCancelled())
+            return;
+        else if (event.isVelocityChanged())
+            value = Vect3Native.convertFrom(event.getVelocity());
+
+        original.call(instance, value);
     }
 }
