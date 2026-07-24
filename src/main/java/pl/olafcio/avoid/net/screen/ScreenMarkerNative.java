@@ -1,17 +1,23 @@
 package pl.olafcio.avoid.net.screen;
 
 import net.minecraft.client.gui.screens.*;
+import net.minecraft.client.gui.screens.achievement.StatsScreen;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
+import net.minecraft.client.gui.screens.debug.DebugOptionsScreen;
+import net.minecraft.client.gui.screens.debug.GameModeSwitcherScreen;
 import net.minecraft.client.gui.screens.dialog.ServerLinksDialogScreen;
 import net.minecraft.client.gui.screens.inventory.*;
+import net.minecraft.client.gui.screens.multiplayer.CodeOfConductScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.multiplayer.SafetyScreen;
+import net.minecraft.client.gui.screens.multiplayer.ServerReconfigScreen;
 import net.minecraft.client.gui.screens.options.*;
 import net.minecraft.client.gui.screens.options.controls.ControlsScreen;
 import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
-import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
-import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
+import net.minecraft.client.gui.screens.reporting.*;
+import net.minecraft.client.gui.screens.telemetry.TelemetryInfoScreen;
+import net.minecraft.client.gui.screens.worldselection.*;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
 
@@ -81,5 +87,26 @@ public enum ScreenMarkerNative {
         LOOKUP.put(MINECART_COMMAND_BLOCK_EDIT, MinecartCommandBlockEditScreen.class);
         LOOKUP.put(GRINDSTONE, GrindstoneScreen.class);
         LOOKUP.put(JIGSAW_BLOCK_EDIT, JigsawBlockEditScreen.class);
+        LOOKUP.put(DEATH, DeathScreen.class);
+        LOOKUP.put(IN_BED_CHAT, InBedChatScreen.class);
+        LOOKUP.put(BACKUP_CONFIRM, BackupConfirmScreen.class);
+        LOOKUP.put(DEBUG_OPTIONS, DebugOptionsScreen.class);
+        LOOKUP.put(REPORT_PLAYER, ReportPlayerScreen.class);
+        LOOKUP.put(REPORT_SELECT, ChatSelectionScreen.class);
+        LOOKUP.put(REPORT_NICKNAME, NameReportScreen.class);
+        LOOKUP.put(REPORT_SKIN, SkinReportScreen.class);
+        LOOKUP.put(REPORT, ChatReportScreen.class);
+        LOOKUP.put(REPORT_REASON_SELECTION, ReportReasonSelectionScreen.class);
+        LOOKUP.put(STATISTICS, StatsScreen.class);
+        LOOKUP.put(TELEMETRY_INFO, TelemetryInfoScreen.class);
+        LOOKUP.put(EDIT_GAME_RULES, EditGameRulesScreen.class);
+        LOOKUP.put(EDIT_WORLD, EditWorldScreen.class);
+        LOOKUP.put(EXPERIMENTS, ExperimentsScreen.class);
+        LOOKUP.put(EXPERIMENTAL_CONFIRM, ConfirmExperimentalFeaturesScreen.class);
+        LOOKUP.put(OPTIMIZE_WORLD, OptimizeWorldScreen.class);
+        LOOKUP.put(CODE_OF_CONDUCT, CodeOfConductScreen.class);
+        LOOKUP.put(RECONFIGURATING, ServerReconfigScreen.class);
+        LOOKUP.put(GAME_MODE_SWITCHER, GameModeSwitcherScreen.class);
+        LOOKUP.put(ONLINE_OPTIONS, OnlineOptionsScreen.class);
     }
 }
