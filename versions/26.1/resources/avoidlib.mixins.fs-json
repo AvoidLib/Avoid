@@ -1,0 +1,4 @@
+this['client'].append("FluidStateModelSetMixin")
+this['client'].remove("LiquidBlockRendererMixin")
+
+this['mixins'].append("EntityFluidInteractionMixin")

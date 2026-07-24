@@ -1,0 +1,36 @@
+import pl.olafcio.avoid.mixininterface.IEntityFluidInteraction;
+import pl.olafcio.avoid.net.fluid.FluidsNative;
+import pl.olafcio.avoid.net.fluid.properties._unbreatheable;
+
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z", ordinal = 0), method = "baseTick")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Ljava/lang/Object;)Z", ordinal = 0), method = "baseTick")
+}
+
+{
+    public boolean baseTick__isBubbleColumn(BlockState instance, Block block, Operation<Boolean> original) {
+    public boolean baseTick__isBubbleColumn(BlockState instance, Object block, Operation<Boolean> original) {
+}
+
+{
+    return ((IEntity) instance).avoidlib$currentFluidHeight();
+    // return ((IEntity) instance).avoidlib$currentFluidHeight();
+}
+
+{
+    if (instance.isInWater())
+
+    var interaction = (IEntityFluidInteraction) this.fluidInteraction;
+
+    for (var fluid : FluidsNative.instances.keySet())
+        if (interaction.avoid$isInFluid(fluid))
+            return interaction.avoid$getFluidHeight(fluid);
+}
+
+{
+    if (((IEntity) this).avoidlib$currentFluidUnbreathable() && this.isUnderWater()) {
+
+    for (var fluid : FluidsNative.instances.keySet())
+        if (fluid.getClass().isAnnotationPresent(_unbreatheable.class))
+            if (((IEntityFluidInteraction) this.fluidInteraction).avoid$isEyeInFluid(fluid)) {
+}

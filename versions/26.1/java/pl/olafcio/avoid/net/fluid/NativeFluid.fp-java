@@ -1,0 +1,6 @@
+import net.minecraft.world.level.block.state.properties.Property;
+
+{
+    FluidState(fluid, new Reference2ObjectArrayMap<>(), null)
+    FluidState(fluid, new Property<?>[]{}, new Comparable<?>[]{})
+}
