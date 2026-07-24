@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mixininterface.IMinecraft;
@@ -56,8 +57,11 @@ public class MinecraftMixin implements IMinecraft {
     @Inject(at = @At("HEAD"), method = "close")
     public void close(CallbackInfo ci) {
         var addons = AvoidModLoader.getLoadedAddons();
-        for (AvoidModMeta mod : addons)
-            AvoidModLoader.getLoadedAddonClass(mod)
-                        .onDisable();
+        for (AvoidModMeta mod : addons) {
+            var main = AvoidModLoader.getLoadedAddonClass(mod);
+
+            main.onDisable();
+            main.onClientDisable();
+        }
     }
 }

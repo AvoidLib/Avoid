@@ -13,4 +13,10 @@ public abstract class AvoidMod {
 
     @ApiStatus.Experimental
     public void onDisable() {}
+
+    @ApiStatus.Experimental
+    public void onClientDisable() {}
+
+    @ApiStatus.Experimental
+    public void onServerDisable() {}
 }

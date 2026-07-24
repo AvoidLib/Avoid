@@ -28,12 +28,14 @@ public class MinecraftServerMixin {
 
     @Inject(at = @At("HEAD"), method = "stopServer")
     public void stopServer(CallbackInfo ci) {
-        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
-            return;
-
         var addons = AvoidModLoader.getLoadedAddons();
-        for (AvoidModMeta mod : addons)
-            AvoidModLoader.getLoadedAddonClass(mod)
-                        .onDisable();
+        for (AvoidModMeta mod : addons) {
+            var main = AvoidModLoader.getLoadedAddonClass(mod);
+
+            if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+                main.onDisable();
+
+            main.onServerDisable();
+        }
     }
 }
