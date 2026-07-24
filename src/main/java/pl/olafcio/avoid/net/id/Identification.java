@@ -33,6 +33,11 @@ public record Identification(String namespace, String path) {
     }
 
     @ApiStatus.Experimental
+    public String toString(String separator) {
+        return namespace + "." + path;
+    }
+
+    @ApiStatus.Experimental
     public int hashCode() {
         return 31 * this.namespace.hashCode() + this.path.hashCode();
     }
