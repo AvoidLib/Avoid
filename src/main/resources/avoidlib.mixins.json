@@ -38,6 +38,7 @@
     "GuiGraphicsMixin",
     "KeyboardMixin",
     "LayerDefinitionsMixin",
+    "LiquidBlockRendererMixin",
     "MinecraftMixin",
     "ScreenMixin",
     "accessors.IFogRenderer"

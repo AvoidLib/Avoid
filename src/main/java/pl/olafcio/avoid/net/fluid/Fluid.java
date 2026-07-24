@@ -25,6 +25,10 @@ public abstract class Fluid {
     public abstract Item getBucket();
     public abstract Identification getBlockType();
 
+    public int getColor(BlockPos blockPos, BlockData blockData, FluidState fluidState, int avgWater) {
+        return avgWater;
+    }
+
     protected static final boolean CALL_SUPER = true;
     protected static final boolean OK = false;
 
