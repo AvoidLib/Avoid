@@ -34,14 +34,18 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(at = @At("CTOR_HEAD"), method = "<init>")
     public void init(EntityType<?> entityType, Level level, CallbackInfo ci) {
-        EventManager.fire(new ServerEntityCreateEvent(
-                EntityTypeNative.convertFrom(entityType),
-                EntityNative.convertFrom((LivingEntity) (Object) this)
-        ));
+        if (!level.isClientSide())
+            EventManager.fire(new ServerEntityCreateEvent(
+                    EntityTypeNative.convertFrom(entityType),
+                    EntityNative.convertFrom((LivingEntity) (Object) this)
+            ));
     }
 
     @Inject(at = @At("HEAD"), method = "drop", cancellable = true)
     public void drop(ItemStack itemStack, boolean bl, boolean bl2, CallbackInfoReturnable<ItemEntity> cir) {
+        if (this.level().isClientSide())
+            return;
+
         var event = new ServerEntityDropEvent(
                 EntityNative.convertFrom((LivingEntity) (Object) this),
                 ItemStackNative.convertFrom(itemStack)
