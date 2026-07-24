@@ -22,9 +22,22 @@ import pl.olafcio.avoid.net.world.block_data.BlockData;
  */
 @NullMarked
 public abstract class Fluid {
+    /**
+     * Returns the bucket item of the fluid.<br/>
+     * For example, Minecraft's water would return {@code Item.of("minecraft:water")}.
+     */
     public abstract Item getBucket();
+
+    /**
+     * Returns the block ID designated to the fluid.<br/>
+     * For example, Minecraft's water would return {@code new Identification("minecraft", "water")}.
+     */
     public abstract Identification getBlockType();
 
+    /**
+     * Returns the overlay color of the fluid.<br/>
+     * To disable it, return {@code 0xffffff} <i>(white)</i>.
+     */
     public int getColor(BlockPos blockPos, BlockData blockData, FluidState fluidState, int avgWater) {
         return avgWater;
     }
@@ -44,6 +57,10 @@ public abstract class Fluid {
         return CALL_SUPER;
     }
 
+    /**
+     * Returns whether the fluid should be randomly ticked.<br/>
+     * If this returns {@code false}, {@link Fluid#randomTick this.randomTick} is never called.
+     */
     public boolean isRandomlyTicking() {
         return false;
     }
@@ -112,6 +129,9 @@ public abstract class Fluid {
         return true;
     }
 
+    /**
+     * Returns whether another fluid can replace this one.
+     */
     public boolean isReplaceable(FluidState state, World world, BlockPos blockPos, Fluid fluid, Direction direction) {
         return false;
     }
