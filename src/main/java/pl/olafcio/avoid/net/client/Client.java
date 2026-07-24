@@ -32,7 +32,7 @@ public final class Client {
     @ApiStatus.Experimental
     public static World getWorld() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
-            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+            throw new ImproperEnvironment("Cannot Client#getWorld() on the server");
 
         return ClientNative.getWorld();
     }
@@ -41,7 +41,7 @@ public final class Client {
     @ApiStatus.Experimental
     public static Screen getScreen() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
-            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+            throw new ImproperEnvironment("Cannot Client#getScreen() on the server");
 
         return ClientNative.getScreen();
     }
@@ -49,7 +49,7 @@ public final class Client {
     @ApiStatus.Experimental
     public static int getFPS() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
-            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+            throw new ImproperEnvironment("Cannot Client#getFPS() on the server");
 
         return ClientNative.getFPS();
     }
@@ -57,7 +57,7 @@ public final class Client {
     @ApiStatus.Experimental
     public static boolean isWireframe() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
-            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+            throw new ImproperEnvironment("Cannot Client#isWireframe() on the server");
 
         return ClientNative.isWireframe();
     }
@@ -65,7 +65,7 @@ public final class Client {
     @ApiStatus.Experimental
     public static boolean isWindowActive() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
-            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+            throw new ImproperEnvironment("Cannot Client#isWindowActive() on the server");
 
         return ClientNative.isWindowActive();
     }
@@ -73,7 +73,7 @@ public final class Client {
     @ApiStatus.Experimental
     public static boolean inSingleplayer() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
-            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+            throw new ImproperEnvironment("Cannot Client#inSingleplayer() on the server");
 
         return ClientNative.inSingleplayer();
     }
@@ -81,7 +81,7 @@ public final class Client {
     @ApiStatus.Experimental
     public static boolean inSingleplayerPublished() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
-            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+            throw new ImproperEnvironment("Cannot Client#inSingleplayerPublished() on the server");
 
         return ClientNative.inSingleplayerPublished();
     }
@@ -89,7 +89,7 @@ public final class Client {
     @ApiStatus.Experimental
     public static boolean isNameBanned() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
-            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+            throw new ImproperEnvironment("Cannot Client#isNameBanned() on the server");
 
         return ClientNative.isNameBanned();
     }
@@ -98,7 +98,7 @@ public final class Client {
     @ApiStatus.Experimental
     public static ServerEntry getCurrentServer() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
-            throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
+            throw new ImproperEnvironment("Cannot Client#getCurrentServer() on the server");
 
         return ClientNative.getCurrentServer();
     }
