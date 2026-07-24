@@ -17,3 +17,13 @@ accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/M
 accessible field net/minecraft/world/level/block/state/BlockBehaviour$Properties mapColor Ljava/util/function/Function;
 accessible method net/minecraft/world/level/material/MapColor <init> (II)V
 accessible field net/minecraft/client/renderer/ItemBlockRenderTypes LAYER_BY_FLUID Ljava/util/Map;
+
+# Session
+accessible field net/minecraft/client/User accessToken Ljava/lang/String;
+mutable field net/minecraft/client/User accessToken Ljava/lang/String;
+
+accessible field net/minecraft/client/User name Ljava/lang/String;
+mutable field net/minecraft/client/User name Ljava/lang/String;
+
+accessible field net/minecraft/client/User uuid Ljava/util/UUID;
+mutable field net/minecraft/client/User uuid Ljava/util/UUID;

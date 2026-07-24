@@ -22,3 +22,13 @@ accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker heigh
 accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker eyesInside Z
 accessible method net/minecraft/world/entity/EntityFluidInteraction$Tracker <init> ()V
 accessible field net/minecraft/world/entity/Entity fluidInteraction Lnet/minecraft/world/entity/EntityFluidInteraction;
+
+# Session
+accessible field net/minecraft/client/User accessToken Ljava/lang/String;
+mutable field net/minecraft/client/User accessToken Ljava/lang/String;
+
+accessible field net/minecraft/client/User name Ljava/lang/String;
+mutable field net/minecraft/client/User name Ljava/lang/String;
+
+accessible field net/minecraft/client/User uuid Ljava/util/UUID;
+mutable field net/minecraft/client/User uuid Ljava/util/UUID;
