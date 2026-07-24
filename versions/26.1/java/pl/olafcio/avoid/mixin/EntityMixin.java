@@ -167,7 +167,7 @@ public abstract class EntityMixin implements ICamerable, IEntity {
     public void setDeltaMovement(Entity instance, Vec3 value, Operation<Void> original) {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT) {
             var event = new ClientEntityVelocityEvent(
-                    EntityNative.convertFrom(instance),
+                    EntityNative.convertFromTry(instance),
                     Vect3Native.convert(value),
                     EntityUtil.isLocal(instance)
             );
@@ -180,7 +180,7 @@ public abstract class EntityMixin implements ICamerable, IEntity {
                 value = Vect3Native.convertFrom(event.getVelocity());
         } else if (!instance.level().isClientSide()) {
             var event = new ServerEntityVelocityEvent(
-                    EntityNative.convertFrom(instance),
+                    EntityNative.convertFromTry(instance),
                     Vect3Native.convert(value)
             );
 

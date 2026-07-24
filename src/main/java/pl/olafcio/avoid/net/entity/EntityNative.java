@@ -20,6 +20,11 @@ public final class EntityNative {
         return entity.underlyingEntity;
     }
 
+    // replaced by MC 26.2
+    public static Entity convertFromTry(net.minecraft.world.entity.Entity entity) {
+        return convertFrom(entity);
+    }
+
     public static Entity convertFrom(net.minecraft.world.entity.Entity entity) {
         if (entity instanceof Player player)
             return PlayerNative.convertFrom(player);
