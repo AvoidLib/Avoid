@@ -50,7 +50,7 @@ public final class Drawer {
 
     /**
      * Draws a horizontal line, from X {@code x} to {@code x2},
-     * on Y {@code y}, using the RGBA color {@code color}.
+     * on Y {@code y}, using the ARGB color {@code color}.
      */
     public void horizontalLine(int x, int y, int x2, int color) {
         if (x2 < x) {
@@ -64,7 +64,7 @@ public final class Drawer {
 
     /**
      * Draws a vertical line, from Y {@code y} to {@code y2},
-     * on X {@code x}, using the RGBA color {@code color}.
+     * on X {@code x}, using the ARGB color {@code color}.
      */
     public void verticalLine(int x, int y, int y2, int color) {
         if (y2 < y) {
