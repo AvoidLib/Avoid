@@ -7,6 +7,7 @@ import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.client.server.ServerEntry;
+import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.world.World;
@@ -36,6 +37,15 @@ public final class Client {
             throw new ImproperEnvironment("Cannot Client#getPlayer() on the server");
 
         return ClientNative.getPlayer();
+    }
+
+    @Nullable
+    @NeverRemoval
+    public static Entity getCamera() {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getCamera() on the server");
+
+        return ClientNative.getCamera();
     }
 
     @Nullable

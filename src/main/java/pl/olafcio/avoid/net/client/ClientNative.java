@@ -8,6 +8,8 @@ import pl.olafcio.avoid.mixininterface.IScreen;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.client.server.PlayerEntry;
 import pl.olafcio.avoid.net.client.server.ServerEntry;
+import pl.olafcio.avoid.net.entity.Entity;
+import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.screen.AvoidScreen;
@@ -34,6 +36,15 @@ final class ClientNative {
             return null;
 
         return PlayerNative.convertFrom(player);
+    }
+
+    @Nullable
+    static Entity getCamera() {
+        var entity = Minecraft.getInstance().getCameraEntity();
+        if (entity == null)
+            return null;
+
+        return EntityNative.convertFrom(entity);
     }
 
     @Nullable
