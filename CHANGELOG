@@ -10,37 +10,7 @@
 - NeoForge
 
 **🪵 Changelog:**
-- [Player API] #getAbilities()
-- [Entity API] All portal cooldown related methods
-- [Documentation] All Abilities methods
-- [Entity API] #setVelocity([Vect3])
-- [Entity API] #setNoGravity([bool])
-- [Entity] Velocity Event
-- Stop ServerEntity events from being fired on the client
-- [Client Entity] Create Event
-- Split the EntityVelocityEvent into two
-- [World API] #eachEntity([Consumer<Entity>] callback)
-- Fix Fogs sometimes crashing on MC 26.2
-- Fix VelocityEvent sometimes crashing on MC 26.2
-- [GUI] Toast Add Event
-- AvoidMod#[onClientDisable, onServerDisable]
-- [Documentation] Whole AvoidMod class
-- Keybind API
-- [ModLoader] Extended @KeyHandler
-- Identification#toString([string] separator)
-- [Client] Correct error messages
-- [Client] #getLauncherBrand()
-- Client Session namespace
-- [Documentation] Whole Client Session class
-- @Deprecated annotation for all AvoidManager members
-- [Documentation] Some Drawer class parts
-- [Command API] Use translations in syntax exceptions
-- [Client] Some @NeverRemovals
-- Server namespace
-- [Screen API] Most in-game screen markers
-- [Screen API] Most screen markers
-- Some doc corrections in Drawer
-- [Client] #getCamera()
+- Fix AW
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
