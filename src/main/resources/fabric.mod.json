@@ -4,6 +4,7 @@
   "version": "${version}",
   "name": "AvoidLib",
   "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
+  "accessWidener": "avoidlib.accesswidener",
   "authors": [ "Olafcio" ],
   "contact": {},
   "license": "Apache-2.0",
