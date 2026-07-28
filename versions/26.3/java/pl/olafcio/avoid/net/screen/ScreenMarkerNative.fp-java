@@ -1,0 +1,4 @@
+{
+    LOOKUP.put(OPEN_TO_LAN, MultiplayerOptionsScreen.class);
+    LOOKUP.put(OPEN_TO_LAN, WorldOptionsScreen.class);
+}
