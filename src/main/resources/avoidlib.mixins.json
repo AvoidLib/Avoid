@@ -37,6 +37,7 @@
     "ChatScreenMixin",
     "GameRendererMixin",
     "GuiGraphicsMixin",
+    "GuiMixin",
     "KeyboardMixin",
     "LayerDefinitionsMixin",
     "LiquidBlockRendererMixin",
