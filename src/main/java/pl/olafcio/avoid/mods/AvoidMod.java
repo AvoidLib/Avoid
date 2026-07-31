@@ -17,7 +17,7 @@ public abstract class AvoidMod {
     /**
      * Invoked when all addons have been loaded.
      */
-    @ApiStatus.Experimental
+    @NeverRemoval
     public void onEnable() {}
 
     /**
@@ -25,18 +25,18 @@ public abstract class AvoidMod {
      * - if the mod is running inside a client: the client stops;
      * - if the mod is running inside a server: the server stops.
      */
-    @ApiStatus.Experimental
+    @NeverRemoval
     public void onDisable() {}
 
     /**
      * Invoked when the client stops.
      */
-    @ApiStatus.Experimental
+    @NeverRemoval
     public void onClientDisable() {}
 
     /**
      * Invoked when the physical or integrated server stops.
      */
-    @ApiStatus.Experimental
+    @NeverRemoval
     public void onServerDisable() {}
 }
