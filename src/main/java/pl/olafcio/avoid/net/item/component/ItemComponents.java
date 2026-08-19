@@ -44,6 +44,7 @@ import pl.olafcio.avoid.net.item.component.values.*;
 import pl.olafcio.avoid.net.item.component.values.ChargedProjectiles;
 import pl.olafcio.avoid.net.item.component.values.CustomModelData;
 import pl.olafcio.avoid.net.item.component.values.DyedItemColor;
+import pl.olafcio.avoid.net.item.component.values.ItemContainerContents;
 import pl.olafcio.avoid.net.item.component.values.ItemLore;
 import pl.olafcio.avoid.net.item.component.values.LodestoneTracker;
 import pl.olafcio.avoid.net.item.component.values.MapDecorations;
@@ -138,7 +139,7 @@ public class ItemComponents {
     public static final ItemComponentType<BannerPatternLayers> BANNER_PATTERNS = register("banner_patterns");
     public static final ItemComponentType<DyeColor> BASE_COLOR = register("base_color", new DyeColor.Controller());
     public static final ItemComponentType<PotDecorations> POT_DECORATIONS = register("pot_decorations", new PotDecorations.Controller());
-    public static final ItemComponentType<ItemContainerContents> CONTAINER = register("container");
+    public static final ItemComponentType<ItemContainerContents> CONTAINER = register("container", new ItemContainerContents.Controller());
     public static final ItemComponentType<BlockItemStateProperties> BLOCK_STATE = register("block_state");
     public static final ItemComponentType<Bees> BEES = register("bees");
     public static final ItemComponentType<LockCode> LOCK = register("lock");
