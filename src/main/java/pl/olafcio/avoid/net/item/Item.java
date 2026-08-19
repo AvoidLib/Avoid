@@ -50,4 +50,19 @@ public final class Item extends AbstractItem {
         var mcItem = BuiltInRegistries.ITEM.getValue(IdentificationNative.convert(id));
         return new Item(mcItem);
     }
+
+    @ApiStatus.Experimental
+    public boolean is(String id) {
+        return Identification.of(id).equals(getID());
+    }
+
+    @ApiStatus.Experimental
+    public boolean is(Identification id) {
+        return getID().equals(id);
+    }
+
+    @ApiStatus.Experimental
+    public boolean is(String namespace, String path) {
+        return getID().is(namespace, path);
+    }
 }
