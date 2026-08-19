@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.server;
 
 import net.minecraft.server.players.NameAndId;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.AvoidInternal;
 import pl.olafcio.avoid.net.player.Player;
@@ -74,5 +75,17 @@ public final class Server {
         });
 
         return list;
+    }
+
+    public static World getOverworld() {
+        return WorldNative.make(AvoidInternal.getServer().getLevel(Level.OVERWORLD));
+    }
+
+    public static World getNether() {
+        return WorldNative.make(AvoidInternal.getServer().getLevel(Level.NETHER));
+    }
+
+    public static World getEnd() {
+        return WorldNative.make(AvoidInternal.getServer().getLevel(Level.END));
     }
 }
