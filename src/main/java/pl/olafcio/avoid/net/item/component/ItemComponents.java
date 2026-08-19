@@ -10,7 +10,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import net.minecraft.world.entity.animal.cow.CowVariant;
 import net.minecraft.world.entity.animal.feline.CatVariant;
-import net.minecraft.world.entity.animal.fish.TropicalFish;
 import net.minecraft.world.entity.animal.frog.FrogVariant;
 import net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariant;
 import net.minecraft.world.entity.animal.pig.PigVariant;
@@ -151,7 +150,7 @@ public class ItemComponents {
     public static final ItemComponentType<FoxVariant> FOX_VARIANT = register("fox/variant", new FoxVariant.Controller());
     public static final ItemComponentType<SalmonVariant> SALMON_SIZE = register("salmon/size", new SalmonVariant.Controller());
     public static final ItemComponentType<ParrotVariant> PARROT_VARIANT = register("parrot/variant", new ParrotVariant.Controller());
-    public static final ItemComponentType<TropicalFish.Pattern> TROPICAL_FISH_PATTERN = register("tropical_fish/pattern");
+    public static final ItemComponentType<TropicalFishPattern> TROPICAL_FISH_PATTERN = register("tropical_fish/pattern", new TropicalFishPattern.Controller());
     public static final ItemComponentType<DyeColor> TROPICAL_FISH_BASE_COLOR = register("tropical_fish/base_color", new DyeColor.Controller());
     public static final ItemComponentType<DyeColor> TROPICAL_FISH_PATTERN_COLOR = register("tropical_fish/pattern_color", new DyeColor.Controller());
     public static final ItemComponentType<MushroomCowVariant> MOOSHROOM_VARIANT = register("mooshroom/variant", new MushroomCowVariant.Controller());
