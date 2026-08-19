@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.item.stack;
 
+import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.item.Item;
@@ -81,5 +82,20 @@ public final class ItemStack {
     public static ItemStack id(String id) {
         var item = Item.of(id);
         return new ItemStack(item, 1);
+    }
+
+    @ApiStatus.Experimental
+    public boolean is(String id) {
+        return item.is(id);
+    }
+
+    @ApiStatus.Experimental
+    public boolean is(Identification id) {
+        return item.is(id);
+    }
+
+    @ApiStatus.Experimental
+    public boolean is(String namespace, String path) {
+        return item.is(namespace, path);
     }
 }
