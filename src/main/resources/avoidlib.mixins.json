@@ -27,7 +27,8 @@
     "accessors.ICommandManager",
     "accessors.IFlowingFluid",
     "accessors.IFluid",
-    "accessors.ILevel"
+    "accessors.ILevel",
+    "accessors.IMushroomCow$Variant"
   ],
   "client": [
     "BlocksMixin",

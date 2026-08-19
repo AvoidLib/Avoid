@@ -153,7 +153,7 @@ public class ItemComponents {
     public static final ItemComponentType<TropicalFish.Pattern> TROPICAL_FISH_PATTERN = register("tropical_fish/pattern");
     public static final ItemComponentType<DyeColor> TROPICAL_FISH_BASE_COLOR = register("tropical_fish/base_color", new DyeColor.Controller());
     public static final ItemComponentType<DyeColor> TROPICAL_FISH_PATTERN_COLOR = register("tropical_fish/pattern_color", new DyeColor.Controller());
-    public static final ItemComponentType<MushroomCow.Variant> MOOSHROOM_VARIANT = register("mooshroom/variant");
+    public static final ItemComponentType<MushroomCowVariant> MOOSHROOM_VARIANT = register("mooshroom/variant", new MushroomCowVariant.Controller());
     public static final ItemComponentType<RabbitVariant> RABBIT_VARIANT = register("rabbit/variant", new RabbitVariant.Controller());
     public static final ItemComponentType<Holder<PigVariant>> PIG_VARIANT = register("pig/variant");
     public static final ItemComponentType<Holder<CowVariant>> COW_VARIANT = register("cow/variant");
