@@ -61,6 +61,7 @@ import pl.olafcio.avoid.net.item.component.values.SwingAnimation;
 import pl.olafcio.avoid.net.item.component.values.TooltipDisplay;
 import pl.olafcio.avoid.net.item.component.values.UseCooldown;
 import pl.olafcio.avoid.net.item.component.values.UseEffects;
+import pl.olafcio.avoid.net.item.component.values.UseRemainder;
 import pl.olafcio.avoid.net.item.component.values.Weapon;
 
 import java.util.HashMap;
@@ -102,7 +103,7 @@ public class ItemComponents {
     public static final ItemComponentType<Empty> INTANGIBLE_PROJECTILE = register("intangible_projectile", new Empty.Controller());
     public static final ItemComponentType<FoodProperties> FOOD = register("food", new FoodProperties.Controller());
     public static final ItemComponentType<Consumable> CONSUMABLE = register("consumable");
-    public static final ItemComponentType<UseRemainder> USE_REMAINDER = register("use_remainder");
+    public static final ItemComponentType<UseRemainder> USE_REMAINDER = register("use_remainder", new UseRemainder.Controller());
     public static final ItemComponentType<UseCooldown> USE_COOLDOWN = register("use_cooldown", new UseCooldown.Controller());
     public static final ItemComponentType<DamageResistant> DAMAGE_RESISTANT = register("damage_resistant");
     public static final ItemComponentType<Tool> TOOL = register("tool");
