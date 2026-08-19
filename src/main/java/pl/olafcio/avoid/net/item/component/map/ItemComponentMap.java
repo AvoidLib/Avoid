@@ -36,4 +36,22 @@ public sealed class ItemComponentMap
 
         return transformingKey.transform((I) value);
     }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    @ApiStatus.Experimental
+    public <T> T getNonNull(ItemComponentType<T> type) {
+        var value = map.get(ItemComponentNative.convert(type)
+                       .orElseThrow());
+
+        if (type instanceof TransformingItemComponentType<?,?> transformingKey)
+            return (T) transformUnsafeNN(transformingKey, value);
+
+        return (T) value;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <I, O> O transformUnsafeNN(TransformingItemComponentType<I, O> transformingKey, Object value) {
+        return transformingKey.transform((I) value);
+    }
 }
