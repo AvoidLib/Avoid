@@ -1,0 +1,7 @@
+import pl.olafcio.avoid.net.item.component.internal.Poly_MapItemColor;
+
+{
+    public void onEarlyInit() {
+    public void onEarlyInit() {
+        Poly_MapItemColor.init();
+}

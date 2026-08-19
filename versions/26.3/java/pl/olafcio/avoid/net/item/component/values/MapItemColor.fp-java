@@ -1,0 +1,6 @@
+import pl.olafcio.avoid.net.item.component.internal.Poly_MapItemColor;
+
+{
+    net.minecraft.world.item.component.MapItemColor
+    Poly_MapItemColor
+}

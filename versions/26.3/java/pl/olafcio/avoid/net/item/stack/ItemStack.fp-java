@@ -1,0 +1,13 @@
+import pl.olafcio.avoid.net.item.component.ItemComponents;
+import pl.olafcio.avoid.net.item.component.internal.Poly_MapItemColor;
+
+{
+    return components.get(component);
+
+    var comp = components.get(component);
+    if (comp == null && component == ItemComponents.MAP_COLOR && this.is("filled_map")) {
+        return (T) new pl.olafcio.avoid.net.item.component.values.MapItemColor(Poly_MapItemColor.DEFAULT.rgb());
+    }
+
+    return comp;
+}
