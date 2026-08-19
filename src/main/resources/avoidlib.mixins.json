@@ -28,7 +28,8 @@
     "accessors.IFlowingFluid",
     "accessors.IFluid",
     "accessors.ILevel",
-    "accessors.IMushroomCow$Variant"
+    "accessors.IMushroomCow$Variant",
+    "accessors.ISalmon$Variant"
   ],
   "client": [
     "BlocksMixin",

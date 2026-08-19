@@ -10,7 +10,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import net.minecraft.world.entity.animal.cow.CowVariant;
 import net.minecraft.world.entity.animal.feline.CatVariant;
-import net.minecraft.world.entity.animal.fish.Salmon;
 import net.minecraft.world.entity.animal.fish.TropicalFish;
 import net.minecraft.world.entity.animal.frog.FrogVariant;
 import net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariant;
@@ -150,7 +149,7 @@ public class ItemComponents {
     public static final ItemComponentType<Holder<WolfSoundVariant>> WOLF_SOUND_VARIANT = register("wolf/sound_variant");
     public static final ItemComponentType<DyeColor> WOLF_COLLAR = register("wolf/collar", new DyeColor.Controller());
     public static final ItemComponentType<FoxVariant> FOX_VARIANT = register("fox/variant", new FoxVariant.Controller());
-    public static final ItemComponentType<Salmon.Variant> SALMON_SIZE = register("salmon/size");
+    public static final ItemComponentType<SalmonVariant> SALMON_SIZE = register("salmon/size", new SalmonVariant.Controller());
     public static final ItemComponentType<Parrot.Variant> PARROT_VARIANT = register("parrot/variant");
     public static final ItemComponentType<TropicalFish.Pattern> TROPICAL_FISH_PATTERN = register("tropical_fish/pattern");
     public static final ItemComponentType<DyeColor> TROPICAL_FISH_BASE_COLOR = register("tropical_fish/base_color", new DyeColor.Controller());
