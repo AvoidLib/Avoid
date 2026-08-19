@@ -165,7 +165,7 @@ public class ItemComponents {
     public static final ItemComponentType<EquineVariant> HORSE_VARIANT = register("horse/variant", new EquineVariant.Controller());
     public static final ItemComponentType<Holder<PaintingVariant>> PAINTING_VARIANT = register("painting/variant");
     public static final ItemComponentType<LlamaVariant> LLAMA_VARIANT = register("llama/variant", new LlamaVariant.Controller());
-    public static final ItemComponentType<Axolotl.Variant> AXOLOTL_VARIANT = register("axolotl/variant");
+    public static final ItemComponentType<AxolotlVariant> AXOLOTL_VARIANT = register("axolotl/variant", new AxolotlVariant.Controller());
     public static final ItemComponentType<Holder<CatVariant>> CAT_VARIANT = register("cat/variant");
     public static final ItemComponentType<DyeColor> CAT_COLLAR = register("cat/collar", new DyeColor.Controller());
     public static final ItemComponentType<DyeColor> SHEEP_COLOR = register("sheep/color", new DyeColor.Controller());
