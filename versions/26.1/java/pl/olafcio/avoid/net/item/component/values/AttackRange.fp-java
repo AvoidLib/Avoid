@@ -1,0 +1,4 @@
+{
+    return new AttackRange(value.minRange(), value.maxRange(), value.minCreativeRange(), value.maxCreativeRange(), value.hitboxMargin(), value.mobFactor());
+    return new AttackRange(value.minReach(), value.maxReach(), value.minCreativeReach(), value.maxCreativeReach(), value.hitboxMargin(), value.mobFactor());
+}
