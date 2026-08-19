@@ -38,6 +38,7 @@ import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.values.*;
+import pl.olafcio.avoid.net.item.component.values.AttackRange;
 import pl.olafcio.avoid.net.item.component.values.BlockItemStateProperties;
 import pl.olafcio.avoid.net.item.component.values.BundleContents;
 import pl.olafcio.avoid.net.item.component.values.ChargedProjectiles;
@@ -95,7 +96,7 @@ public class ItemComponents {
     public static final ItemComponentType<DamageResistant> DAMAGE_RESISTANT = register("damage_resistant");
     public static final ItemComponentType<Tool> TOOL = register("tool");
     public static final ItemComponentType<Weapon> WEAPON = register("weapon", new Weapon.Controller());
-    public static final ItemComponentType<AttackRange> ATTACK_RANGE = register("attack_range");
+    public static final ItemComponentType<AttackRange> ATTACK_RANGE = register("attack_range", new AttackRange.Controller());
     public static final ItemComponentType<Enchantable> ENCHANTABLE = register("enchantable", new Enchantable.Controller());
     public static final ItemComponentType<Equippable> EQUIPPABLE = register("equippable");
     public static final ItemComponentType<Repairable> REPAIRABLE = register("repairable", new Repairable.Controller());
