@@ -147,7 +147,7 @@ public class ItemComponents {
     public static final ItemComponentType<Holder<WolfVariant>> WOLF_VARIANT = register("wolf/variant");
     public static final ItemComponentType<Holder<WolfSoundVariant>> WOLF_SOUND_VARIANT = register("wolf/sound_variant");
     public static final ItemComponentType<DyeColor> WOLF_COLLAR = register("wolf/collar", new DyeColor.Controller());
-    public static final ItemComponentType<Fox.Variant> FOX_VARIANT = register("fox/variant");
+    public static final ItemComponentType<FoxVariant> FOX_VARIANT = register("fox/variant", new FoxVariant.Controller());
     public static final ItemComponentType<Salmon.Variant> SALMON_SIZE = register("salmon/size");
     public static final ItemComponentType<Parrot.Variant> PARROT_VARIANT = register("parrot/variant");
     public static final ItemComponentType<TropicalFish.Pattern> TROPICAL_FISH_PATTERN = register("tropical_fish/pattern");
