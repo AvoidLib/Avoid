@@ -52,4 +52,7 @@ public enum ParrotVariant {
             return REVERSE.get(value);
         }
     }
+
+    public static final _value_type<ParrotVariant> TYPE
+                  = new _value_type<>(Variant.class, new Controller());
 }

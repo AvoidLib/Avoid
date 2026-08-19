@@ -20,4 +20,7 @@ public record ItemContainerContents(List<ItemStack> itemstacks) {
             return net.minecraft.world.item.component.ItemContainerContents.fromItems(value.itemstacks.stream().map(ItemStackNative::convert).toList());
         }
     }
+
+    public static final _value_type<ItemContainerContents> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.ItemContainerContents.class, new Controller());
 }

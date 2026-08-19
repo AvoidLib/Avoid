@@ -79,4 +79,7 @@ public enum DyeColor {
             return REVERSE.get(value);
         }
     }
+
+    public static final _value_type<DyeColor> TYPE
+                  = new _value_type<>(net.minecraft.world.item.DyeColor.class, new Controller());
 }

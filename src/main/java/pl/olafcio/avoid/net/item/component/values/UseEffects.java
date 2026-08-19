@@ -16,4 +16,7 @@ public record UseEffects(boolean canSprint, boolean interactVibrations, float sp
             return new net.minecraft.world.item.component.UseEffects(value.canSprint, value.interactVibrations, value.speedMultiplier);
         }
     }
+
+    public static final _value_type<UseEffects> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.UseEffects.class, new Controller());
 }

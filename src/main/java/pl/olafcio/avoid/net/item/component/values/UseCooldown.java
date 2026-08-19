@@ -27,4 +27,7 @@ public record UseCooldown(float seconds, @Nullable Identification cooldownGroup)
             );
         }
     }
+
+    public static final _value_type<UseCooldown> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.UseCooldown.class, new Controller());
 }

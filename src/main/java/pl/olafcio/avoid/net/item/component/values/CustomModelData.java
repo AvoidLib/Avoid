@@ -18,4 +18,7 @@ public record CustomModelData(List<Float> floats, List<Boolean> flags, List<Stri
             return new net.minecraft.world.item.component.CustomModelData(value.floats, value.flags, value.strings, value.colors);
         }
     }
+
+    public static final _value_type<CustomModelData> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.CustomModelData.class, new Controller());
 }

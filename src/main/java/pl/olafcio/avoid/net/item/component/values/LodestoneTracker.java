@@ -31,4 +31,7 @@ public record LodestoneTracker(@Nullable BlockLocation target, boolean tracked) 
             );
         }
     }
+
+    public static final _value_type<LodestoneTracker> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.LodestoneTracker.class, new Controller());
 }

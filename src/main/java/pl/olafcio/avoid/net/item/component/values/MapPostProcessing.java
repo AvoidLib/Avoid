@@ -29,4 +29,7 @@ public enum MapPostProcessing {
             return net.minecraft.world.item.component.MapPostProcessing.values()[value.ordinal()];
         }
     }
+
+    public static final _value_type<MapPostProcessing> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.MapPostProcessing.class, new Controller());
 }

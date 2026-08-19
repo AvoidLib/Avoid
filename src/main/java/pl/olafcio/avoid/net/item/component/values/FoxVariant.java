@@ -49,4 +49,7 @@ public enum FoxVariant {
             return REVERSE.get(value);
         }
     }
+
+    public static final _value_type<FoxVariant> TYPE
+                  = new _value_type<>(Variant.class, new Controller());
 }

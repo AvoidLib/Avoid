@@ -20,4 +20,7 @@ public record ChargedProjectiles(List<ItemStack> itemstacks) {
             return net.minecraft.world.item.component.ChargedProjectiles.of(value.itemstacks.stream().map(ItemStackNative::convert).toList());
         }
     }
+
+    public static final _value_type<ChargedProjectiles> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.ChargedProjectiles.class, new Controller());
 }

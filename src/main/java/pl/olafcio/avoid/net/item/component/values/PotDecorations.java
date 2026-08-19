@@ -4,7 +4,6 @@ import pl.olafcio.avoid.net.item.Item;
 import pl.olafcio.avoid.net.item.ItemNative;
 import pl.olafcio.avoid.net.item.component.TransformingItemComponentValue;
 
-import java.util.List;
 import java.util.Optional;
 
 public record PotDecorations(Optional<Item> back, Optional<Item> left, Optional<Item> right, Optional<Item> front) {
@@ -31,4 +30,7 @@ public record PotDecorations(Optional<Item> back, Optional<Item> left, Optional<
             );
         }
     }
+
+    public static final _value_type<PotDecorations> TYPE
+                  = new _value_type<>(net.minecraft.world.level.block.entity.PotDecorations.class, new Controller());
 }

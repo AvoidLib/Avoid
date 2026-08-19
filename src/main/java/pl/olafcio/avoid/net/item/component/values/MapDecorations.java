@@ -52,4 +52,7 @@ public record MapDecorations(Map<String, Entry> decorations) {
             return new net.minecraft.world.item.component.MapDecorations(dst);
         }
     }
+
+    public static final _value_type<MapDecorations> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.MapDecorations.class, new Controller());
 }

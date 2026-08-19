@@ -16,4 +16,7 @@ public record DyedItemColor(int rgb) {
             return new net.minecraft.world.item.component.DyedItemColor(value.rgb);
         }
     }
+
+    public static final _value_type<DyedItemColor> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.DyedItemColor.class, new Controller());
 }

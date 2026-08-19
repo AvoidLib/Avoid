@@ -1,6 +1,12 @@
 package pl.olafcio.avoid.net.item.component;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
@@ -65,6 +71,11 @@ import java.util.function.Function;
 @NeverRemoval
 public class ItemComponents {
     private ItemComponents() {}
+
+    static {
+        // Istg, if this class never worked...
+        LOOKUP = new HashMap<>();
+    }
 
     public static final ItemComponentType<Payload> CUSTOM_DATA = register("custom_data", new Payload.Controller());
     public static final ItemComponentType<Integer> MAX_STACK_SIZE = register("max_stack_size");
@@ -171,8 +182,82 @@ public class ItemComponents {
     public static final ItemComponentType<DyeColor> SHEEP_COLOR = register("sheep/color", new DyeColor.Controller());
     public static final ItemComponentType<DyeColor> SHULKER_COLOR = register("shulker/color", new DyeColor.Controller());
 
-    static final HashMap<String, ItemComponentType<?>> LOOKUP
-           = new HashMap<>();
+    static final HashMap<String, ItemComponentType<?>> LOOKUP;
+
+    /**
+     * Creates a new item component type.
+     * @param name The stringified ID of the component, e.g. {@code avoidtestproject:count_used}.
+     * @param controller The value type of the component, e.g. {@code Payload.TYPE} (new types cannot be created currently).
+     * @return The created item component type.
+     */
+    public static <O, V extends _value_type<O>> ItemComponentType<O> create(String name, V controller) {
+        return ItemComponents.createUC(name, controller);
+    }
+
+    /**
+     * Creates a new item component type.
+     * @param name The ID of the component, e.g. {@code Identification.of("avoidtestproject:count_used")}.
+     * @param controller The value type of the component, e.g. {@code Payload.TYPE} (new types cannot be created currently).
+     * @return The created item component type.
+     */
+    public static <O, V extends _value_type<O>> ItemComponentType<O> create(Identification name, V controller) {
+        return ItemComponents.createUC(name, controller);
+    }
+
+    //
+    // What the FUCK is this code
+    // FIXME The quality of this shit is tragic
+    //
+
+    @SuppressWarnings("unchecked")
+    private static <I, O, V extends _value_type<O>> ItemComponentType<O> createUC(String name, V controller) {
+        return ItemComponents.create0(name, (TransformingItemComponentValue<I, O>) controller.controller, (Class<I>) controller.input);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <I, O, V extends _value_type<O>> ItemComponentType<O> createUC(Identification name, V controller) {
+        return ItemComponents.create0(name, (TransformingItemComponentValue<I, O>) controller.controller, (Class<I>) controller.input);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <I, O, V extends TransformingItemComponentValue<I, O>> ItemComponentType<O> create0(String name, V controller, Class<I> iClass) {
+        var value = register(name, controller);
+
+        try {
+            Registry.register(
+                    BuiltInRegistries.DATA_COMPONENT_TYPE,
+                    IdentificationNative.convert(name),
+                    DataComponentType.<I>builder()
+                                     .persistent((Codec<I>) iClass.getDeclaredField("CODEC").get(null))
+                                     .networkSynchronized((StreamCodec<? super RegistryFriendlyByteBuf, I>) iClass.getDeclaredField("STREAM_CODEC").get(null))
+                                     .build()
+            );
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        return value;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <I, O, V extends TransformingItemComponentValue<I, O>> ItemComponentType<O> create0(Identification name, V controller, Class<I> iClass) {
+        var value = register(name, controller);
+
+        try {
+            Registry.register(
+                    BuiltInRegistries.DATA_COMPONENT_TYPE,
+                    IdentificationNative.convert(name),
+                    DataComponentType.<I>builder()
+                                     .persistent((Codec<I>) iClass.getDeclaredField("CODEC").get(null))
+                                     .networkSynchronized((StreamCodec<? super RegistryFriendlyByteBuf, I>) iClass.getDeclaredField("STREAM_CODEC").get(null))
+                                     .build()
+            );
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        return value;
+    }
 
     @WillRefactor(aspect = "type, name, parameters, generic parameters, return value, file")
     public static <I, O> ItemComponentType<O> register(String id, Function<I, O> transformer, Function<O, I> untransformer) {
@@ -192,6 +277,28 @@ public class ItemComponents {
             @Override
             public I untransform(O value) {
                 return untransformer.apply(value);
+            }
+        };
+    }
+
+    @WillRefactor(aspect = "type, name, parameters, generic parameters, return value, file")
+    public static <I, O> ItemComponentType<O> register(Identification id, TransformingItemComponentValue<I, O> controller) {
+        return new TransformingItemComponentType<I, O>() {
+            {  LOOKUP.put(getId().toString(), this);  }
+
+            @Override
+            public Identification getId() {
+                return id;
+            }
+
+            @Override
+            public O transform(I value) {
+                return controller.transform(value);
+            }
+
+            @Override
+            public I untransform(O value) {
+                return controller.untransform(value);
             }
         };
     }

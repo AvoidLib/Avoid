@@ -18,4 +18,7 @@ public record BlockItemStateProperties(Map<String, String> properties) {
             return new net.minecraft.world.item.component.BlockItemStateProperties(value.properties);
         }
     }
+
+    public static final _value_type<BlockItemStateProperties> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.BlockItemStateProperties.class, new Controller());
 }

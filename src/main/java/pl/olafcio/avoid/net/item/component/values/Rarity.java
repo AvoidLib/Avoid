@@ -42,4 +42,7 @@ public enum Rarity {
             return net.minecraft.world.item.Rarity.values()[value.ordinal()];
         }
     }
+
+    public static final _value_type<Rarity> TYPE
+                  = new _value_type<>(net.minecraft.world.item.Rarity.class, new Controller());
 }

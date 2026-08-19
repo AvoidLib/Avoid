@@ -16,4 +16,7 @@ public record MapId(int id) {
             return new net.minecraft.world.level.saveddata.maps.MapId(value.id);
         }
     }
+
+    public static final _value_type<MapId> TYPE
+                  = new _value_type<>(net.minecraft.world.level.saveddata.maps.MapId.class, new Controller());
 }

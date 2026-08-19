@@ -19,4 +19,7 @@ public record SwingAnimation(SwingAnimationType type, int duration) {
             return new net.minecraft.world.item.component.SwingAnimation(SwingAnimationType.LOOKUP.get(value.type), value.duration);
         }
     }
+
+    public static final _value_type<SwingAnimation> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.SwingAnimation.class, new Controller());
 }

@@ -20,4 +20,7 @@ public record BundleContents(List<ItemStack> itemstacks) {
             return new net.minecraft.world.item.component.BundleContents(value.itemstacks.stream().map(ItemStackNative::convert).toList());
         }
     }
+
+    public static final _value_type<BundleContents> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.BundleContents.class, new Controller());
 }

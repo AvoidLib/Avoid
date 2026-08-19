@@ -19,4 +19,7 @@ public record Payload(NbtCompound tag) {
             return CustomData.of(NbtNative.convert(value.tag).asCompound().orElseThrow());
         }
     }
+
+    public static final _value_type<Payload> TYPE
+                  = new _value_type<>(CustomData.class, new Controller());
 }

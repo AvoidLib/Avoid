@@ -16,4 +16,7 @@ public record Enchantable(int value) {
             return new net.minecraft.world.item.enchantment.Enchantable(value.value);
         }
     }
+
+    public static final _value_type<Enchantable> TYPE
+                  = new _value_type<>(net.minecraft.world.item.enchantment.Enchantable.class, new Controller());
 }

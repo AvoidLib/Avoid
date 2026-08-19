@@ -50,4 +50,7 @@ public enum MushroomCowVariant {
             return REVERSE.get(value);
         }
     }
+
+    public static final _value_type<MushroomCowVariant> TYPE
+                  = new _value_type<>(Variant.class, new Controller());
 }

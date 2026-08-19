@@ -16,4 +16,7 @@ public record OminousBottleAmplifier(int level) {
             return new net.minecraft.world.item.component.OminousBottleAmplifier(value.level);
         }
     }
+
+    public static final _value_type<OminousBottleAmplifier> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.OminousBottleAmplifier.class, new Controller());
 }

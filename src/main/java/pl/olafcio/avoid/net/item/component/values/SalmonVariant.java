@@ -51,4 +51,7 @@ public enum SalmonVariant {
             return REVERSE.get(value);
         }
     }
+
+    public static final _value_type<SalmonVariant> TYPE
+                  = new _value_type<>(Variant.class, new Controller());
 }

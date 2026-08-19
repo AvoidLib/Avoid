@@ -29,4 +29,7 @@ public record Repairable(AbstractItem... items) {
                                                                                               .toList()));
         }
     }
+
+    public static final _value_type<Repairable> TYPE
+                  = new _value_type<>(net.minecraft.world.item.enchantment.Repairable.class, new Controller());
 }

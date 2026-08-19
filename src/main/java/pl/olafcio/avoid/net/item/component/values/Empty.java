@@ -22,4 +22,7 @@ public final class Empty {
             return Unit.INSTANCE;
         }
     }
+
+    public static final _value_type<Empty> TYPE
+                  = new _value_type<>(Unit.class, new Controller());
 }

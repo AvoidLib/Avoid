@@ -16,4 +16,7 @@ public record AttackRange(float minRange, float maxRange, float minCreativeRange
             return new net.minecraft.world.item.component.AttackRange(value.minRange, value.maxRange, value.minCreativeRange, value.maxCreativeRange, value.hitboxMargin, value.mobFactor);
         }
     }
+
+    public static final _value_type<AttackRange> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.AttackRange.class, new Controller());
 }

@@ -87,4 +87,7 @@ public record TooltipDisplay(boolean hideTooltip, SequencedSet<ItemComponentType
                     CH_UNORDERED_ID);
         }
     }
+
+    public static final _value_type<TooltipDisplay> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.TooltipDisplay.class, new Controller());
 }

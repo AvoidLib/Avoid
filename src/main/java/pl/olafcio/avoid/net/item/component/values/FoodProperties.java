@@ -16,4 +16,7 @@ public record FoodProperties(int nutrition, float saturation, boolean canAlwaysE
             return new net.minecraft.world.food.FoodProperties(value.nutrition, value.saturation, value.canAlwaysEat);
         }
     }
+
+    public static final _value_type<FoodProperties> TYPE
+                  = new _value_type<>(net.minecraft.world.food.FoodProperties.class, new Controller());
 }

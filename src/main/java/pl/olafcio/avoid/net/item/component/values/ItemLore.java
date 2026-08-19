@@ -40,4 +40,7 @@ public record ItemLore(List<? extends BaseComponent<?>> lines, List<? extends Ba
             return new net.minecraft.world.item.component.ItemLore(value.lines.stream().map(COToNative::from).toList(), value.styledLines.stream().map(COToNative::from).toList());
         }
     }
+
+    public static final _value_type<ItemLore> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.ItemLore.class, new Controller());
 }

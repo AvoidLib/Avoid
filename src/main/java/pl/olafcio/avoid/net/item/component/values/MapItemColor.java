@@ -16,4 +16,7 @@ public record MapItemColor(int rgb) {
             return new net.minecraft.world.item.component.MapItemColor(value.rgb);
         }
     }
+
+    public static final _value_type<MapItemColor> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.MapItemColor.class, new Controller());
 }

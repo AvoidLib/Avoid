@@ -60,4 +60,7 @@ public enum TropicalFishPattern {
             return REVERSE.get(value);
         }
     }
+
+    public static final _value_type<TropicalFishPattern> TYPE
+                  = new _value_type<>(TropicalFish.Pattern.class, new Controller());
 }

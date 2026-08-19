@@ -20,4 +20,7 @@ public record Weapon(int itemDamagePerAttack, float disableBlockingForSeconds) {
             return new net.minecraft.world.item.component.Weapon(value.itemDamagePerAttack, value.disableBlockingForSeconds);
         }
     }
+
+    public static final _value_type<Weapon> TYPE
+                  = new _value_type<>(net.minecraft.world.item.component.Weapon.class, new Controller());
 }

@@ -54,4 +54,7 @@ public enum RabbitVariant {
             return REVERSE.get(value);
         }
     }
+
+    public static final _value_type<RabbitVariant> TYPE
+                  = new _value_type<>(Variant.class, new Controller());
 }
