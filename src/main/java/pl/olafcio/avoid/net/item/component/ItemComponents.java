@@ -41,6 +41,7 @@ import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.values.*;
+import pl.olafcio.avoid.net.item.component.values.ChargedProjectiles;
 import pl.olafcio.avoid.net.item.component.values.CustomModelData;
 import pl.olafcio.avoid.net.item.component.values.DyedItemColor;
 import pl.olafcio.avoid.net.item.component.values.ItemLore;
@@ -110,7 +111,7 @@ public class ItemComponents {
     public static final ItemComponentType<MapId> MAP_ID = register("map_id", new MapId.Controller());
     public static final ItemComponentType<MapDecorations> MAP_DECORATIONS = register("map_decorations", new MapDecorations.Controller());
     public static final ItemComponentType<MapPostProcessing> MAP_POST_PROCESSING = register("map_post_processing", new MapPostProcessing.Controller());
-    public static final ItemComponentType<ChargedProjectiles> CHARGED_PROJECTILES = register("charged_projectiles");
+    public static final ItemComponentType<ChargedProjectiles> CHARGED_PROJECTILES = register("charged_projectiles", new ChargedProjectiles.Controller());
     public static final ItemComponentType<BundleContents> BUNDLE_CONTENTS = register("bundle_contents");
     public static final ItemComponentType<PotionContents> POTION_CONTENTS = register("potion_contents");
     public static final ItemComponentType<Float> POTION_DURATION_SCALE = register("potion_duration_scale");
