@@ -45,6 +45,7 @@ import pl.olafcio.avoid.net.item.component.values.ChargedProjectiles;
 import pl.olafcio.avoid.net.item.component.values.CustomModelData;
 import pl.olafcio.avoid.net.item.component.values.DyedItemColor;
 import pl.olafcio.avoid.net.item.component.values.ItemLore;
+import pl.olafcio.avoid.net.item.component.values.LodestoneTracker;
 import pl.olafcio.avoid.net.item.component.values.MapDecorations;
 import pl.olafcio.avoid.net.item.component.values.MapItemColor;
 import pl.olafcio.avoid.net.item.component.values.MapPostProcessing;
@@ -129,7 +130,7 @@ public class ItemComponents {
     public static final ItemComponentType<JukeboxPlayable> JUKEBOX_PLAYABLE = register("jukebox_playable");
     public static final ItemComponentType<TagKey<BannerPattern>> PROVIDES_BANNER_PATTERNS = register("provides_banner_patterns");
     public static final ItemComponentType<List<ResourceKey<Recipe<?>>>> RECIPES = register("recipes");
-    public static final ItemComponentType<LodestoneTracker> LODESTONE_TRACKER = register("lodestone_tracker");
+    public static final ItemComponentType<LodestoneTracker> LODESTONE_TRACKER = register("lodestone_tracker", new LodestoneTracker.Controller());
     public static final ItemComponentType<FireworkExplosion> FIREWORK_EXPLOSION = register("firework_explosion");
     public static final ItemComponentType<Fireworks> FIREWORKS = register("fireworks");
     public static final ItemComponentType<ResolvableProfile> PROFILE = register("profile");
