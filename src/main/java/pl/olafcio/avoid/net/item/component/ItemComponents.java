@@ -11,8 +11,6 @@ import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import net.minecraft.world.entity.animal.cow.CowVariant;
 import net.minecraft.world.entity.animal.cow.MushroomCow;
-import net.minecraft.world.entity.animal.equine.Llama;
-import net.minecraft.world.entity.animal.equine.Variant;
 import net.minecraft.world.entity.animal.feline.CatVariant;
 import net.minecraft.world.entity.animal.fish.Salmon;
 import net.minecraft.world.entity.animal.fish.TropicalFish;
@@ -166,7 +164,7 @@ public class ItemComponents {
     public static final ItemComponentType<Holder<FrogVariant>> FROG_VARIANT = register("frog/variant");
     public static final ItemComponentType<EquineVariant> HORSE_VARIANT = register("horse/variant", new EquineVariant.Controller());
     public static final ItemComponentType<Holder<PaintingVariant>> PAINTING_VARIANT = register("painting/variant");
-    public static final ItemComponentType<Llama.Variant> LLAMA_VARIANT = register("llama/variant");
+    public static final ItemComponentType<LlamaVariant> LLAMA_VARIANT = register("llama/variant", new LlamaVariant.Controller());
     public static final ItemComponentType<Axolotl.Variant> AXOLOTL_VARIANT = register("axolotl/variant");
     public static final ItemComponentType<Holder<CatVariant>> CAT_VARIANT = register("cat/variant");
     public static final ItemComponentType<DyeColor> CAT_COLLAR = register("cat/collar", new DyeColor.Controller());
