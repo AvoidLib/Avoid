@@ -38,6 +38,7 @@ import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.values.*;
+import pl.olafcio.avoid.net.item.component.values.BlockItemStateProperties;
 import pl.olafcio.avoid.net.item.component.values.BundleContents;
 import pl.olafcio.avoid.net.item.component.values.ChargedProjectiles;
 import pl.olafcio.avoid.net.item.component.values.CustomModelData;
@@ -138,7 +139,7 @@ public class ItemComponents {
     public static final ItemComponentType<DyeColor> BASE_COLOR = register("base_color", new DyeColor.Controller());
     public static final ItemComponentType<PotDecorations> POT_DECORATIONS = register("pot_decorations", new PotDecorations.Controller());
     public static final ItemComponentType<ItemContainerContents> CONTAINER = register("container", new ItemContainerContents.Controller());
-    public static final ItemComponentType<BlockItemStateProperties> BLOCK_STATE = register("block_state");
+    public static final ItemComponentType<BlockItemStateProperties> BLOCK_STATE = register("block_state", new BlockItemStateProperties.Controller());
     public static final ItemComponentType<Bees> BEES = register("bees");
     public static final ItemComponentType<LockCode> LOCK = register("lock");
     public static final ItemComponentType<SeededContainerLoot> CONTAINER_LOOT = register("container_loot");
