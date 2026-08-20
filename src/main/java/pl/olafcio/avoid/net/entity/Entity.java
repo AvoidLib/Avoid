@@ -14,6 +14,8 @@ import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity.values.HandNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
+import pl.olafcio.avoid.net.player.Player;
+import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.WorldNative;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
@@ -567,6 +569,13 @@ public abstract class Entity {
      */
     public void push(Entity entity) {
         underlyingEntity.push(EntityNative.convert(entity));
+    }
+
+    /**
+     * Invoked when a player's hitbox collides with the hitbox of this entity.
+     */
+    public void playerTouch(Player player) {
+        underlyingEntity.playerTouch((net.minecraft.world.entity.player.Player) EntityNative.convert(player));
     }
 
     @Override

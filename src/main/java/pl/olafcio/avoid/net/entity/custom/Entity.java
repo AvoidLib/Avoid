@@ -7,6 +7,7 @@ import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.entity.custom_internal.IAvoidEntity;
 import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity_type.EntityType;
+import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 
@@ -423,5 +424,10 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     @Override
     public final void push(pl.olafcio.avoid.net.entity.Entity entity) {
         super.push(entity);
+    }
+
+    @Override
+    public final void playerTouch(Player player) {
+        super.playerTouch(player);
     }
 }
