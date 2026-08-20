@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.UnknownNullability;
+import pl.olafcio.avoid.AvoidInternal;
 import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
@@ -17,6 +18,8 @@ import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity_type.EntityType;
+import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.player.exception.UncontrollablePlayerException;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
 import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
@@ -271,5 +274,27 @@ public class Player extends Entity implements Executor {
      */
     public Abilities getAbilities() {
         return new Abilities(__cast(net.minecraft.world.entity.player.Player.class).getAbilities());
+    }
+
+    /**
+     * Grants an advancement to the player.
+     * <br/><br/>
+     * This method only works on the server.
+     */
+    @ServerOnly
+    public void grantAdvancement(Identification id) {
+        __castEnv(ServerPlayer.class, "[Player#grantAdvancement] This method can only be ran on server players!")
+                    .getAdvancements().award(AvoidInternal.getServer().getAdvancements().get(IdentificationNative.convert(id)), "");
+    }
+
+    /**
+     * Revokes an advancement from the player.
+     * <br/><br/>
+     * This method only works on the server.
+     */
+    @ServerOnly
+    public void revokeAdvancement(Identification id) {
+        __castEnv(ServerPlayer.class, "[Player#revokeAdvancement] This method can only be ran on server players!")
+                .getAdvancements().revoke(AvoidInternal.getServer().getAdvancements().get(IdentificationNative.convert(id)), "");
     }
 }
