@@ -24,6 +24,7 @@ import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.player.exception.UncontrollablePlayerException;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
 import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
+import pl.olafcio.avoid.net.player.values.RespawnPoint;
 import pl.olafcio.avoid.net.player_server.ChatVisibility;
 import pl.olafcio.avoid.net.world.location.conv.RespawnDataNative;
 import pl.olafcio.avoid.net.world.vect3.IVect3;

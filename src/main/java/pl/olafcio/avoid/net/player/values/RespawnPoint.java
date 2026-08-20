@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.player;
+package pl.olafcio.avoid.net.player.values;
 
 import pl.olafcio.avoid.net.world.location.Location;
 
