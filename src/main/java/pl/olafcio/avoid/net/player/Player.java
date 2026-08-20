@@ -14,6 +14,8 @@ import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.mixininterface.IServerPlayer;
+import pl.olafcio.avoid.net.block.pos.BlockPos;
+import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
@@ -384,5 +386,27 @@ public class Player extends Entity implements Executor {
     public void setSpawnExtraParticlesOnFall(boolean value) {
         __castEnv(ServerPlayer.class, "[Player#setSpawnExtraParticlesOnFall] This method can only be ran on server players!")
                 .setSpawnExtraParticlesOnFall(value);
+    }
+
+    @ServerOnly
+    public void setRaidOmenPosition(@Nullable BlockPos blockPos) {
+        __castEnv(ServerPlayer.class, "[Player#setRaidOmenPosition] This method can only be ran on server players!")
+                .setRaidOmenPosition(blockPos == null ? null : BlockPosNative.convertFrom(blockPos));
+    }
+
+    @ServerOnly
+    public void clearRaidOmenPosition() {
+        __castEnv(ServerPlayer.class, "[Player#clearRaidOmenPosition] This method can only be ran on server players!")
+                .clearRaidOmenPosition();
+    }
+
+    @ServerOnly
+    public @Nullable BlockPos getRaidOmenPosition() {
+        var pos = __castEnv(ServerPlayer.class, "[Player#clearRaidOmenPosition] This method can only be ran on server players!")
+                         .getRaidOmenPosition();
+
+        return pos == null
+                ? null
+                : BlockPosNative.convert(pos);
     }
 }
