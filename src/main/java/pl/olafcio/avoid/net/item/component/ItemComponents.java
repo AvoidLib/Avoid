@@ -212,12 +212,12 @@ public class ItemComponents {
 
     @SuppressWarnings("unchecked")
     private static <I, O, V extends _value_type<O>> ItemComponentType<O> createUC(String name, V controller) {
-        return ItemComponents.create0(name, (TransformingItemComponentValue<I, O>) controller.controller, (Class<I>) controller.input);
+        return ItemComponents.create0(name, (TransformingItemComponentValue<I, O>) _value_type_accessor.getController(controller), (Class<I>) _value_type_accessor.getInput(controller));
     }
 
     @SuppressWarnings("unchecked")
     private static <I, O, V extends _value_type<O>> ItemComponentType<O> createUC(Identification name, V controller) {
-        return ItemComponents.create0(name, (TransformingItemComponentValue<I, O>) controller.controller, (Class<I>) controller.input);
+        return ItemComponents.create0(name, (TransformingItemComponentValue<I, O>) _value_type_accessor.getController(controller), (Class<I>) _value_type_accessor.getInput(controller));
     }
 
     @SuppressWarnings("unchecked")
