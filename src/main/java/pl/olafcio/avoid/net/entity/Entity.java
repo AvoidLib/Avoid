@@ -562,6 +562,13 @@ public abstract class Entity {
         return !underlyingEntity.level().isClientSide();
     }
 
+    /**
+     * Pushes the specified entity.
+     */
+    public void push(Entity entity) {
+        underlyingEntity.push(EntityNative.convert(entity));
+    }
+
     @Override
     public String toString() {
         return "Entity[" +

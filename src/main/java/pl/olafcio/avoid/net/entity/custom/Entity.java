@@ -419,4 +419,9 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     public final boolean isServer() {
         return super.isServer();
     }
+
+    @Override
+    public final void push(pl.olafcio.avoid.net.entity.Entity entity) {
+        super.push(entity);
+    }
 }
