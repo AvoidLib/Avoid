@@ -204,13 +204,18 @@ public final class World {
 
     @ServerOnly
     @SuppressWarnings("unchecked")
-    public <T> void setGameRule(Identification id, T value) {
+    public void setGameRule(Identification id, int value) {
         if (this.level instanceof ServerLevel cast)
-            cast.getGameRules().set(
-                    (GameRule<T>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)),
-                    value,
-                    AvoidInternal.getServer()
-            );
+            cast.getGameRules().set((GameRule<Integer>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)), value, AvoidInternal.getServer());
+        else
+            throw new ImproperEnvironment("[World#setGameRule] This method can only be ran on server worlds!");
+    }
+
+    @ServerOnly
+    @SuppressWarnings("unchecked")
+    public void setGameRule(Identification id, boolean value) {
+        if (this.level instanceof ServerLevel cast)
+            cast.getGameRules().set((GameRule<Boolean>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)), value, AvoidInternal.getServer());
         else
             throw new ImproperEnvironment("[World#setGameRule] This method can only be ran on server worlds!");
     }
