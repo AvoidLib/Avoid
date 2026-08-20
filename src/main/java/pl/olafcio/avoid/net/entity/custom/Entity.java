@@ -430,4 +430,9 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     public final void playerTouch(Player player) {
         super.playerTouch(player);
     }
+
+    @Override
+    public final void sync() {
+        super.sync();
+    }
 }

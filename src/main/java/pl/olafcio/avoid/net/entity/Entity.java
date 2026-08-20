@@ -578,6 +578,13 @@ public abstract class Entity {
         underlyingEntity.playerTouch((net.minecraft.world.entity.player.Player) EntityNative.convert(player));
     }
 
+    /**
+     * Marks the entity as needing sync.
+     */
+    public void sync() {
+        underlyingEntity.needsSync = true;
+    }
+
     @Override
     public String toString() {
         return "Entity[" +
