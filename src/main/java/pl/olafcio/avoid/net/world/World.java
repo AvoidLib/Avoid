@@ -1,11 +1,14 @@
 package pl.olafcio.avoid.net.world;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import net.minecraft.world.level.gamerules.GameRule;
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.AvoidInternal;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.Untested;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
@@ -23,6 +26,7 @@ import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 @SuppressWarnings("ClassCanBeRecord")
 @NeverRemoval
@@ -164,5 +168,35 @@ public final class World {
         var blockEntity = blockState.hasBlockEntity() ? this.level.getBlockEntity(blockPos) : null;
 
         Block.dropResources(blockState, this.level, blockPos, blockEntity);
+    }
+
+    @ServerOnly
+    @SuppressWarnings("unchecked")
+    public <T> T getGameRule(Identification id) {
+        if (this.level instanceof ServerLevel cast)
+            return cast.getGameRules().get((GameRule<T>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)));
+        else
+            throw new ImproperEnvironment("[World#getGameRule] This method can only be ran on server worlds!");
+    }
+
+    @ServerOnly
+    public String getGameRuleAsString(Identification id) {
+        if (this.level instanceof ServerLevel cast)
+            return cast.getGameRules().getAsString((GameRule<?>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)));
+        else
+            throw new ImproperEnvironment("[World#getGameRuleAsString] This method can only be ran on server worlds!");
+    }
+
+    @ServerOnly
+    @SuppressWarnings("unchecked")
+    public <T> void setGameRule(Identification id, T value) {
+        if (this.level instanceof ServerLevel cast)
+            cast.getGameRules().set(
+                    (GameRule<T>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)),
+                    value,
+                    AvoidInternal.getServer()
+            );
+        else
+            throw new ImproperEnvironment("[World#setGameRule] This method can only be ran on server worlds!");
     }
 }
