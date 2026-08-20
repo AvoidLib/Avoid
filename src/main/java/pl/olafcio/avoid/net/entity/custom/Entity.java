@@ -3,12 +3,14 @@ package pl.olafcio.avoid.net.entity.custom;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
+import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.entity.custom_internal.IAvoidEntity;
 import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.world.World;
+import pl.olafcio.avoid.net.world.block_data.BlockData;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 import pl.olafcio.avoid.net.world.vect3.Vect3;
 
@@ -470,5 +472,10 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     @Override
     public final boolean removeAllLeashes(Player causedBy) {
         return super.removeAllLeashes(causedBy);
+    }
+
+    @Override
+    public final boolean isColliding(BlockPos blockPos, BlockData blockData) {
+        return super.isColliding(blockPos, blockData);
     }
 }

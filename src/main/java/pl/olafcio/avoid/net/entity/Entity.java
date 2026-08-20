@@ -9,6 +9,8 @@ import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
+import pl.olafcio.avoid.net.block.pos.BlockPos;
+import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.entity.values.Hand;
@@ -18,6 +20,8 @@ import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid.net.world.block_data.BlockData;
+import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 import pl.olafcio.avoid.net.world.vect3.Vect3;
 import pl.olafcio.avoid.net.world.vect3.Vect3Native;
@@ -605,6 +609,16 @@ public abstract class Entity {
      */
     public boolean removeAllLeashes(Player causedBy) {
         return underlyingEntity.dropAllLeashConnections((net.minecraft.world.entity.player.Player) EntityNative.convert(causedBy));
+    }
+
+    /**
+     * Returns whether this entity is colliding with the given position if it contained the given block.
+     */
+    public boolean isColliding(BlockPos blockPos, BlockData blockData) {
+        return underlyingEntity.isColliding(
+                BlockPosNative.convertFrom(blockPos),
+                BlockDataNative.convert(blockData)
+        );
     }
 
     @Override
