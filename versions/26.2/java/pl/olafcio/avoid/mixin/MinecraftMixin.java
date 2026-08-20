@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
+import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.net.client.event.ClientTickEvent;
 
 import java.util.HashMap;
 import java.util.function.Supplier;
@@ -31,5 +33,10 @@ public class MinecraftMixin {
             main.onDisable();
             main.onClientDisable();
         }
+    }
+
+    @Inject(at = @At("HEAD"), method = "tick")
+    public void tick(CallbackInfo ci) {
+        EventManager.fire(ClientTickEvent.INSTANCE);
     }
 }

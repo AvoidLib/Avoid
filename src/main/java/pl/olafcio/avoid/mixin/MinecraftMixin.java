@@ -17,6 +17,7 @@ import pl.olafcio.avoid.mixininterface.IMinecraft;
 import pl.olafcio.avoid.mixininterface.IScreen;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.net.client.event.ClientTickEvent;
 import pl.olafcio.avoid.net.screen.event.ScreenOpenEvent;
 import pl.olafcio.avoid.net.screen.event.ScreenOpenEventNative;
 
@@ -63,5 +64,10 @@ public class MinecraftMixin implements IMinecraft {
             main.onDisable();
             main.onClientDisable();
         }
+    }
+
+    @Inject(at = @At("HEAD"), method = "tick")
+    public void tick(CallbackInfo ci) {
+        EventManager.fire(ClientTickEvent.INSTANCE);
     }
 }
