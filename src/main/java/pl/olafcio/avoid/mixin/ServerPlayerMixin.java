@@ -198,7 +198,7 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     }
 
     @Override
-    public void avoid$setTablistOrder(int value) {
+    public void avoid$setTablistOrder(Integer value) {
         this.tablist_order = value;
     }
 }

@@ -320,4 +320,15 @@ public class Player extends Entity implements Executor {
         __castEnv(IServerPlayer.class, "[Player#setTablistOrder] This method can only be ran on server players!")
                 .avoid$setTablistOrder(value);
     }
+
+    /**
+     * Resets the player's tablist order.
+     * <br/><br/>
+     * This method only works on the server.
+     */
+    @ServerOnly
+    public void resetTablistOrder() {
+        __castEnv(IServerPlayer.class, "[Player#resetTablistOrder] This method can only be ran on server players!")
+                .avoid$setTablistOrder(null);
+    }
 }

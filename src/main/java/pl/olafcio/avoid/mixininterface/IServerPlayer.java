@@ -1,5 +1,5 @@
 package pl.olafcio.avoid.mixininterface;
 
 public interface IServerPlayer {
-    void avoid$setTablistOrder(int value);
+    void avoid$setTablistOrder(Integer value);
 }
