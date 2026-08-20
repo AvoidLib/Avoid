@@ -28,6 +28,7 @@ public enum ScreenMarker {
     /** The {@code Controls} -> {@code Mouse Settings} screen. */ MOUSE_SETTINGS_SCREEN,
     /** The {@code Controls} -> {@code Key Binds} screen. */ KEYBINDS_SCREEN,
     /** The chat settings screen. */ CHAT_SETTINGS,
+    /** The font settings screen. */ FONT_SETTINGS,
     /** The general "Credits and Attribution" settings screen. */ CREDITS_AND_ATTRIBUTION,
     /** The credits screen showing after you finish the end fight. */ ENDGAME,
     /** The chat screen you can enter by clicking {@code T} ingame. */ CHAT,
@@ -82,7 +83,19 @@ public enum ScreenMarker {
     CODE_OF_CONDUCT,
     RECONFIGURATING,
     GAME_MODE_SWITCHER,
-    ONLINE_OPTIONS;
+    ONLINE_OPTIONS,
+    NAUTILUS,
+    SHULKER_BOX,
+    UNSUPPORTED_GRAPHICS_WARNING,
+    SOCIAL_INTERACTIONS,
+    CONFIRM_LINK,
+    CREATE_BUFFET_WORLD,
+    CREATE_FLAT_WORLD,
+    DATAPACK_LOAD_FAILURE,
+    DEMO_INTRO,
+    GAME_MENU,
+    RECOVER_WORLD_DATA,
+    PRESET_FLAT_WORLD;
 
     boolean is(IScreen screen) {
         return ScreenMarkerNative.LOOKUP.get(this).isInstance(screen);

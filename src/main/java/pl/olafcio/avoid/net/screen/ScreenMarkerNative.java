@@ -16,6 +16,7 @@ import net.minecraft.client.gui.screens.options.controls.ControlsScreen;
 import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
 import net.minecraft.client.gui.screens.reporting.*;
+import net.minecraft.client.gui.screens.social.SocialInteractionsScreen;
 import net.minecraft.client.gui.screens.telemetry.TelemetryInfoScreen;
 import net.minecraft.client.gui.screens.worldselection.*;
 import org.jetbrains.annotations.ApiStatus;
@@ -53,6 +54,7 @@ public enum ScreenMarkerNative {
         LOOKUP.put(MOUSE_SETTINGS_SCREEN, MouseSettingsScreen.class);
         LOOKUP.put(KEYBINDS_SCREEN, KeyBindsScreen.class);
         LOOKUP.put(CHAT_SETTINGS, ChatOptionsScreen.class);
+        LOOKUP.put(FONT_SETTINGS, FontOptionsScreen.class);
         LOOKUP.put(CREDITS_AND_ATTRIBUTION, CreditsAndAttributionScreen.class);
         LOOKUP.put(ENDGAME, WinScreen.class);
         LOOKUP.put(CHAT, ChatScreen.class);
@@ -108,5 +110,17 @@ public enum ScreenMarkerNative {
         LOOKUP.put(RECONFIGURATING, ServerReconfigScreen.class);
         LOOKUP.put(GAME_MODE_SWITCHER, GameModeSwitcherScreen.class);
         LOOKUP.put(ONLINE_OPTIONS, OnlineOptionsScreen.class);
+        LOOKUP.put(NAUTILUS, NautilusInventoryScreen.class);
+        LOOKUP.put(SHULKER_BOX, ShulkerBoxScreen.class);
+        LOOKUP.put(UNSUPPORTED_GRAPHICS_WARNING, UnsupportedGraphicsWarningScreen.class);
+        LOOKUP.put(SOCIAL_INTERACTIONS, SocialInteractionsScreen.class);
+        LOOKUP.put(CONFIRM_LINK, ConfirmLinkScreen.class);
+        LOOKUP.put(CREATE_BUFFET_WORLD, CreateBuffetWorldScreen.class);
+        LOOKUP.put(CREATE_FLAT_WORLD, CreateFlatWorldScreen.class);
+        LOOKUP.put(DATAPACK_LOAD_FAILURE, DatapackLoadFailureScreen.class);
+        LOOKUP.put(DEMO_INTRO, DemoIntroScreen.class);
+        LOOKUP.put(GAME_MENU, PauseScreen.class);
+        LOOKUP.put(RECOVER_WORLD_DATA, RecoverWorldDataScreen.class);
+        LOOKUP.put(PRESET_FLAT_WORLD, PresetFlatWorldScreen.class);
     }
 }
