@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import pl.olafcio.avoid.internal.VResourceKey;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.stack.ItemStackNative;
@@ -125,8 +126,8 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
                 ItemStackNative.convertFrom(this.inputSlots.getItem(0)),
                 ItemStackNative.convertFrom(this.inputSlots.getItem(1)),
 
-                IdentificationNative.convertFrom(holder.unwrapKey().orElseThrow().identifier()),
-                IdentificationNative.convertFrom(holder2.unwrapKey().orElseThrow().identifier())
+                IdentificationNative.convertFrom(VResourceKey.identifier(holder.unwrapKey().orElseThrow())),
+                IdentificationNative.convertFrom(VResourceKey.identifier(holder2.unwrapKey().orElseThrow()))
         );
 
         EventManager.fire(event);

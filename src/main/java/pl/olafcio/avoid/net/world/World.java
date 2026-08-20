@@ -13,6 +13,7 @@ import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.Untested;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.internal.VResourceKey;
 import pl.olafcio.avoid.mixin.accessors.ILevel;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
@@ -44,7 +45,14 @@ public final class World {
 
     @ApiStatus.Experimental
     public Identification getBlockID(BlockPos pos) {
-        return IdentificationNative.convertFrom(level.getBlockState(BlockPosNative.convertFrom(pos)).getBlockHolder().unwrapKey().orElseThrow().identifier());
+        return IdentificationNative.convertFrom(
+                VResourceKey.identifier(
+                        level.getBlockState(BlockPosNative.convertFrom(pos))
+                             .getBlockHolder()
+                             .unwrapKey()
+                             .orElseThrow()
+                )
+        );
     }
 
     @NeverRemoval
@@ -72,12 +80,12 @@ public final class World {
 
     @ApiStatus.Experimental
     public Identification getID() {
-        return IdentificationNative.convertFrom(level.dimension().identifier());
+        return IdentificationNative.convertFrom(VResourceKey.identifier(level.dimension()));
     }
 
     @ApiStatus.Experimental
     public Identification getTypeID() {
-        return IdentificationNative.convertFrom(level.dimensionTypeRegistration().unwrapKey().orElseThrow().identifier());
+        return IdentificationNative.convertFrom(VResourceKey.identifier(level.dimensionTypeRegistration().unwrapKey().orElseThrow()));
     }
 
     @Untested
@@ -107,7 +115,14 @@ public final class World {
 
     @NeverRemoval
     public Identification getBiomeAt(BlockPos pos) {
-        return IdentificationNative.convertFrom(level.getBiomeManager().getBiome(BlockPosNative.convertFrom(pos)).unwrapKey().orElseThrow().identifier());
+        return IdentificationNative.convertFrom(
+                VResourceKey.identifier(
+                    level.getBiomeManager()
+                         .getBiome(BlockPosNative.convertFrom(pos))
+                         .unwrapKey()
+                         .orElseThrow()
+                )
+        );
     }
 
     @NeverRemoval

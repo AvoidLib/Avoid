@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.internal.VResourceKey;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
@@ -23,7 +24,7 @@ public final class BlockLocationNative {
 
     public static BlockLocation convertFrom(GlobalPos loc) {
         return new BlockLocation(
-                IdentificationNative.convertFrom(loc.dimension().identifier()),
+                IdentificationNative.convertFrom(VResourceKey.identifier(loc.dimension())),
                 BlockPosNative.convert(loc.pos())
         );
     }

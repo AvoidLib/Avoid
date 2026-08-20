@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.item.component.values;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import pl.olafcio.avoid.internal.VResourceKey;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.TransformingItemComponentValue;
@@ -24,7 +25,7 @@ public record MapDecorations(Map<String, Entry> decorations) {
                 var val = entry.getValue();
 
                 dst.put(key, new Entry(
-                        IdentificationNative.convertFrom(val.type().unwrapKey().orElseThrow().identifier()),
+                        IdentificationNative.convertFrom(VResourceKey.identifier(val.type().unwrapKey().orElseThrow())),
                         val.x(), val.z(),
                         val.rotation()
                 ));

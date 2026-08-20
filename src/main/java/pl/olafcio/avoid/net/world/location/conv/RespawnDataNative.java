@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.LevelData;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.internal.VResourceKey;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.world.location.Location;
@@ -29,7 +30,7 @@ public final class RespawnDataNative {
 
     public static Location convertFrom(LevelData.RespawnData loc) {
         return new Location(
-                IdentificationNative.convertFrom(loc.dimension().identifier()),
+                IdentificationNative.convertFrom(VResourceKey.identifier(loc.dimension())),
                 BlockPosNative.convert(loc.pos()),
                 loc.yaw(),
                 loc.pitch()
