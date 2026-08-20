@@ -539,6 +539,14 @@ public abstract class Entity {
     }
 
     /**
+     * Returns the entity's velocity/delta movement.<br/><br/>
+     * It's basically the current motion of it.
+     */
+    public IVect3 getVelocity() {
+        return Vect3Native.convert(underlyingEntity.getDeltaMovement());
+    }
+
+    /**
      * Sets the entity's velocity/delta movement.<br/><br/>
      * This basically means the entity will tween to the position specified by {@code vel}.<br/>
      * It, of course, cannot go through walls.
