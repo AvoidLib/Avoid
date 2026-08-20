@@ -1,0 +1,4 @@
+{
+    import net.minecraft.world.entity.animal.parrot.Parrot.Variant;
+    import net.minecraft.world.entity.animal.Parrot.Variant;
+}

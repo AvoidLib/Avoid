@@ -1,0 +1,29 @@
+{
+    import net.minecraft.world.entity.animal.chicken.ChickenVariant;
+    import net.minecraft.world.entity.animal.ChickenVariant;
+}
+
+{
+    import net.minecraft.world.entity.animal.cow.CowVariant;
+    import net.minecraft.world.entity.animal.CowVariant;
+}
+
+{
+    import net.minecraft.world.entity.animal.feline.CatVariant;
+    import net.minecraft.world.entity.animal.CatVariant;
+}
+
+{
+    import net.minecraft.world.entity.animal.pig.PigVariant;
+    import net.minecraft.world.entity.animal.PigVariant;
+}
+
+{
+    import net.minecraft.world.entity.decoration.painting.PaintingVariant;
+    import net.minecraft.world.entity.decoration.PaintingVariant;
+}
+
+{
+    import net.minecraft.world.entity.npc.villager.VillagerType;
+    import net.minecraft.world.entity.npc.VillagerType;
+}

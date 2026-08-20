@@ -1,0 +1,16 @@
+import net.minecraft.core.BlockPos;
+
+{
+    public void setupFog(FogData fogData, Camera camera, ClientLevel clientLevel, float f, DeltaTracker deltaTracker) {
+    public void setupFog(FogData fogData, Entity entity, BlockPos blockPos, ClientLevel clientLevel, float f, DeltaTracker deltaTracker) {
+}
+
+{
+    fog.createFog(state, EntityNative.convertFrom(camera.entity()), WorldNative.make(clientLevel), f, TickTrackerNative.create(deltaTracker));
+    fog.createFog(state, EntityNative.convertFrom(entity), WorldNative.make(clientLevel), f, TickTrackerNative.create(deltaTracker));
+}
+
+{
+    return fog.baseColor(WorldNative.make(clientLevel), EntityNative.convertFrom(camera.entity()), i, f);
+    return fog.baseColor(WorldNative.make(clientLevel), EntityNative.convertFrom(camera.getEntity()), i, f);
+}

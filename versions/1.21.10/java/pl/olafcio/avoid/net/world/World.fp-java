@@ -1,0 +1,68 @@
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.GameRules;
+
+{
+    import net.minecraft.world.level.gamerules.GameRule;
+    // import net.minecraft.world.level.gamerules.GameRule;
+}
+
+{
+    return cast.getGameRules().get((GameRule<T>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)));
+
+    {
+        var keys = GameRules.GAME_RULE_TYPES.keySet();
+        for (var key : keys)
+            if (key.getId().equals(id.path()))
+                return (T) cast.getGameRules().getRule(key);
+
+        throw new GameRuleNotFound("[World#getGameRule] The following gamerule couldn't be found: '%s' (namespace was omitted)".formatted(id.toString()));
+    }
+}
+
+{
+    return cast.getGameRules().getAsString((GameRule<?>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)));
+
+    {
+        var keys = GameRules.GAME_RULE_TYPES.keySet();
+        for (var key : keys)
+            if (key.getId().equals(id.path()))
+                return cast.getGameRules().getRule(key).toString();
+
+        throw new GameRuleNotFound("[World#getGameRuleAsString] The following gamerule couldn't be found: '%s' (namespace was omitted)".formatted(id.toString()));
+    }
+}
+
+{
+    cast.getGameRules().set((GameRule<Integer>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)), value, AvoidInternal.getServer());
+
+    {
+        var keys = GameRules.GAME_RULE_TYPES.keySet();
+        for (var key : keys) {
+            if (key.getId().equals(id.path())) {
+                ((GameRules.IntegerValue) cast.getGameRules().getRule(key)).set(value, AvoidInternal.server);
+            }
+        }
+
+        throw new GameRuleNotFound("[World#setGameRule] The following gamerule couldn't be found: '%s' (namespace was omitted)".formatted(id.toString()));
+    }
+}
+
+{
+    cast.getGameRules().set((GameRule<Boolean>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)), value, AvoidInternal.getServer());
+
+    {
+        var keys = GameRules.GAME_RULE_TYPES.keySet();
+        for (var key : keys) {
+            if (key.getId().equals(id.path())) {
+                ((GameRules.BooleanValue) cast.getGameRules().getRule(key)).set(value, AvoidInternal.server);
+            }
+        }
+
+        throw new GameRuleNotFound("[World#setGameRule] The following gamerule couldn't be found: '%s' (namespace was omitted)".formatted(id.toString()));
+    }
+}
+
+{
+    return FeatureFlags.REGISTRY.fromNames(Arrays.stream(id).map(IdentificationNative::convert).toList())
+    return FeatureFlags.REGISTRY.fromNames(Arrays.stream(id).map(i -> ResourceLocation.fromNamespaceAndPath(i.namespace(), i.path())).toList())
+}

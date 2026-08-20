@@ -1,0 +1,29 @@
+{
+    ((IMinecraft) AvoidLibClient.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), () -> new AvoidScreen(newScreen.get()));
+
+    var oldcls = oldScreen.get();
+    if (oldcls == null)
+        return;
+
+    ((IMinecraft) AvoidLibClient.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldcls, () -> new AvoidScreen(newScreen.get()));
+}
+
+{
+    ((IMinecraft) AvoidLibClient.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), () -> new AvoidScreen(newScreen));
+
+    var oldcls = oldScreen.get();
+    if (oldcls == null)
+        return;
+
+    ((IMinecraft) AvoidLibClient.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldcls, () -> new AvoidScreen(newScreen));
+}
+
+{
+    ((IMinecraft) AvoidLibClient.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldScreen.get(), make);
+
+    var oldcls = oldScreen.get();
+    if (oldcls == null)
+        return;
+
+    ((IMinecraft) AvoidLibClient.mc).avoidlib$overwrites().put((Class<? extends net.minecraft.client.gui.screens.Screen>) oldcls, make);
+}

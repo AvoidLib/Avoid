@@ -1,0 +1,6 @@
+import net.minecraft.resources.ResourceLocation;
+
+{
+    public static Identification convertFrom(Identifier id) {
+    public static Identification convertFrom(ResourceLocation id) {
+}

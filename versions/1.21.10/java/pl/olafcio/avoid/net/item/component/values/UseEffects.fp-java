@@ -1,0 +1,4 @@
+{
+    net.minecraft.world.item.component.UseEffects
+    pl.olafcio.backported.components.UseEffects
+}

@@ -1,0 +1,11 @@
+import net.minecraft.world.level.BlockGetter;
+
+{
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getFluidState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;", ordinal = 0), method = "getFluidInCamera", cancellable = true)
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/BlockGetter;getFluidState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;", ordinal = 0), method = "getFluidInCamera", cancellable = true)
+}
+
+{
+    @Shadow        private Level level;
+    @Shadow        private BlockGetter level;
+}

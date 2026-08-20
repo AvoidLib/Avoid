@@ -1,0 +1,4 @@
+{
+    import net.minecraft.world.entity.animal.fish.Salmon.Variant;
+    import net.minecraft.world.entity.animal.Salmon.Variant;
+}

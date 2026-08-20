@@ -1,0 +1,17 @@
+{
+    accessible field net/minecraft/client/renderer/ItemBlockRenderTypes LAYER_BY_FLUID Ljava/util/Map;
+    accessible field net/minecraft/client/renderer/ItemBlockRenderTypes LAYER_BY_FLUID Ljava/util/Map;
+
+    # 1.21.10
+
+    accessible method net/minecraft/world/level/Level canHaveWeather ()Z
+
+    transitive-extendable class net/minecraft/resources/ResourceLocation
+    accessible method net/minecraft/resources/ResourceLocation <init> (Ljava/lang/String;Ljava/lang/String;)V
+    accessible method net/minecraft/resources/ResourceLocation assertValidNamespace (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    accessible method net/minecraft/resources/ResourceLocation assertValidPath (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+
+    accessible field net/minecraft/network/syncher/SynchedEntityData isDirty Z
+
+    accessible field net/minecraft/world/level/GameRules GAME_RULE_TYPES Ljava/util/Map;
+}

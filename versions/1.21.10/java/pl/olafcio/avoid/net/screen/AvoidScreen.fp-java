@@ -1,0 +1,11 @@
+import net.minecraft.client.Minecraft;
+
+{
+    public void resize(int width, int height) {
+    public void resize(Minecraft mc, int width, int height) {
+}
+
+{
+    super.resize(width, height);
+    super.resize(mc, width, height);
+}

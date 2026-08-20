@@ -1,0 +1,4 @@
+{
+    net.minecraft.world.item.component.PiercingWeapon
+    pl.olafcio.avoid.net.item.component.internal.Poly_PiercingWeapon
+}

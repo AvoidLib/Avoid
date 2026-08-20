@@ -1,0 +1,10 @@
+{
+    this.part.getExtentsForGui(MatrixStackNative.convertFrom(matrixStack), consumer);
+
+    var set = new HashSet<Vector3f>();
+
+    this.part.getExtentsForGui(MatrixStackNative.convertFrom(matrixStack), set);
+
+    for (var vector : set)
+        consumer.accept(vector);
+}

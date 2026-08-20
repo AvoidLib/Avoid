@@ -1,0 +1,4 @@
+{
+    import net.minecraft.world.entity.animal.cow.MushroomCow;
+    import net.minecraft.world.entity.animal.MushroomCow;
+}

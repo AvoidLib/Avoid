@@ -1,0 +1,14 @@
+{
+    @Inject(at = @At("HEAD"), method = "renderOutline", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "submitOutline", cancellable = true)
+}
+
+{
+    Identifier
+    ResourceLocation
+}
+
+{
+    @ModifyVariable(at = @At("HEAD"), method = {"innerBlit", "blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIIIIII)V"}, argsOnly = true)
+    @ModifyVariable(at = @At("HEAD"), method = {"innerBlit", "blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIIII)V", "blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIIIIIIII)V"}, argsOnly = true)
+}

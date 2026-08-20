@@ -1,0 +1,44 @@
+package pl.olafcio.avoid.net.command.annotation;
+
+import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.HashMap;
+
+/**
+ * Specifies a syntax method's permission atom and command level.<br/>
+ * An executor must match either to be able to proceed.
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@NeverRemoval
+public @interface PermissionLevel {
+    String value();
+    Enum level();
+
+    @NeverRemoval
+    enum Enum {
+        ALL("all", 0),
+        MODERATORS("moderators", 1),
+        GAMEMASTERS("gamemasters", 2),
+        ADMINS("admins", 3),
+        OWNERS("owners", 4);
+
+        private final String id;
+        private final int index;
+
+        Enum(String id, int index) {
+            this.id = id;
+            this.index = index;
+        }
+
+        @ApiStatus.Internal
+        public final int __get() {
+            return index;
+        }
+    }
+}

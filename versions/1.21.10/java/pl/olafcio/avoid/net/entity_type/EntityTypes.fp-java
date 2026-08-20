@@ -1,0 +1,11 @@
+import net.minecraft.resources.ResourceLocation;
+
+{
+    import net.minecraft.util.Util;
+    import net.minecraft.Util;
+}
+
+{
+    .map(flag -> Identifier.fromNamespaceAndPath(flag.namespace(), flag.path()))
+    .map(flag -> ResourceLocation.fromNamespaceAndPath(flag.namespace(), flag.path()))
+}

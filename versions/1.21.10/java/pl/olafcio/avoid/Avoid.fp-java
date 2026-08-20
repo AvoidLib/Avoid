@@ -1,0 +1,13 @@
+import pl.olafcio.avoid.net.item.component.internal.Poly_SwingAnimation;
+import pl.olafcio.avoid.net.item.component.internal.Poly_ZombieNautilusVariant;
+import pl.olafcio.avoid.net.item.component.internal.Poly_KineticWeapon;
+import pl.olafcio.avoid.net.item.component.internal.Poly_PiercingWeapon;
+
+{
+    public void onEarlyInit() {
+    public void onEarlyInit() {
+        Poly_SwingAnimation.init();
+        Poly_ZombieNautilusVariant.init();
+        Poly_KineticWeapon.init();
+        Poly_PiercingWeapon.init();
+}

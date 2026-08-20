@@ -56,8 +56,12 @@ dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
+    if ("include_jspecify" in project.getProperties()) {
+        implementation(include("org.jspecify:jspecify:1.0.1"))
+    }
+
     if (neoforge) {
-        compileOnly fileTree(rootProject.file("libs"))
+        compileOnly fileTree(rootProject.file("libs/neoforge"))
 
         compileOnly "net.fabricmc:sponge-mixin:0.17.3+mixin.0.8.7"
         compileOnly "io.github.llamalad7:mixinextras-fabric:0.5.4"
@@ -79,6 +83,21 @@ dependencies {
 
             implementation "net.fabricmc:fabric-loader:${project.loader_version}"
         }
+    }
+
+    var versionLibs = rootProject.file("libs/${project.minecraft_version}")
+    if (versionLibs.isDirectory()) {
+        if ("omit_mappings" in project.getProperties())
+            implementation fileTree(versionLibs)
+        else
+            modImplementation fileTree(versionLibs)
+    }
+
+    if ("include_permapi" in project.getProperties()) {
+        if ("omit_mappings" in project.getProperties())
+            implementation "me.lucko:fabric-permissions-api:${project.include_permapi}"
+        else
+            modImplementation "me.lucko:fabric-permissions-api:${project.include_permapi}"
     }
 }
 

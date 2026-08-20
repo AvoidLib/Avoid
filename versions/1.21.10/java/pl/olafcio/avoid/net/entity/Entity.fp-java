@@ -1,0 +1,4 @@
+{
+    underlyingEntity.needsSync = true;
+    underlyingEntity.getEntityData().isDirty = true;
+}

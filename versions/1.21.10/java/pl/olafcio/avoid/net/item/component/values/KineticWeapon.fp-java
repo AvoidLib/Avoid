@@ -1,0 +1,9 @@
+{
+    KineticWeapon.Condition
+    Poly_KineticWeapon.Condition
+}
+
+{
+    net.minecraft.world.item.component.KineticWeapon
+    pl.olafcio.avoid.net.item.component.internal.Poly_KineticWeapon
+}

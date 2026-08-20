@@ -1,0 +1,4 @@
+{
+    LOOKUP.put(NAUTILUS, NautilusInventoryScreen.class);
+    // LOOKUP.put(NAUTILUS, NautilusInventoryScreen.class);
+}

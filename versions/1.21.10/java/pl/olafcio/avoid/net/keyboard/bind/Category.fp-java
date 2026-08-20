@@ -1,0 +1,4 @@
+{
+    public static final Category DEBUG       = new Category(KeyMapping.Category.DEBUG);
+    public static final Category DEBUG       = new Category(Identification.of("avoidlib:debug"));
+}

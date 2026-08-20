@@ -1,0 +1,19 @@
+{
+    EitherHolder<net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariant>
+    pl.olafcio.avoid.net.item.component.internal.Poly_ZombieNautilusVariant
+}
+
+{
+    return new ZombieNautilusVariant(IdentificationNative.convertFrom(VResourceKey.identifier(value.key().orElseThrow())));
+    return new ZombieNautilusVariant(Identification.of(value.id()));
+}
+
+{
+    return new EitherHolder<>(ResourceKey.create(Registries.ZOMBIE_NAUTILUS_VARIANT, IdentificationNative.convert(value.id)));
+    return new pl.olafcio.avoid.net.item.component.internal.Poly_ZombieNautilusVariant(value.id.toString());
+}
+
+{
+    net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariant
+    pl.olafcio.avoid.net.item.component.internal.Poly_ZombieNautilusVariant
+}

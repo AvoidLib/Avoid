@@ -1,0 +1,4 @@
+this['depends']['backported'] = '>=1.0'
+this['suggests'] = {
+    "fabric-permissions-api-v0": "*"
+}

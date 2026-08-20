@@ -1,0 +1,14 @@
+{
+    var screen = ScreenMarkerNative.LOOKUP.get(this);
+    var screen = ScreenMarkerNative.LOOKUP.get(this);
+
+    if (screen == null)
+        return null;
+}
+
+{
+    return ScreenMarkerNative.LOOKUP.get(this).isInstance(screen);
+
+    var ascreen = ScreenMarkerNative.LOOKUP.get(this);
+    return ascreen != null && ascreen.isInstance(screen);
+}

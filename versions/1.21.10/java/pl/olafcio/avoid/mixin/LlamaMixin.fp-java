@@ -1,0 +1,4 @@
+{
+    import net.minecraft.world.entity.animal.equine.Llama;
+    import net.minecraft.world.entity.animal.horse.Llama;
+}

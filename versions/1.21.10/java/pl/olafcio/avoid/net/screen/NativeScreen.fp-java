@@ -1,0 +1,6 @@
+import pl.olafcio.avoid.client.AvoidLibClient;
+
+{
+    realScreen.resize(width, height);
+    realScreen.resize(AvoidLibClient.mc, width, height);
+}

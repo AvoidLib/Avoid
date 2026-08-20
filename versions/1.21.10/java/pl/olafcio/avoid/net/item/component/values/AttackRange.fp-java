@@ -1,0 +1,4 @@
+{
+    net.minecraft.world.item.component.AttackRange
+    pl.olafcio.backported.components.AttackRange
+}
