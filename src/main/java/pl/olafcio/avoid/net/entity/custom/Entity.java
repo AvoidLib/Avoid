@@ -10,6 +10,7 @@ import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
+import pl.olafcio.avoid.net.world.vect3.Vect3;
 
 import java.util.Set;
 import java.util.UUID;
@@ -409,6 +410,36 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     @Override
     public final World getWorld() {
         return super.getWorld();
+    }
+
+    @Override
+    public int getPortalCooldown() {
+        return super.getPortalCooldown();
+    }
+
+    @Override
+    public void setPortalCooldown() {
+        super.setPortalCooldown();
+    }
+
+    @Override
+    public void setPortalCooldown(int value) {
+        super.setPortalCooldown(value);
+    }
+
+    @Override
+    public final IVect3 getVelocity() {
+        return super.getVelocity();
+    }
+
+    @Override
+    public final void setVelocity(Vect3 vel) {
+        super.setVelocity(vel);
+    }
+
+    @Override
+    public final void setNoGravity(boolean value) {
+        super.setNoGravity(value);
     }
 
     @Override
