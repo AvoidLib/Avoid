@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.OutgoingChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
@@ -29,9 +30,11 @@ import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
 import pl.olafcio.avoid.net.player_server.PlayerInput;
 import pl.olafcio.avoid.net.player_server.event.ServerPlayerGameModeChangeEvent;
 import pl.olafcio.avoid.net.player_server.event.ServerPlayerInputEvent;
+import pl.olafcio.avoid.net.player_server.event.ServerPlayerSwingEvent;
 import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepFailEvent;
 import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepStopEvent;
 import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepSuccessEvent;
+import pl.olafcio.avoid.net.player_server.values.HandTypeNative;
 import pl.olafcio.avoid.net.world.WorldNative;
 
 @Mixin(ServerPlayer.class)
@@ -162,6 +165,19 @@ public abstract class ServerPlayerMixin {
                 WorldNative.make(this.level()),
                 bl2,
                 bl
+        );
+
+        EventManager.fire(event);
+
+        if (event.isCancelled())
+            ci.cancel();
+    }
+
+    @Inject(at = @At("HEAD"), method = "swing", cancellable = true)
+    public void swing(InteractionHand interactionHand, CallbackInfo ci) {
+        var event = new ServerPlayerSwingEvent(
+                PlayerNative.convertFrom((ServerPlayer) (Object) this),
+                HandTypeNative.convert(interactionHand)
         );
 
         EventManager.fire(event);
