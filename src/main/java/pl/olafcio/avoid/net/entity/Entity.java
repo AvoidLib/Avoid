@@ -88,9 +88,16 @@ public abstract class Entity {
         return type;
     }
 
+    /**
+     * Gets the initial entity position (from the constructor time).
+     */
     public IVect3 position() {
         return position;
     }
+
+    /**
+     * Gets the initial entity velocity (from the constructor time).
+     */
     public IVect3 velocity() {
         return velocity;
     }
