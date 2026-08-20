@@ -435,4 +435,9 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     public final void sync() {
         super.sync();
     }
+
+    @Override
+    public final boolean removeAllLeashes(Player causedBy) {
+        return super.removeAllLeashes(causedBy);
+    }
 }

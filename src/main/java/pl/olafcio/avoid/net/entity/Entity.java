@@ -600,6 +600,13 @@ public abstract class Entity {
         underlyingEntity.needsSync = true;
     }
 
+    /**
+     * Unleashes the entity from every leash.
+     */
+    public boolean removeAllLeashes(Player causedBy) {
+        return underlyingEntity.dropAllLeashConnections((net.minecraft.world.entity.player.Player) EntityNative.convert(causedBy));
+    }
+
     @Override
     public String toString() {
         return "Entity[" +
