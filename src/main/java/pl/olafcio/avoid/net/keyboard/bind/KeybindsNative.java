@@ -33,8 +33,4 @@ public class KeybindsNative {
 
         return keymap::isDown;
     }
-
-    public static Category create(Identification id) {
-        return new Category(KeyMapping.Category.register(IdentificationNative.convert(id)));
-    }
 }

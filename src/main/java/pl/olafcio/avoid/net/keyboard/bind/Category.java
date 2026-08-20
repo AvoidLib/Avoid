@@ -1,12 +1,18 @@
 package pl.olafcio.avoid.net.keyboard.bind;
 
 import net.minecraft.client.KeyMapping;
+import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid.net.id.IdentificationNative;
 
 public final class Category {
     final KeyMapping.Category category;
 
     Category(KeyMapping.Category category) {
         this.category = category;
+    }
+
+    public Category(Identification id) {
+        this(KeyMapping.Category.register(IdentificationNative.convert(id)));
     }
 
     public static final Category MOVEMENT    = new Category(KeyMapping.Category.MOVEMENT);
