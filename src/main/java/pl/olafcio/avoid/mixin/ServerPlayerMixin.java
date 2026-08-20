@@ -16,10 +16,12 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import pl.olafcio.avoid.mixininterface.IServerPlayer;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
@@ -38,7 +40,7 @@ import pl.olafcio.avoid.net.player_server.values.HandTypeNative;
 import pl.olafcio.avoid.net.world.WorldNative;
 
 @Mixin(ServerPlayer.class)
-public abstract class ServerPlayerMixin {
+public abstract class ServerPlayerMixin implements IServerPlayer {
     @Shadow public abstract Level level();
 
     @Inject(at = @At("TAIL"), method = "sendSystemMessage(Lnet/minecraft/network/chat/Component;Z)V", cancellable = true)
@@ -184,5 +186,19 @@ public abstract class ServerPlayerMixin {
 
         if (event.isCancelled())
             ci.cancel();
+    }
+
+    @Unique
+    private Integer tablist_order = null;
+
+    @Inject(at = @At("HEAD"), method = "getTabListOrder", cancellable = true)
+    public void getTabListOrder(CallbackInfoReturnable<Integer> cir) {
+        if (tablist_order != null)
+            cir.setReturnValue(tablist_order);
+    }
+
+    @Override
+    public void avoid$setTablistOrder(int value) {
+        this.tablist_order = value;
     }
 }

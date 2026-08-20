@@ -13,6 +13,7 @@ import pl.olafcio.avoid.AvoidInternal;
 import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.mixininterface.IServerPlayer;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
@@ -296,5 +297,27 @@ public class Player extends Entity implements Executor {
     public void revokeAdvancement(Identification id) {
         __castEnv(ServerPlayer.class, "[Player#revokeAdvancement] This method can only be ran on server players!")
                 .getAdvancements().revoke(AvoidInternal.getServer().getAdvancements().get(IdentificationNative.convert(id)), "");
+    }
+
+    /**
+     * Returns the player's tablist order.
+     * <br/><br/>
+     * This method only works on the server.
+     */
+    @ServerOnly
+    public int getTablistOrder() {
+        return __castEnv(ServerPlayer.class, "[Player#getTablistOrder] This method can only be ran on server players!")
+                .getTabListOrder();
+    }
+
+    /**
+     * Sets the player's tablist order.
+     * <br/><br/>
+     * This method only works on the server.
+     */
+    @ServerOnly
+    public void setTablistOrder(int value) {
+        __castEnv(IServerPlayer.class, "[Player#setTablistOrder] This method can only be ran on server players!")
+                .avoid$setTablistOrder(value);
     }
 }
