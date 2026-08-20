@@ -24,7 +24,7 @@ public enum PushReaction {
     /**
      * Indicates the entity cannot be managed by pistons at all.<br/><br/>
      * <b>NOTE:</b> This is a entity-only push reaction.<br/>
-     * &emsp;&ensp;&ensp;&ensp;&ensp;&nbsp;For entities, use {@link #BLOCK PushReaction.BLOCK} instead.
+     * &emsp;&ensp;&ensp;&ensp;&ensp;&nbsp;For blocks, use {@link #BLOCK PushReaction.BLOCK} instead.
      */
     IGNORE(net.minecraft.world.level.material.PushReaction.IGNORE),
 
