@@ -25,6 +25,7 @@ import pl.olafcio.avoid.net.player.exception.UncontrollablePlayerException;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
 import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
 import pl.olafcio.avoid.net.player_server.ChatVisibility;
+import pl.olafcio.avoid.net.world.location.conv.RespawnDataNative;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 
 import java.util.UUID;
@@ -330,5 +331,51 @@ public class Player extends Entity implements Executor {
     public void resetTablistOrder() {
         __castEnv(IServerPlayer.class, "[Player#resetTablistOrder] This method can only be ran on server players!")
                 .avoid$setTablistOrder(null);
+    }
+
+    /**
+     * Returns the player's respawn point.<br/>
+     * May be {@code null}.
+     */
+    @ServerOnly
+    @Nullable
+    public RespawnPoint getRespawnPoint() {
+        var config = __castEnv(ServerPlayer.class, "[Player#getRespawnPoint] This method can only be ran on server players!")
+                          .getRespawnConfig();
+
+        if (config == null)
+            return null;
+
+        return new RespawnPoint(
+                RespawnDataNative.convertFrom(config.respawnData()),
+                config.forced()
+        );
+    }
+
+    /**
+     * Sets the player's respawn point.<br/>
+     * May be {@code null}.
+     */
+    @ServerOnly
+    public void setRespawnPoint(@Nullable RespawnPoint value) {
+        __castEnv(ServerPlayer.class, "[Player#setRespawnPoint] This method can only be ran on server players!")
+                    .setRespawnPosition(value == null ? null : new ServerPlayer.RespawnConfig(
+                            RespawnDataNative.convert(value.location()),
+                            value.force()
+                    ), false);
+    }
+
+    /**
+     * Sets the player's respawn point.<br/>
+     * May be {@code null}.
+     * @param notify If {@code true}, the player will be informed that his spawnpoint has changed.
+     */
+    @ServerOnly
+    public void setRespawnPoint(@Nullable RespawnPoint value, boolean notify) {
+        __castEnv(ServerPlayer.class, "[Player#setRespawnPoint] This method can only be ran on server players!")
+                .setRespawnPosition(value == null ? null : new ServerPlayer.RespawnConfig(
+                        RespawnDataNative.convert(value.location()),
+                        value.force()
+                ), notify);
     }
 }
