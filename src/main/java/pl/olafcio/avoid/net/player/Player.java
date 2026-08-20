@@ -402,7 +402,7 @@ public class Player extends Entity implements Executor {
 
     @ServerOnly
     public @Nullable BlockPos getRaidOmenPosition() {
-        var pos = __castEnv(ServerPlayer.class, "[Player#clearRaidOmenPosition] This method can only be ran on server players!")
+        var pos = __castEnv(ServerPlayer.class, "[Player#getRaidOmenPosition] This method can only be ran on server players!")
                          .getRaidOmenPosition();
 
         return pos == null
