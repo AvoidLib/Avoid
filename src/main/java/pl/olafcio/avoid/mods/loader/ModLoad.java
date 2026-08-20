@@ -40,7 +40,7 @@ import java.util.jar.JarFile;
 
 @ApiStatus.Internal
 public final class ModLoad
-             implements LXItem, LXScreenOverwrite, LXCommand, LXSelector, LXEntity, LXFluid, LXFog,
+             implements LXItem, LXScreenOverwrite, LXCommand, LXSelector, LXEntity, LXFluid, LXFog, LXEffect,
                         LXKeyHandler
 {
     @ApiStatus.Internal
@@ -214,6 +214,9 @@ public final class ModLoad
                 continue;
 
             if (registerAutoEntity(id, klass, className, usedAutoID))
+                continue;
+
+            if (registerAutoEffect(id, klass, className, usedAutoID))
                 continue;
 
             if (registerAutoFog(id, klass, className))
