@@ -2,6 +2,7 @@ package pl.olafcio.avoid.net.block;
 
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.random.RandomProvider;
+import pl.olafcio.avoid.net.block.values.Explosion;
 import pl.olafcio.avoid.net.block.values.MapColor;
 import pl.olafcio.avoid.net.world.World;
 
@@ -10,4 +11,8 @@ public abstract class Block {
 
     public void tick(World world, BlockPos blockPos, RandomProvider randomProvider) {}
     public void randomlyTick(World world, BlockPos blockPos, RandomProvider randomProvider) {}
+
+    public boolean dropFromExplosion(Explosion explosion) {
+        return true;
+    }
 }

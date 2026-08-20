@@ -3,6 +3,7 @@ package pl.olafcio.avoid.net.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -13,10 +14,12 @@ import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.block.properties._liquid;
 import pl.olafcio.avoid.net.block.random.RandomProviderNative;
+import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.fluid.Fluid;
 import pl.olafcio.avoid.net.fluid.FluidsNative;
 import pl.olafcio.avoid.net.fluid.Fluids;
 import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -56,6 +59,19 @@ public final class BlockNative {
                         RandomProviderNative.create(randomSource)
                 );
             }
+
+            @Override
+            public boolean dropFromExplosion(Explosion explosion) {
+                return avoidBlock.dropFromExplosion(new pl.olafcio.avoid.net.block.values.Explosion(
+                        WorldNative.make(explosion.level()),
+                        EntityNative.convertFrom(explosion.getDirectSourceEntity()),
+                        EntityNative.convertFrom(explosion.getIndirectSourceEntity()),
+                        explosion.radius(),
+                        Vect3Native.convert(explosion.center()),
+                        explosion.canTriggerBlocks(),
+                        explosion.shouldAffectBlocklikeEntities()
+                ));
+            }
         };
     }
 
@@ -81,6 +97,19 @@ public final class BlockNative {
                         BlockPosNative.convert(blockPos),
                         RandomProviderNative.create(randomSource)
                 );
+            }
+
+            @Override
+            public boolean dropFromExplosion(Explosion explosion) {
+                return avoidBlock.dropFromExplosion(new pl.olafcio.avoid.net.block.values.Explosion(
+                        WorldNative.make(explosion.level()),
+                        EntityNative.convertFrom(explosion.getDirectSourceEntity()),
+                        EntityNative.convertFrom(explosion.getIndirectSourceEntity()),
+                        explosion.radius(),
+                        Vect3Native.convert(explosion.center()),
+                        explosion.canTriggerBlocks(),
+                        explosion.shouldAffectBlocklikeEntities()
+                ));
             }
         };
     }
