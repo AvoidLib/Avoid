@@ -25,8 +25,11 @@ public class MinecraftMixin {
     @Inject(at = @At("HEAD"), method = "close")
     public void close(CallbackInfo ci) {
         var addons = AvoidModLoader.getLoadedAddons();
-        for (AvoidModMeta mod : addons)
-            AvoidModLoader.getLoadedAddonClass(mod)
-                          .onDisable();
+        for (AvoidModMeta mod : addons) {
+            var main = AvoidModLoader.getLoadedAddonClass(mod);
+
+            main.onDisable();
+            main.onClientDisable();
+        }
     }
 }
