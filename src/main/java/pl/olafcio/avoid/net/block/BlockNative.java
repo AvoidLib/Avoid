@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -19,6 +21,7 @@ import pl.olafcio.avoid.net.fluid.Fluid;
 import pl.olafcio.avoid.net.fluid.FluidsNative;
 import pl.olafcio.avoid.net.fluid.Fluids;
 import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
 import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 import java.lang.reflect.InvocationTargetException;
@@ -72,6 +75,16 @@ public final class BlockNative {
                         explosion.shouldAffectBlocklikeEntities()
                 ));
             }
+
+            @Override
+            public void destroy(LevelAccessor levelAccessor, BlockPos blockPos, BlockState blockState) {
+                if (!avoidBlock.destroy(
+                        WorldNative.make((Level) levelAccessor),
+                        BlockPosNative.convert(blockPos),
+                        BlockDataNative.convertFrom(blockState)
+                ))
+                    super.destroy(levelAccessor, blockPos, blockState);
+            }
         };
     }
 
@@ -110,6 +123,16 @@ public final class BlockNative {
                         explosion.canTriggerBlocks(),
                         explosion.shouldAffectBlocklikeEntities()
                 ));
+            }
+
+            @Override
+            public void destroy(LevelAccessor levelAccessor, BlockPos blockPos, BlockState blockState) {
+                if (!avoidBlock.destroy(
+                        WorldNative.make((Level) levelAccessor),
+                        BlockPosNative.convert(blockPos),
+                        BlockDataNative.convertFrom(blockState)
+                ))
+                    super.destroy(levelAccessor, blockPos, blockState);
             }
         };
     }
