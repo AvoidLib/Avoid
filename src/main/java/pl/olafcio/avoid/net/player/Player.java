@@ -379,4 +379,10 @@ public class Player extends Entity implements Executor {
                         value.force()
                 ), notify);
     }
+
+    @ServerOnly
+    public void setSpawnExtraParticlesOnFall(boolean value) {
+        __castEnv(ServerPlayer.class, "[Player#setSpawnExtraParticlesOnFall] This method can only be ran on server players!")
+                .setSpawnExtraParticlesOnFall(value);
+    }
 }
