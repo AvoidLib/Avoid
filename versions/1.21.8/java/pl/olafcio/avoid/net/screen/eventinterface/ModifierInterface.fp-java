@@ -1,0 +1,14 @@
+{
+    InputQuirks.
+    BackportedInputQuirks.
+}
+
+{
+    net.minecraft.client.input.BackportedInputQuirks.
+    pl.olafcio.backported.BackportedInputQuirks.
+}
+
+{
+    net.minecraft.client.input.InputQuirks
+    pl.olafcio.backported.BackportedInputQuirks
+}

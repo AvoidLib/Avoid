@@ -1,0 +1,9 @@
+{
+    : FeatureFlags.VANILLA_SET,
+    : FeatureFlags.VANILLA_SET
+}
+
+{
+    !klass.isAnnotationPresent(_notInPeaceful.class)
+    // !klass.isAnnotationPresent(_notInPeaceful.class)
+}

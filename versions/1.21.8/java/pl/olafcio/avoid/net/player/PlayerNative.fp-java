@@ -1,0 +1,14 @@
+{
+    profile.id()
+    profile.getId()
+}
+
+{
+    profile.name()
+    profile.getName()
+}
+
+{
+    profile.properties()
+    profile.getProperties()
+}

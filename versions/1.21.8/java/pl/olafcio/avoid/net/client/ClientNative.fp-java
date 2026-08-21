@@ -1,0 +1,9 @@
+{
+    obj.id()
+    obj.getId()
+}
+
+{
+    obj.name()
+    obj.getName()
+}

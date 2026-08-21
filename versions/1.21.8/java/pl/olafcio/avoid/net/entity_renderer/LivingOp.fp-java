@@ -1,0 +1,9 @@
+{
+    PlayerSkinRenderCache playerSkinRenderCache
+    Void unused
+}
+
+{
+    import net.minecraft.client.renderer.PlayerSkinRenderCache;
+    // import net.minecraft.client.renderer.PlayerSkinRenderCache;
+}

@@ -1,0 +1,14 @@
+{
+    RespawnDataNative.convertFrom(config.respawnData()),
+    RespawnDataNative.convertFrom(config.pos(), config.dimension(), config.angle()),
+}
+
+{
+    RespawnDataNative.convert(value.location()),
+
+    // replacement //
+
+    RespawnDataNative.convertDimension(value.location()),
+    RespawnDataNative.convertBlockPos(value.location()),
+    value.location().yaw(),
+}

@@ -1,0 +1,24 @@
+{
+    ManageServerScreen
+    EditServerScreen
+}
+
+{
+    LOOKUP.put(DEBUG_OPTIONS, DebugOptionsScreen.class);
+    // LOOKUP.put(DEBUG_OPTIONS, DebugOptionsScreen.class);
+}
+
+{
+    LOOKUP.put(CODE_OF_CONDUCT, CodeOfConductScreen.class);
+    // LOOKUP.put(CODE_OF_CONDUCT, CodeOfConductScreen.class);
+}
+
+{
+    import net.minecraft.client.gui.screens.debug.DebugOptionsScreen;
+    // import net.minecraft.client.gui.screens.debug.DebugOptionsScreen;
+}
+
+{
+    import net.minecraft.client.gui.screens.multiplayer.CodeOfConductScreen;
+    // import net.minecraft.client.gui.screens.multiplayer.CodeOfConductScreen;
+}

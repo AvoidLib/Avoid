@@ -1,0 +1,21 @@
+import com.mojang.authlib.GameProfile;
+
+{
+    return new Operator(user.name(), user.id());
+    return new Operator(user.getName(), user.getId());
+}
+
+{
+    AvoidInternal.getServer().getPlayerList().getOps().clear();
+    AvoidInternal.getServer().getPlayerList().getOps().getEntries().clear();
+}
+
+{
+    import net.minecraft.server.players.NameAndId;
+    // import net.minecraft.server.players.NameAndId;
+}
+
+{
+    NameAndId
+    GameProfile
+}

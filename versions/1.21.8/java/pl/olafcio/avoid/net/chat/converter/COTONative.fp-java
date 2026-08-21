@@ -1,0 +1,24 @@
+{
+    if (src.font != null) dest = dest.withFont(new FontDescription.Resource(IdentificationNative.convert(src.font)));
+    if (src.font != null) dest = dest.withFont(IdentificationNative.convert(src.font));
+}
+
+{
+    import net.minecraft.network.chat.contents.objects.AtlasSprite;
+    // import net.minecraft.network.chat.contents.objects.AtlasSprite;
+}
+
+{
+    import net.minecraft.network.chat.contents.objects.PlayerSprite;
+    // import net.minecraft.network.chat.contents.objects.PlayerSprite;
+}
+
+{
+    comp = Component.object(
+    comp = Component.literal("");/*
+}
+
+{
+        ));
+        ));*/
+}

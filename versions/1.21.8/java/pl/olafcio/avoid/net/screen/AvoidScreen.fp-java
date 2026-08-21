@@ -1,0 +1,63 @@
+{
+    import net.minecraft.client.input.MouseButtonEvent;
+    // import net.minecraft.client.input.MouseButtonEvent;
+}
+
+{
+    public boolean keyPressed(KeyEvent keyEvent) {
+    public boolean keyPressed(int i, int j, int k) {
+}
+
+{
+    keyboard.event = keyEvent;
+    keyboard.event = new KeyEvent(i, j, k);
+}
+
+{
+    public boolean keyReleased(KeyEvent keyEvent) {
+    public boolean keyReleased(int i, int j, int k) {
+}
+
+{
+    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean doubleClick) {
+    public boolean mouseClicked(double d, double e, int i) {
+}
+
+{
+    public boolean mouseReleased(MouseButtonEvent mouseButtonEvent) {
+    public boolean mouseReleased(double d, double e, int i) {
+}
+
+{
+    public boolean mouseDragged(MouseButtonEvent mouseButtonEvent, double x, double y) {
+    public boolean mouseDragged(double d, double e, int i, double x, double y) {
+}
+
+{
+    mouse.event = mouseButtonEvent;
+
+    // replacement //
+
+    mouse.x = d;
+    mouse.y = e;
+    mouse.button = i;
+}
+
+{
+    return screen.mouseClicked(mouse, doubleClick);
+
+    // replacement //
+
+    var now = System.currentTimeMillis();
+    var doubleClick = now - lastclick < 100;
+
+    lastclick = now;
+
+    return screen.mouseClicked(mouse, doubleClick);
+}
+
+{
+    public class AvoidScreen extends Screen {
+    public class AvoidScreen extends Screen {
+        private long lastclick = -1L;
+}

@@ -1,0 +1,14 @@
+{
+    public void keyPress(long window, int action, KeyEvent event, CallbackInfo ci) {
+    public void keyPress(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
+}
+
+{
+    if (window == gameWindow.handle()) {
+    if (window == gameWindow.getWindow()) {
+}
+
+{
+    , event);
+    , new KeyEvent(key, scancode, modifiers));
+}

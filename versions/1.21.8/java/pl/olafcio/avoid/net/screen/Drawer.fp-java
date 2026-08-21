@@ -1,0 +1,9 @@
+{
+    private static GuiSpriteScaling getSpriteScaling(TextureAtlasSprite textureAtlasSprite) {
+    /*private static GuiSpriteScaling getSpriteScaling(TextureAtlasSprite textureAtlasSprite) {
+}
+
+{
+    return textureAtlasSprite.contents().getAdditionalMetadata(GuiMetadataSection.TYPE).orElse(GuiMetadataSection.DEFAULT).scaling();
+    return textureAtlasSprite.contents().getAdditionalMetadata(GuiMetadataSection.TYPE).orElse(GuiMetadataSection.DEFAULT).scaling();*/{
+}

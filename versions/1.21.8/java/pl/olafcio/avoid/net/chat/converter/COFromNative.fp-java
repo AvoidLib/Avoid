@@ -1,0 +1,31 @@
+import net.minecraft.resources.ResourceLocation;
+
+{
+    if (input.getStyle().getFont() instanceof FontDescription.Resource(Identifier id)) comp.font(IdentificationNative.convertFrom(id));
+    if (input.getStyle().getFont() instanceof ResourceLocation id) comp.font(IdentificationNative.convertFrom(id));
+}
+
+{
+    import net.minecraft.network.chat.contents.ObjectContents;
+    // import net.minecraft.network.chat.contents.ObjectContents;
+}
+
+{
+    import net.minecraft.network.chat.contents.objects.AtlasSprite;
+    // import net.minecraft.network.chat.contents.objects.AtlasSprite;
+}
+
+{
+    import net.minecraft.network.chat.contents.objects.PlayerSprite;
+    // import net.minecraft.network.chat.contents.objects.PlayerSprite;
+}
+
+{
+    else if (input.getContents() instanceof ObjectContents content)
+    /*else if (input.getContents() instanceof ObjectContents content)
+}
+
+{
+    throw new RuntimeException("Unknown minecraft object component type '" + content.contents() + "'");
+    throw new RuntimeException("Unknown minecraft object component type '" + content.contents() + "'");*/
+}

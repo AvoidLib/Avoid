@@ -1,0 +1,27 @@
+{
+    return realScreen.keyReleased(event.event);
+    return realScreen.keyReleased(event.getKey(), event.getScancode(), event.getModifiers());
+}
+
+{
+    return realScreen.keyPressed(event.event);
+    return realScreen.keyPressed(event.getKey(), event.getScancode(), event.getModifiers());
+}
+
+{
+    return realScreen.mouseDragged(event.event, x, y);
+    return realScreen.mouseDragged(event.getX(), event.getY(), event.getButton(), x, y);
+}
+
+{
+    return realScreen.mouseReleased(event.event);
+    return realScreen.mouseReleased(event.getX(), event.getY(), event.getButton());
+}
+
+{
+    return realScreen.mouseClicked(event.event, doubleClick);
+    if (doubleClick)
+        realScreen.mouseClicked(event.getX(), event.getY(), event.getButton());
+
+    return realScreen.mouseClicked(event.getX(), event.getY(), event.getButton());
+}

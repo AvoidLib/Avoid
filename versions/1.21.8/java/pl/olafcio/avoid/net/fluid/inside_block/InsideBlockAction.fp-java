@@ -1,0 +1,6 @@
+import pl.olafcio.backported.BackportedInsideBlockEffectTypes;
+
+{
+    InsideBlockEffectType.CLEAR_FREEZE
+    BackportedInsideBlockEffectTypes.CLEAR_FREEZE
+}
