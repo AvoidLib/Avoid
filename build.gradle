@@ -14,7 +14,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'net.fabricmc:fabric-loom:1.16-SNAPSHOT'
+        classpath 'net.fabricmc:fabric-loom:1.17-SNAPSHOT'
         classpath 'me.modmuss50:mod-publish-plugin:2.0.0'
     }
 }
