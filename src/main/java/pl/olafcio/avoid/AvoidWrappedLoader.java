@@ -34,6 +34,13 @@ public final class AvoidWrappedLoader {
     }
 
     /**
+     * Returns whether is a mod using the specified ID present.
+     */
+    public static boolean isModPresent(String id) {
+        return FabricLoader.getInstance().getModContainer(id).isPresent();
+    }
+
+    /**
      * Returns a list containing the JAR path of each loaded mod.
      */
     public static Set<Path> getModsPaths() {

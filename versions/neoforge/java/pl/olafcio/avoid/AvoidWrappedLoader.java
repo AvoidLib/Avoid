@@ -22,6 +22,10 @@ public final class AvoidWrappedLoader {
         return FMLLoader.getCurrent().getGameDir();
     }
 
+    public static boolean isModPresent(String id) {
+        return FMLLoader.getCurrent().getLoadingModList();
+    }
+
     public static Set<Path> getModsPaths() {
         return FMLLoader.getCurrent().getLoadingModList().getModFiles()
                                                          .stream().map(ModFileInfo::getFile)
