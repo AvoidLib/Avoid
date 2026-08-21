@@ -13,7 +13,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.LockCode;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import net.minecraft.world.entity.animal.cow.CowVariant;
 import net.minecraft.world.entity.animal.feline.CatVariant;
 import net.minecraft.world.entity.animal.frog.FrogVariant;
@@ -170,7 +169,7 @@ public class ItemComponents {
     public static final ItemComponentType<RabbitVariant> RABBIT_VARIANT = register("rabbit/variant", new RabbitVariant.Controller());
     public static final ItemComponentType<Holder<PigVariant>> PIG_VARIANT = register("pig/variant");
     public static final ItemComponentType<Holder<CowVariant>> COW_VARIANT = register("cow/variant");
-    public static final ItemComponentType<EitherHolder<ChickenVariant>> CHICKEN_VARIANT = register("chicken/variant");
+    public static final ItemComponentType<ChickenVariant> CHICKEN_VARIANT = register("chicken/variant", new ChickenVariant.Controller());
     public static final ItemComponentType<EitherHolder<ZombieNautilusVariant>> ZOMBIE_NAUTILUS_VARIANT = register("zombie_nautilus/variant");
     public static final ItemComponentType<Holder<FrogVariant>> FROG_VARIANT = register("frog/variant");
     public static final ItemComponentType<EquineVariant> HORSE_VARIANT = register("horse/variant", new EquineVariant.Controller());
@@ -187,21 +186,21 @@ public class ItemComponents {
     /**
      * Creates a new item component type.
      * @param name The stringified ID of the component, e.g. {@code avoidtestproject:count_used}.
-     * @param controller The value type of the component, e.g. {@code Payload.TYPE} (new types cannot be created currently).
+     * @param valueType The value type of the component, e.g. {@code Payload.TYPE} (new types cannot be created currently).
      * @return The created item component type.
      */
-    public static <O, V extends _value_type<O>> ItemComponentType<O> create(String name, V controller) {
-        return ItemComponents.createUC(name, controller);
+    public static <O, V extends _value_type<O>> ItemComponentType<O> create(String name, V valueType) {
+        return ItemComponents.create0(name, valueType);
     }
 
     /**
      * Creates a new item component type.
      * @param name The ID of the component, e.g. {@code Identification.of("avoidtestproject:count_used")}.
-     * @param controller The value type of the component, e.g. {@code Payload.TYPE} (new types cannot be created currently).
+     * @param valueType The value type of the component, e.g. {@code Payload.TYPE} (new types cannot be created currently).
      * @return The created item component type.
      */
-    public static <O, V extends _value_type<O>> ItemComponentType<O> create(Identification name, V controller) {
-        return ItemComponents.createUC(name, controller);
+    public static <O, V extends _value_type<O>> ItemComponentType<O> create(Identification name, V valueType) {
+        return ItemComponents.create0(name, valueType);
     }
 
     //
@@ -210,51 +209,33 @@ public class ItemComponents {
     //
 
     @SuppressWarnings("unchecked")
-    private static <I, O, V extends _value_type<O>> ItemComponentType<O> createUC(String name, V controller) {
-        return ItemComponents.create0(name, (TransformingItemComponentValue<I, O>) _value_type_accessor.getController(controller), (Class<I>) _value_type_accessor.getInput(controller));
-    }
+    private static <I, O> ItemComponentType<O> create0(String name, _value_type<O> valueType) {
+        var value = register(name, _value_type_accessor.getController(valueType));
 
-    @SuppressWarnings("unchecked")
-    private static <I, O, V extends _value_type<O>> ItemComponentType<O> createUC(Identification name, V controller) {
-        return ItemComponents.create0(name, (TransformingItemComponentValue<I, O>) _value_type_accessor.getController(controller), (Class<I>) _value_type_accessor.getInput(controller));
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <I, O, V extends TransformingItemComponentValue<I, O>> ItemComponentType<O> create0(String name, V controller, Class<I> iClass) {
-        var value = register(name, controller);
-
-        try {
-            Registry.register(
-                    BuiltInRegistries.DATA_COMPONENT_TYPE,
-                    IdentificationNative.convert(name),
-                    DataComponentType.<I>builder()
-                                     .persistent((Codec<I>) iClass.getDeclaredField("CODEC").get(null))
-                                     .networkSynchronized((StreamCodec<? super RegistryFriendlyByteBuf, I>) iClass.getDeclaredField("STREAM_CODEC").get(null))
-                                     .build()
-            );
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        Registry.register(
+                BuiltInRegistries.DATA_COMPONENT_TYPE,
+                IdentificationNative.convert(name),
+                DataComponentType.<I>builder()
+                                 .persistent((Codec<I>) _value_type_accessor.getCodec(valueType))
+                                 .networkSynchronized((StreamCodec<? super RegistryFriendlyByteBuf, I>)  _value_type_accessor.getStreamCodec(valueType))
+                                 .build()
+        );
 
         return value;
     }
 
     @SuppressWarnings("unchecked")
-    private static <I, O, V extends TransformingItemComponentValue<I, O>> ItemComponentType<O> create0(Identification name, V controller, Class<I> iClass) {
-        var value = register(name, controller);
+    private static <I, O> ItemComponentType<O> create0(Identification name, _value_type<O> valueType) {
+        var value = register(name, _value_type_accessor.getController(valueType));
 
-        try {
-            Registry.register(
-                    BuiltInRegistries.DATA_COMPONENT_TYPE,
-                    IdentificationNative.convert(name),
-                    DataComponentType.<I>builder()
-                                     .persistent((Codec<I>) iClass.getDeclaredField("CODEC").get(null))
-                                     .networkSynchronized((StreamCodec<? super RegistryFriendlyByteBuf, I>) iClass.getDeclaredField("STREAM_CODEC").get(null))
-                                     .build()
-            );
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        Registry.register(
+                BuiltInRegistries.DATA_COMPONENT_TYPE,
+                IdentificationNative.convert(name),
+                DataComponentType.<I>builder()
+                                 .persistent((Codec<I>) _value_type_accessor.getCodec(valueType))
+                                 .networkSynchronized((StreamCodec<? super RegistryFriendlyByteBuf, I>)  _value_type_accessor.getStreamCodec(valueType))
+                                 .build()
+        );
 
         return value;
     }
