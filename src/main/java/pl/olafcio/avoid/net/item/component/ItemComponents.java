@@ -54,6 +54,7 @@ import pl.olafcio.avoid.net.item.component.values.MapDecorations;
 import pl.olafcio.avoid.net.item.component.values.MapItemColor;
 import pl.olafcio.avoid.net.item.component.values.MapPostProcessing;
 import pl.olafcio.avoid.net.item.component.values.OminousBottleAmplifier;
+import pl.olafcio.avoid.net.item.component.values.PiercingWeapon;
 import pl.olafcio.avoid.net.item.component.values.SwingAnimation;
 import pl.olafcio.avoid.net.item.component.values.TooltipDisplay;
 import pl.olafcio.avoid.net.item.component.values.UseCooldown;
@@ -113,7 +114,7 @@ public class ItemComponents {
     public static final ItemComponentType<Identification> TOOLTIP_STYLE = register("tooltip_style", IdentificationNative::convertFrom, IdentificationNative::convert);
     public static final ItemComponentType<DeathProtection> DEATH_PROTECTION = register("death_protection");
     public static final ItemComponentType<BlocksAttacks> BLOCKS_ATTACKS = register("blocks_attacks");
-    public static final ItemComponentType<PiercingWeapon> PIERCING_WEAPON = register("piercing_weapon");
+    public static final ItemComponentType<PiercingWeapon> PIERCING_WEAPON = register("piercing_weapon", new PiercingWeapon.Controller());
     public static final ItemComponentType<KineticWeapon> KINETIC_WEAPON = register("kinetic_weapon");
     public static final ItemComponentType<SwingAnimation> SWING_ANIMATION = register("swing_animation", new SwingAnimation.Controller());
     public static final ItemComponentType<ItemEnchantments> STORED_ENCHANTMENTS = register("stored_enchantments", new ItemEnchantments.Controller());
