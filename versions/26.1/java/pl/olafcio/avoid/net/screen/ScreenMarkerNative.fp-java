@@ -2,3 +2,8 @@
     EditGameRulesScreen
     WorldCreationGameRulesScreen
 }
+
+{
+    LOOKUP.put(DEMO_INTRO, DemoIntroScreen.class);
+    // LOOKUP.put(DEMO_INTRO, DemoIntroScreen.class);
+}

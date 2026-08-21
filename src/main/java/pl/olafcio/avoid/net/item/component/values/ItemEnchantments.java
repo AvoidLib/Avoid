@@ -4,8 +4,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.world.item.enchantment.Enchantment;
+import pl.olafcio.avoid.AvoidInternal;
 import pl.olafcio.avoid.internal.VResourceKey;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public record ItemEnchantments(HashMap<Identification, Integer> map) {
     private static final HolderLookup.RegistryLookup<Enchantment> ench
-                       = VanillaRegistries.createLookup().lookup(Registries.ENCHANTMENT).orElseThrow();
+                       = AvoidInternal.registry.lookup(Registries.ENCHANTMENT).orElseThrow();
 
     public static final class Controller
             implements TransformingItemComponentValue<net.minecraft.world.item.enchantment.ItemEnchantments, ItemEnchantments>

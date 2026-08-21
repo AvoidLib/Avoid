@@ -1,0 +1,14 @@
+{
+    import net.minecraft.world.item.EitherHolder;
+    import net.minecraft.core.Holder;
+}
+
+{
+    EitherHolder
+    Holder
+}
+
+{
+    key()
+    unwrapKey()
+}
