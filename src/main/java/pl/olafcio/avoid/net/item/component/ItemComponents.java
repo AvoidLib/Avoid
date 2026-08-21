@@ -29,7 +29,6 @@ import net.minecraft.world.item.JukeboxPlayable;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.*;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.level.block.entity.BannerPattern;
@@ -91,7 +90,7 @@ public class ItemComponents {
     public static final ItemComponentType<Identification> ITEM_MODEL = register("item_model", IdentificationNative::convertFrom, IdentificationNative::convert);
     public static final ItemComponentType<ItemLore> LORE = register("lore", new ItemLore.Controller());
     public static final ItemComponentType<Rarity> RARITY = register("rarity", new Rarity.Controller());
-    public static final ItemComponentType<ItemEnchantments> ENCHANTMENTS = register("enchantments");
+    public static final ItemComponentType<ItemEnchantments> ENCHANTMENTS = register("enchantments", new ItemEnchantments.Controller());
     public static final ItemComponentType<AdventureModePredicate> CAN_PLACE_ON = register("can_place_on");
     public static final ItemComponentType<AdventureModePredicate> CAN_BREAK = register("can_break");
     public static final ItemComponentType<ItemAttributeModifiers> ATTRIBUTE_MODIFIERS = register("attribute_modifiers");
@@ -119,7 +118,7 @@ public class ItemComponents {
     public static final ItemComponentType<PiercingWeapon> PIERCING_WEAPON = register("piercing_weapon");
     public static final ItemComponentType<KineticWeapon> KINETIC_WEAPON = register("kinetic_weapon");
     public static final ItemComponentType<SwingAnimation> SWING_ANIMATION = register("swing_animation", new SwingAnimation.Controller());
-    public static final ItemComponentType<ItemEnchantments> STORED_ENCHANTMENTS = register("stored_enchantments");
+    public static final ItemComponentType<ItemEnchantments> STORED_ENCHANTMENTS = register("stored_enchantments", new ItemEnchantments.Controller());
     public static final ItemComponentType<DyedItemColor> DYED_COLOR = register("dyed_color", new DyedItemColor.Controller());
     public static final ItemComponentType<MapItemColor> MAP_COLOR = register("map_color", new MapItemColor.Controller());
     public static final ItemComponentType<MapId> MAP_ID = register("map_id", new MapId.Controller());
