@@ -23,7 +23,7 @@ public final class AvoidWrappedLoader {
     }
 
     public static boolean isModPresent(String id) {
-        return FMLLoader.getCurrent().getLoadingModList();
+        return FMLLoader.getCurrent().getLoadingModList().getModFileById(id) != null;
     }
 
     public static Set<Path> getModsPaths() {
