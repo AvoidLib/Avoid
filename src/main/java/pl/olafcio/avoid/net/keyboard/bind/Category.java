@@ -5,10 +5,10 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
 public final class Category {
-    final KeyMapping.Category category;
+    final InternalCategory category;
 
-    Category(KeyMapping.Category category) {
-        this.category = category;
+    private Category(Object category) {
+        this.category = new InternalCategory((KeyMapping.Category) category);
     }
 
     public Category(Identification id) {

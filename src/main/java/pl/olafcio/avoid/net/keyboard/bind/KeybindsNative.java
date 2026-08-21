@@ -27,7 +27,7 @@ public class KeybindsNative {
             @MagicConstant(valuesFromClass = Keyboard.class) int key,
             Category category
     ) {
-        var keymap = new KeyMapping(displayName, key, category.category);
+        var keymap = new KeyMapping(displayName, key, category.category.category());
 
         keymappings.add(keymap);
 
