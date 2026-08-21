@@ -1,0 +1,4 @@
+{
+    VanillaRegistries.createLookup()
+    VanillaRegistries.createWorldLookup()
+}

@@ -1,8 +1,26 @@
 import net.minecraft.world.attribute.BedRule;
 import net.minecraft.world.level.block.AbstractBedBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.component.SwingAnimation;
 
 {
     public void startSleepInBed(BlockPos blockPos, CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir) {
     public void startSleepInBed(AbstractBedBlock bedBlock, BlockState bedBlockState, BedRule rule, BlockPos blockPos, CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir) {
+}
+
+{
+    @Inject(at = @At("HEAD"), method = "swing", cancellable = true)
+    @Override
+}
+
+{
+    public void swing(InteractionHand interactionHand, CallbackInfo ci) {
+    public boolean swing(InteractionHand interactionHand, SwingAnimation animation, boolean sendToSwingingEntity) {
+}
+
+{
+        ci.cancel();  // at:swing
+        return false;  // at:swing
+
+    return super.swing(interactionHand, animation, sendToSwingingEntity);
 }

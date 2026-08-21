@@ -10,6 +10,8 @@ import net.minecraft.network.chat.OutgoingChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
@@ -40,7 +42,14 @@ import pl.olafcio.avoid.net.player_server.values.HandTypeNative;
 import pl.olafcio.avoid.net.world.WorldNative;
 
 @Mixin(ServerPlayer.class)
-public abstract class ServerPlayerMixin implements IServerPlayer {
+public abstract class ServerPlayerMixin
+       extends LivingEntity
+       implements IServerPlayer
+{
+    protected ServerPlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
+        super(entityType, level);
+    }
+
     @Shadow public abstract Level level();
 
     @Inject(at = @At("TAIL"), method = "sendSystemMessage(Lnet/minecraft/network/chat/Component;Z)V", cancellable = true)
@@ -185,7 +194,7 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
         EventManager.fire(event);
 
         if (event.isCancelled())
-            ci.cancel();
+            ci.cancel();  // at:swing
     }
 
     @Unique
