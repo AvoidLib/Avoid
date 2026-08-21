@@ -49,6 +49,7 @@ import pl.olafcio.avoid.net.item.component.values.CustomModelData;
 import pl.olafcio.avoid.net.item.component.values.DyedItemColor;
 import pl.olafcio.avoid.net.item.component.values.ItemContainerContents;
 import pl.olafcio.avoid.net.item.component.values.ItemLore;
+import pl.olafcio.avoid.net.item.component.values.KineticWeapon;
 import pl.olafcio.avoid.net.item.component.values.LodestoneTracker;
 import pl.olafcio.avoid.net.item.component.values.MapDecorations;
 import pl.olafcio.avoid.net.item.component.values.MapItemColor;
@@ -115,7 +116,7 @@ public class ItemComponents {
     public static final ItemComponentType<DeathProtection> DEATH_PROTECTION = register("death_protection");
     public static final ItemComponentType<BlocksAttacks> BLOCKS_ATTACKS = register("blocks_attacks");
     public static final ItemComponentType<PiercingWeapon> PIERCING_WEAPON = register("piercing_weapon", new PiercingWeapon.Controller());
-    public static final ItemComponentType<KineticWeapon> KINETIC_WEAPON = register("kinetic_weapon");
+    public static final ItemComponentType<KineticWeapon> KINETIC_WEAPON = register("kinetic_weapon", new KineticWeapon.Controller());
     public static final ItemComponentType<SwingAnimation> SWING_ANIMATION = register("swing_animation", new SwingAnimation.Controller());
     public static final ItemComponentType<ItemEnchantments> STORED_ENCHANTMENTS = register("stored_enchantments", new ItemEnchantments.Controller());
     public static final ItemComponentType<DyedItemColor> DYED_COLOR = register("dyed_color", new DyedItemColor.Controller());
