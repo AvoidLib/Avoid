@@ -16,7 +16,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.cow.CowVariant;
 import net.minecraft.world.entity.animal.feline.CatVariant;
 import net.minecraft.world.entity.animal.frog.FrogVariant;
-import net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariant;
 import net.minecraft.world.entity.animal.pig.PigVariant;
 import net.minecraft.world.entity.animal.wolf.WolfSoundVariant;
 import net.minecraft.world.entity.animal.wolf.WolfVariant;
@@ -170,7 +169,7 @@ public class ItemComponents {
     public static final ItemComponentType<Holder<PigVariant>> PIG_VARIANT = register("pig/variant");
     public static final ItemComponentType<Holder<CowVariant>> COW_VARIANT = register("cow/variant");
     public static final ItemComponentType<ChickenVariant> CHICKEN_VARIANT = register("chicken/variant", new ChickenVariant.Controller());
-    public static final ItemComponentType<EitherHolder<ZombieNautilusVariant>> ZOMBIE_NAUTILUS_VARIANT = register("zombie_nautilus/variant");
+    public static final ItemComponentType<ZombieNautilusVariant> ZOMBIE_NAUTILUS_VARIANT = register("zombie_nautilus/variant", new ZombieNautilusVariant.Controller());
     public static final ItemComponentType<Holder<FrogVariant>> FROG_VARIANT = register("frog/variant");
     public static final ItemComponentType<EquineVariant> HORSE_VARIANT = register("horse/variant", new EquineVariant.Controller());
     public static final ItemComponentType<Holder<PaintingVariant>> PAINTING_VARIANT = register("painting/variant");
