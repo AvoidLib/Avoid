@@ -133,7 +133,7 @@ public class ItemComponents {
     public static final ItemComponentType<WrittenBookContent> WRITTEN_BOOK_CONTENT = register("written_book_content");
     public static final ItemComponentType<ArmorTrim> TRIM = register("trim");
     public static final ItemComponentType<DebugStickState> DEBUG_STICK_STATE = register("debug_stick_state");
-    public static final ItemComponentType<TypedEntityData<EntityType<?>>> ENTITY_DATA = register("entity_data");
+    public static final ItemComponentType<EntityData> ENTITY_DATA = register("entity_data", new EntityData.Controller());
     public static final ItemComponentType<Payload> BUCKET_ENTITY_DATA = register("bucket_entity_data", new Payload.Controller());
     public static final ItemComponentType<TypedEntityData<BlockEntityType<?>>> BLOCK_ENTITY_DATA = register("block_entity_data");
     public static final ItemComponentType<InstrumentComponent> INSTRUMENT = register("instrument");
