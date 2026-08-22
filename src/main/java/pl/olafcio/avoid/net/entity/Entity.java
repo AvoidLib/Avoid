@@ -673,6 +673,15 @@ public abstract class Entity {
         damage(amount, DEFAULT_DAMAGE);
     }
 
+    /**
+     * Removes the entity from the world.<br/>
+     * Note that this may cause desync on the client.<br/><br/>
+     */
+    @ClientUnsafe
+    public void detach() {
+        underlyingEntity.remove(net.minecraft.world.entity.Entity.RemovalReason.DISCARDED);
+    }
+
     @Override
     public String toString() {
         return "Entity[" +
