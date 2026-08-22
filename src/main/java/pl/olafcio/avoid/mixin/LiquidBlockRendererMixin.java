@@ -37,25 +37,24 @@ public class LiquidBlockRendererMixin {
         return value;
     }
 
-    @Unique
-    private FluidModels group = null;
-
     @WrapOperation(at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/block/LiquidBlockRenderer;waterStill:Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;", opcode = Opcodes.GETFIELD), method = "tesselate")
     public TextureAtlasSprite tesselate__stillModel(LiquidBlockRenderer instance, Operation<TextureAtlasSprite> original, BlockAndTintGetter blockAndTintGetter, BlockPos blockPos, VertexConsumer vertexConsumer, BlockState blockState, FluidState fluidState) {
         if (fluidState.getType() instanceof AvoidFluid avoid) {
             var klass = FluidNative.get(avoid).getClass();
             if (models.containsKey(klass))
-                return (this.group = models.get(klass)).still();
+                return models.get(klass).still();
         }
 
-        this.group = null;
         return original.call(instance);
     }
 
     @WrapOperation(at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/block/LiquidBlockRenderer;waterFlowing:Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;", opcode = Opcodes.GETFIELD), method = "tesselate")
     public TextureAtlasSprite tesselate__flowingModel(LiquidBlockRenderer instance, Operation<TextureAtlasSprite> original, BlockAndTintGetter blockAndTintGetter, BlockPos blockPos, VertexConsumer vertexConsumer, BlockState blockState, FluidState fluidState) {
-        if (this.group != null)
-            return group.flowing();
+        if (fluidState.getType() instanceof AvoidFluid avoid) {
+            var klass = FluidNative.get(avoid).getClass();
+            if (models.containsKey(klass))
+                return models.get(klass).flowing();
+        }
 
         return original.call(instance);
     }
