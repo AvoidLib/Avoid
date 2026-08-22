@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.entity_type;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
@@ -20,6 +21,11 @@ public final class EntityType {
     @WillRefactor(aspect = "name")
     public BaseComponent<?> getDescription() {
         return COFromNative.from(entityType.getDescription());
+    }
+
+    @ApiStatus.Experimental
+    public Identification getID() {
+        return IdentificationNative.convertFrom(BuiltInRegistries.ENTITY_TYPE.getKey(entityType));
     }
 
     public static EntityType of(Identification id) {
