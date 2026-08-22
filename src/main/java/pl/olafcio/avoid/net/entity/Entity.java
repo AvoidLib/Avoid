@@ -2,9 +2,11 @@ package pl.olafcio.avoid.net.entity;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +17,7 @@ import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
+import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
@@ -636,13 +639,10 @@ public abstract class Entity {
      */
     @ClientUnsafe
     public void damage(int amount, Damage damage) {
-        var type = Holder.direct(AvoidInternal.registry.lookupOrThrow(Registries.DAMAGE_TYPE)
-                                                       .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source())))
-                                                       .value());
-
         if (isClient())
             underlyingEntity.hurtClient(new DamageSource(
-                    type,
+                    AvoidLibClient.mc.player.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                                                             .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
                     damage.directEntity() == null ? null : EntityNative.convert(damage.directEntity()),
                     damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity()),
                     damage.damageSourcePosition() == null ? null : Vect3Native.convertFrom(damage.damageSourcePosition())
@@ -651,7 +651,8 @@ public abstract class Entity {
             underlyingEntity.hurtServer(
                     (ServerLevel) underlyingEntity.level(),
                     new DamageSource(
-                            type,
+                            AvoidInternal.server.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                                                                 .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
                             damage.directEntity() == null ? null : EntityNative.convert(damage.directEntity()),
                             damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity()),
                             damage.damageSourcePosition() == null ? null : Vect3Native.convertFrom(damage.damageSourcePosition())
