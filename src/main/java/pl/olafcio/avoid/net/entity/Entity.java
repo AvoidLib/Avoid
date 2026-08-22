@@ -638,7 +638,7 @@ public abstract class Entity {
      * @param amount The amount of HP ({@code  health / 2}) to take.
      */
     @ClientUnsafe
-    public void damage(int amount, Damage damage) {
+    public void damage(float amount, Damage damage) {
         if (isClient())
             underlyingEntity.hurtClient(new DamageSource(
                     AvoidLibClient.mc.player.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
@@ -670,7 +670,7 @@ public abstract class Entity {
      * @param amount The amount of HP ({@code  health / 2}) to take.
      */
     @ClientUnsafe
-    public void damage(int amount) {
+    public void damage(float amount) {
         damage(amount, DEFAULT_DAMAGE);
     }
 
