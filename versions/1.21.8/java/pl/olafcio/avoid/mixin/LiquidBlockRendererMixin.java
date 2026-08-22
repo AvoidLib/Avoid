@@ -61,8 +61,8 @@ public class LiquidBlockRendererMixin {
             if (fluid.isAnnotationPresent(_model.class)) {
                 var models = fluid.getDeclaredAnnotation(_model.class);
 
-                var modelStill = new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(models.still().namespace(), models.still().path())).sprite();
-                var modelFlowing = new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(models.flowing().namespace(), models.flowing().path())).sprite();
+                var modelStill = new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(models.still().namespace(), models.still().path()).withPrefix("block/")).sprite();
+                var modelFlowing = new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(models.flowing().namespace(), models.flowing().path()).withPrefix("block/")).sprite();
 
                 this.models.put(fluid, new FluidModels(modelStill, modelFlowing));
             }

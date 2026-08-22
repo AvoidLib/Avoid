@@ -1,0 +1,10 @@
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.component.CustomData;
+
+{
+    properties = properties.spawnEgg(BuiltInRegistries.ENTITY_TYPE.getValue(Identifier.fromNamespaceAndPath(id.namespace(), id.path())));
+
+    var tag = new CompoundTag();
+    tag.putString("id", id.toString());
+    properties = properties.component(DataComponents.ENTITY_DATA, CustomData.of(tag));
+}
