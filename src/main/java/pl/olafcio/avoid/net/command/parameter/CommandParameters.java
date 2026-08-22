@@ -31,10 +31,10 @@ public final class CommandParameters {
         registerSingle("string", StringParameter.class);
         registerSingle("text", StringParameter.class);
         register("int[eger]", IntegerParameter.class);
-        register("float", FloatParameter.class);
-        register("double", DoubleParameter.class);
-        register("short", ShortParameter.class);
-        register("long", LongParameter.class);
+        registerSingle("float", FloatParameter.class);
+        registerSingle("double", DoubleParameter.class);
+        registerSingle("short", ShortParameter.class);
+        registerSingle("long", LongParameter.class);
         register("[server]player", PlayerParameter.class);
     }
 
