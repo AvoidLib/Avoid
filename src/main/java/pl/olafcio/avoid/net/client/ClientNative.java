@@ -120,4 +120,12 @@ final class ClientNative {
 
         return player.input.getMoveVector().lengthSquared() > 0.0F;
     }
+
+    static boolean isHandsBusy() {
+        var player = Minecraft.getInstance().player;
+        if (player == null)
+            return false;
+
+        return player.isHandsBusy();
+    }
 }

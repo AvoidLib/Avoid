@@ -130,4 +130,12 @@ public final class Client {
 
         return ClientNative.isMoving();
     }
+
+    @ApiStatus.Experimental
+    public boolean isHandsBusy() {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#isHandsBusy() on the server");
+
+        return ClientNative.isHandsBusy();
+    }
 }
