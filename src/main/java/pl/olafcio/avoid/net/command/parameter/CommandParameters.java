@@ -34,6 +34,7 @@ public final class CommandParameters {
         register("float", FloatParameter.class);
         register("double", DoubleParameter.class);
         register("short", ShortParameter.class);
+        register("long", LongParameter.class);
         register("[server]player", PlayerParameter.class);
     }
 
