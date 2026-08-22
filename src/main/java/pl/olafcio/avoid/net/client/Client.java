@@ -122,4 +122,12 @@ public final class Client {
 
         return ClientNative.getCurrentServer();
     }
+
+    @ApiStatus.Experimental
+    public boolean isMoving() {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#isMoving() on the server");
+
+        return ClientNative.isMoving();
+    }
 }

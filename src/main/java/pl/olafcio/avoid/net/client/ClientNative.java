@@ -112,4 +112,12 @@ final class ClientNative {
                 entry.getIconBytes()
         );
     }
+
+    static boolean isMoving() {
+        var player = Minecraft.getInstance().player;
+        if (player == null)
+            return false;
+
+        return player.input.getMoveVector().lengthSquared() > 0.0F;
+    }
 }
