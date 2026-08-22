@@ -2,6 +2,7 @@ package pl.olafcio.avoid.net.item;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item.Properties;
 import org.jetbrains.annotations.ApiStatus;
@@ -14,6 +15,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.values.Rarity;
 import pl.olafcio.avoid.net.item.properties.*;
+import pl.olafcio.avoid.net.item.properties.spawnegg.ID;
 import pl.olafcio.avoid.net.item.values.SlotDescriptionNative;
 import pl.olafcio.avoid.net.item.custom.Item;
 
@@ -120,6 +122,13 @@ public final class Items {
 
             if (item.isAnnotationPresent(_equippable.class))
                 Avoid.LOGGER.warn("@_equippableUnswappable and @_equippable present; equippable declaration is overwritten");
+        }
+
+        if (item.isAnnotationPresent(_spawnEgg.class)) {
+            ID id = item.getAnnotation(_spawnEgg.class)
+                        .entityType();
+
+            properties = properties.spawnEgg(BuiltInRegistries.ENTITY_TYPE.getValue(Identifier.fromNamespaceAndPath(id.namespace(), id.path())));
         }
 
         return properties;
