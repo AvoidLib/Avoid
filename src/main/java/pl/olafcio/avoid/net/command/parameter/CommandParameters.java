@@ -4,6 +4,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.mods.AvoidMod;
+import pl.olafcio.avoid.net.command.parameter.impl.FloatParameter;
 import pl.olafcio.avoid.net.command.parameter.impl.IntegerParameter;
 import pl.olafcio.avoid.net.command.parameter.impl.PlayerParameter;
 import pl.olafcio.avoid.net.command.parameter.impl.StringParameter;
@@ -33,6 +34,7 @@ public final class CommandParameters {
         registerSingle("string", StringParameter.class);
         registerSingle("text", StringParameter.class);
         register("int[eger]", IntegerParameter.class);
+        register("float", FloatParameter.class);
         register("[server]player", PlayerParameter.class);
     }
 
