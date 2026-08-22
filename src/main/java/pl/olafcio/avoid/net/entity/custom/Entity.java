@@ -6,6 +6,7 @@ import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.entity.custom_internal.IAvoidEntity;
+import pl.olafcio.avoid.net.entity.values.Damage;
 import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.player.Player;
@@ -484,5 +485,25 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     @Override
     public final boolean isColliding(BlockPos blockPos, BlockData blockData) {
         return super.isColliding(blockPos, blockData);
+    }
+
+    @Override
+    public final void damage(float amount) {
+        super.damage(amount);
+    }
+
+    @Override
+    public final void damage(float amount, Damage damage) {
+        super.damage(amount, damage);
+    }
+
+    @Override
+    public final void kill() {
+        super.kill();
+    }
+
+    @Override
+    public final void detach() {
+        super.detach();
     }
 }
