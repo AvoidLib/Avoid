@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.item;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -88,8 +89,8 @@ public final class Items {
                                                  .value());
 
         if (item.isAnnotationPresent(_damage.class))
-            properties = properties.stacksTo(item.getAnnotation(_damage.class)
-                                                 .value());
+            properties = properties.component(DataComponents.MAX_DAMAGE, item.getAnnotation(_damage.class)
+                                                                             .value());
 
         if (item.isAnnotationPresent(_rarity.class))
             properties = properties.rarity(new Rarity.Controller().untransform(item.getAnnotation(_rarity.class)
