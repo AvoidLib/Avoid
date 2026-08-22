@@ -5,8 +5,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.chat.event.ClientChatCommandEvent;
+import pl.olafcio.avoid.net.chat.event.ClientChatNormalizeEvent;
 import pl.olafcio.avoid.net.chat.event.ClientChatSentEvent;
 
 @Mixin(ChatScreen.class)
@@ -25,5 +27,12 @@ public class ChatScreenMixin {
         EventManager.fire(event);
         if (event.isCancelled())
             ci.cancel();
+    }
+
+    @Inject(at = @At("RETURN"), method = "normalizeChatMessage", cancellable = true)
+    public void normalizeChatMessage(String input, CallbackInfoReturnable<String> cir) {
+        var event = new ClientChatNormalizeEvent(input, cir.getReturnValue());
+        EventManager.fire(event);
+        cir.setReturnValue(event.output());
     }
 }
