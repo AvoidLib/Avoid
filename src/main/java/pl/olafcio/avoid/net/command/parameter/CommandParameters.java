@@ -31,6 +31,7 @@ public final class CommandParameters {
 
     static {
         registerSingle("string", StringParameter.class);
+        registerSingle("text", StringParameter.class);
         register("int[eger]", IntegerParameter.class);
         register("[server]player", PlayerParameter.class);
     }
