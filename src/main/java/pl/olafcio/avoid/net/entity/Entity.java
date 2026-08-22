@@ -1,10 +1,16 @@
 package pl.olafcio.avoid.net.entity;
 
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
+import pl.olafcio.avoid.AvoidInternal;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
@@ -13,9 +19,12 @@ import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
+import pl.olafcio.avoid.net.entity.values.Damage;
 import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity.values.HandNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
+import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.World;
@@ -619,6 +628,49 @@ public abstract class Entity {
                 BlockPosNative.convertFrom(blockPos),
                 BlockDataNative.convert(blockData)
         );
+    }
+
+    /**
+     * Causes damage to the entity. Note that this may cause desync on the client.
+     * @param amount The amount of HP ({@code  health / 2}) to take.
+     */
+    @ClientUnsafe
+    public void damage(int amount, Damage damage) {
+        var type = Holder.direct(AvoidInternal.registry.lookupOrThrow(Registries.DAMAGE_TYPE)
+                                                       .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source())))
+                                                       .value());
+
+        if (isClient())
+            underlyingEntity.hurtClient(new DamageSource(
+                    type,
+                    damage.directEntity() == null ? null : EntityNative.convert(damage.directEntity()),
+                    damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity()),
+                    damage.damageSourcePosition() == null ? null : Vect3Native.convertFrom(damage.damageSourcePosition())
+            ));
+        else if (isServer())
+            underlyingEntity.hurtServer(
+                    (ServerLevel) underlyingEntity.level(),
+                    new DamageSource(
+                            type,
+                            damage.directEntity() == null ? null : EntityNative.convert(damage.directEntity()),
+                            damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity()),
+                            damage.damageSourcePosition() == null ? null : Vect3Native.convertFrom(damage.damageSourcePosition())
+                    ),
+                    amount
+            );
+    }
+
+    private static final Damage DEFAULT_DAMAGE
+                   = new Damage(Identification.of("minecraft:generic_kill"));
+
+    /**
+     * Causes damage to the entity. Note that this may cause desync on the client.<br/><br/>
+     * This uses the {@code minecraft:generic_kill} damage source.
+     * @param amount The amount of HP ({@code  health / 2}) to take.
+     */
+    @ClientUnsafe
+    public void damage(int amount) {
+        damage(amount, DEFAULT_DAMAGE);
     }
 
     @Override

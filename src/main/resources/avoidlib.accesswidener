@@ -19,6 +19,7 @@ accessible method net/minecraft/world/level/material/MapColor <init> (II)V
 accessible field net/minecraft/client/renderer/ItemBlockRenderTypes LAYER_BY_FLUID Ljava/util/Map;
 accessible method net/minecraft/world/item/enchantment/ItemEnchantments <init> (Lit/unimi/dsi/fastutil/objects/Object2IntOpenHashMap;)V
 accessible method net/minecraft/world/phys/BlockHitResult <init> (ZLnet/minecraft/world/phys/Vec3;Lnet/minecraft/core/Direction;Lnet/minecraft/core/BlockPos;ZZ)V
+accessible method net/minecraft/world/damagesource/DamageSource <init> (Lnet/minecraft/core/Holder;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;)V
 
 # Session
 accessible field net/minecraft/client/User accessToken Ljava/lang/String;
