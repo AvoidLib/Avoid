@@ -52,7 +52,7 @@ public final class CommandParameters {
      */
     public static void register(String tagPattern, Class<? extends CommandParameter<?>> parameterType) {
         if (!tagPattern.contains("[")) {
-            Avoid.LOGGER.warn("[CommandParameters#register] Non-pattern tags should be registered with registerSingle(...) instead");
+            Avoid.LOGGER.warn("[CommandParameters#register] Non-pattern tag '{}' should be registered with registerSingle(...) instead", tagPattern);
             registerSingle(tagPattern, parameterType);
             return;
         }
