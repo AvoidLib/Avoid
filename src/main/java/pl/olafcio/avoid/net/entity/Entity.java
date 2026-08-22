@@ -675,6 +675,15 @@ public abstract class Entity {
     }
 
     /**
+     * Kills the entity. Note that this may cause desync on the client.<br/><br/>
+     * This uses the {@code minecraft:generic_kill} damage source, and in reality, it takes 214_748_364_7 HP.
+     */
+    @ClientUnsafe
+    public void kill() {
+        damage(Integer.MAX_VALUE);
+    }
+
+    /**
      * Removes the entity from the world.<br/>
      * Note that this may cause desync on the client.<br/><br/>
      */
