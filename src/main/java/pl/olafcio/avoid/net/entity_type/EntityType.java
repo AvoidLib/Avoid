@@ -23,7 +23,7 @@ public final class EntityType {
         return COFromNative.from(entityType.getDescription());
     }
 
-    @ApiStatus.Experimental
+    @NeverRemoval
     public Identification getID() {
         return IdentificationNative.convertFrom(BuiltInRegistries.ENTITY_TYPE.getKey(entityType));
     }

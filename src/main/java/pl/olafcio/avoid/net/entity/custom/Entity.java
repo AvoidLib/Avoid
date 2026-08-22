@@ -60,11 +60,13 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     }
 
     @Override
+    @Deprecated(since = "v1.15", forRemoval = true)
     public final IVect3 position() {
         return super.position();
     }
 
     @Override
+    @Deprecated(since = "v1.15", forRemoval = true)
     public final IVect3 velocity() {
         return super.velocity();
     }

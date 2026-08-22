@@ -17,6 +17,7 @@ import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
+import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
@@ -55,6 +56,7 @@ import java.util.UUID;
  * </ul>
  */
 @ApiStatus.NonExtendable
+@NeverRemoval
 public abstract class Entity {
     private final int id;
     private final EntityType type;
@@ -107,6 +109,7 @@ public abstract class Entity {
     /**
      * Gets the initial entity position (from the constructor time).
      */
+    @Deprecated(since = "v1.15", forRemoval = true)
     public IVect3 position() {
         return position;
     }
@@ -114,6 +117,7 @@ public abstract class Entity {
     /**
      * Gets the initial entity velocity (from the constructor time).
      */
+    @Deprecated(since = "v1.15", forRemoval = true)
     public IVect3 velocity() {
         return velocity;
     }
