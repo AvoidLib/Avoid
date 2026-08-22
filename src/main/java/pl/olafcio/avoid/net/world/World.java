@@ -75,7 +75,9 @@ public final class World {
         var iter = ((ILevel) level).avoid$getEntities().getAll();
 
         for (var e : iter)
-            callback.accept(EntityNative.convertFrom(e));
+            //noinspection ConstantValue
+            if (e != null)
+                callback.accept(EntityNative.convertFrom(e));
     }
 
     @ApiStatus.Experimental
