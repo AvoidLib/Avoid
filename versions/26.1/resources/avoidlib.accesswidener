@@ -23,6 +23,7 @@ accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker eyesI
 accessible method net/minecraft/world/entity/EntityFluidInteraction$Tracker <init> ()V
 accessible field net/minecraft/world/entity/Entity fluidInteraction Lnet/minecraft/world/entity/EntityFluidInteraction;
 accessible method net/minecraft/world/item/enchantment/ItemEnchantments <init> (Lit/unimi/dsi/fastutil/objects/Object2IntOpenHashMap;)V
+accessible method net/minecraft/world/phys/BlockHitResult <init> (ZLnet/minecraft/world/phys/Vec3;Lnet/minecraft/core/Direction;Lnet/minecraft/core/BlockPos;ZZ)V
 
 # Session
 accessible field net/minecraft/client/User accessToken Ljava/lang/String;

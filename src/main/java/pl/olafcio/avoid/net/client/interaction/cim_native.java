@@ -29,8 +29,8 @@ final class cim_native {
     static void interact(Entity entity, HandType type) {
         Minecraft.getInstance().gameMode.interact(
                 Minecraft.getInstance().player,
-                EntityNative.convert(entity),
-                HandTypeNative.convertFrom(type)
+                EntityNative.convert(entity),  // at:interact
+                HandTypeNative.convertFrom(type)  // at:interact
         );
     }
 

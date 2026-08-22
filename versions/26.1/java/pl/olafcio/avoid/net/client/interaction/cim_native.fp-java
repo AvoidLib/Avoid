@@ -1,0 +1,24 @@
+{
+    Minecraft.getInstance().gameMode.interactAt(
+    Minecraft.getInstance().gameMode.interact(
+}
+
+{
+    HandTypeNative.convertFrom(type)  // at:interact
+
+    //== replacement ==//
+
+    new EntityHitResult(target, Minecraft.getInstance().player.position()),
+    HandTypeNative.convertFrom(type)  // at:interact
+}
+
+{
+    static void interact(Entity entity, HandType type) {
+    static void interact(Entity entity, HandType type) {
+        var target = EntityNative.convert(entity);
+}
+
+{
+    EntityNative.convert(entity),  // at:interact
+    target,  // at:interact
+}
