@@ -1,4 +1,5 @@
 **🧧 Supported Versions:**
+- 1.21.8
 - 1.21.10
 - 1.21.11 *[LTS]*
 - 26.1 *[LTS]*
@@ -11,72 +12,19 @@
 - NeoForge
 
 **🪵 Changelog:**
-- [GUI] Render Hud Event
-- [Documentation] Block API -> PushReaction
-- [Item Component API] Null checking in ItemComponentMap#get
-- [Item Component API] Faster method ItemComponentMap#getNonNull
-- Item#is(...) methods
-- ItemStack#is(...) methods
-- Update to 26.3-snapshot-7
-- Update to 26.3-snapshot-8
-- Update to 26.3-snapshot-9
-- [Server API] #{ getOverworld, getNether, getEnd }()
-- [Item Components] Transform LLAMA_VARIANT
-- [Item Components] Transform AXOLOTL_VARIANT
-- [Item Components] Transform RABBIT_VARIANT
-- [Item Components] Transform MOOSHROOM_VARIANT
-- [Item Components] Transform FOX_VARIANT
-- [Item Components] Transform MAP_DECORATIONS
-- [Item Components] Transform CHARGED_PROJECTILES
-- Block Location API
-- [Item Components] Transform LODESTONE_TRACKER
-- [Item Components] Transform CONTAINER
-- [Item Components] Transform SALMON_SIZE
-- [Item Components] Transform PARROT_VARIANT
-- [Item Components] Transform BUNDLE_CONTENTS
-- [Item Components] Transform TROPICAL_FISH_PATTERN
-- [Item Components] Transform BLOCK_STATE
-- [Item Components] Transform ATTACK_RANGE
-- Item Component Creation API + fix?
-- [Item Components] Transform USE_REMAINDER
-- Effect Creation API
-- [ModLoader] @AutoEffect annotation
-- [World API] Gamerule related methods
-- More screen markers
-- Fix mod disabling behaviour on MC 26.2
-- Correct docs typo in PushReaction
-- [Player API] Advancement granting and revoking
-- [Keyboard] Creating custom categories
-- [Client] Tick Event
-- [Entity API] #push([Entity])
-- [Entity API] #playerTouch([Player])
-- [Entity API] #sync()
-- [Documentation] Entity#{ position, velocity }
-- [Entity API] #getVelocity()
-- Make `_value_type` fields @Native
-- [Server Player] Player Swing Event
-- [Player API] Tablist ordering methods
-- [Player API] #resetTablistOrder()
-- [Player API] Respawn point methods
-- Move RespawnPoint.java to values\\
-- [Player API] #setSpawnExtraParticlesOnFall([boolean])
-- [Player API] Raid omen methods
-- [Block API] #dropFromExplosion([Explosion])
-- [Block API] #destroy([World], [BlockPos], [BlockData])
-- Stupid error text fix
-- [Entity API] #removeAllLeashes([Player])
-- [Entity API] Add some final overrides to custom entities I forgot about
-- [Entity API] #isColliding([BlockPos], [BlockData])
-- Move ResourceKey.identifier() to an util class
-- [World API] Split the 'setGameRule' method into an int and boolean variant
-- [Item Components] Transform ENCHANTMENTS & STORED_ENCHANTMENTS
-- Update Loom
-- AvoidWrappedLoader#isModPresent([String] id)
-- [Item Components] Transform CHICKEN_VARIANT
-- [Item Components] Transform ZOMBIE_NAUTILUS_VARIANT
-- [Item Components] Transform PIERCING_WEAPON
-- [Item Components] Transform KINETIC_WEAPON
-- 1.21.10 compatibility
+- Correct required Backported version
+- [Keybind API] Resolve compilation issues with the `Category` enum
+- [Item Components] Transform ENTITY_DATA
+- [Item Components] Transform BLOCK_ENTITY_DATA
+- 1.21.8 compatibility
+- [Item Creation API] @_spawnEgg([@id] entityType) property
+- [Item Creation API] Fix @_damage property
+- [Client Chat] Normalize Event
+- [Client] Screen In Portal Event
+- [Client] #isMoving()
+- [Client] #isHandsBusy()
+- Client Interaction Manager API
+- Fix NeoForge
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
