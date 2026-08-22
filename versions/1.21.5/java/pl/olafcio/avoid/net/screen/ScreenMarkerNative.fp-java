@@ -1,0 +1,9 @@
+{
+    import net.minecraft.client.gui.screens.dialog.ServerLinksDialogScreen;
+    import net.minecraft.client.gui.screens.multiplayer.ServerLinksScreen;
+}
+
+{
+    ServerLinksDialogScreen
+    ServerLinksScreen
+}
