@@ -262,6 +262,10 @@ public abstract class Entity {
         return underlyingEntity.isNoGravity();
     }
 
+    public boolean isSilent() {
+        return underlyingEntity.isSilent();
+    }
+
     public void tick() {
         underlyingEntity.tick();
     }

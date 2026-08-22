@@ -207,6 +207,11 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     }
 
     @Override
+    public final boolean isSilent() {
+        return super.isSilent();
+    }
+
+    @Override
     public final void baseTick() {
         super.baseTick();
     }
