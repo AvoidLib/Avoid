@@ -729,6 +729,22 @@ public abstract class Entity {
         return __cast(Mob.class).isPersistenceRequired();
     }
 
+    /**
+     * Returns whether the entity can pick up loot.
+     */
+    public boolean canPickUpLoot() {
+        return __cast(LivingEntity.class).canPickUpLoot();
+    }
+
+    /**
+     * Sets whether the entity can pick up loot.
+     * <br/><br/>
+     * <b>NOTE:</b> This only works on mob entities.
+     */
+    public void setCanPickUpLoot(boolean value) {
+        __cast(Mob.class).setCanPickUpLoot(value);
+    }
+
     @Override
     public String toString() {
         return "Entity[" +

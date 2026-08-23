@@ -518,6 +518,16 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     }
 
     @Override
+    public final boolean canPickUpLoot() {
+        return super.canPickUpLoot();
+    }
+
+    @Override
+    public final void setCanPickUpLoot(boolean value) {
+        super.setCanPickUpLoot(value);
+    }
+
+    @Override
     public final double getDefaultGravity() {
         return super.getDefaultGravity();
     }
