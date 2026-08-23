@@ -65,7 +65,7 @@ public @interface Attribute {
 
         @ApiStatus.Internal
         public Holder<net.minecraft.world.entity.ai.attributes.Attribute> getMinecraft() {
-            return Holder.direct(Objects.requireNonNull(BuiltInRegistries.ATTRIBUTE.getValue(Identifier.parse(name))));
+            return BuiltInRegistries.ATTRIBUTE.get(Identifier.parse(name)).orElseThrow();
         }
     }
 }
