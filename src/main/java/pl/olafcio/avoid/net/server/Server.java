@@ -97,4 +97,8 @@ public final class Server {
     public static World getEnd() {
         return WorldNative.make(AvoidInternal.getServer().getLevel(Level.END));
     }
+
+    public static void stopServer() {
+        AvoidInternal.getServer().stopServer();
+    }
 }
