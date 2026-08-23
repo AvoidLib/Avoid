@@ -4,6 +4,7 @@ import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.AvoidInternal;
+import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.World;
@@ -12,6 +13,7 @@ import pl.olafcio.avoid.net.world.WorldNative;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @ApiStatus.Experimental
 public final class Server {
@@ -75,6 +77,13 @@ public final class Server {
         });
 
         return list;
+    }
+
+    public static void eachEntity(Consumer<Entity> callback) {
+        var worlds = getWorlds();
+
+        for (var world : worlds)
+            world.eachEntity(callback);
     }
 
     public static World getOverworld() {
