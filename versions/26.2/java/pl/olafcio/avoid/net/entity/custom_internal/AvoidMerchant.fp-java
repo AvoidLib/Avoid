@@ -1,0 +1,9 @@
+{
+    this.getId()
+    0
+}
+
+{
+    EntityType.WITCH
+    EntityTypes.WITCH
+}
