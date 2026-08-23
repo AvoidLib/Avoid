@@ -4,9 +4,11 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import pl.olafcio.avoid.mixininterface.IEntity;
+import pl.olafcio.avoid.mixininterface.IFoodData;
 
 @Mixin(Player.class)
 public class PlayerMixin {
@@ -16,5 +18,14 @@ public class PlayerMixin {
             return true;
 
         return ((IEntity) player).avoidlib$currentFluidSwimmable();
+    }
+
+    @WrapOperation(at = @At(value = "NEW", target = "()Lnet/minecraft/world/food/FoodData;"), method = "<init>")
+    public FoodData $new__FoodData(Operation<FoodData> original) {
+        var value = original.call();
+
+        ((IFoodData) value).avoid$setPlayer((Player) (Object) this);
+
+        return value;
     }
 }
