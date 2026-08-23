@@ -14,8 +14,8 @@ public final class TickTracker {
         return deltaTracker.getGameTimeDeltaTicks();
     }
 
-    public float getPartialTick(boolean bl) {
-        return deltaTracker.getGameTimeDeltaPartialTick(bl);
+    public float getPartialTick(boolean ignoreFreeze) {
+        return deltaTracker.getGameTimeDeltaPartialTick(ignoreFreeze);
     }
 
     public float getRealtimeTick() {
