@@ -508,6 +508,11 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     }
 
     @Override
+    public final void jumpFromGround() {
+        super.jumpFromGround();
+    }
+
+    @Override
     public final double getDefaultGravity() {
         return super.getDefaultGravity();
     }

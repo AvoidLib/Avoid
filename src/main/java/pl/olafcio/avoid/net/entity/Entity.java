@@ -709,6 +709,16 @@ public abstract class Entity {
         underlyingEntity.remove(net.minecraft.world.entity.Entity.RemovalReason.DISCARDED);
     }
 
+    /**
+     * Makes the entity jump as if it was on the ground.
+     * <br/><br/>
+     * This method takes the jump strength, block jump factor and jump boost power into consideration.<br/>
+     * <i>(Maybe also something more in the future)</i>
+     */
+    public void jumpFromGround() {
+        __cast(LivingEntity.class).jumpFromGround();
+    }
+
     @Override
     public String toString() {
         return "Entity[" +
