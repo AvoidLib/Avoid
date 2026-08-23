@@ -3,6 +3,7 @@ package pl.olafcio.avoid.net.effect.internal;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Range;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.net.effect.Effect;
@@ -11,6 +12,7 @@ import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.WorldNative;
 
+@ApiStatus.Internal
 public final class NativeEffect extends Effect {
     private final MobEffect object;
 
