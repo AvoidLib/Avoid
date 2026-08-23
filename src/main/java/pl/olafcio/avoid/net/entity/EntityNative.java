@@ -29,12 +29,12 @@ public final class EntityNative {
     }
 
     public static Entity convertFrom(net.minecraft.world.entity.Entity entity) {
-        if (entity instanceof Player player)
+        if (entity instanceof IAvoidEntity wrapper)
+            return wrapper.getAvoidEntity();
+        else if (entity instanceof Player player)
             return PlayerNative.convertFrom(player);
         else if (entity instanceof AbstractVillager merchant)
             return MerchantNative.convertFrom(merchant);
-        else if (entity instanceof IAvoidEntity wrapper)
-            return wrapper.getAvoidEntity();
 
         BaseComponent<?> name;
 

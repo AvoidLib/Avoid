@@ -25,7 +25,7 @@ public final class AvoidLivingEntity extends LivingEntity implements IAvoidEntit
         return wrappedEntity;
     }
 
-    public AvoidLivingEntity(EntityType<? extends LivingEntity> entityType, Level level, EntityConstructor constructor) {
+    public AvoidLivingEntity(EntityType<? extends LivingEntity> entityType, Level level, EntityConstructor<pl.olafcio.avoid.net.entity.custom.Entity> constructor) {
         super(entityType, level);
 
         BaseComponent<?> name;

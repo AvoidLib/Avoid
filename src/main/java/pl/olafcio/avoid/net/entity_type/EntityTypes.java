@@ -11,14 +11,17 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import pl.olafcio.avoid.net.entity.custom.Entity;
+import pl.olafcio.avoid.net.entity.Entity;
+import pl.olafcio.avoid.net.entity.custom.Merchant;
 import pl.olafcio.avoid.net.entity.custom_internal.AvoidEntity;
 import pl.olafcio.avoid.net.entity.custom_internal.AvoidLivingEntity;
+import pl.olafcio.avoid.net.entity.custom_internal.AvoidMerchant;
 import pl.olafcio.avoid.net.entity.custom_internal.EntityConstructor;
 import pl.olafcio.avoid.net.entity_type.properties.*;
 import pl.olafcio.avoid.net.entity_type.properties.attachment.AttachmentOperation;
@@ -29,11 +32,9 @@ import pl.olafcio.avoid.net.entity_type.values.CategoryNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 @ApiStatus.Experimental
@@ -41,7 +42,7 @@ public final class EntityTypes {
     @ApiStatus.Internal
     private EntityTypes() {}
 
-    public static void register(Identification entityTypeID, Class<? extends Entity> klass, EntityConstructor constructor) {
+    public static <T extends pl.olafcio.avoid.net.entity.Entity> void register(Identification entityTypeID, Class<? extends T> klass, EntityConstructor<T> constructor) {
         var id = IdentificationNative.convert(entityTypeID);
 
         var category = klass.getAnnotation(_category.class)
@@ -101,14 +102,12 @@ public final class EntityTypes {
             }
         }
 
-        boolean living = klass.isAnnotationPresent(_living.class);
-
-        if (living) {
+        if (Merchant.class.isAssignableFrom(klass)) {
             var Type = createType(
                     klass,
                     id,
-                    (EntityType<@NotNull LivingEntity> type, Level level)
-                        -> new AvoidLivingEntity(type, level, constructor),
+                    (EntityType<@NotNull Villager> type, Level level)
+                            -> new AvoidMerchant(type, level, (EntityConstructor<Merchant>) constructor),
                     category,
                     dimensions,
                     attachments
@@ -116,20 +115,36 @@ public final class EntityTypes {
 
             LIVING_ENTITIES.put(Type, () -> createAttributes(klass));
         } else {
-            createType(
-                    klass,
-                    id,
-                    (EntityType<net.minecraft.world.entity.@NotNull Entity> type, Level level)
-                            -> new AvoidEntity(type, level, constructor),
-                    category,
-                    dimensions,
-                    attachments
-            );
+            boolean living = klass.isAnnotationPresent(_living.class);
+
+            if (living) {
+                var Type = createType(
+                        klass,
+                        id,
+                        (EntityType<@NotNull LivingEntity> type, Level level)
+                            -> new AvoidLivingEntity(type, level, (EntityConstructor<pl.olafcio.avoid.net.entity.custom.Entity>) constructor),
+                        category,
+                        dimensions,
+                        attachments
+                );
+
+                LIVING_ENTITIES.put(Type, () -> createAttributes(klass));
+            } else {
+                createType(
+                        klass,
+                        id,
+                        (EntityType<net.minecraft.world.entity.@NotNull Entity> type, Level level)
+                                -> new AvoidEntity(type, level, (EntityConstructor<pl.olafcio.avoid.net.entity.custom.Entity>) constructor),
+                        category,
+                        dimensions,
+                        attachments
+                );
+            }
         }
     }
 
     private static <T extends net.minecraft.world.entity.Entity> @NotNull EntityType<T> createType(
-            Class<? extends Entity> klass,
+            Class<? extends pl.olafcio.avoid.net.entity.Entity> klass,
             Identifier id,
             EntityType.EntityFactory<T> factory,
             Category category,

@@ -6,6 +6,7 @@ import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.mods.annotation_processor.AutoEntity;
 import pl.olafcio.avoid.mods.annotation_processor.AutoID;
 import pl.olafcio.avoid.net.entity.custom.Entity;
+import pl.olafcio.avoid.net.entity.custom.Merchant;
 import pl.olafcio.avoid.net.entity_type.EntityTypes;
 import pl.olafcio.avoid.net.id.Identification;
 
@@ -18,8 +19,8 @@ public interface LXEntity {
             throws NoSuchMethodException
     {
         if (klass.isAnnotationPresent(AutoEntity.class)) {
-            if (!Entity.class.isAssignableFrom(klass)) {
-                Avoid.LOGGER.error("@AutoEntity requires the annotated type to extend Entity (avoid.net.entity.custom)");
+            if (!Entity.class.isAssignableFrom(klass) && !Merchant.class.isAssignableFrom(klass)) {
+                Avoid.LOGGER.error("@AutoEntity requires the annotated type to extend Entity or Merchant (avoid.net.entity.custom)");
                 return true;
             }
 
@@ -47,9 +48,9 @@ public interface LXEntity {
 
             Avoid.LOGGER.debug("Registering entity '{}'", idstr);
 
-            EntityTypes.register(Identification.of(idstr), (Class<? extends Entity>) klass, (arg1, args) -> {
+            EntityTypes.register(Identification.of(idstr), (Class<? extends pl.olafcio.avoid.net.entity.Entity>) klass, (arg1, args) -> {
                 try {
-                    return (Entity) constructor.newInstance(arg1, args);
+                    return (pl.olafcio.avoid.net.entity.Entity) constructor.newInstance(arg1, args);
                 } catch (InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException("Failed to construct entity (%s)".formatted(idstr), e);
                 } catch (InvocationTargetException e) {

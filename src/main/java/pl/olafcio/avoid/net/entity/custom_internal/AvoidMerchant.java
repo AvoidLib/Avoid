@@ -3,27 +3,29 @@ package pl.olafcio.avoid.net.entity.custom_internal;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
+import pl.olafcio.avoid.net.entity.values.HandNative;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 @ApiStatus.Internal
-public final class AvoidEntity extends Entity implements IAvoidEntity {
-    private final pl.olafcio.avoid.net.entity.custom.Entity wrappedEntity;
+public final class AvoidMerchant extends Villager implements IAvoidEntity {
+    private final pl.olafcio.avoid.net.entity.custom.Merchant wrappedEntity;
 
     @Override
-    public pl.olafcio.avoid.net.entity.custom.Entity getAvoidEntity() {
+    public pl.olafcio.avoid.net.entity.custom.Merchant getAvoidEntity() {
         return wrappedEntity;
     }
 
-    public AvoidEntity(EntityType<?> entityType, Level level, EntityConstructor<pl.olafcio.avoid.net.entity.custom.Entity> constructor) {
+    public AvoidMerchant(EntityType<? extends Villager> entityType, Level level, EntityConstructor<pl.olafcio.avoid.net.entity.custom.Merchant> constructor) {
         super(entityType, level);
 
         BaseComponent<?> name;
@@ -48,12 +50,12 @@ public final class AvoidEntity extends Entity implements IAvoidEntity {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        //
+        super.defineSynchedData(builder);
     }
 
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource damageSource, float f) {
-        return false;
+        return super.hurtServer(serverLevel, damageSource, f);
     }
 
     @Override
@@ -67,12 +69,17 @@ public final class AvoidEntity extends Entity implements IAvoidEntity {
     }
 
     @Override
+    public HumanoidArm getMainArm() {
+        return HandNative.convertFrom(wrappedEntity.getMainHand());
+    }
+
+    @Override
     protected void readAdditionalSaveData(ValueInput valueInput) {
-        //
+        super.readAdditionalSaveData(valueInput);
     }
 
     @Override
     protected void addAdditionalSaveData(ValueOutput valueOutput) {
-        //
+        super.addAdditionalSaveData(valueOutput);
     }
 }

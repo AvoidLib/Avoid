@@ -1,8 +1,8 @@
 package pl.olafcio.avoid.net.entity.custom_internal;
 
-import pl.olafcio.avoid.net.entity.custom.Entity;
+import pl.olafcio.avoid.net.entity.Entity;
 
 @FunctionalInterface
-public interface EntityConstructor {
-    Entity construct(int id, Object... args);
+public interface EntityConstructor<T extends Entity> {
+    T construct(int id, Object... args);
 }
