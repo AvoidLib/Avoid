@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.tags.TagKey;
@@ -24,11 +25,15 @@ import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity.event.ClientEntityCreateEvent;
 import pl.olafcio.avoid.net.entity_server.event.ServerEntityCreateEvent;
 import pl.olafcio.avoid.net.entity_server.event.ServerEntityDropEvent;
+import pl.olafcio.avoid.net.entity_server.event.ServerEntitySetHealthEvent;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.item.stack.ItemStackNative;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
+    @Shadow
+    public abstract float getHealth();
+
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
@@ -95,5 +100,23 @@ public abstract class LivingEntityMixin extends Entity {
         }
 
         return original.call(instance, block);
+    }
+
+    @WrapMethod(method = "setHealth")
+    public void setHealth(float value, Operation<Void> original) {
+        var event = new ServerEntitySetHealthEvent(
+                EntityNative.convertFrom(this),
+                value,
+                this.getHealth()
+        );
+
+        EventManager.fire(event);
+
+        if (event.isCancelled())
+            return;
+        else if (event.isLevelChanged())
+            value = event.getLevel();
+
+        original.call(value);
     }
 }
