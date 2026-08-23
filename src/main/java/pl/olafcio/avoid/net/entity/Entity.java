@@ -1,12 +1,14 @@
 package pl.olafcio.avoid.net.entity;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.ApiStatus;
@@ -20,10 +22,13 @@ import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.client.AvoidLibClient;
+import pl.olafcio.avoid.internal.VResourceKey;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
+import pl.olafcio.avoid.net.effect.Effect;
+import pl.olafcio.avoid.net.effect.instance.EffectInstance;
 import pl.olafcio.avoid.net.entity.values.Damage;
 import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity.values.HandNative;
@@ -40,6 +45,8 @@ import pl.olafcio.avoid.net.world.vect3.IVect3;
 import pl.olafcio.avoid.net.world.vect3.Vect3;
 import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -757,6 +764,83 @@ public abstract class Entity {
      */
     public void stopSleeping() {
         __cast(LivingEntity.class).stopSleeping();
+    }
+
+    /**
+     * Returns the active effects of this entity.
+     */
+    public List<EffectInstance> getEffects() {
+        return __cast(LivingEntity.class).getActiveEffects().stream().map(effect -> {
+            return new EffectInstance(
+                    IdentificationNative.convertFrom(VResourceKey.identifier(effect.getEffect().unwrapKey().orElseThrow())),
+                    effect.getDuration(),
+                    effect.getAmplifier() + 1
+            );
+        }).toList();
+    }
+
+    /**
+     * Returns the active effects of this entity within an <i>ID->EffectInstance</i> map.
+     */
+    public HashMap<Identification, EffectInstance> getEffectMap() {
+        var map = __cast(LivingEntity.class).getActiveEffectsMap();
+        var output = new HashMap<Identification, EffectInstance>();
+
+        for (var effect : map.entrySet()) {
+            var id = IdentificationNative.convertFrom(VResourceKey.identifier(effect.getKey().unwrapKey().orElseThrow()));
+
+            output.put(id, new EffectInstance(
+                    id,
+                    effect.getValue().getDuration(),
+                    effect.getValue().getAmplifier() + 1
+            ));
+        }
+
+        return output;
+    }
+
+    /**
+     * Returns whether this entity has the given effect.
+     * @param effectID The ID of the effect to check whether the entity has.
+     */
+    public boolean hasEffect(Identification effectID) {
+        return __cast(LivingEntity.class).hasEffect(BuiltInRegistries.MOB_EFFECT.get(IdentificationNative.convert(effectID)).orElseThrow());
+    }
+
+    /**
+     * Adds an effect to an entity.
+     * <br><br/>
+     * <b>NOTE:</b> Some entities can't accept some/ or all effects.<br/>
+     * &ensp;&ensp;&emsp;&nbsp;&emsp;To bypass this, use the {@code forceAddEffect} method.
+     * @param effectInstance The effect to add.
+     * @return Whether the effect was added.<br/>
+     *         This may be {@code false} if the effect isn't assignable to the entity.
+     */
+    public boolean addEffect(EffectInstance effectInstance) {
+        return __cast(LivingEntity.class).addEffect(
+                new MobEffectInstance(
+                        BuiltInRegistries.MOB_EFFECT.get(IdentificationNative.convert(effectInstance.getID())).orElseThrow(),
+                        effectInstance.getDuration(),
+                        effectInstance.getLevel() - 1
+                )
+        );
+    }
+
+    /**
+     * Removes the effect from the entity.
+     * @param effectID The ID of the effect to remove.
+     * @return Whether the effect was removed.<br/>
+     *         This is {@code false} if the entity didn't have the effect.
+     */
+    public boolean removeEffect(Identification effectID) {
+        return __cast(LivingEntity.class).removeEffect(BuiltInRegistries.MOB_EFFECT.get(IdentificationNative.convert(effectID)).orElseThrow());
+    }
+
+    /**
+     * Removes all effects from the entity.
+     */
+    public boolean clearEffects() {
+        return __cast(LivingEntity.class).removeAllEffects();
     }
 
     @Override
