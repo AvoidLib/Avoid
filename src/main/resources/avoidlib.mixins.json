@@ -30,7 +30,8 @@
     "accessors.ILevel",
     "accessors.IMushroomCow$Variant",
     "accessors.ISalmon$Variant",
-    "accessors.ITropicalFish$Base"
+    "accessors.ITropicalFish$Base",
+    "accessors.IVillager"
   ],
   "client": [
     "BlocksMixin",
