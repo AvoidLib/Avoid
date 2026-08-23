@@ -745,6 +745,20 @@ public abstract class Entity {
         __cast(Mob.class).setCanPickUpLoot(value);
     }
 
+    /**
+     * Makes the entity sleep at the bed at the specified position.
+     */
+    public void startSleeping(BlockPos blockPos) {
+        __cast(LivingEntity.class).startSleeping(BlockPosNative.convertFrom(blockPos));
+    }
+
+    /**
+     * Makes the entity stop sleeping.
+     */
+    public void stopSleeping() {
+        __cast(LivingEntity.class).stopSleeping();
+    }
+
     @Override
     public String toString() {
         return "Entity[" +
