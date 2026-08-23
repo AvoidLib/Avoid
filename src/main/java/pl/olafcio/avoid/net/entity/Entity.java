@@ -590,6 +590,15 @@ public abstract class Entity {
     }
 
     /**
+     * Returns the standard gravity for the entity.
+     * <br><br/>
+     * This doesn't account for the no-gravity mode.
+     */
+    public double getDefaultGravity() {
+        return underlyingEntity.getDefaultGravity();
+    }
+
+    /**
      * Returns whether the entity object is client-sided.
      */
     public boolean isClient() {

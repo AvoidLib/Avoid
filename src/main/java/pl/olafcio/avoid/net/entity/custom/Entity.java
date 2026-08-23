@@ -506,4 +506,9 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     public final void detach() {
         super.detach();
     }
+
+    @Override
+    public final double getDefaultGravity() {
+        return super.getDefaultGravity();
+    }
 }
