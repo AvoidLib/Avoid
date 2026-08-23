@@ -12,19 +12,37 @@
 - NeoForge
 
 **🪵 Changelog:**
-- Correct required Backported version
-- [Keybind API] Resolve compilation issues with the `Category` enum
-- [Item Components] Transform ENTITY_DATA
-- [Item Components] Transform BLOCK_ENTITY_DATA
-- 1.21.8 compatibility
-- [Item Creation API] @_spawnEgg([@id] entityType) property
-- [Item Creation API] Fix @_damage property
-- [Client Chat] Normalize Event
-- [Client] Screen In Portal Event
-- [Client] #isMoving()
-- [Client] #isHandsBusy()
-- Client Interaction Manager API
-- Fix NeoForge
+- [Entity Type API] #getID()
+- [Command Parameter API] Alias 'text' to StringParameter
+- [Command Parameter API] 'float' parameter
+- [Command Parameter API] 'double' parameter
+- [Command Parameter API] 'short' parameter
+- [Command Parameter API] 'long' parameter
+- [Entity API] Taking damage
+- [Entity API] #detach()
+- Entity#damage(...) fixes
+- Remove faulty fluid group optimization
+- [World API] Do null-checking in #eachEntity(...)
+- Use `registerSingle` instead of `register` for new number types in CommandParameters
+- [Entity API] #kill()
+- [Entity API] Use floats instead of ints in the damage functions
+- Some API status notes
+- [Entity API] #isSilent()
+- [Entity API] Make the damage methods final in custom entities
+- [Command Parameter API] Clarify `registerSingle` warning
+- [Entity API] #getDefaultGravity()
+- [Entity API] #jumpFromGround()
+- [Entity API] #isPersistenceRequired()
+- [Entity API] #{ canPickUpLoot, setCanPickUpLoot }()
+- [Server API] #eachEntity([Consumer<Entity>] callback)
+- [Server API] #stopServer()
+- [Entity API] Merchant subclass
+- [Entity Creation API] Merchant subclass
+- [Entity Type Creation API] Error detection
+- [Entity Type Creation API] Fix attribute -> mc conversion
+- [Entity API] #{ startSleeping, stopSleeping }()
+- [Entity Creation API] Change some villager-only merchant behaviour
+- [Server Entity] Struck By Bolt Event
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
