@@ -1,4 +1,5 @@
 this['client'].append("FluidStateModelSetMixin")
 this['client'].remove("LiquidBlockRendererMixin")
 
+this['client'].append("accessors.IMinecraftServer")
 this['mixins'].append("EntityFluidInteractionMixin")
