@@ -2,11 +2,12 @@ package pl.olafcio.avoid.net.player_server.event;
 
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.mods.event.Cancellable;
+import pl.olafcio.avoid.mods.event_group.PlayerEvent;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player_server.PlayerInput;
 
 @NeverRemoval
-public final class ServerPlayerInputEvent extends Cancellable {
+public final class ServerPlayerInputEvent extends Cancellable implements PlayerEvent {
     private final Player player;
     private final PlayerInput originalInput;
 

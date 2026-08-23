@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.player_server.event.block;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.mods.event_group.PlayerEvent;
 import pl.olafcio.avoid.net.item.Item;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
 import pl.olafcio.avoid.net.player.Player;
@@ -19,7 +20,7 @@ import pl.olafcio.avoid.net.world.World;
  */
 // TODO: Accessing items used to get the resulting itemStack.
 @ApiStatus.Experimental
-public final class ServerPlayerCraftSlotEvent {
+public final class ServerPlayerCraftSlotEvent implements PlayerEvent {
     private final Player player;
     private final World world;
     private final ItemStack originalItemStack;

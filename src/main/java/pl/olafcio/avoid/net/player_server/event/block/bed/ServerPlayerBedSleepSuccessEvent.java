@@ -2,12 +2,13 @@ package pl.olafcio.avoid.net.player_server.event.block.bed;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.mods.event.Cancellable;
+import pl.olafcio.avoid.mods.event_group.PlayerEvent;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.world.World;
 
 @ApiStatus.Experimental
-public final class ServerPlayerBedSleepSuccessEvent extends Cancellable {
+public final class ServerPlayerBedSleepSuccessEvent extends Cancellable implements PlayerEvent {
     private final Player player;
     private final World world;
     private final BlockPos blockPos;
