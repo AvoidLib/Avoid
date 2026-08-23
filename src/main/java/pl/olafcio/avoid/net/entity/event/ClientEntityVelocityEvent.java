@@ -2,10 +2,11 @@ package pl.olafcio.avoid.net.entity.event;
 
 import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.mods.event.UncancellableEventException;
+import pl.olafcio.avoid.mods.event_group.EntityEvent;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 
-public final class ClientEntityVelocityEvent extends Cancellable {
+public final class ClientEntityVelocityEvent extends Cancellable implements EntityEvent {
     private final Entity entity;
     private IVect3 velocity;
 
