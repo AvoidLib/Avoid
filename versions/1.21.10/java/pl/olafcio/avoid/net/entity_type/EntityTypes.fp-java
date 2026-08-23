@@ -9,3 +9,8 @@ import net.minecraft.resources.ResourceLocation;
     .map(flag -> Identifier.fromNamespaceAndPath(flag.namespace(), flag.path()))
     .map(flag -> ResourceLocation.fromNamespaceAndPath(flag.namespace(), flag.path()))
 }
+
+{
+    import net.minecraft.world.entity.npc.villager.
+    import net.minecraft.world.entity.npc.
+}
