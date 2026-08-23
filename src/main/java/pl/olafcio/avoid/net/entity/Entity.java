@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -717,6 +718,15 @@ public abstract class Entity {
      */
     public void jumpFromGround() {
         __cast(LivingEntity.class).jumpFromGround();
+    }
+
+    /**
+     * Returns whether the entity has despawning disabled.
+     * <br/><br/>
+     * <b>NOTE:</b> This only works on mob entities.
+     */
+    public boolean isPersistenceRequired() {
+        return __cast(Mob.class).isPersistenceRequired();
     }
 
     @Override

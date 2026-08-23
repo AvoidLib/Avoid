@@ -513,6 +513,11 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     }
 
     @Override
+    public final boolean isPersistenceRequired() {
+        return super.isPersistenceRequired();
+    }
+
+    @Override
     public final double getDefaultGravity() {
         return super.getDefaultGravity();
     }
