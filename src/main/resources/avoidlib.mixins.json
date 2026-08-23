@@ -13,6 +13,7 @@
     "EntityMixin",
     "EntitySelectorParserMixin",
     "FarmBlockMixin",
+    "LightningBoltMixin",
     "LivingEntityMixin",
     "LlamaMixin",
     "MapColorMixin",
