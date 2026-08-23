@@ -810,8 +810,7 @@ public abstract class Entity {
     /**
      * Adds an effect to an entity.
      * <br><br/>
-     * <b>NOTE:</b> Some entities can't accept some/ or all effects.<br/>
-     * &ensp;&ensp;&emsp;&nbsp;&emsp;To bypass this, use the {@code forceAddEffect} method.
+     * <b>NOTE:</b> Some entities can't accept some/ or all effects.
      * @param effectInstance The effect to add.
      * @return Whether the effect was added.<br/>
      *         This may be {@code false} if the effect isn't assignable to the entity.
