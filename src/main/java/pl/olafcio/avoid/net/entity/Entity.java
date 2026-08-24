@@ -29,6 +29,7 @@ import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.effect.Effect;
 import pl.olafcio.avoid.net.effect.instance.EffectInstance;
+import pl.olafcio.avoid.net.effect.instance.EffectInstanceNative;
 import pl.olafcio.avoid.net.entity.values.Damage;
 import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity.values.HandNative;
@@ -770,13 +771,9 @@ public abstract class Entity {
      * Returns the active effects of this entity.
      */
     public List<EffectInstance> getEffects() {
-        return __cast(LivingEntity.class).getActiveEffects().stream().map(effect -> {
-            return new EffectInstance(
-                    IdentificationNative.convertFrom(VResourceKey.identifier(effect.getEffect().unwrapKey().orElseThrow())),
-                    effect.getDuration(),
-                    effect.getAmplifier() + 1
-            );
-        }).toList();
+        return __cast(LivingEntity.class).getActiveEffects().stream()
+                                                            .map(EffectInstanceNative::convert)
+                                                            .toList();
     }
 
     /**
@@ -816,13 +813,7 @@ public abstract class Entity {
      *         This may be {@code false} if the effect isn't assignable to the entity.
      */
     public boolean addEffect(EffectInstance effectInstance) {
-        return __cast(LivingEntity.class).addEffect(
-                new MobEffectInstance(
-                        BuiltInRegistries.MOB_EFFECT.get(IdentificationNative.convert(effectInstance.getID())).orElseThrow(),
-                        effectInstance.getDuration(),
-                        effectInstance.getLevel() - 1
-                )
-        );
+        return __cast(LivingEntity.class).addEffect(EffectInstanceNative.convertFrom(effectInstance));
     }
 
     /**
