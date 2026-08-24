@@ -1,7 +1,9 @@
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.util.function.Consumer
 
 buildscript {
     repositories {
@@ -67,6 +69,33 @@ if (sponge) {
     }
 }
 
+if (neoforge) {
+    tasks.compileJava.doFirst {
+        var src = rootProject.file("src/main/java").toPath()
+
+        var walk = new Consumer<java.nio.file.Path>[2]
+
+        walk[0] = new Consumer<java.nio.file.Path>() {
+            @Override
+            void accept(java.nio.file.Path path) {
+                try (var files = Files.list(path)) {
+                    files.forEach(sub -> {
+                        if (Files.isDirectory(sub)) {
+                            walk[0].accept(sub)
+                        } else if (sub.getFileName().toString().endsWith(".java")) {
+                            Files.writeString(sub, Files.readString(sub, StandardCharsets.UTF_8) \
+                                                        .replace("net.fabricmc.api.Environment", "net.neoforged.api.distmarker.OnlyIn") \
+                                                        .replace("net.fabricmc.api.EnvType", "net.neoforged.api.distmarker.Dist") \
+                                                        .replace("@Environment(EnvType.", "@OnlyIn(Dist."), StandardCharsets.UTF_8)
+                        }
+                    })
+                }
+            }
+        }
+
+        walk[0].accept(src)
+    }
+}
 
 dependencies {
     // To change the versions see the gradle.properties file
