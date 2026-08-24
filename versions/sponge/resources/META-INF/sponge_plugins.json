@@ -1,0 +1,38 @@
+{
+  "loader": {
+    "name": "java_plain",
+    "version": "1.0"
+  },
+  "license": "Apache-2.0",
+  "plugins": [
+    {
+      "id": "avoidlib",
+      "name": "Avoid",
+      "version": "${version}",
+      "entrypoint": "pl.olafcio.avoid.A4Sponge",
+      "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
+      "links": {
+      },
+      "contributors": [
+        {
+          "name": "Olafcio",
+          "description": ""
+        }
+      ],
+      "dependencies": [
+        {
+          "id": "spongeapi",
+          "version": "18.0.0",
+          "load-order": "AFTER",
+          "optional": false
+        },
+        {
+          "id": "minecraft",
+          "version": "${minecraft_version_range}",
+          "load-order": "AFTER",
+          "optional": false
+        }
+      ]
+    }
+  ]
+}

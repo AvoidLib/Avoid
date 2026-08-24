@@ -16,13 +16,20 @@ buildscript {
     dependencies {
         classpath 'net.fabricmc:fabric-loom:1.17-SNAPSHOT'
         classpath 'me.modmuss50:mod-publish-plugin:2.0.0'
+        classpath 'com.gradleup.shadow:shadow-gradle-plugin:9.6.1'
     }
 }
 
 var neoforge = false
+var sponge = false
 
 if (rootProject.file('gradle.properties').text.contains("neoforge")) {
     neoforge = true
+}
+
+if (rootProject.file('gradle.properties').text.contains("sponge")) {
+    sponge = true
+    apply plugin: 'com.gradleup.shadow'
 }
 
 if (rootProject.file('gradle.properties').text.contains("omit_mappings")) {
@@ -52,15 +59,39 @@ repositories {
     }
 }
 
+if (sponge) {
+    shadowJar {
+        configurations = [project.configurations.shadow]
+        relocate("com.llamalad7.mixinextras", "pl.olafcio.avoid.__shadow__.mixinextras")
+        mergeServiceFiles() // Very important!
+    }
+}
+
+
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
+    final var append = obj -> (!neoforge && !sponge) ? include(obj) : shadow(obj)
+
     if ("include_jspecify" in project.getProperties()) {
-        implementation(include("org.jspecify:jspecify:1.0.1"))
+        implementation(append("org.jspecify:jspecify:1.0.1"))
     }
 
-    if (neoforge) {
+    if (sponge) {
+        compileOnly fileTree(rootProject.file("libs/sponge"))
+
+        compileOnly "net.fabricmc:sponge-mixin:0.17.3+mixin.0.8.7"
+        compileOnly "io.github.llamalad7:mixinextras-common:0.5.4"
+
+        append(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.4"))
+
+        if ("omit_mappings" !in project.getProperties()) {
+            /// 1.21.11
+
+            mappings loom.officialMojangMappings()
+        }
+    } else if (neoforge) {
         compileOnly fileTree(rootProject.file("libs/neoforge"))
 
         compileOnly "net.fabricmc:sponge-mixin:0.17.3+mixin.0.8.7"
@@ -102,6 +133,8 @@ dependencies {
 }
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "minecraft_version_range", ('minecraft_version_range' in project.properties ? project.minecraft_version_range : project.minecraft_version)
@@ -112,7 +145,7 @@ processResources {
     }
 
     filteringCharset "UTF-8"
-    filesMatching(["fabric.mod.json", "META-INF/neoforge.mods.toml"]) {
+    filesMatching(["fabric.mod.json", "META-INF/neoforge.mods.toml", "META-INF/sponge_plugins.json"]) {
         expand inputs.properties
     }
 }
@@ -169,7 +202,7 @@ publishMods {
     file = "omit_mappings" !in project.getProperties() ? remapJar.archiveFile : jar.archiveFile
     changelog = Files.readString(rootProject.file("CHANGELOG").toPath())
     type = STABLE
-    modLoaders.add(neoforge ? "neoforge" : "fabric")
+    modLoaders.add(sponge ? "sponge" : neoforge ? "neoforge" : "fabric")
 
     modrinth {
         displayName = "Avoid v${project.version} [${minecraft_version}]"

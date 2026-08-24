@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+MixinConfigs: avoidlib.mixins.json
+Access-Widener: avoidlib.accesswidener
+

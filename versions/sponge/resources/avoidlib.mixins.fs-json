@@ -1,0 +1,1 @@
+this['plugin'] = "pl.olafcio.avoid.MixinExtrasLoader"
