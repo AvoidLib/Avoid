@@ -25,10 +25,7 @@ import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.effect.instance.EffectInstanceNative;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity.event.ClientEntityCreateEvent;
-import pl.olafcio.avoid.net.entity_server.event.ServerEntityCreateEvent;
-import pl.olafcio.avoid.net.entity_server.event.ServerEntityDropEvent;
-import pl.olafcio.avoid.net.entity_server.event.ServerEntityEffectAddEvent;
-import pl.olafcio.avoid.net.entity_server.event.ServerEntitySetHealthEvent;
+import pl.olafcio.avoid.net.entity_server.event.*;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.item.stack.ItemStackNative;
 
@@ -126,6 +123,19 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"), method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z", cancellable = true)
     public void addEffect__put(MobEffectInstance mobEffectInstance, Entity entity, CallbackInfoReturnable<Boolean> cir) {
         var event = new ServerEntityEffectAddEvent(
+                EntityNative.convertFrom(entity),
+                EffectInstanceNative.convert(mobEffectInstance)
+        );
+
+        EventManager.fire(event);
+
+        if (event.isCancelled())
+            cir.setReturnValue(true);
+    }
+
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;update(Lnet/minecraft/world/effect/MobEffectInstance;)Z"), method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z", cancellable = true)
+    public void addEffect__update(MobEffectInstance mobEffectInstance, Entity entity, CallbackInfoReturnable<Boolean> cir) {
+        var event = new ServerEntityEffectUpdateEvent(
                 EntityNative.convertFrom(entity),
                 EffectInstanceNative.convert(mobEffectInstance)
         );
