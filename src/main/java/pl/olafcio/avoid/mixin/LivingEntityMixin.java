@@ -3,7 +3,9 @@ package pl.olafcio.avoid.mixin;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.core.Holder;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -29,10 +32,16 @@ import pl.olafcio.avoid.net.entity_server.event.*;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.item.stack.ItemStackNative;
 
+import java.util.Map;
+
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
     @Shadow
     public abstract float getHealth();
+
+    @Shadow
+    @Final
+    private Map<Holder<MobEffect>, MobEffectInstance> activeEffects;
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -147,6 +156,21 @@ public abstract class LivingEntityMixin extends Entity {
 
             if (event.isCancelled())
                 cir.setReturnValue(true);
+        }
+    }
+
+    @Inject(at = @At("HEAD"), method = "removeEffectNoUpdate", cancellable = true)
+    public void removeEffectNoUpdate(Holder<MobEffect> holder, CallbackInfoReturnable<MobEffectInstance> cir) {
+        if (this.activeEffects.containsKey(holder)) {
+            var event = new ServerEntityEffectRemoveEvent(
+                    EntityNative.convertFrom(this),
+                    EffectInstanceNative.convert(this.activeEffects.get(holder))
+            );
+
+            EventManager.fire(event);
+
+            if (event.isCancelled())
+                cir.setReturnValue(null);
         }
     }
 }
