@@ -1,5 +1,7 @@
 package pl.olafcio.avoid.net.entity_renderer;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.PlayerSkinRenderCache;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -25,12 +27,14 @@ public abstract class LivingEntityRenderer<T extends Entity, S>
 
     public abstract Identification getTextureLocation(S state);
 
+    @Environment(EnvType.CLIENT)
     public final void addCustomHead() {
         operations.add((obj, context, c, d) -> {
             obj.addLayer(new CustomHeadLayer(obj, context.getModelSet(), context.getPlayerSkinRenderCache()));
         });
     }
 
+    @Environment(EnvType.CLIENT)
     final void finishInit(net.minecraft.client.renderer.entity.LivingEntityRenderer<?, ?, ?> renderer,
                           EntityRendererProvider.Context context,
                           EntityModelSet entityModelSet,

@@ -1,7 +1,10 @@
 package pl.olafcio.avoid.net.entity_renderer;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import pl.olafcio.avoid.net._3d.model.ModelPart;
 
+@Environment(EnvType.CLIENT)
 public abstract class EntityModel<S> {
     final ModelPart modelPart;
 
