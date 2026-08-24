@@ -5,9 +5,11 @@ import com.google.common.base.Function;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 import pl.olafcio.avoid.*;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModBase;
@@ -28,6 +30,7 @@ import pl.olafcio.avoid.net.keyboard.event.ClientKeyReleaseEvent;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -241,9 +244,17 @@ public final class ModLoad
             if (!usedAutoChar.get() && klass.isAnnotationPresent(AutoChar.class))
                 Avoid.LOGGER.warn("@AutoChar not applicable ({})", className);
 
-            EventManager.collect(klass);
+            Method[] methods;
 
-            var methods = klass.getDeclaredMethods();
+            try {
+                methods = klass.getDeclaredMethods();
+            } catch (Exception e) {
+                LOGGER.warn("Failed to collect methods from {}", klass.getName());
+                return;
+            }
+
+            EventManager.collect(klass, methods);
+
             for (var m : methods) {
                 if (m.isAnnotationPresent(KeyHandler.class)) {
                     registerKeyHandler(klass, m);
@@ -251,6 +262,9 @@ public final class ModLoad
             }
         }
     }
+
+    private static final Logger LOGGER
+                       = LogUtils.getLogger();
 
     private boolean registerAutoBlock(String id, Class<?> klass, String className, AtomicBoolean usedAutoID)
             throws NoSuchMethodException

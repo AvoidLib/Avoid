@@ -38,8 +38,7 @@ public final class EventManager {
         listeners.get(event).add(handler);
     }
 
-    public static void collect(Class<?> klass) {
-        var methods = klass.getDeclaredMethods();
+    public static void collect(Class<?> klass, Method[] methods) {
         for (Method m : methods) {
             if (Modifier.isStatic(m.getModifiers()) && m.isAnnotationPresent(EventHandler.class)) {
                 String className = klass.getName();
