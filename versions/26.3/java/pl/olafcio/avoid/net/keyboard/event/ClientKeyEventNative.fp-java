@@ -1,0 +1,161 @@
+import pl.olafcio.avoid.net.keyboard.Keyboard
+import org.lwjgl.sdl.SDLKeycode
+import java.util.HashMap;
+
+{
+    private ClientKeyEventNative() {}
+    private ClientKeyEventNative() {}
+
+    private static final HashMap<Integer, Integer> GL_TO_SDL = new HashMap<>(349);
+    static {
+        /** Printable keys. */
+            GL_TO_SDL.put(SDLKeycode.SDLK_SPACE, Keyboard.SPACE);
+            GL_TO_SDL.put(SDLKeycode.SDLK_APOSTROPHE, Keyboard.APOSTROPHE);
+            GL_TO_SDL.put(SDLKeycode.SDLK_COMMA, Keyboard.COMMA);
+            GL_TO_SDL.put(SDLKeycode.SDLK_MINUS, Keyboard.MINUS);
+            GL_TO_SDL.put(SDLKeycode.SDLK_PERIOD, Keyboard.PERIOD);
+            GL_TO_SDL.put(SDLKeycode.SDLK_SLASH, Keyboard.SLASH);
+
+        /** Digit keys. */
+            GL_TO_SDL.put(SDLKeycode.SDLK_0, Keyboard.NUM_0);
+            GL_TO_SDL.put(SDLKeycode.SDLK_1, Keyboard.NUM_1);
+            GL_TO_SDL.put(SDLKeycode.SDLK_2, Keyboard.NUM_2);
+            GL_TO_SDL.put(SDLKeycode.SDLK_3, Keyboard.NUM_3);
+            GL_TO_SDL.put(SDLKeycode.SDLK_4, Keyboard.NUM_4);
+            GL_TO_SDL.put(SDLKeycode.SDLK_5, Keyboard.NUM_5);
+            GL_TO_SDL.put(SDLKeycode.SDLK_6, Keyboard.NUM_6);
+            GL_TO_SDL.put(SDLKeycode.SDLK_7, Keyboard.NUM_7);
+            GL_TO_SDL.put(SDLKeycode.SDLK_8, Keyboard.NUM_8);
+            GL_TO_SDL.put(SDLKeycode.SDLK_9, Keyboard.NUM_9);
+
+        /** Printable keys. */
+            GL_TO_SDL.put(SDLKeycode.SDLK_SEMICOLON, Keyboard.SEMICOLON);
+            GL_TO_SDL.put(SDLKeycode.SDLK_EQUALS, Keyboard.EQUAL);
+
+        /** Letter keys. */
+            GL_TO_SDL.put(SDLKeycode.SDLK_A, Keyboard.A);
+            GL_TO_SDL.put(SDLKeycode.SDLK_B, Keyboard.B);
+            GL_TO_SDL.put(SDLKeycode.SDLK_C, Keyboard.C);
+            GL_TO_SDL.put(SDLKeycode.SDLK_D, Keyboard.D);
+            GL_TO_SDL.put(SDLKeycode.SDLK_E, Keyboard.E);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F, Keyboard.F);
+            GL_TO_SDL.put(SDLKeycode.SDLK_G, Keyboard.G);
+            GL_TO_SDL.put(SDLKeycode.SDLK_H, Keyboard.H);
+            GL_TO_SDL.put(SDLKeycode.SDLK_I, Keyboard.I);
+            GL_TO_SDL.put(SDLKeycode.SDLK_J, Keyboard.J);
+            GL_TO_SDL.put(SDLKeycode.SDLK_K, Keyboard.K);
+            GL_TO_SDL.put(SDLKeycode.SDLK_L, Keyboard.L);
+            GL_TO_SDL.put(SDLKeycode.SDLK_M, Keyboard.M);
+            GL_TO_SDL.put(SDLKeycode.SDLK_N, Keyboard.N);
+            GL_TO_SDL.put(SDLKeycode.SDLK_O, Keyboard.O);
+            GL_TO_SDL.put(SDLKeycode.SDLK_P, Keyboard.P);
+            GL_TO_SDL.put(SDLKeycode.SDLK_Q, Keyboard.Q);
+            GL_TO_SDL.put(SDLKeycode.SDLK_R, Keyboard.R);
+            GL_TO_SDL.put(SDLKeycode.SDLK_S, Keyboard.S);
+            GL_TO_SDL.put(SDLKeycode.SDLK_T, Keyboard.T);
+            GL_TO_SDL.put(SDLKeycode.SDLK_U, Keyboard.U);
+            GL_TO_SDL.put(SDLKeycode.SDLK_V, Keyboard.V);
+            GL_TO_SDL.put(SDLKeycode.SDLK_W, Keyboard.W);
+            GL_TO_SDL.put(SDLKeycode.SDLK_X, Keyboard.X);
+            GL_TO_SDL.put(SDLKeycode.SDLK_Y, Keyboard.Y);
+            GL_TO_SDL.put(SDLKeycode.SDLK_Z, Keyboard.Z);
+
+        /** Printable keys. */
+            GL_TO_SDL.put(SDLKeycode.SDLK_LEFTBRACKET, Keyboard.LEFT_BRACKET);
+            GL_TO_SDL.put(SDLKeycode.SDLK_BACKSLASH, Keyboard.BACKSLASH);
+            GL_TO_SDL.put(SDLKeycode.SDLK_RIGHTBRACKET, Keyboard.RIGHT_BRACKET);
+            GL_TO_SDL.put(SDLKeycode.SDLK_GRAVE, Keyboard.GRAVE_ACCENT);
+            GL_TO_SDL.put(SDLKeycode.SDLK_LHYPER, Keyboard.WORLD_1); // Is this right?
+            GL_TO_SDL.put(SDLKeycode.SDLK_RHYPER, Keyboard.WORLD_2); // Is it?
+
+        /** Function keys. */
+            GL_TO_SDL.put(SDLKeycode.SDLK_ESCAPE, Keyboard.ESCAPE);
+            GL_TO_SDL.put(SDLKeycode.SDLK_RETURN, Keyboard.ENTER);
+            GL_TO_SDL.put(SDLKeycode.SDLK_TAB, Keyboard.TAB);
+            GL_TO_SDL.put(SDLKeycode.SDLK_BACKSPACE, Keyboard.BACKSPACE);
+            GL_TO_SDL.put(SDLKeycode.SDLK_INSERT, Keyboard.INSERT);
+            GL_TO_SDL.put(SDLKeycode.SDLK_DELETE, Keyboard.DELETE);
+            GL_TO_SDL.put(SDLKeycode.SDLK_RIGHT, Keyboard.RIGHT);
+            GL_TO_SDL.put(SDLKeycode.SDLK_LEFT, Keyboard.LEFT);
+            GL_TO_SDL.put(SDLKeycode.SDLK_DOWN, Keyboard.DOWN);
+            GL_TO_SDL.put(SDLKeycode.SDLK_UP, Keyboard.UP);
+            GL_TO_SDL.put(SDLKeycode.SDLK_PAGEUP, Keyboard.PAGE_UP);
+            GL_TO_SDL.put(SDLKeycode.SDLK_PAGEDOWN, Keyboard.PAGE_DOWN);
+            GL_TO_SDL.put(SDLKeycode.SDLK_HOME, Keyboard.HOME);
+            GL_TO_SDL.put(SDLKeycode.SDLK_END, Keyboard.END);
+            GL_TO_SDL.put(SDLKeycode.SDLK_CAPSLOCK, Keyboard.CAPS_LOCK);
+            GL_TO_SDL.put(SDLKeycode.SDLK_SCROLLLOCK, Keyboard.SCROLL_LOCK);
+            GL_TO_SDL.put(SDLKeycode.SDLK_NUMLOCKCLEAR, Keyboard.NUM_LOCK);
+            GL_TO_SDL.put(SDLKeycode.SDLK_PRINTSCREEN, Keyboard.PRINT_SCREEN);
+            GL_TO_SDL.put(SDLKeycode.SDLK_PAUSE, Keyboard.PAUSE);
+
+        /** F-keys. */
+            GL_TO_SDL.put(SDLKeycode.SDLK_F1, Keyboard.F1);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F2, Keyboard.F2);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F3, Keyboard.F3);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F4, Keyboard.F4);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F5, Keyboard.F5);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F6, Keyboard.F6);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F7, Keyboard.F7);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F8, Keyboard.F8);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F9, Keyboard.F9);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F10, Keyboard.F10);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F11, Keyboard.F11);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F12, Keyboard.F12);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F13, Keyboard.F13);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F14, Keyboard.F14);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F15, Keyboard.F15);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F16, Keyboard.F16);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F17, Keyboard.F17);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F18, Keyboard.F18);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F19, Keyboard.F19);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F20, Keyboard.F20);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F21, Keyboard.F21);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F22, Keyboard.F22);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F23, Keyboard.F23);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F24, Keyboard.F24);
+            GL_TO_SDL.put(SDLKeycode.SDLK_F24, Keyboard.F25);
+
+        /** Numpad keys. */
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_0, Keyboard.NUMPAD_0);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_1, Keyboard.NUMPAD_1);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_2, Keyboard.NUMPAD_2);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_3, Keyboard.NUMPAD_3);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_4, Keyboard.NUMPAD_4);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_5, Keyboard.NUMPAD_5);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_6, Keyboard.NUMPAD_6);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_7, Keyboard.NUMPAD_7);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_8, Keyboard.NUMPAD_8);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_9, Keyboard.NUMPAD_9);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_DECIMAL, Keyboard.NUMPAD_DECIMAL);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_DIVIDE, Keyboard.NUMPAD_DIVIDE);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_MULTIPLY, Keyboard.NUMPAD_MULTIPLY);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_MINUS, Keyboard.NUMPAD_SUBTRACT);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_PLUS, Keyboard.NUMPAD_ADD);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_ENTER, Keyboard.NUMPAD_ENTER);
+            GL_TO_SDL.put(SDLKeycode.SDLK_KP_EQUALS, Keyboard.NUMPAD_EQUAL);
+
+        /** Modifier keys. */
+            GL_TO_SDL.put(SDLKeycode.SDLK_LSHIFT, Keyboard.LEFT_SHIFT);
+            GL_TO_SDL.put(SDLKeycode.SDLK_LCTRL, Keyboard.LEFT_CONTROL);
+            GL_TO_SDL.put(SDLKeycode.SDLK_LALT, Keyboard.LEFT_ALT);
+            GL_TO_SDL.put(SDLKeycode.SDLK_LMETA, Keyboard.LEFT_SUPER);
+            GL_TO_SDL.put(SDLKeycode.SDLK_RSHIFT, Keyboard.RIGHT_SHIFT);
+            GL_TO_SDL.put(SDLKeycode.SDLK_RCTRL, Keyboard.RIGHT_CONTROL);
+            GL_TO_SDL.put(SDLKeycode.SDLK_RALT, Keyboard.RIGHT_ALT);
+            GL_TO_SDL.put(SDLKeycode.SDLK_RMETA, Keyboard.RIGHT_SUPER);
+
+        /** Menu key. */
+            GL_TO_SDL.put(SDLKeycode.SDLK_MENU, Keyboard.MENU);
+    }
+}
+
+{
+    mcevent.key();
+    GL_TO_SDL.getOrDefault(mcevent.keycode(), -mcevent.keycode());
+}
+
+{
+    mcevent.scancode();
+    mcevent.keycode();
+}
