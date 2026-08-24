@@ -11,6 +11,9 @@ public final class ChunkLayerNative {
     private ChunkLayerNative() {}
 
     public static ChunkSectionLayer convertFrom(ChunkLayer layer) {
-        return layer.object;
+             if (layer == ChunkLayer.SOLID)       return ChunkSectionLayer.SOLID;
+        else if (layer == ChunkLayer.CUTOUT)      return ChunkSectionLayer.CUTOUT;
+        else if (layer == ChunkLayer.TRANSLUCENT) return ChunkSectionLayer.TRANSLUCENT;
+        else                                      return ChunkSectionLayer.TRIPWIRE;
     }
 }

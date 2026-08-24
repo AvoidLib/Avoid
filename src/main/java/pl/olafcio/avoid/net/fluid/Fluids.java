@@ -1,12 +1,12 @@
 package pl.olafcio.avoid.net.fluid;
 
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.FluidState;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.net.fluid.properties._layer;
-import pl.olafcio.avoid.net.fluid.properties.layer.ChunkLayerNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
@@ -37,11 +37,9 @@ public final class Fluids {
 
         var klass = fluid.getClass();
         if (klass.isAnnotationPresent(_layer.class)) {
-            ItemBlockRenderTypes.LAYER_BY_FLUID.put(source, ChunkLayerNative.convertFrom(klass.getAnnotation(_layer.class)
-                                                                                              .value()));
-
-            ItemBlockRenderTypes.LAYER_BY_FLUID.put(flowing, ChunkLayerNative.convertFrom(klass.getAnnotation(_layer.class)
-                                                                                               .value()));
+            if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT) {
+                FluidsClientNative.handleLayer(source, klass, flowing);
+            }
         }
 
         for (FluidState fluidState : source.getStateDefinition().getPossibleStates()) {
