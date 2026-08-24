@@ -28,11 +28,6 @@ java_version=21
 neoforge=1
 neo_version=21.11.42
 
-# sponge-1.21.11
-! sponge
-: 1.21.11
-sponge=1
-
 # 26.1
 minecraft_version=26.1
 minecraft_version_range=~26.1
@@ -49,11 +44,6 @@ omit_mappings=1
 neoforge=1
 neo_version=26.1.0.19-beta
 
-# sponge-26.1
-! sponge
-: 26.1
-sponge=1
-
 # 26.2
 : 26.1
 minecraft_version=26.2
@@ -69,11 +59,6 @@ omit_mappings=1
 ! neoforge-26.2_compat
 neoforge=1
 neo_version=26.2.0.8-beta
-
-# sponge-26.2
-! sponge
-: 26.2
-sponge=1
 
 # 26.3-snapshot-9
 ; 26.2
