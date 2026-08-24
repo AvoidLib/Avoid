@@ -7,7 +7,7 @@ import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
  * An abstract class for all Avoid addons.
  */
 @NeverRemoval
-public abstract class AvoidMod {
+public abstract non-sealed class AvoidMod extends AvoidModBase {
     /**
      * Invoked when the modloader has scanned all the mod's classes and registered it fully.
      */

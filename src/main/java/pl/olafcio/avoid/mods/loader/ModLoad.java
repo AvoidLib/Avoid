@@ -10,6 +10,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.*;
 import pl.olafcio.avoid.mods.AvoidMod;
+import pl.olafcio.avoid.mods.AvoidModBase;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.ModEnvironment;
 import pl.olafcio.avoid.mods.annotation_processor.*;
@@ -143,6 +144,11 @@ public final class ModLoad
             constructor.setAccessible(true);
 
             var instance = constructor.newInstance();
+
+            var metaField = AvoidModBase.class.getDeclaredField("meta");
+            metaField.setAccessible(true);
+            metaField.set(instance, meta);
+
             AvoidModLoader.instances.put(meta, instance);
             instance.onLoad();
 
@@ -156,6 +162,8 @@ public final class ModLoad
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
                  InstantiationException | IllegalAccessException e) {
             Avoid.LOGGER.error("Failed to enable Avoid mod: {}", mod.toAbsolutePath(), e);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException("Failed to set Avoid mod metadata: %s".formatted(mod.toAbsolutePath()), e);
         }
     }
 
