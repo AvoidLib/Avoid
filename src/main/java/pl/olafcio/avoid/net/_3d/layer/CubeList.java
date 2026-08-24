@@ -2,6 +2,8 @@ package pl.olafcio.avoid.net._3d.layer;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.builders.CubeDefinition;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.core.Direction;
@@ -10,6 +12,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+@Environment(EnvType.CLIENT)
 public class CubeList {
     private static final Set<Direction> ALL_VISIBLE = EnumSet.allOf(Direction.class);
     private final List<CubeDefinition> cubes = Lists.newArrayList();

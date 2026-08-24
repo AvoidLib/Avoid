@@ -1,6 +1,8 @@
 package pl.olafcio.avoid.net._3d.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.joml.*;
 import org.jspecify.annotations.Nullable;
 import pl.olafcio.avoid.net._3d.apex.ApexConsumer;
@@ -18,6 +20,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Environment(EnvType.CLIENT)
 public final class ModelPart {
     final net.minecraft.client.model.geom.ModelPart part;
 

@@ -1,8 +1,11 @@
 package pl.olafcio.avoid.net._3d.layer;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import org.jetbrains.annotations.ApiStatus;
 
+@Environment(EnvType.CLIENT)
 public class LayerDef {
     public final MeshDef mesh;
 

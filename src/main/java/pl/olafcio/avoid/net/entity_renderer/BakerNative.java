@@ -1,5 +1,7 @@
 package pl.olafcio.avoid.net.entity_renderer;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
@@ -7,6 +9,7 @@ import pl.olafcio.avoid.annotations.Native;
 import java.util.HashMap;
 
 @Native
+@Environment(EnvType.CLIENT)
 @ApiStatus.Internal
 public final class BakerNative {
     @ApiStatus.Internal

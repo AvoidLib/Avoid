@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public abstract class LivingEntityRenderer<T extends Entity, S>
                 extends EntityRenderer<T, S>
 {
+    @Environment(EnvType.CLIENT)
     private ArrayList<LivingOp> operations
       = new ArrayList<>();
 
