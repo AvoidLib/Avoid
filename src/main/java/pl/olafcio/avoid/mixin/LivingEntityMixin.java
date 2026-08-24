@@ -122,27 +122,31 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"), method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z", cancellable = true)
     public void addEffect__put(MobEffectInstance mobEffectInstance, Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        var event = new ServerEntityEffectAddEvent(
-                EntityNative.convertFrom(entity),
-                EffectInstanceNative.convert(mobEffectInstance)
-        );
+        if (!this.level().isClientSide()) {
+            var event = new ServerEntityEffectAddEvent(
+                    EntityNative.convertFrom(this),
+                    EffectInstanceNative.convert(mobEffectInstance)
+            );
 
-        EventManager.fire(event);
+            EventManager.fire(event);
 
-        if (event.isCancelled())
-            cir.setReturnValue(true);
+            if (event.isCancelled())
+                cir.setReturnValue(true);
+        }
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;update(Lnet/minecraft/world/effect/MobEffectInstance;)Z"), method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z", cancellable = true)
     public void addEffect__update(MobEffectInstance mobEffectInstance, Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        var event = new ServerEntityEffectUpdateEvent(
-                EntityNative.convertFrom(entity),
-                EffectInstanceNative.convert(mobEffectInstance)
-        );
+        if (!this.level().isClientSide()) {
+            var event = new ServerEntityEffectUpdateEvent(
+                    EntityNative.convertFrom(this),
+                    EffectInstanceNative.convert(mobEffectInstance)
+            );
 
-        EventManager.fire(event);
+            EventManager.fire(event);
 
-        if (event.isCancelled())
-            cir.setReturnValue(true);
+            if (event.isCancelled())
+                cir.setReturnValue(true);
+        }
     }
 }
