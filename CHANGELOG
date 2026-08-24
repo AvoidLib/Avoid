@@ -12,37 +12,27 @@
 - NeoForge
 
 **🪵 Changelog:**
-- [Entity Type API] #getID()
-- [Command Parameter API] Alias 'text' to StringParameter
-- [Command Parameter API] 'float' parameter
-- [Command Parameter API] 'double' parameter
-- [Command Parameter API] 'short' parameter
-- [Command Parameter API] 'long' parameter
-- [Entity API] Taking damage
-- [Entity API] #detach()
-- Entity#damage(...) fixes
-- Remove faulty fluid group optimization
-- [World API] Do null-checking in #eachEntity(...)
-- Use `registerSingle` instead of `register` for new number types in CommandParameters
-- [Entity API] #kill()
-- [Entity API] Use floats instead of ints in the damage functions
-- Some API status notes
-- [Entity API] #isSilent()
-- [Entity API] Make the damage methods final in custom entities
-- [Command Parameter API] Clarify `registerSingle` warning
-- [Entity API] #getDefaultGravity()
-- [Entity API] #jumpFromGround()
-- [Entity API] #isPersistenceRequired()
-- [Entity API] #{ canPickUpLoot, setCanPickUpLoot }()
-- [Server API] #eachEntity([Consumer<Entity>] callback)
-- [Server API] #stopServer()
-- [Entity API] Merchant subclass
-- [Entity Creation API] Merchant subclass
-- [Entity Type Creation API] Error detection
-- [Entity Type Creation API] Fix attribute -> mc conversion
-- [Entity API] #{ startSleeping, stopSleeping }()
-- [Entity Creation API] Change some villager-only merchant behaviour
-- [Server Entity] Struck By Bolt Event
+- [Server Player] Set Food Level Event
+- [Server Player] Set Saturation Level Event
+- [Server Entity] Set Health Event
+- [Event Interfaces] EntityEvent
+- [Event Interfaces] PlayerEvent
+- [Client Entity] Mark events with EntityEvent
+- [Effect Creation API] Native effect class
+- [Entity API] Effect methods
+- Effects#get([Identification] id)
+- [Server Entity] Effect Add Event
+- [Server Entity] Effect Update Event
+- [Server Entity] Effect Remove Event
+- [ModLoader] Resource utilities
+- 'build.gradle' cleanup
+- Fix item component value type search in obfuscated environments
+- Fix fluids loading on server
+- Fix server early init
+- Fix entity renderers loading on server
+- Fix fogs loading on server
+- Don't crash when a class fails to load in a mod
+- Fix server loading issues
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
