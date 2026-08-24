@@ -1,26 +1,55 @@
 package pl.olafcio.avoid.net.keyboard.bind;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
 public final class Category {
-    final InternalCategory category;
+    @Environment(EnvType.CLIENT)
+    InternalCategory category;
 
+    @Environment(EnvType.CLIENT)
     private Category(Object category) {
         this.category = new InternalCategory((KeyMapping.Category) category);
     }
 
     public Category(Identification id) {
-        this(KeyMapping.Category.register(IdentificationNative.convert(id)));
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
+            this.init(id);
     }
 
-    public static final Category MOVEMENT    = new Category(KeyMapping.Category.MOVEMENT);
-    public static final Category MISC        = new Category(KeyMapping.Category.MISC);
-    public static final Category MULTIPLAYER = new Category(KeyMapping.Category.MULTIPLAYER);
-    public static final Category GAMEPLAY    = new Category(KeyMapping.Category.GAMEPLAY);
-    public static final Category INVENTORY   = new Category(KeyMapping.Category.INVENTORY);
-    public static final Category CREATIVE    = new Category(KeyMapping.Category.CREATIVE);
-    public static final Category SPECTATOR   = new Category(KeyMapping.Category.SPECTATOR);
-    public static final Category DEBUG       = new Category(KeyMapping.Category.DEBUG);
+    @Environment(EnvType.CLIENT)
+    private void init(Identification id) {
+        this.category = new InternalCategory(KeyMapping.Category.register(IdentificationNative.convert(id)));
+    }
+
+    public static Category MOVEMENT;
+    public static Category MISC;
+    public static Category MULTIPLAYER;
+    public static Category GAMEPLAY;
+    public static Category INVENTORY;
+    public static Category CREATIVE;
+    public static Category SPECTATOR;
+    public static Category DEBUG;
+
+    @Environment(EnvType.CLIENT)
+    private static void clinit() {
+        MOVEMENT    = new Category(KeyMapping.Category.MOVEMENT);
+        MISC        = new Category(KeyMapping.Category.MISC);
+        MULTIPLAYER = new Category(KeyMapping.Category.MULTIPLAYER);
+        GAMEPLAY    = new Category(KeyMapping.Category.GAMEPLAY);
+        INVENTORY   = new Category(KeyMapping.Category.INVENTORY);
+        CREATIVE    = new Category(KeyMapping.Category.CREATIVE);
+        SPECTATOR   = new Category(KeyMapping.Category.SPECTATOR);
+        DEBUG       = new Category(KeyMapping.Category.DEBUG);
+    }
+
+    static {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
+            clinit();
+    }
 }

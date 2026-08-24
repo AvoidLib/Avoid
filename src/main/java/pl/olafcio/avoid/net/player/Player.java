@@ -10,6 +10,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.AvoidInternal;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
@@ -73,8 +75,13 @@ public class Player extends Entity implements Executor {
     public void sendMessage(BaseComponent<?> component) {
         if (underlyingEntity instanceof ServerPlayer)
             connection.send(new ClientboundSystemChatPacket(COToNative.from(component), false));
-        else if (underlyingEntity instanceof LocalPlayer client)
+
+        else if (
+                AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
+                underlyingEntity instanceof LocalPlayer client
+        )
             client.displayClientMessage(COToNative.from(component), false);
+
         else
             throw new UncontrollablePlayerException("[Player#sendMessage] Remote players can't be controlled from the client");
     }

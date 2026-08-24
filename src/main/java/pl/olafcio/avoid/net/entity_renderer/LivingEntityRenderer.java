@@ -28,11 +28,13 @@ public abstract class LivingEntityRenderer<T extends Entity, S>
 
     public abstract Identification getTextureLocation(S state);
 
-    @Environment(EnvType.CLIENT)
     public final void addCustomHead() {
-        operations.add((obj, context, c, d) -> {
-            obj.addLayer(new CustomHeadLayer(obj, context.getModelSet(), context.getPlayerSkinRenderCache()));
-        });
+        __addCustomHead();
+    }
+
+    @Environment(EnvType.CLIENT)
+    private void __addCustomHead() {
+        operations.add(new MyLivingOp());
     }
 
     @Environment(EnvType.CLIENT)
@@ -45,5 +47,13 @@ public abstract class LivingEntityRenderer<T extends Entity, S>
             op.execute(renderer, context, entityModelSet, playerSkinRenderCache);
 
         operations = null;
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static class MyLivingOp implements LivingOp {
+        @Override
+        public void execute(net.minecraft.client.renderer.entity.LivingEntityRenderer<?, ?, ?> obj, EntityRendererProvider.Context context, EntityModelSet entityModelSet, PlayerSkinRenderCache playerSkinRenderCache) {
+            obj.addLayer(new CustomHeadLayer(obj, context.getModelSet(), context.getPlayerSkinRenderCache()));
+        }
     }
 }

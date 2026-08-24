@@ -1,5 +1,7 @@
 package pl.olafcio.avoid.net.chat.tag;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.GuiMessageTag;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
@@ -7,6 +9,7 @@ import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
 @Native
+@Environment(EnvType.CLIENT)
 @ApiStatus.Internal
 public class ChatTagNative {
     @ApiStatus.Internal

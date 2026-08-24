@@ -1,5 +1,7 @@
 package pl.olafcio.avoid.net.keyboard.bind;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
 import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.ApiStatus;
@@ -14,6 +16,7 @@ import java.util.function.Supplier;
 
 @Native
 @NullMarked
+@Environment(EnvType.CLIENT)
 @ApiStatus.Internal
 public class KeybindsNative {
     @ApiStatus.Internal

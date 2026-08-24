@@ -1,5 +1,7 @@
 package pl.olafcio.avoid.net.client.interaction;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -17,6 +19,7 @@ import pl.olafcio.avoid.net.world.vect3.IVect3;
 import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 @Native
+@Environment(EnvType.CLIENT)
 @ApiStatus.Internal
 final class cim_native {
     @ApiStatus.Internal

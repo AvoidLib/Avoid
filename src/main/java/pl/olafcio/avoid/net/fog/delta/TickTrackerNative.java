@@ -1,10 +1,13 @@
 package pl.olafcio.avoid.net.fog.delta;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
 
 @Native
+@Environment(EnvType.CLIENT)
 @ApiStatus.Internal
 public final class TickTrackerNative {
     @ApiStatus.Internal

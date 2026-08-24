@@ -1,6 +1,5 @@
 package pl.olafcio.avoid.net.keyboard.event;
 
-import net.minecraft.client.input.KeyEvent;
 import org.intellij.lang.annotations.MagicConstant;
 import pl.olafcio.avoid.net.keyboard.Keyboard;
 import pl.olafcio.avoid.net.screen.eventinterface.KeyInterface;
@@ -10,20 +9,22 @@ public sealed abstract class ClientKeyEvent
                        implements ModifierInterface, KeyInterface
                        permits ClientKeyPressEvent, ClientKeyReleaseEvent
 {
-    KeyEvent event;
+    int key;
+    int scancode;
+    int modifiers;
 
     ClientKeyEvent() {}
 
     @MagicConstant(valuesFromClass = Keyboard.class)
     public int getKey() {
-        return event.key();
+        return key;
     }
 
     public int getScancode() {
-        return event.scancode();
+        return scancode;
     }
 
     public int getModifiers() {
-        return event.modifiers();
+        return modifiers;
     }
 }

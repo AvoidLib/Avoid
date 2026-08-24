@@ -4,6 +4,9 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.renderer.RenderPipelines;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.RunningEnv;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -17,6 +20,11 @@ public final class RenderLayers {
     static {
         PRESENT = new HashMap<>();
 
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
+            clinit();
+    }
+
+    private static void clinit() {
         var fields = RenderPipelines.class.getDeclaredFields();
         for (var field : fields) {
             try {
@@ -127,6 +135,13 @@ public final class RenderLayers {
 
     @ApiStatus.Internal
     public static RenderLayer register(String name) {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
+            return registerClient(name);
+
+        throw new ImproperEnvironment("[RenderLayers#register] Cannot be run in server environment!");
+    }
+
+    private static RenderLayer registerClient(String name) {
         var pipeline = PRESENT.get(name);
         var isPresent = pipeline != null;
 

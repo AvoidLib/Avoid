@@ -255,9 +255,11 @@ public final class ModLoad
 
             EventManager.collect(klass, methods);
 
-            for (var m : methods) {
-                if (m.isAnnotationPresent(KeyHandler.class)) {
-                    registerKeyHandler(klass, m);
+            if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT) {
+                for (var m : methods) {
+                    if (m.isAnnotationPresent(KeyHandler.class)) {
+                        registerKeyHandler(klass, m);
+                    }
                 }
             }
         }

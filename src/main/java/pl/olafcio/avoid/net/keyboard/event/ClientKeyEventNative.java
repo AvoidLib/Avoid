@@ -1,10 +1,13 @@
 package pl.olafcio.avoid.net.keyboard.event;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.input.KeyEvent;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
 
 @Native
+@Environment(EnvType.CLIENT)
 @ApiStatus.Internal
 public final class ClientKeyEventNative {
     @ApiStatus.Internal
@@ -19,6 +22,8 @@ public final class ClientKeyEventNative {
     }
 
     public static void change(ClientKeyEvent avoidevent, KeyEvent mcevent) {
-        avoidevent.event = mcevent;
+        avoidevent.key = mcevent.key();
+        avoidevent.scancode = mcevent.scancode();
+        avoidevent.modifiers = mcevent.modifiers();
     }
 }

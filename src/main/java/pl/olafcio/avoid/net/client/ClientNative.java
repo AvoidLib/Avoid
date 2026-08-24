@@ -1,5 +1,7 @@
 package pl.olafcio.avoid.net.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -19,6 +21,7 @@ import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.WorldNative;
 
 @Native
+@Environment(EnvType.CLIENT)
 @ApiStatus.Internal
 final class ClientNative {
     @ApiStatus.Internal
