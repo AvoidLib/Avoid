@@ -1,8 +1,12 @@
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.JsonArray
 
 import groovy.json.JsonOutput
 
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.util.function.Consumer
@@ -310,10 +314,8 @@ tasks.withType(JavaCompile).configureEach {
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(25)
 
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
-    withSourcesJar()
+    if (System.getProperty("gen_sources") != null)
+        withSourcesJar()
 }
 
 jar {
@@ -369,4 +371,72 @@ tasks.register("release") {
 
     if (contains("merge") || contains("release"))
         dependsOn("publishMods")
+}
+
+tasks.register("publishGitHub") {
+    dependsOn build
+
+    doLast {
+        try (var client = HttpClient.newHttpClient()) {
+            var hashproc = new ProcessBuilder().command("git", "log", "origin/main", "-1", "--format=%H")
+                                                        .start()
+
+            hashproc.waitFor()
+
+            var data2 = JsonOutput.toJson([
+                "tag": "v${project.version}",
+                "object": new String(hashproc.in.readAllBytes(), StandardCharsets.UTF_8).substring(0, 40),
+                "type": "commit",
+                "message": Files.readString(rootProject.file("CHANGELOG").toPath(), StandardCharsets.UTF_8)
+            ])
+
+            client.send(HttpRequest.newBuilder()
+                                   .method("POST", HttpRequest.BodyPublishers.ofString(data2, StandardCharsets.UTF_8))
+                                   .uri(URI.create("https://api.github.com/repos/AvoidLib/Avoid/git/tags"))
+                                   .header("Accept", "application/vnd.github+json")
+                                   .header("Authorization", "Bearer " + providers.environmentVariable("GITHUB_TOKEN").get())
+                                   .header("X-GitHub-Api-Version", "2026-03-10")
+                                   .build(), HttpResponse.BodyHandlers.discarding())
+
+            var data1 = JsonOutput.toJson([
+                "tag_name": "v${project.version}",
+                "target_commitish": "main",
+                "name": "v${project.version}",
+                "body": Files.readString(rootProject.file("CHANGELOG").toPath(), StandardCharsets.UTF_8),
+                "make_latest": "true"
+            ])
+
+            var respraw = client.send(HttpRequest.newBuilder()
+                                        .method("POST", HttpRequest.BodyPublishers.ofString(data1, StandardCharsets.UTF_8))
+                                        .uri(URI.create("https://api.github.com/repos/AvoidLib/Avoid/releases"))
+                                        .header("Accept", "application/vnd.github+json")
+                                        .header("Authorization", "Bearer " + providers.environmentVariable("GITHUB_TOKEN").get())
+                                        .header("X-GitHub-Api-Version", "2026-03-10")
+                                        .build(), HttpResponse.BodyHandlers.ofByteArray()).body()
+
+            var resp = new Gson().fromJson(
+                    new String(respraw, StandardCharsets.UTF_8),
+                    JsonObject.class
+            )
+
+            client.send(HttpRequest.newBuilder()
+                                   .method("POST", HttpRequest.BodyPublishers.ofFile((contains("omit_mappings") ? jar : remapJar).archiveFile.get().asFile.toPath()))
+                                   .uri(URI.create("https://uploads.github.com/repos/AvoidLib/Avoid/releases/${resp['id']}/assets?name=AvoidLib+fabric-1.21.11.jar"))
+                                   .header("Accept", "application/vnd.github+json")
+                                   .header("Authorization", "Bearer " + providers.environmentVariable("GITHUB_TOKEN").get())
+                                   .header("X-GitHub-Api-Version", "2026-03-10")
+                                   .header("Content-Type", "application/octet-stram")
+                                   .build(), HttpResponse.BodyHandlers.discarding())
+
+            client.send(HttpRequest.newBuilder()
+                                   .method("POST", HttpRequest.BodyPublishers.ofFile((contains("omit_mappings") ? sourcesJar : remapSourcesJar).archiveFile.get().asFile.toPath()))
+                                   .uri(URI.create("https://uploads.github.com/repos/AvoidLib/Avoid/releases/${resp['id']}/assets?name=AvoidLib+fabric-1.21.11-sources.jar"))
+                                   .header("Accept", "application/vnd.github+json")
+                                   .header("Authorization", "Bearer " + providers.environmentVariable("GITHUB_TOKEN").get())
+                                   .header("X-GitHub-Api-Version", "2026-03-10")
+                                   .header("Content-Type", "application/octet-stram")
+                                   .build(), HttpResponse.BodyHandlers.discarding())
+
+        }
+    }
 }
