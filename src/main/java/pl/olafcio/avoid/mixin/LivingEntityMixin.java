@@ -114,7 +114,7 @@ public abstract class LivingEntityMixin extends Entity {
     @WrapMethod(method = "setHealth")
     public void setHealth(float value, Operation<Void> original) {
         var event = new ServerEntitySetHealthEvent(
-                EntityNative.convertFrom(this),
+                EntityNative.convertFromTry(this),
                 value,
                 this.getHealth()
         );
@@ -133,7 +133,7 @@ public abstract class LivingEntityMixin extends Entity {
     public void addEffect__put(MobEffectInstance mobEffectInstance, Entity entity, CallbackInfoReturnable<Boolean> cir) {
         if (!this.level().isClientSide()) {
             var event = new ServerEntityEffectAddEvent(
-                    EntityNative.convertFrom(this),
+                    EntityNative.convertFromTry(this),
                     EffectInstanceNative.convert(mobEffectInstance)
             );
 
