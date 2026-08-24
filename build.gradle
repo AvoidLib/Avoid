@@ -35,6 +35,12 @@ var final boolean neoforge = contains("neoforge")
 var final boolean sponge   = contains("sponge")
 var final boolean fabric   = !neoforge && !sponge
 
+ext {
+    it.neoforge = neoforge
+    it.sponge = sponge
+    it.fabric = fabric
+}
+
 if (sponge) {
     apply plugin: 'com.gradleup.shadow'
 }
@@ -143,10 +149,22 @@ dependencies {
     }
 }
 
-private File getMergeJAR() {
-    final var loaders = new Gson().fromJson((String) project.merge, JsonArray.class).asList() \
-                                              .collect { e -> e.getAsString() }
+private List<String> getLoaders() {
+    if (contains("merge"))
+        return new Gson().fromJson((String) project.merge, JsonArray.class).asList() \
+                         .collect { e -> e.getAsString() }
+    else if (ext.fabric)
+        return ["fabric"];
+    else if (ext.neoforge)
+        return ["neoforge"];
+    else if (ext.sponge)
+        return ["sponge"];
+    else
+        return [];
+}
 
+private File getMergeJAR() {
+    var loaders = getLoaders()
     return rootProject.file("build/libs/avoidlib+${String.join("+", loaders)}-${project.minecraft_version}-${project.version}.jar")
 }
 
@@ -159,9 +177,7 @@ if (contains("merge")) {
                 "neoforge": rootProject.file("build/libs/avoidlib+neoforge-${project.minecraft_version}-${project.version}.jar")
         ]
 
-        final var loaders = new Gson().fromJson((String) project.merge, JsonArray.class).asList() \
-                                                  .collect { e -> e.getAsString() }
-
+        final var loaders = getLoaders()
         final var merge = loaders.collect { e -> paths[e] }
 
         var bos = new ByteArrayOutputStream()
@@ -328,7 +344,10 @@ publishMods {
     file = "omit_mappings" !in project.getProperties() ? remapJar.archiveFile : jar.archiveFile
     changelog = Files.readString(rootProject.file("CHANGELOG").toPath())
     type = STABLE
-    modLoaders.add(sponge ? "sponge" : neoforge ? "neoforge" : "fabric")
+
+    var loaders = getLoaders()
+    for (String loader : loaders)
+        modLoaders.add(loader)
 
     modrinth {
         displayName = "Avoid v${project.version} [${minecraft_version}]"
@@ -338,7 +357,8 @@ publishMods {
         if ("minecraft_version_list" !in project.getProperties())
             minecraftVersions.add(minecraft_version)
         else
-            minecraftVersions.addAll(new Gson().fromJson((String) project.minecraft_version_list, JsonArray.class).asList().collect { e -> e.getAsString() })
+            minecraftVersions.addAll(new Gson().fromJson((String) project.minecraft_version_list, JsonArray.class).asList() \
+                                               .collect { e -> e.getAsString() })
 
 //        setAdditionalFiles(files(("omit_mappings" !in project.getProperties() ? remapSourcesJar.archiveFile : sourcesJar.archiveFile).get().asFile.toPath()))
     }
@@ -346,5 +366,7 @@ publishMods {
 
 tasks.register("release") {
     dependsOn build
-    dependsOn("publishMods")
+
+    if (contains("merge") || contains("release"))
+        dependsOn("publishMods")
 }
