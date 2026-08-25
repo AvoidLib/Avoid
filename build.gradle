@@ -428,7 +428,7 @@ tasks.register("publishGitHub") {
 
             client.send(HttpRequest.newBuilder()
                                    .method("POST", HttpRequest.BodyPublishers.ofFile((contains("omit_mappings") ? jar : remapJar).archiveFile.get().asFile.toPath()))
-                                   .uri(URI.create("https://uploads.github.com/repos/AvoidLib/Avoid/releases/${resp['id']}/assets?name=AvoidLib+fabric-1.21.11.jar"))
+                                   .uri(URI.create("https://uploads.github.com/repos/AvoidLib/Avoid/releases/${resp['id']}/assets?name=AvoidLib%2Bfabric-1.21.11.jar"))
                                    .header("Accept", "application/vnd.github+json")
                                    .header("Authorization", "Bearer " + providers.environmentVariable("GITHUB_TOKEN").get())
                                    .header("X-GitHub-Api-Version", "2026-03-10")
@@ -437,7 +437,7 @@ tasks.register("publishGitHub") {
 
             client.send(HttpRequest.newBuilder()
                                    .method("POST", HttpRequest.BodyPublishers.ofFile((contains("omit_mappings") ? sourcesJar : remapSourcesJar).archiveFile.get().asFile.toPath()))
-                                   .uri(URI.create("https://uploads.github.com/repos/AvoidLib/Avoid/releases/${resp['id']}/assets?name=AvoidLib+fabric-1.21.11-sources.jar"))
+                                   .uri(URI.create("https://uploads.github.com/repos/AvoidLib/Avoid/releases/${resp['id']}/assets?name=AvoidLib%2Bfabric-1.21.11-sources.jar"))
                                    .header("Accept", "application/vnd.github+json")
                                    .header("Authorization", "Bearer " + providers.environmentVariable("GITHUB_TOKEN").get())
                                    .header("X-GitHub-Api-Version", "2026-03-10")
