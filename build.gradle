@@ -140,6 +140,9 @@ dependencies {
         compileOnly "org.spongepowered:mixin:0.8.7"
         compileOnly "io.github.llamalad7:mixinextras-common:0.5.4"
 
+        compileOnly "org.ow2.asm:asm:9.8"
+        compileOnly "org.ow2.asm:asm-tree:9.8"
+
         append(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.4"))
     } else if (neoforge) {
         compileOnly fileTree(rootProject.file("libs/neoforge"))
@@ -328,6 +331,12 @@ java {
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
+    }
+
+    if (sponge) {
+        manifest {
+            from 'src/main/resources/META-INF/MANIFEST.MF'
+        }
     }
 }
 

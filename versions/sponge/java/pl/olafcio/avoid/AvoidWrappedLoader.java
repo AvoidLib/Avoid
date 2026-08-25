@@ -5,6 +5,7 @@ import org.spongepowered.api.Sponge;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,8 +43,17 @@ public final class AvoidWrappedLoader {
      */
     public static Set<Path> getModsPaths() {
         return Sponge.game().pluginManager().plugins().stream()
-                                                      .map(plug -> plug.locateResource("").orElseThrow())
-                                                      .map(res -> res.getPath().split("!")[0])
+                                                      .map(plug -> plug.locateResource("/").orElseThrow())
+                                                      .map(res -> Arrays.stream(res.toString().split(":")).toList())
+                                                      .map(list -> {
+                                                          return list.get(list.size() - 2) + list.getLast().split("!/")[0];
+                                                      })
+                                                      .map(path -> {
+                                                          while (path.startsWith("/"))
+                                                              path = path.substring(1);
+
+                                                          return path;
+                                                      })
                                                       .map(Path::of)
                                                       .collect(Collectors.toSet());
     }

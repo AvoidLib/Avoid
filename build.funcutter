@@ -33,6 +33,11 @@ merge=["fabric", "neoforge"]
 ! neoforge-1.21.11_compat
 neo_version=21.11.42
 
+# sponge-1.21.11
+! sponge
+: 1.21.11
+sponge=1
+
 # 26.1
 minecraft_version=26.1
 minecraft_version_range=~26.1

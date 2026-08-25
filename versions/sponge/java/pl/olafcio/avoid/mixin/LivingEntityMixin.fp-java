@@ -1,0 +1,4 @@
+{
+    @At("CTOR_HEAD")
+    @At(value = "CTOR_HEAD", unsafe = true)
+}
