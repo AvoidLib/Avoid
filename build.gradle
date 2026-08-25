@@ -74,6 +74,13 @@ repositories {
         name 'jitpack'
         url 'https://jitpack.io/'
     }
+
+    if (sponge) {
+        maven {
+            name 'spongepopwered'
+            url 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+    }
 }
 
 if (sponge) {
@@ -130,7 +137,7 @@ dependencies {
     if (sponge) {
         compileOnly fileTree(rootProject.file("libs/sponge"))
 
-        compileOnly "net.fabricmc:sponge-mixin:0.17.3+mixin.0.8.7"
+        compileOnly "org.spongepowered:mixin:0.8.7"
         compileOnly "io.github.llamalad7:mixinextras-common:0.5.4"
 
         append(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.4"))
