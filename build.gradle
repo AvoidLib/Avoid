@@ -317,7 +317,7 @@ processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "minecraft_version_range", ('minecraft_version_range' in project.properties ? project.minecraft_version_range : project.minecraft_version)
-    inputs.property "loader_version", project.fabric_loader
+    inputs.property "loader_version", project.loader_version
     inputs.property "quilt_loader", project.quilt_loader
 
     if ('neo_version' in project.properties) {
