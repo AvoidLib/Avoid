@@ -170,6 +170,11 @@ dependencies {
         mod "org.quiltmc:quilt-json5:1.0.4+final"
         mod "org.quiltmc:quilt-config:1.3.3"
         mod "org.quiltmc:quilt-loader:${project.quilt_loader}"
+
+        if ("omit_mappings" !in project.getProperties())
+            modCompileOnly("net.fabricmc:fabric-loader:${project.loader_version}")
+        else
+            compileOnly("net.fabricmc:fabric-loader:${project.loader_version}")
     } else {
         mod "net.fabricmc:fabric-loader:${project.loader_version}"
     }
