@@ -3,13 +3,14 @@
 ///////////////
 
 $ neoforge
-; {@name}
+: {@name}
 ! neoforge-{@name}_compat
 neoforge=1
 merge=["fabric", "neoforge"]
 neo_version={}
 
 $ sponge
+: {@name}
 sponge=1
 release=1
 
