@@ -26,6 +26,9 @@ public final class AvoidWrappedLoader {
     /** Returns whether the wrapped loader is NeoForge. (This changes during compile time for Avoid builds for other loaders) */
     public static boolean isNeoForge() { return false; }
 
+    /** Returns whether the wrapped loader is Sponge. (This changes during compile time for Avoid builds for other loaders) */
+    public static boolean isSponge() { return false; }
+
     /**
      * Returns the game directory.
      */
