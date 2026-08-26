@@ -22,7 +22,13 @@
       {"id": "quilt_loader", "versions": ">=${quilt_loader}"},
       {"id": "minecraft",    "versions": "${minecraft_version_range}"},
       {"id": "java",         "versions": ">=21"}
-    ]
+    ],
+    "experimental_quilt_loader_plugin": {
+      "class": "pl.olafcio.avoid.qp.AvoidQuiltPlugin",
+      "packages": [
+        "pl.olafcio.avoid.qp"
+      ]
+    }
   },
   "mixin": "avoidlib.mixins.json"
 }
