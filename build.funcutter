@@ -1,3 +1,22 @@
+///////////////
+/// LOADERS ///
+///////////////
+
+$ neoforge
+; {@name}
+! neoforge-{@name}_compat
+neoforge=1
+merge=["fabric", "neoforge"]
+neo_version={}
+
+$ sponge
+sponge=1
+release=1
+
+////////////////
+/// VERSIONS ///
+////////////////
+
 # 1.21.10
 minecraft_version=1.21.10
 loader_version=0.19.1
@@ -18,27 +37,16 @@ include_permapi=0.4.0
 release=1
 
 # 1.21.11
+<- neoforge (21.11.42)
+<- sponge
 minecraft_version=1.21.11
 loader_version=0.19.1
 fabric_version=0.135.1+1.21.11
 java_version=21
 
-$ neoforge
-neoforge=1
-merge=["fabric", "neoforge"]
-
-# neoforge-1.21.11
-: neoforge
-: 1.21.11
-! neoforge-1.21.11_compat
-neo_version=21.11.42
-
-# sponge-1.21.11
-! sponge
-: 1.21.11
-sponge=1
-
 # 26.1
+<- neoforge (26.1.0.19-beta)
+<- sponge
 minecraft_version=26.1
 minecraft_version_range=~26.1
 minecraft_version_list=["26.1", "26.1.1", "26.1.2"]
@@ -47,26 +55,15 @@ fabric_version=0.140.0+26.1
 java_version=25
 omit_mappings=1
 
-# neoforge-26.1
-: neoforge
-: 26.1
-! neoforge-26.1_compat
-neo_version=26.1.0.19-beta
-
 # 26.2
 : 26.1
+<- neoforge (26.2.0.8-beta)
+<- sponge
 minecraft_version=26.2
 minecraft_version_range=26.2
 minecraft_version_list=["26.2"]
 loader_version=0.19.3
 fabric_version=0.154.0+26.2
-omit_mappings=1
-
-# neoforge-26.2
-: neoforge
-; 26.2
-! neoforge-26.2_compat
-neo_version=26.2.0.8-beta
 
 # 26.3-snapshot-9
 ; 26.2
@@ -76,5 +73,4 @@ minecraft_version_range=26.3-alpha.9
 minecraft_version_list=["26.3-snapshot-9"]
 loader_version=0.19.3
 fabric_version=0.156.1+26.3
-omit_mappings=1
 release=1
