@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "quilt_loader": {
+    "group": "pl.olafcio.avoid",
+    "id": "avoidlib",
+    "version": "${version}",
+    "metadata": {
+      "name": "AvoidLib",
+      "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
+      "contributors": {
+        "Olafcio": ""
+      },
+      "contact": {
+      },
+      "icon": "assets/avoidlib/icon.png"
+    },
+    "entrypoints": {
+      "init": "pl.olafcio.avoid.A4Quilt"
+    },
+    "access_widener": "avoidlib.accesswidener",
+    "depends": [
+      {"id": "quilt_loader", "versions": ">=${quilt_loader}"},
+      {"id": "minecraft",    "versions": "${minecraft_version_range}"},
+      {"id": "java",         "versions": ">=21"}
+    ]
+  },
+  "mixin": "avoidlib.mixins.json"
+}

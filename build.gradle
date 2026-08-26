@@ -37,11 +37,13 @@ boolean contains(String value) {
 
 var final boolean neoforge = contains("neoforge")
 var final boolean sponge   = contains("sponge")
-var final boolean fabric   = !neoforge && !sponge
+var final boolean quilt    = contains("quilt")
+var final boolean fabric   = !neoforge && !sponge && !quilt
 
 ext {
     it.neoforge = neoforge
     it.sponge = sponge
+    it.quilt = quilt
     it.fabric = fabric
 }
 
@@ -77,8 +79,15 @@ repositories {
 
     if (sponge) {
         maven {
-            name 'spongepopwered'
+            name 'spongepowered'
             url 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+    }
+
+    if (quilt) {
+        maven {
+            name 'quiltmc'
+            url 'https://maven.quiltmc.org/repository/release/'
         }
     }
 }
@@ -149,6 +158,8 @@ dependencies {
 
         compileOnly "net.fabricmc:sponge-mixin:0.17.3+mixin.0.8.7"
         compileOnly "io.github.llamalad7:mixinextras-fabric:0.5.4"
+    } else if (quilt) {
+        mod "org.quiltmc:quilt-loader:${project.quilt_loader}"
     } else {
         mod "net.fabricmc:fabric-loader:${project.loader_version}"
     }
@@ -168,11 +179,13 @@ private List<String> getLoaders() {
         return new Gson().fromJson((String) project.merge, JsonArray.class).asList() \
                          .collect { e -> e.getAsString() }
     else if (ext.fabric)
-        return ["fabric"];
+        return ["fabric"]
     else if (ext.neoforge)
-        return ["neoforge"];
+        return ["neoforge"]
     else if (ext.sponge)
-        return ["sponge"];
+        return ["sponge"]
+    else if (ext.quilt)
+        return ["quilt"]
     else
         return [];
 }
@@ -294,14 +307,15 @@ processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "minecraft_version_range", ('minecraft_version_range' in project.properties ? project.minecraft_version_range : project.minecraft_version)
-    inputs.property "loader_version", project.loader_version
+    inputs.property "loader_version", project.fabric_loader
+    inputs.property "quilt_loader", project.quilt_loader
 
     if ('neo_version' in project.properties) {
         inputs.property "neo_version", project.neo_version
     }
 
     filteringCharset "UTF-8"
-    filesMatching(["fabric.mod.json", "META-INF/neoforge.mods.toml", "META-INF/sponge_plugins.json"]) {
+    filesMatching(["fabric.mod.json", "quilt.mod.json", "META-INF/neoforge.mods.toml", "META-INF/sponge_plugins.json"]) {
         expand inputs.properties
     }
 }
