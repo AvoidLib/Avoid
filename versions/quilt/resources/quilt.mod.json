@@ -15,7 +15,7 @@
       "icon": "assets/avoidlib/icon.png"
     },
     "entrypoints": {
-      "init": "pl.olafcio.avoid.A4Quilt"
+      "init": "pl.olafcio.avoid.A4Fabric"
     },
     "access_widener": "avoidlib.accesswidener",
     "depends": [
