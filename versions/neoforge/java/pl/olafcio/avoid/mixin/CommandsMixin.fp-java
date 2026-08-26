@@ -1,0 +1,43 @@
+import com.mojang.brigadier.context.CommandContext;
+import java.lang.reflect.Field;
+
+{
+    var ictx = (ICommandContext<CommandSourceStack>) ctx;
+
+    // == replacement == //
+
+    Field F_arguments;
+
+    try {
+        F_arguments = CommandContext.class.getDeclaredField("arguments");
+        F_arguments.setAccessible(true);
+    } catch (NoSuchFieldException e) {
+        throw new RuntimeException("AvoidLib failed to reflectively retrieve CommandContext#arguments", e);
+    }
+}
+
+{
+    var argsraw = ictx.avoid$arguments();
+
+    // == replacement == //
+
+    Map<String, ParsedArgument<CommandSourceStack, ?>> argsraw;
+
+    try {
+        argsraw = (Map<String, ParsedArgument<CommandSourceStack, ?>>) F_arguments.get(ctx);
+    } catch (IllegalAccessException e) {
+        throw new RuntimeException("AvoidLib failed to reflectively get CommandContext#arguments", e);
+    }
+}
+
+{
+    ictx.avoid$arguments(rekeyed);
+
+    // == replacement == //
+
+    try {
+        F_arguments.set(ctx, rekeyed);
+    } catch (IllegalAccessException ex) {
+        throw new RuntimeException("AvoidLib failed to reflectively set CommandContext#arguments", ex);
+    }
+}
