@@ -177,6 +177,15 @@ private List<String> getLoaders() {
         return [];
 }
 
+private List<String> getPublicLoaders() {
+    var loaders = getLoaders()
+
+    if ("fabric" in loaders)
+        loaders.add("quilt")
+
+    return loaders
+}
+
 private File getMergeJAR() {
     var loaders = getLoaders()
     return rootProject.file("build/libs/avoidlib+${String.join("+", loaders)}-${project.minecraft_version}-${project.version}.jar")
@@ -363,7 +372,7 @@ publishMods {
     changelog = Files.readString(rootProject.file("CHANGELOG").toPath())
     type = STABLE
 
-    var loaders = getLoaders()
+    var loaders = getPublicLoaders()
     for (String loader : loaders)
         modLoaders.add(loader)
 
