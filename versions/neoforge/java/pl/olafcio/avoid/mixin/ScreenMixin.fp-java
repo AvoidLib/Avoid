@@ -1,0 +1,89 @@
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.MouseButtonInfo;
+import net.minecraft.network.chat.Component;
+import net.minecraft.client.gui.components.AbstractSelectionList;
+
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Shadow;
+
+import pl.olafcio.avoid.mods.loader.AvoidModLoader;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.lang.reflect.Field;
+
+{
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(II)V")
+
+    //== replacement ==//
+
+    @Shadow
+    @Final
+    private List<GuiEventListener> children;
+
+    @Shadow
+    @Final
+    private List<Renderable> renderables;
+
+    @Inject(at = @At("HEAD"), method = "renderWithTooltipAndSubtitles")
+    public void renderWithTooltipAndSubtitles(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci) {
+        if (this.getClass().getName().equalsIgnoreCase("net.neoforged.neoforge.client.gui.LoadingErrorScreen")) {
+            for (var el : children) {
+                if (el.getClass().getName().equalsIgnoreCase("net.neoforged.neoforge.client.gui.LoadingErrorScreen$LoadingEntryList")) {
+                    List<?> nest;
+
+                    try {
+                        var field = AbstractSelectionList.class.getDeclaredField("children");
+
+                        field.setAccessible(true);
+
+                        nest = (List<?>) field.get(el);
+                    } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
+                        throw new RuntimeException("AvoidLib failed to analyze loading error screen", e);
+                    }
+
+                    var clone = new ArrayList<>(nest);
+
+                    for (var err : clone) {
+                        try {
+                            returning:
+                            {
+                                Field msgf = err.getClass().getDeclaredField("message");
+                                msgf.setAccessible(true);
+
+                                var msg = ((Component) msgf.get(err)).getString();
+                                if (msg.startsWith("File mods/") && msg.endsWith("is not a valid mod file")) {
+                                    var mods = AvoidModLoader.getLoadedAddons();
+                                    for (var mod : mods) {
+                                        if (msg.contains("mods/" + AvoidModLoader.getLoadedAddonFile(mod).getFileName().toString())) {
+                                            nest.remove(err);
+                                            break returning;
+                                        }
+                                    }
+                                }
+
+                                return;
+                            }
+                        } catch (NoSuchFieldException | IllegalAccessException e) {
+                            throw new RuntimeException("AvoidLib failed to analyze loading errors", e);
+                        }
+                    }
+                }
+            }
+
+            for (var btn : this.renderables) {
+                if (((AbstractWidget) btn).getMessage().getString().toLowerCase().startsWith("proceed")) {
+                    ((AbstractWidget) btn).onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
+                }
+            }
+        }
+    }
+
+    //== back ==//
+
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(II)V")
+}
