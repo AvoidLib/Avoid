@@ -212,7 +212,7 @@ if (contains("merge")) {
     var mergeJAR = getMergeJAR()
 
     tasks.build.doLast {
-        final var resol = (String prefix = '') -> rootProject.file("build/libs/avoidlib+" + prefix + "${project.minecraft_version}-${project.version}.jar")
+        final var resol = {String prefix = '' -> rootProject.file("build/libs/avoidlib+" + prefix + "${project.minecraft_version}-${project.version}.jar")}
         final var paths = [
                 "fabric":   resol(),
                 "neoforge": resol("neoforge"),
