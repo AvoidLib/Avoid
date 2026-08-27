@@ -10,29 +10,16 @@
 **🔌 Supported ModLoaders:**
 - Fabric
 - NeoForge
+- Sponge
 
 **🪵 Changelog:**
-- [Server Player] Set Food Level Event
-- [Server Player] Set Saturation Level Event
-- [Server Entity] Set Health Event
-- [Event Interfaces] EntityEvent
-- [Event Interfaces] PlayerEvent
-- [Client Entity] Mark events with EntityEvent
-- [Effect Creation API] Native effect class
-- [Entity API] Effect methods
-- Effects#get([Identification] id)
-- [Server Entity] Effect Add Event
-- [Server Entity] Effect Update Event
-- [Server Entity] Effect Remove Event
-- [ModLoader] Resource utilities
-- 'build.gradle' cleanup
-- Fix item component value type search in obfuscated environments
-- Fix fluids loading on server
-- Fix server early init
-- Fix entity renderers loading on server
-- Fix fogs loading on server
-- Don't crash when a class fails to load in a mod
-- Fix server loading issues
+- Merging Fabric & NeoForge builds
+- Add links to metadata
+- Fix commands on NeoForge
+- MinecraftVersion namespace
+- Add links to metadata
+- Hide some public natives
+- Hiding loading errors screen if should suppress on NeoForge
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>

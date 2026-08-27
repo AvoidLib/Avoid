@@ -79,12 +79,12 @@ minecraft_version_list=["26.2"]
 loader_version=0.19.3
 fabric_version=0.154.0+26.2
 
-# 26.3-snapshot-9
+# 26.3-snapshot-10
 ; 26.2
 ! 26.3
-minecraft_version=26.3-snapshot-9
-minecraft_version_range=26.3-alpha.9
-minecraft_version_list=["26.3-snapshot-9"]
+minecraft_version=26.3-snapshot-10
+minecraft_version_range=26.3-alpha.10
+minecraft_version_list=["26.3-snapshot-10"]
 loader_version=0.19.3
 fabric_version=0.156.1+26.3
 release=1
