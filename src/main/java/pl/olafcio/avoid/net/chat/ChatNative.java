@@ -8,7 +8,7 @@ import pl.olafcio.avoid.net.chat.converter.COToNative;
 
 @Native
 @ApiStatus.Internal
-public final class ChatNative {
+final class ChatNative {
     @ApiStatus.Internal
     private ChatNative() {}
 
