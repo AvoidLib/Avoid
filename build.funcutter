@@ -2,15 +2,27 @@
 /// LOADERS ///
 ///////////////
 
+$ forge
+: {@name}
+! fml
+! fml-{@name}_compat
+! unsafe_mixin
+forge=1
+forge_version={}
+forge_major={}
+release=1
+
 $ neoforge
 : {@name}
-! neoforge-{@name}_compat
+! fml
+! fml-{@name}_compat
 neoforge=1
-merge=["fabric", "neoforge"]
 neo_version={}
+merge=["fabric", "neoforge"]
 
 $ sponge
 : {@name}
+! unsafe_mixin
 sponge=1
 release=1
 
@@ -46,6 +58,7 @@ java_version=21
 
 # 26.1
 <- neoforge (26.1.0.19-beta)
+<- forge    (62.0.9) (62)
 <- sponge
 minecraft_version=26.1
 minecraft_version_range=~26.1
@@ -58,6 +71,7 @@ omit_mappings=1
 # 26.2
 : 26.1
 <- neoforge (26.2.0.8-beta)
+<- forge    (65.1.0) (65)
 <- sponge
 minecraft_version=26.2
 minecraft_version_range=26.2

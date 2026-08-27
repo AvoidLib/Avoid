@@ -1,0 +1,10 @@
+import net.minecraftforge.common.ForgeHooks
+import net.minecraftforge.fluids.FluidType
+
+{
+    public abstract sealed class AvoidFluid extends FlowingFluid {
+    public abstract sealed class AvoidFluid extends FlowingFluid {
+        public FluidType getFluidType() {
+            return ForgeHooks.getVanillaFluidType(net.minecraft.world.level.material.Fluids.WATER);
+        }
+}

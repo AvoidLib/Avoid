@@ -31,9 +31,9 @@ import java.lang.reflect.Field;
 
     @Inject(at = @At("HEAD"), method = "renderWithTooltipAndSubtitles")
     public void renderWithTooltipAndSubtitles(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci) {
-        if (this.getClass().getName().equalsIgnoreCase("net.neoforged.neoforge.client.gui.LoadingErrorScreen")) {
+        if (this.getClass().getName().endsWith(".client.gui.LoadingErrorScreen")) {
             for (var el : children) {
-                if (el.getClass().getName().equalsIgnoreCase("net.neoforged.neoforge.client.gui.LoadingErrorScreen$LoadingEntryList")) {
+                if (el.getClass().getName().endsWith(".client.gui.LoadingErrorScreen$LoadingEntryList")) {
                     List<?> nest;
 
                     try {

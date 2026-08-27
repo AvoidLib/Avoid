@@ -2,11 +2,6 @@ import com.mojang.brigadier.context.CommandContext;
 import java.lang.reflect.Field;
 
 {
-    @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;setConsumer(Lcom/mojang/brigadier/ResultConsumer;)V"), method = "<init>")
-    @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;setConsumer(Lcom/mojang/brigadier/ResultConsumer;)V", unsafe = true), method = "<init>")
-}
-
-{
     var ictx = (ICommandContext<CommandSourceStack>) ctx;
 
     // == replacement == //
