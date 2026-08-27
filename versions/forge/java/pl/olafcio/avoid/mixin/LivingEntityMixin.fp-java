@@ -1,0 +1,19 @@
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"), method = "baseTick")
+    @Unique
+}
+
+{
+    public boolean baseTick__isEyeInFluid(LivingEntity instance, TagKey tagKey, Operation<Boolean> original) {
+    private boolean baseTick__isEyeInFluid(LivingEntity instance, TagKey tagKey, Operation<Boolean> original) {
+}
+
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z", ordinal = 0), method = "baseTick")
+    @Unique
+}
+
+{
+    public boolean baseTick__isBubbleColumn(BlockState instance, Block block, Operation<Boolean> original) {
+    private boolean baseTick__isBubbleColumn(BlockState instance, Block block, Operation<Boolean> original) {
+}

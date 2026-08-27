@@ -1,0 +1,40 @@
+import java.util.function.BiPredicate;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+
+import pl.olafcio.avoid.net.fluid.FluidsNative;
+import pl.olafcio.avoid.net.fluid.properties._swimmable;
+
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.common.extensions.IForgeEntity;
+
+import static net.minecraft.world.level.material.FlowingFluid.FALLING;
+
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"), method = "updateSwimming")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/extensions/IForgeEntity;isInFluidType(Ljava/util/function/BiPredicate;)Z"), method = "isInWaterOrSwimmable")
+
+    public boolean isInWaterOrSwimmable__inSwimmable(IForgeEntity entity, BiPredicate<FluidType, Double> predicate, Operation<Boolean> original) {
+        for (var entry : FluidsNative.classes.entrySet()) {
+            if (((IForgeEntity) this).isInFluidType((ft, d) -> {
+                System.out.println("FT:" + ft);
+                return false;
+            }, false)) {
+                if (entry.getKey().isAnnotationPresent(_swimmable.class)) {
+                    //noinspection resource
+                    return true;
+                }
+            }
+        }
+
+        return original.call(entity, predicate);
+    }
+
+    @Unique
+}
+
+{
+    public boolean updateSwimming__is__fluidTags_water(FluidState instance, TagKey<net.minecraft.world.level.material.Fluid> tagKey, Operation<Boolean> original) {
+    private boolean updateSwimming__is__fluidTags_water(FluidState instance, TagKey<net.minecraft.world.level.material.Fluid> tagKey, Operation<Boolean> original) {
+}

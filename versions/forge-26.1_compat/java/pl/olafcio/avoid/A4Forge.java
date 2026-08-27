@@ -10,6 +10,9 @@ import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import pl.olafcio.avoid.mixininterface.IEntity;
+import pl.olafcio.avoid.net.fluid.FluidsNative;
+import pl.olafcio.avoid.mixininterface.IEntityFluidInteraction;
+import pl.olafcio.avoid.net.fluid.properties._unbreatheable;
 
 @Mod("avoidlib")
 public final class A4Forge {
@@ -48,11 +51,21 @@ public final class A4Forge {
     public void onLivingBreathe(LivingBreatheEvent event) {
         if (event.canBreathe()) {
             var ent = event.getEntity();
-            if (((IEntity) ent).avoidlib$currentFluidUnbreathable() && ent.isUnderWater()) {
-                event.setCanBreathe(false);
 
-                if (event.canRefillAir()) {
-                    event.setCanRefillAir(false);
+            for (var fluid : FluidsNative.instances.keySet()) {
+                if (fluid.getClass().isAnnotationPresent(_unbreatheable.class)) {
+                    if (((IEntityFluidInteraction) ent.fluidInteraction).avoid$isEyeInFluid(fluid)) {
+                        event.setCanBreathe(false);
+
+                        if (event.canRefillAir()) {
+                            event.setCanRefillAir(false);
+                        }
+
+                        // The ignoreColumn effect isn't available on Forge
+                        //
+                        // (well, it would require reimplementing vanilla.
+                        //  which is stupid.)
+                    }
                 }
             }
         }
