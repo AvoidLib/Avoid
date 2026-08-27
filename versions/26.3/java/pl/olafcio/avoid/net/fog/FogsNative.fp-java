@@ -1,0 +1,12 @@
+import net.minecraft.util.ARGB;
+import org.joml.Vector3fc;
+
+{
+    public int getBaseColor(ClientLevel clientLevel, Camera camera, int i, float f) {
+    public Vector3fc getBaseColor(ClientLevel clientLevel, Camera camera, int i, float f) {
+}
+
+{
+    return fog.baseColor(WorldNative.make(clientLevel), EntityNative.convertFrom(camera.entity()), i, f);
+    return ARGB.vector3fFromRGB24(fog.baseColor(WorldNative.make(clientLevel), EntityNative.convertFrom(camera.entity()), i, f));
+}
