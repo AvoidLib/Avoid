@@ -368,7 +368,7 @@ publishing {
 }
 
 publishMods {
-    file = "omit_mappings" !in project.getProperties() ? remapJar.archiveFile : jar.archiveFile
+    file = ("merge" in project.getProperties() ? getMergeJAR() : ("omit_mappings" !in project.getProperties() ? remapJar.archiveFile : jar.archiveFile))
     changelog = Files.readString(rootProject.file("CHANGELOG").toPath())
     type = STABLE
 
