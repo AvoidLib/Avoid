@@ -3,6 +3,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonArray
 
 import groovy.json.JsonOutput
+import me.modmuss50.mpp.platforms.modrinth.ModrinthEnvironment
 
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -26,7 +27,7 @@ buildscript {
 
     dependencies {
         classpath 'net.fabricmc:fabric-loom:1.17-SNAPSHOT'
-        classpath 'me.modmuss50:mod-publish-plugin:2.0.0'
+        classpath 'me.modmuss50:mod-publish-plugin:2.2.0'
         classpath 'com.gradleup.shadow:shadow-gradle-plugin:9.6.1'
     }
 }
@@ -380,6 +381,7 @@ publishMods {
         displayName = "Avoid v${project.version} [${minecraft_version}]"
         accessToken = providers.environmentVariable("MODRINTH_API_KEY")
         projectId = "LitgU0gE"
+        environment = ModrinthEnvironment.CLIENT_OR_SERVER_PREFERS_BOTH
 
         if ("minecraft_version_list" !in project.getProperties())
             minecraftVersions.add(minecraft_version)
