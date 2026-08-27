@@ -1,0 +1,14 @@
+{
+    import pl.olafcio.avoid.mixin.accessors.IMushroomCow$Variant;
+    // import pl.olafcio.avoid.mixin.accessors.IMushroomCow$Variant;
+}
+
+{
+    REVERSE.put(BY_ID.get(((IMushroomCow$Variant) (Object) member).avoid$id()), member);
+    REVERSE.put(BY_ID.get(member.ordinal()), member);
+}
+
+{
+    return MushroomCowVariant.BY_ID.get(((IMushroomCow$Variant) (Object) value).avoid$id());
+    return MushroomCowVariant.BY_ID.get(value.ordinal());
+}

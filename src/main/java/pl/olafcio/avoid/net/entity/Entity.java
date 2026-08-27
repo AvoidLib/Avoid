@@ -665,6 +665,7 @@ public abstract class Entity {
      */
     @ClientUnsafe
     public void damage(float amount, Damage damage) {
+        //at:damage
         if (isClient())
             underlyingEntity.hurtClient(new DamageSource(
                     AvoidLibClient.mc.player.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
@@ -677,14 +678,15 @@ public abstract class Entity {
             underlyingEntity.hurtServer(
                     (ServerLevel) underlyingEntity.level(),
                     new DamageSource(
-                            AvoidInternal.server.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
-                                                                 .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
+                            AvoidInternal.getServer().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                                                                      .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
                             damage.directEntity() == null ? null : EntityNative.convert(damage.directEntity()),
                             damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity()),
                             damage.damageSourcePosition() == null ? null : Vect3Native.convertFrom(damage.damageSourcePosition())
                     ),
                     amount
             );
+        //at:dmgend
     }
 
     private static final Damage DEFAULT_DAMAGE

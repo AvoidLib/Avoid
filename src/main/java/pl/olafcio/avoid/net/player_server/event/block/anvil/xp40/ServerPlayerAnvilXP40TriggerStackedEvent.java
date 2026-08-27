@@ -6,6 +6,9 @@ import pl.olafcio.avoid.mods.event_group.PlayerEvent;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
 import pl.olafcio.avoid.net.player.Player;
 
+/**
+ * <b>NOTE:</b> Not implemented on Paper (currently).
+ */
 @ApiStatus.Experimental
 public final class ServerPlayerAnvilXP40TriggerStackedEvent extends Cancellable implements PlayerEvent {
     private final ItemStack item;

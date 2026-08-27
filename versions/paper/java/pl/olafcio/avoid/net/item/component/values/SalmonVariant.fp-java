@@ -1,0 +1,14 @@
+{
+    import pl.olafcio.avoid.mixin.accessors.ISalmon$Variant;
+    // import pl.olafcio.avoid.mixin.accessors.ISalmon$Variant;
+}
+
+{
+    REVERSE.put(BY_ID.get(((ISalmon$Variant) (Object) member).avoid$id()), member);
+    REVERSE.put(BY_ID.get(member.ordinal()), member);
+}
+
+{
+    return SalmonVariant.BY_ID.get(((ISalmon$Variant) (Object) value).avoid$id());
+    return SalmonVariant.BY_ID.get(value.ordinal());
+}

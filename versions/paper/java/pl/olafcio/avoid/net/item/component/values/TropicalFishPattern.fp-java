@@ -1,0 +1,9 @@
+{
+    import pl.olafcio.avoid.mixin.accessors.ITropicalFish$Base;
+    // import pl.olafcio.avoid.mixin.accessors.ITropicalFish$Base;
+}
+
+{
+    this.index = ((ITropicalFish$Base) (Object) base).avoid$id() | subID << 8;
+    this.index = base.ordinal() | subID << 8;
+}

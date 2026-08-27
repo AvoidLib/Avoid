@@ -5,6 +5,9 @@ import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.world.World;
 
+/**
+ * <b>Note:</b> Not implemented on Paper (currently).
+ */
 @ApiStatus.Experimental
 public final class ServerPlayerEnchantingTableBookshelfAmountEvent extends Cancellable {
     private int amount;

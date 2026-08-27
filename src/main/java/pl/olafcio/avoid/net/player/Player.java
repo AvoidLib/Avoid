@@ -336,6 +336,8 @@ public class Player extends Entity implements Executor {
      * Resets the player's tablist order.
      * <br/><br/>
      * This method only works on the server.
+     * <br/><br/>
+     * <b>NOTE:</b> Not implemented on Paper (currently).
      */
     @ServerOnly
     public void resetTablistOrder() {

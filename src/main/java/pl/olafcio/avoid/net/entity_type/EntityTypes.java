@@ -42,6 +42,9 @@ public final class EntityTypes {
     @ApiStatus.Internal
     private EntityTypes() {}
 
+    /**
+     * <b>NOTE:</b> Creating entity types on Paper may not work.
+     */
     public static <T extends pl.olafcio.avoid.net.entity.Entity> void register(Identification entityTypeID, Class<? extends T> klass, EntityConstructor<T> constructor) {
         var id = IdentificationNative.convert(entityTypeID);
 
