@@ -180,8 +180,8 @@ private List<String> getLoaders() {
 private List<String> getPublicLoaders() {
     var loaders = getLoaders()
 
-    if ("fabric" in loaders)
-        loaders.add("quilt")
+//    if ("fabric" in loaders)
+//        loaders.add("quilt")
 
     return loaders
 }
