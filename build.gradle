@@ -401,7 +401,7 @@ publishing {
 }
 
 publishMods {
-    file = ("merge" in project.getProperties() ? getMergeJAR() : (("omit_mappings" !in project.getProperties() && "dev_mappings" !in project.getProperties()) ? remapJar.archiveFile : jar.archiveFile))
+    file = ("shadow" in project.getProperties() ? shadowJar.archiveFile : ("merge" in project.getProperties() ? getMergeJAR() : (("omit_mappings" !in project.getProperties() && "dev_mappings" !in project.getProperties()) ? remapJar.archiveFile : jar.archiveFile)))
     changelog = Files.readString(rootProject.file("CHANGELOG").toPath())
     type = ("alpha" in project.getProperties() ? ALPHA : STABLE)
 
