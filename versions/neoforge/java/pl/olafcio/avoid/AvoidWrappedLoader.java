@@ -18,6 +18,7 @@ public final class AvoidWrappedLoader {
     public static boolean isFabric() { return false; }
     public static boolean isNeoForge() { return true; }
     public static boolean isSponge() { return false; }
+    public static boolean isPaper() { return false; }
 
     public static Path getGameDir() {
         return FMLLoader.getCurrent().getGameDir();

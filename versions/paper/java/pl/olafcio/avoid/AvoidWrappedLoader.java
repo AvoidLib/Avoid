@@ -16,6 +16,7 @@ public final class AvoidWrappedLoader {
     public static boolean isFabric() { return false; }
     public static boolean isNeoForge() { return false; }
     public static boolean isSponge() { return false; }
+    public static boolean isPaper() { return true; }
 
     public static Path getGameDir() {
         return Bukkit.getPluginsFolder().toPath().getParent();
