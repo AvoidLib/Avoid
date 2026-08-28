@@ -19,6 +19,7 @@ $ paper
 paper=1
 release=1
 dev_mappings=1
+alpha=1
 
 ////////////////
 /// VERSIONS ///
