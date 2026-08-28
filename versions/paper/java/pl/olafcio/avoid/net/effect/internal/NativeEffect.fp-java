@@ -1,0 +1,17 @@
+{
+    new DamageSource(
+    damage.damageSourcePosition() == null ? new DamageSource(
+}
+
+{
+    damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity()),
+    damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity())
+}
+
+{
+    damage.damageSourcePosition() == null ? null : Vect3Native.convertFrom(damage.damageSourcePosition())
+    ) : new DamageSource(
+            AvoidInternal.getServer().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                                                      .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
+            Vect3Native.convertFrom(damage.damageSourcePosition())
+}

@@ -30,12 +30,12 @@ import pl.olafcio.avoid.Reflect;
                 (ServerLevel) underlyingEntity.level(),
                 damage.damageSourcePosition() == null ? new DamageSource(
                         AvoidInternal.getServer().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
-                                .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
+                                                 .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
                         damage.directEntity() == null ? null : EntityNative.convert(damage.directEntity()),
                         damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity())
                 ) : new DamageSource(
-                        AvoidLibClient.mc.player.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
-                                .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
+                        AvoidInternal.getServer().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                                                 .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
                         Vect3Native.convertFrom(damage.damageSourcePosition())
                 ),
                 amount
