@@ -48,6 +48,7 @@ ext {
     it.neoforge = neoforge
     it.sponge = sponge
     it.fabric = fabric
+    it.paper = paper
 }
 
 if (sponge) {
@@ -206,6 +207,8 @@ private List<String> getLoaders() {
         return ["neoforge"];
     else if (ext.sponge)
         return ["sponge"];
+    else if (ext.paper)
+        return ["paper"];
     else
         return [];
 }
