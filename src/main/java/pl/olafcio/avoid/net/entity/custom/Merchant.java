@@ -464,6 +464,11 @@ public abstract class Merchant extends pl.olafcio.avoid.net.entity.type.Merchant
     }
 
     @Override
+    public final boolean isLocal() {
+        return super.isLocal();
+    }
+
+    @Override
     public final void push(pl.olafcio.avoid.net.entity.Entity entity) {
         super.push(entity);
     }

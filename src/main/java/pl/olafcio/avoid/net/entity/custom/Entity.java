@@ -463,6 +463,11 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     }
 
     @Override
+    public final boolean isLocal() {
+        return super.isLocal();
+    }
+
+    @Override
     public final void push(pl.olafcio.avoid.net.entity.Entity entity) {
         super.push(entity);
     }

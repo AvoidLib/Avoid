@@ -23,6 +23,7 @@ import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.internal.VResourceKey;
+import pl.olafcio.avoid.mixinclass.EntityUtil;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
@@ -619,6 +620,16 @@ public abstract class Entity {
      */
     public boolean isServer() {
         return !underlyingEntity.level().isClientSide();
+    }
+
+    /**
+     * Returns whether the entity object is client-sided and represents the local client player.
+     */
+    public boolean isLocal() {
+        if (!isClient())
+            return false;
+
+        return EntityUtil.isLocal(underlyingEntity);
     }
 
     /**
