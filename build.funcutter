@@ -16,6 +16,8 @@ release=1
 
 $ paper
 : {@name}
+! mixinless
+! mixinless-{@name}
 paper=1
 release=1
 dev_mappings=OBFUSCATED
