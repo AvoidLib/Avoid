@@ -168,7 +168,7 @@ public class CommandSystem {
             Executor executor;
 
             var source = ctx.getSource();
-            if (source instanceof Player player) {
+            if (source.getSender() instanceof Player player) {
                 executor = PlayerNative.convertFrom(Util.convert(player));
             } else {
                 executor = new MyUnknownExecutor(source);
