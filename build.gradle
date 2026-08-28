@@ -81,7 +81,7 @@ if ("dev_mappings" in project.getProperties()) {
     loom {
         noIntermediateMappings()
         useIntermediateMappings.set(false)
-        productionNamespace.set(MappingsNamespace.NAMED.toString())
+        productionNamespace.set(project.getProperties().dev_mappings.equals("OBFUSCATED") ? MappingsNamespace.NAMED.toString() : MappingsNamespace.OFFICIAL.toString())
         remapConfigurations.clear()
         intermediaryMinecraftProvider = null
         // Wow it works but why the fuck did i have to do those undocumented things
@@ -404,7 +404,7 @@ publishing {
 }
 
 publishMods {
-    file = ("shadow" in project.getProperties() ? shadowJar.archiveFile : ("merge" in project.getProperties() ? getMergeJAR() : (("omit_mappings" !in project.getProperties() && "dev_mappings" !in project.getProperties()) ? remapJar.archiveFile : jar.archiveFile)))
+    file = ("shadow" in project.getProperties() ? shadowJar.archiveFile : ("merge" in project.getProperties() ? getMergeJAR() : (("omit_mappings" !in project.getProperties()) ? remapJar.archiveFile : jar.archiveFile)))
     changelog = Files.readString(rootProject.file("CHANGELOG").toPath())
     type = ("alpha" in project.getProperties() ? ALPHA : STABLE)
 
