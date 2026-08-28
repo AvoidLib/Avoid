@@ -1,14 +1,12 @@
 package pl.olafcio.avoid.mods.loader;
 
 import com.google.common.base.CaseFormat;
-import com.google.common.base.Function;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import pl.olafcio.avoid.*;
 import pl.olafcio.avoid.mods.AvoidMod;
@@ -17,21 +15,21 @@ import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.ModEnvironment;
 import pl.olafcio.avoid.mods.annotation_processor.*;
 import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.mods.events_loader.ModLoadedEvent;
+import pl.olafcio.avoid.mods.events_loader.ModEnablingEvent;
+import pl.olafcio.avoid.mods.events_loader.error.ModErrorEvent;
+import pl.olafcio.avoid.mods.events_loader.error.ModFatalEvent;
+import pl.olafcio.avoid.mods.events_loader.scanning.ModClassAnalyzingEvent;
+import pl.olafcio.avoid.mods.events_loader.scanning.ModClassCollectingEvent;
 import pl.olafcio.avoid.mods.loader.mod.*;
 import pl.olafcio.avoid.mods.loader.mod_method.LXKeyHandler;
 import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.Blocks;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.keyboard.bind.Category;
-import pl.olafcio.avoid.net.keyboard.bind.Keybinds;
-import pl.olafcio.avoid.net.keyboard.event.ClientKeyEvent;
-import pl.olafcio.avoid.net.keyboard.event.ClientKeyPressEvent;
-import pl.olafcio.avoid.net.keyboard.event.ClientKeyReleaseEvent;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
@@ -129,15 +127,15 @@ public final class ModLoad
                 return;
             }
 
-            scanAllClasses(jar, classLoader, id, skipClasses);
-
             //noinspection unchecked
             var klass = (Class<? extends AvoidMod>)
-                    klassUnc;
+                        klassUnc;
 
             var meta = new AvoidModMeta(id, version, versionSystem,
-                    name, author, description,
-                    env, klass);
+                                        name, author, description,
+                                        env, klass);
+
+            scanAllClasses(jar, classLoader, id, skipClasses, meta);
 
             ///TIP: Access mod metadata by using {@link AvoidModLoader#getLoadedAddons()}
             AvoidModLoader.metadatas.put(id, meta);
@@ -155,26 +153,42 @@ public final class ModLoad
             AvoidModLoader.instances.put(meta, instance);
             instance.onLoad();
 
-            Avoid.INSTANCE.Schedule(instance::onEnable);
+            Avoid.INSTANCE.Schedule(() -> {
+                EventManager.fire(new ModEnablingEvent(meta));
+                instance.onEnable();
+            });
 
             avoidMods.add(meta.name() + " " + meta.version());
+
+            EventManager.fire(new ModLoadedEvent(meta));
         } catch (IOException e) {
             Avoid.LOGGER.error("Failed to read mod .jar file [IOException]: {}", mod.toAbsolutePath(), e);
+            EventManager.fire(new ModErrorEvent(mod, e));
         } catch (NullPointerException e) {
             Avoid.LOGGER.error("Failed to read mod .jar avoid-manifest [NullPE]: {}", mod.toAbsolutePath(), e);
+            EventManager.fire(new ModErrorEvent(mod, e));
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
                  InstantiationException | IllegalAccessException e) {
             Avoid.LOGGER.error("Failed to enable Avoid mod: {}", mod.toAbsolutePath(), e);
+            EventManager.fire(new ModErrorEvent(mod, e));
         } catch (NoSuchFieldException e) {
+            try {
+                EventManager.fire(new ModFatalEvent(mod, e));
+            } catch (Exception ex) {
+                Avoid.LOGGER.warn("Failed to fire ModFatalEvent for '%s': ".formatted(mod.toAbsolutePath()), ex);
+            }
+
             throw new RuntimeException("Failed to set Avoid mod metadata: %s".formatted(mod.toAbsolutePath()), e);
         }
     }
 
-    private void scanAllClasses(JarFile jar, URLClassLoader classLoader, String id, List<String> skipClasses)
+    private void scanAllClasses(JarFile jar, URLClassLoader classLoader, String id, List<String> skipClasses, AvoidModMeta meta)
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
         var classes = new HashMap<Class<?>, AtomicBoolean>();
         var entries = jar.entries();
+
+        EventManager.fire(new ModClassCollectingEvent(meta));
 
         do {
             var el = entries.nextElement();
@@ -205,6 +219,8 @@ public final class ModLoad
                 classes.put(klass, usedAutoID);
             }
         } while (entries.hasMoreElements());
+
+        EventManager.fire(new ModClassAnalyzingEvent(meta));
 
         for (var entry : classes.entrySet()) {
             var klass = entry.getKey();

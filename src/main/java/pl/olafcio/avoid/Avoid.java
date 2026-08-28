@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.mods.events_loader.AllModsEnabledEvent;
 import pl.olafcio.avoid.mods.events_loader.AllModsLoadedEvent;
+import pl.olafcio.avoid.mods.events_loader.AllModsLoadingEvent;
 import pl.olafcio.avoid.mods.loader.ModLoad;
 import pl.olafcio.avoid.net.block.values.NoteBlockInstrument;
 import pl.olafcio.avoid_lateinit.LateInitializer;
@@ -52,6 +53,8 @@ public class Avoid extends LateInitializer {
     }
 
     public void onEarlyInit() {
+        EventManager.fire(new AllModsLoadingEvent());
+
         try {
             var loadedMods = AvoidWrappedLoader.getModsPaths();
             var avoidMods = new ArrayList<String>();
