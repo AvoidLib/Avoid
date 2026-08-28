@@ -18,8 +18,8 @@ List<String> getLoaders() {
 List<String> getPublicLoaders() {
     var loaders = getLoaders()
 
-//    if ("fabric" in loaders)
-//        loaders.add("quilt")
+    if ("paper" in loaders)
+        loaders.add("purpur")
 
     return loaders
 }
