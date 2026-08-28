@@ -62,7 +62,7 @@ public class Avoid extends LateInitializer {
 
         try (var mods = Files.list(modsDir)) {
             mods.forEach(mod -> {
-                if (mod.toString().endsWith(".jar") && !loadedMods.contains(mod)) {
+                if ((mod.toString().endsWith(".jar") || mod.toString().endsWith(".avoid.zip")) && !loadedMods.contains(mod)) {
                     new ModLoad(mod, loadedMods, avoidMods).load();
                 }
             });
