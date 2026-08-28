@@ -19,10 +19,18 @@ import java.util.Map;
 public final class Usage {
     private final Map<String, Object> args;
     private final @Nullable Executor executor;
+    private final String input;
 
     public Usage(Map<String, Object> args, @Nullable Executor executor) {
         this.args = args;
         this.executor = executor;
+        this.input = "";
+    }
+
+    public Usage(Map<String, Object> args, @Nullable Executor executor, String input) {
+        this.args = args;
+        this.executor = executor;
+        this.input = input;
     }
 
     @UnknownNullability
@@ -33,6 +41,10 @@ public final class Usage {
     @SuppressWarnings({"unchecked", "unused"})
     public <T> T getArgument(String name, Class<T> type) {
         return (T) args.get(name);
+    }
+
+    public String getInput() {
+        return input;
     }
 
     @Override
