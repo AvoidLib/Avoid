@@ -261,7 +261,7 @@ publishMods {
 tasks.register("release") {
     dependsOn build
 
-    if (contains("merge") || contains("release"))
+    if (contains("merge") || contains("publish"))
         dependsOn("publishMods")
 }
 

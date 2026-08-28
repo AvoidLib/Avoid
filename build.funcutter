@@ -13,14 +13,14 @@ neo_version={}
 $ sponge
 : {@name}
 sponge=1
-release=1
+publish=1
 
 $ paper
 : {@name}
 ! mixinless
 ! mixinless-{@name}
 paper=1
-release=1
+publish=1
 dev_mappings=OBFUSCATED
 alpha=1
 
@@ -35,7 +35,7 @@ fabric_version=0.135.0+1.21.10
 java_version=21
 include_jspecify=1
 include_permapi=0.5.0
-release=1
+publish=1
 
 # 1.21.8
 ! 1.21.10
@@ -45,7 +45,7 @@ fabric_version=0.136.1+1.21.8
 java_version=21
 include_jspecify=1
 include_permapi=0.4.0
-release=1
+publish=1
 
 # 1.21.11
 <- sponge
@@ -84,4 +84,4 @@ minecraft_version_range=26.3-alpha.10
 minecraft_version_list=["26.3-snapshot-10"]
 loader_version=0.19.3
 fabric_version=0.156.1+26.3
-release=1
+publish=1
