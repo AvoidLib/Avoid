@@ -271,7 +271,7 @@ tasks.register("publishGitHub") {
     dependsOn build
 
     doLast {
-        try (var client = GitHubClient(providers.environmentVariable("GITHUB_TOKEN").get())) {
+        try (var client = createGitHubClient(providers.environmentVariable("GITHUB_TOKEN").get())) {
             var hashproc = new ProcessBuilder().command("git", "log", "origin/main", "-1", "--format=%H")
                                                         .start()
 
