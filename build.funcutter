@@ -5,6 +5,7 @@
 $ neoforge
 : {@name}
 ! neoforge-{@name}_compat
+! neoforge-post
 neoforge=1
 merge=["fabric", "neoforge"]
 neo_version={}

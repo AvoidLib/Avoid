@@ -11,6 +11,7 @@ import pl.olafcio.avoid.net.block.values.NoteBlockInstrument;
 import pl.olafcio.avoid_lateinit.LateInitializer;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -25,6 +26,20 @@ public class Avoid extends LateInitializer {
     @ApiStatus.Internal
     public static final Avoid INSTANCE
                   = new Avoid();
+
+    private static final String VERSION;
+
+    public static String getVersion() {
+        return VERSION;
+    }
+
+    static {
+        try (var stream = Avoid.class.getResourceAsStream("/.version")) {
+            VERSION = new String(stream.readAllBytes(), StandardCharsets.UTF_8).trim();
+        } catch (IOException e) {
+            throw new RuntimeException("AvoidLib failed to get its version", e);
+        }
+    }
 
     private Avoid() {}
 

@@ -176,7 +176,7 @@ processResources {
     }
 
     filteringCharset "UTF-8"
-    filesMatching(["fabric.mod.json", "paper-plugin.yml", "META-INF/neoforge.mods.toml", "META-INF/sponge_plugins.json"]) {
+    filesMatching([".version", "fabric.mod.json", "paper-plugin.yml", "META-INF/neoforge.mods.toml", "META-INF/sponge_plugins.json"]) {
         expand inputs.properties
     }
 }
