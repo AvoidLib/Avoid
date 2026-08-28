@@ -1,7 +1,5 @@
 package pl.olafcio.avoid.net.chat.component.event;
 
-import net.minecraft.core.Holder;
-import net.minecraft.server.dialog.Dialog;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
@@ -77,7 +75,7 @@ public sealed interface Click {
         }
     }
 
-    record OpenDialog(Holder<Dialog> dialog) implements Click {
+    record OpenDialog(Identification dialog) implements Click {
         @Override
         public Type type() {
             return Type.OPEN_DIALOG;
