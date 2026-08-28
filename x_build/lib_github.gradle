@@ -39,6 +39,10 @@ final class GitHubClient implements AutoCloseable {
                                .build(), HttpResponse.BodyHandlers.discarding())
     }
 
+    public void createTag(object) {
+        createTag(object['tag'], object['hash'], object['message'])
+    }
+
     public String createRelease(String tag, String branch, String name, String message, boolean make_latest = true) {
         var data1 = JsonOutput.toJson([
                 "tag_name": tag,
@@ -63,6 +67,10 @@ final class GitHubClient implements AutoCloseable {
         return resp['id']
     }
 
+    public String createRelease(object) {
+        return createRelease((String)object['tag'], (String)object['branch'], (String)object['name'], (String)object['message'], "make_latest" in object ? (boolean)object['make_latest'] : true)
+    }
+
     public void uploadRelease(String name, Path file, String release) {
         client.send(HttpRequest.newBuilder()
                .method("POST", HttpRequest.BodyPublishers.ofFile(file))
@@ -74,6 +82,10 @@ final class GitHubClient implements AutoCloseable {
                .build(), HttpResponse.BodyHandlers.discarding())
     }
 
+    public void uploadRelease(object) {
+        uploadRelease((String)object['name'], (Path)object['file'], (String)object['release'])
+    }
+
     @Override
     void close() throws Exception {
         this.client.close()
@@ -81,5 +93,5 @@ final class GitHubClient implements AutoCloseable {
 }
 
 ext {
-    set("GitHubClient", GitHubClient)
+    createGitHubClient = { token -> new GitHubClient(token) }
 }
