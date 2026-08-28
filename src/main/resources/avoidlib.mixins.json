@@ -48,6 +48,7 @@
     "KeyboardMixin",
     "LayerDefinitionsMixin",
     "LiquidBlockRendererMixin",
+    "LoadingOverlayMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
     "OptionsMixin",
