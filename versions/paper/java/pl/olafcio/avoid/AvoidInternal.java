@@ -16,7 +16,16 @@ public final class AvoidInternal {
 
     @ApiStatus.Internal
     public static MinecraftServer getServer() {
-        return (MinecraftServer) Bukkit.getConsoleSender();
+        try {
+            var craftServer = Class.forName("org.bukkit.craftbukkit.CraftServer").cast(Bukkit.getServer());
+            var consoleField = craftServer.getClass().getDeclaredField("console");
+
+            consoleField.setAccessible(true);
+
+            return (MinecraftServer) consoleField.get(craftServer);
+        } catch (NoSuchFieldException | ClassNotFoundException | IllegalAccessException e) {
+            throw new RuntimeException("AvoidLib failed to retrieve MinecraftServer object", e);
+        }
     }
 
     public static HolderLookup.Provider registry
