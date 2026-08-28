@@ -21,6 +21,7 @@
     "LlamaMixin",
     "MapColorMixin",
     "MinecraftServerMixin",
+    "MobMixin",
     "PlayerListMixin",
     "PlayerMixin",
     "ServerGamePacketListenerImplMixin",
