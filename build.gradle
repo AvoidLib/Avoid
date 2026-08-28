@@ -1,22 +1,10 @@
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.google.gson.JsonArray
-
-import groovy.json.JsonOutput
 import me.modmuss50.mpp.platforms.modrinth.ModrinthEnvironment
 import net.fabricmc.loom.api.mappings.layered.MappingsNamespace
 
-import java.lang.invoke.MethodHandles
-import java.lang.invoke.VarHandle;
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
-import java.util.function.Consumer
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
-import java.util.zip.ZipOutputStream;
 
 buildscript {
     repositories {
@@ -71,17 +59,14 @@ base {
     archivesName = project.archives_base_name
 }
 
-if (!paper) {
-    loom {
+loom {
+    if (!paper)
         accessWidenerPath = rootProject.file("src/main/resources/avoidlib.accesswidener")
-    }
-}
 
-if ("dev_mappings" in project.getProperties()) {
-    loom {
+    if ("dev_mappings" in project.getProperties()) {
         noIntermediateMappings()
         useIntermediateMappings.set(false)
-        productionNamespace.set(project.getProperties().dev_mappings.equals("OBFUSCATED") ? MappingsNamespace.NAMED.toString() : MappingsNamespace.OFFICIAL.toString())
+        productionNamespace.set(project.getProperties().dev_mappings == "OBFUSCATED" ? MappingsNamespace.NAMED.toString() : MappingsNamespace.OFFICIAL.toString())
         remapConfigurations.clear()
         intermediaryMinecraftProvider = null
         // Wow it works but why the fuck did i have to do those undocumented things
@@ -96,7 +81,7 @@ repositories {
 
     if (sponge) {
         maven {
-            name 'spongepopwered'
+            name 'spongepowered'
             url 'https://repo.spongepowered.org/repository/maven-public/'
         }
     }
@@ -117,33 +102,7 @@ if (sponge) {
     }
 }
 
-private void replaceEnvAnnot(String onlyIn, String dist) {
-    tasks.compileJava.doFirst {
-        var src = rootProject.file("src/main/java").toPath()
-
-        var walk = new Consumer<java.nio.file.Path>[2]
-
-        walk[0] = new Consumer<java.nio.file.Path>() {
-            @Override
-            void accept(java.nio.file.Path path) {
-                try (var files = Files.list(path)) {
-                    files.forEach(sub -> {
-                        if (Files.isDirectory(sub)) {
-                            walk[0].accept(sub)
-                        } else if (sub.getFileName().toString().endsWith(".java")) {
-                            Files.writeString(sub, Files.readString(sub, StandardCharsets.UTF_8) \
-                                                        .replace("net.fabricmc.api.Environment", onlyIn) \
-                                                        .replace("net.fabricmc.api.EnvType", dist) \
-                                                        .replace("@Environment(EnvType.", "@${onlyIn.split("\\.").toList().getLast()}(${dist.split("\\.").toList().getLast()}."), StandardCharsets.UTF_8)
-                        }
-                    })
-                }
-            }
-        }
-
-        walk[0].accept(src)
-    }
-}
+apply from: project.file('x_build/env_processing.gradle')
 
 if (neoforge) {
     replaceEnvAnnot("net.neoforged.api.distmarker.OnlyIn", "net.neoforged.api.distmarker.Dist")
@@ -197,140 +156,11 @@ dependencies {
     }
 }
 
-private List<String> getLoaders() {
-    if (contains("merge"))
-        return new Gson().fromJson((String) project.merge, JsonArray.class).asList() \
-                         .collect { e -> e.getAsString() }
-    else if (ext.fabric)
-        return ["fabric"];
-    else if (ext.neoforge)
-        return ["neoforge"];
-    else if (ext.sponge)
-        return ["sponge"];
-    else if (ext.paper)
-        return ["paper"];
-    else
-        return [];
-}
-
-private List<String> getPublicLoaders() {
-    var loaders = getLoaders()
-
-//    if ("fabric" in loaders)
-//        loaders.add("quilt")
-
-    return loaders
-}
-
-private File getMergeJAR() {
-    var loaders = getLoaders()
-    return rootProject.file("build/libs/avoidlib+${String.join("+", loaders)}-${project.minecraft_version}-${project.version}.jar")
-}
+apply from: project.file('x_build/loaders.gradle')
+apply from: project.file('x_build/merger.gradle')
 
 if (contains("merge")) {
-    var mergeJAR = getMergeJAR()
-
-    tasks.build.doLast {
-        var paths = [
-                "fabric":   rootProject.file("build/libs/avoidlib+" +     "${project.minecraft_version}-${project.version}.jar"),
-                "neoforge": rootProject.file("build/libs/avoidlib+neoforge-${project.minecraft_version}-${project.version}.jar")
-        ]
-
-        final var loaders = getLoaders()
-        final var merge = loaders.collect { e -> paths[e] }
-
-        var bos = new ByteArrayOutputStream()
-        var zos = new ZipOutputStream(bos)
-
-        zos.putNextEntry(new ZipEntry("assets/avoid_bundler/icon.png"))
-
-        try (var zip = new ZipFile(merge[0])) {
-            byte[] data
-
-            try (var src = zip.getInputStream(zip.getEntry("assets/avoidlib/icon.png"))) {
-                data = src.readAllBytes()
-            }
-
-            zos.write(data)
-        }
-
-        int i = 0
-        for (var file : merge) {
-            zos.putNextEntry(new ZipEntry("jars/avoid-" + loaders[i++] + ".jar"))
-
-            var data = Files.readAllBytes(file.toPath())
-            zos.write(data)
-        }
-
-        if ("fabric" in loaders) {
-            zos.putNextEntry(new ZipEntry("fabric.mod.json"))
-            zos.write(JsonOutput.toJson([
-                "schemaVersion": 1,
-                "id": "avoid_bundler",
-                "version": "${version}",
-                "name": "Avoid",
-                "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
-                "authors": [ "Olafcio" ],
-                "contact": Map.of(),
-                "license": "Apache-2.0",
-                "icon": "assets/avoid-bundler/icon.png",
-                "environment": "*",
-                "entrypoints": [
-                    "client": [],
-                    "main": []
-                ],
-                "mixins": [],
-                "depends": Map.of(),
-                "jars": [
-                    [
-                        "file": "jars/avoid-fabric.jar"
-                    ]
-                ]
-            ]).getBytes(StandardCharsets.UTF_8))
-        }
-
-        if ("neoforge" in loaders) {
-            zos.putNextEntry(new ZipEntry("META-INF/neoforge.mods.toml"))
-            zos.write("""
-license="Apache License 2.0"
-issueTrackerURL="https://github.com/AvoidLib/Avoid/issues"
-
-[[mods]]
-modId="avoid_bundler"
-version="${version}"
-displayName="Avoid"
-logoFile="assets/avoid_bundler/icon.png"
-authors="Olafcio"
-description='''
-Yet another library for everything Minecraft. Kinda like Bukkit.
-'''
-
-""".trim().getBytes(StandardCharsets.UTF_8))
-
-            zos.putNextEntry(new ZipEntry("META-INF/jarjar/metadata.json"))
-            zos.write(JsonOutput.toJson([
-                "jars": [
-                    [
-                        "identifier": [
-                            "group": "pl.olafcio",
-                            "artifact": "avoid"
-                        ],
-                        "version": [
-                            "range": "[${project.version},)",
-                            "artifactVersion": "${project.version}"
-                        ],
-                        "path": "jars/avoid-neoforge.jar",
-                        "isObfuscated": false
-                    ]
-                ]
-            ]).getBytes(StandardCharsets.UTF_8))
-        }
-
-        zos.close()
-
-        Files.write(mergeJAR.toPath(), bos.toByteArray())
-        bos.close()
-    }
+    scheduleMerging()
 }
 
 processResources {
@@ -435,70 +265,42 @@ tasks.register("release") {
         dependsOn("publishMods")
 }
 
+apply from: project.file('x_build/lib_github.gradle')
+
 tasks.register("publishGitHub") {
     dependsOn build
 
     doLast {
-        try (var client = HttpClient.newHttpClient()) {
+        try (var client = GitHubClient(providers.environmentVariable("GITHUB_TOKEN").get())) {
             var hashproc = new ProcessBuilder().command("git", "log", "origin/main", "-1", "--format=%H")
                                                         .start()
 
             hashproc.waitFor()
 
-            var data2 = JsonOutput.toJson([
-                "tag": "v${project.version}",
-                "object": new String(hashproc.in.readAllBytes(), StandardCharsets.UTF_8).substring(0, 40),
-                "type": "commit",
-                "message": Files.readString(rootProject.file("CHANGELOG").toPath(), StandardCharsets.UTF_8)
-            ])
-
-            client.send(HttpRequest.newBuilder()
-                                   .method("POST", HttpRequest.BodyPublishers.ofString(data2, StandardCharsets.UTF_8))
-                                   .uri(URI.create("https://api.github.com/repos/AvoidLib/Avoid/git/tags"))
-                                   .header("Accept", "application/vnd.github+json")
-                                   .header("Authorization", "Bearer " + providers.environmentVariable("GITHUB_TOKEN").get())
-                                   .header("X-GitHub-Api-Version", "2026-03-10")
-                                   .build(), HttpResponse.BodyHandlers.discarding())
-
-            var data1 = JsonOutput.toJson([
-                "tag_name": "v${project.version}",
-                "target_commitish": "main",
-                "name": "v${project.version}",
-                "body": Files.readString(rootProject.file("CHANGELOG").toPath(), StandardCharsets.UTF_8),
-                "make_latest": "true"
-            ])
-
-            var respraw = client.send(HttpRequest.newBuilder()
-                                        .method("POST", HttpRequest.BodyPublishers.ofString(data1, StandardCharsets.UTF_8))
-                                        .uri(URI.create("https://api.github.com/repos/AvoidLib/Avoid/releases"))
-                                        .header("Accept", "application/vnd.github+json")
-                                        .header("Authorization", "Bearer " + providers.environmentVariable("GITHUB_TOKEN").get())
-                                        .header("X-GitHub-Api-Version", "2026-03-10")
-                                        .build(), HttpResponse.BodyHandlers.ofByteArray()).body()
-
-            var resp = new Gson().fromJson(
-                    new String(respraw, StandardCharsets.UTF_8),
-                    JsonObject.class
+            client.createTag(
+                    tag: "v${project.version}",
+                    hash: new String(hashproc.in.readAllBytes(), StandardCharsets.UTF_8).substring(0, 40),
+                    message: Files.readString(rootProject.file("CHANGELOG").toPath(), StandardCharsets.UTF_8)
             )
 
-            client.send(HttpRequest.newBuilder()
-                                   .method("POST", HttpRequest.BodyPublishers.ofFile((contains("omit_mappings") ? jar : remapJar).archiveFile.get().asFile.toPath()))
-                                   .uri(URI.create("https://uploads.github.com/repos/AvoidLib/Avoid/releases/${resp['id']}/assets?name=AvoidLib%2Bfabric-1.21.11.jar"))
-                                   .header("Accept", "application/vnd.github+json")
-                                   .header("Authorization", "Bearer " + providers.environmentVariable("GITHUB_TOKEN").get())
-                                   .header("X-GitHub-Api-Version", "2026-03-10")
-                                   .header("Content-Type", "application/octet-stram")
-                                   .build(), HttpResponse.BodyHandlers.discarding())
+            var id = client.createRelease(
+                    tag: "v${project.version}",
+                    branch: "main",
+                    name: "v${project.version}",
+                    message: Files.readString(rootProject.file("CHANGELOG").toPath(), StandardCharsets.UTF_8)
+            )
 
-            client.send(HttpRequest.newBuilder()
-                                   .method("POST", HttpRequest.BodyPublishers.ofFile((contains("omit_mappings") ? sourcesJar : remapSourcesJar).archiveFile.get().asFile.toPath()))
-                                   .uri(URI.create("https://uploads.github.com/repos/AvoidLib/Avoid/releases/${resp['id']}/assets?name=AvoidLib%2Bfabric-1.21.11-sources.jar"))
-                                   .header("Accept", "application/vnd.github+json")
-                                   .header("Authorization", "Bearer " + providers.environmentVariable("GITHUB_TOKEN").get())
-                                   .header("X-GitHub-Api-Version", "2026-03-10")
-                                   .header("Content-Type", "application/octet-stram")
-                                   .build(), HttpResponse.BodyHandlers.discarding())
+            client.uploadRelease(
+                    name: "AvoidLib%2Bfabric-1.21.11.jar",
+                    file: (contains("omit_mappings") ? jar : remapJar).archiveFile.get().asFile.toPath(),
+                    release: id
+            )
 
+            client.uploadRelease(
+                    name: "AvoidLib%2Bfabric-1.21.11-sources.jar",
+                    file: (contains("omit_mappings") ? sourcesJar : remapSourcesJar).archiveFile.get().asFile.toPath(),
+                    release: id
+            )
         }
     }
 }

@@ -1,0 +1,30 @@
+import groovy.json.JsonSlurper
+
+List<String> getLoaders() {
+    if (contains("merge"))
+        return new JsonSlurper().parseText((String) project.merge)
+    else if (ext.fabric)
+        return ["fabric"];
+    else if (ext.neoforge)
+        return ["neoforge"];
+    else if (ext.sponge)
+        return ["sponge"];
+    else if (ext.paper)
+        return ["paper"];
+    else
+        return [];
+}
+
+List<String> getPublicLoaders() {
+    var loaders = getLoaders()
+
+//    if ("fabric" in loaders)
+//        loaders.add("quilt")
+
+    return loaders
+}
+
+ext {
+    getLoaders = this.&getLoaders
+    getPublicLoaders = this.&getPublicLoaders
+}
