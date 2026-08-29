@@ -248,6 +248,20 @@ publishMods {
         projectId = "LitgU0gE"
         environment = ModrinthEnvironment.CLIENT_OR_SERVER_PREFERS_BOTH
 
+        if (minecraft_version.startsWith("1.") && minecraft_version != "1.21.11") {
+            requires {
+                id = "4jxrXtNS"
+                slug = "backported-attr"
+            }
+        }
+
+        if (contains("include_permapi")) {
+            optional {
+                id = "lzVo0Dll"
+                slug = "fabric-permissions-api"
+            }
+        }
+
         if ("minecraft_version_list" !in project.getProperties())
             minecraftVersions.add(minecraft_version)
         else
