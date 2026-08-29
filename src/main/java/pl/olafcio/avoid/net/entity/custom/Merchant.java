@@ -6,16 +6,20 @@ import org.jetbrains.annotations.UnknownNullability;
 import org.jspecify.annotations.NonNull;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.effect.instance.EffectInstance;
 import pl.olafcio.avoid.net.entity.custom_internal.IAvoidEntity;
 import pl.olafcio.avoid.net.entity.values.Damage;
 import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity_type.EntityType;
+import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 import pl.olafcio.avoid.net.world.vect3.Vect3;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -591,5 +595,45 @@ public abstract class Merchant extends pl.olafcio.avoid.net.entity.type.Merchant
     @Override
     public final boolean showProgressBar() {
         return super.showProgressBar();
+    }
+
+    @Override
+    public final void startSleeping(BlockPos blockPos) {
+        super.startSleeping(blockPos);
+    }
+
+    @Override
+    public final void stopSleeping() {
+        super.stopSleeping();
+    }
+
+    @Override
+    public final HashMap<Identification, EffectInstance> getEffectMap() {
+        return super.getEffectMap();
+    }
+
+    @Override
+    public final List<EffectInstance> getEffects() {
+        return super.getEffects();
+    }
+
+    @Override
+    public final boolean hasEffect(Identification effectID) {
+        return super.hasEffect(effectID);
+    }
+
+    @Override
+    public final boolean addEffect(EffectInstance effectInstance) {
+        return super.addEffect(effectInstance);
+    }
+
+    @Override
+    public final boolean removeEffect(Identification effectID) {
+        return super.removeEffect(effectID);
+    }
+
+    @Override
+    public final boolean clearEffects() {
+        return super.clearEffects();
     }
 }
