@@ -43,11 +43,11 @@ import java.util.UUID;
 @NeverRemoval
 public class Player extends Entity implements Executor {
     private final PlayerProfile profile;
-    private final ServerGamePacketListenerImpl connection;
+    private final Object connection;
 
     public Player(
             int id, EntityType type, IVect3 pos, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
-            PlayerProfile profile, @Nullable ServerGamePacketListenerImpl connection,
+            PlayerProfile profile, @Nullable Object connection,
             net.minecraft.world.entity.player.Player player
     ) {
         super(id, type, pos, velocity, uuid, uuidString, name, player);
@@ -74,7 +74,7 @@ public class Player extends Entity implements Executor {
     @NeverRemoval
     public void sendMessage(BaseComponent<?> component) {
         if (underlyingEntity instanceof ServerPlayer)
-            connection.send(new ClientboundSystemChatPacket(COToNative.from(component), false));
+            ((ServerGamePacketListenerImpl) connection).send(new ClientboundSystemChatPacket(COToNative.from(component), false));
 
         else if (
                 AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
@@ -106,7 +106,7 @@ public class Player extends Entity implements Executor {
         var cast = __castEnv(ServerPlayer.class, "[Player#updateHealthAndFood] This method can only be ran on server players!");
         var food = cast.getFoodData();
 
-        connection.send(new ClientboundSetHealthPacket(getHealth(), food.getFoodLevel(), food.getSaturationLevel()));
+        ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetHealthPacket(getHealth(), food.getFoodLevel(), food.getSaturationLevel()));
     }
 
     /**
