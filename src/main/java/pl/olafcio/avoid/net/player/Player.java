@@ -418,4 +418,17 @@ public class Player extends Entity implements Executor {
                 ? null
                 : BlockPosNative.convert(pos);
     }
+
+    private final Inventory inventory
+            = new Inventory(__cast(net.minecraft.world.entity.player.Player.class).getInventory());
+
+    /**
+     * Returns the player's inventory.
+     * <br/><br/>
+     * <b>NOTE:</b> The current client implementation is non-interactive.
+     */
+    @ClientUnsafe
+    public Inventory getInventory() {
+        return inventory;
+    }
 }
