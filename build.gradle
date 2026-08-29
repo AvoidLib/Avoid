@@ -298,7 +298,7 @@ tasks.register("publishGitHub") {
 
             client.uploadRelease(
                     name: "AvoidLib%2Bfabric-1.21.11-sources.jar",
-                    file: (contains("omit_mappings") ? sourcesJar : remapSourcesJar).archiveFile.get().asFile.toPath(),
+                    file: project.file("build/devlibs/avoidlib-${version}-sources.jar").toPath(),
                     release: id
             )
         }
