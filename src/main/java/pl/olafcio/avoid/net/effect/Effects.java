@@ -84,7 +84,7 @@ public final class Effects {
 
         @Override
         public void onMobHurt(ServerLevel serverLevel, LivingEntity livingEntity, int i, DamageSource damageSource, float tickDelta) {
-            effect.onMobHurt(
+            effect.onDamage(
                     WorldNative.make(serverLevel),
                     EntityNative.convertFromTry(livingEntity),
                     i+1,

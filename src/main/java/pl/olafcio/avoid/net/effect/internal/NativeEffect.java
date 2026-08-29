@@ -63,7 +63,7 @@ public final class NativeEffect extends Effect {
     }
 
     @Override
-    public void onMobHurt(World world, Entity entity, int amplifier, Damage damage, float tickDelta) {
+    public void onDamage(World world, Entity entity, int amplifier, Damage damage, float tickDelta) {
         var mcWorld = WorldNative.convert(world);
         if (!(mcWorld instanceof ServerLevel))
             throw new ImproperEnvironment("[NativeEffect#onMobHurt] A non-server world argument has been provided");

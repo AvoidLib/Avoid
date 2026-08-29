@@ -44,5 +44,14 @@ public abstract class Effect {
     /**
      * Invoked when an entity with the effect is hurt.
      */
+    public void onDamage(World world, Entity entity, int amplifier, Damage damage, float tickDelta) {
+        this.onMobHurt(world, entity, amplifier, damage, tickDelta);
+    }
+
+    /**
+     * Invoked when an entity with the effect is hurt.
+     * @deprecated Use {@link #onDamage} instead.
+     */
+    @Deprecated(since = "v1.19", forRemoval = true)
     public void onMobHurt(World world, Entity entity, int amplifier, Damage damage, float tickDelta) {}
 }
