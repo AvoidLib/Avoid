@@ -538,6 +538,16 @@ public abstract class Merchant extends pl.olafcio.avoid.net.entity.type.Merchant
     }
 
     @Override
+    public final void setInvulnerable(boolean value) {
+        super.setInvulnerable(value);
+    }
+
+    @Override
+    public final void setInvisible(boolean value) {
+        super.setInvisible(value);
+    }
+
+    @Override
     public final double getDefaultGravity() {
         return super.getDefaultGravity();
     }

@@ -767,6 +767,23 @@ public abstract class Entity {
     }
 
     /**
+     * Sets whether the entity is invulnerable.
+     */
+    public void setInvulnerable(boolean value) {
+        underlyingEntity.setInvulnerable(value);
+    }
+
+    /**
+     * Sets whether the entity is invisible.
+     * <br/><br/>
+     * <b>NOTE:</b> Granting the invisibility effect is a safer option.<br/>
+     * &emsp;&emsp;&ensp;&ensp;&nbsp;This may cause issues I'm not aware of.
+     */
+    public void setInvisible(boolean value) {
+        underlyingEntity.setInvisible(value);
+    }
+
+    /**
      * Makes the entity sleep at the bed at the specified position.
      */
     public void startSleeping(BlockPos blockPos) {
