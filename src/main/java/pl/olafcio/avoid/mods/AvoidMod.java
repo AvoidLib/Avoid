@@ -22,8 +22,10 @@ public abstract non-sealed class AvoidMod extends AvoidModBase {
 
     /**
      * Invoked when:
-     * - if the mod is running inside a client: the client stops;
-     * - if the mod is running inside a server: the server stops.
+     * <ul>
+     *   <li>if the mod is running inside a client: the client stops;</li>
+     *   <li>if the mod is running inside a server: the server stops.</li>
+     * </ul>
      */
     @NeverRemoval
     public void onDisable() {}
