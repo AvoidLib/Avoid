@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -23,11 +24,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import pl.olafcio.avoid.AvoidInternal;
 import pl.olafcio.avoid.mixininterface.IEntity;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.effect.instance.EffectInstanceNative;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity.event.ClientEntityCreateEvent;
+import pl.olafcio.avoid.net.entity.values.DamageNative;
 import pl.olafcio.avoid.net.entity_server.event.*;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.item.stack.ItemStackNative;
@@ -172,5 +175,31 @@ public abstract class LivingEntityMixin extends Entity {
             if (event.isCancelled())
                 cir.setReturnValue(null);
         }
+    }
+
+    @Unique
+    private boolean cancel = false;
+
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;copy()Lnet/minecraft/world/item/ItemStack;", shift = At.Shift.AFTER), method = "checkTotemDeathProtection", cancellable = true)
+    public void checkTotemDeathProtection__beginResurrection(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
+        if (cancel) {
+            cancel = false;
+            cir.setReturnValue(false);
+        }
+    }
+
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;copy()Lnet/minecraft/world/item/ItemStack;"), method = "checkTotemDeathProtection")
+    public ItemStack checkTotemDeathProtection__beginResurrection(ItemStack instance, Operation<ItemStack> original, DamageSource damageSource) {
+        var event = new ServerEntityResurrectEvent(
+                EntityNative.convertFromTry(this),
+                DamageNative.convert(damageSource, AvoidInternal.getServer().registryAccess())
+        );
+
+        EventManager.fire(event);
+
+        if (event.isCancelled())
+            cancel = true;
+
+        return instance;
     }
 }

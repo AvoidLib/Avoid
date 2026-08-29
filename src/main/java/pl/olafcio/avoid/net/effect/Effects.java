@@ -17,6 +17,7 @@ import pl.olafcio.avoid.net.effect.properties._color;
 import pl.olafcio.avoid.net.effect.values.CategoryNative;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity.values.Damage;
+import pl.olafcio.avoid.net.entity.values.DamageNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.world.WorldNative;
@@ -82,14 +83,14 @@ public final class Effects {
         }
 
         @Override
-        public void onMobHurt(ServerLevel serverLevel, LivingEntity livingEntity, int i, DamageSource damageSource, float f) {
-            effect.onMobHurt(WorldNative.make(serverLevel), EntityNative.convertFromTry(livingEntity), i+1, new Damage(
-                    IdentificationNative.convertFrom(AvoidInternal.getServer().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
-                                                                                               .getKey(damageSource.type())),
-                    EntityNative.convertFromTry(damageSource.getEntity()),
-                    EntityNative.convertFromTry(damageSource.getDirectEntity()),
-                    Vect3Native.convert(damageSource.getSourcePosition())
-            ), f);
+        public void onMobHurt(ServerLevel serverLevel, LivingEntity livingEntity, int i, DamageSource damageSource, float tickDelta) {
+            effect.onMobHurt(
+                    WorldNative.make(serverLevel),
+                    EntityNative.convertFromTry(livingEntity),
+                    i+1,
+                    DamageNative.convert(damageSource, AvoidInternal.getServer().registryAccess()),
+                    tickDelta
+            );
         }
     }
 }
