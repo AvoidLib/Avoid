@@ -19,7 +19,8 @@ void scheduleMerging() {
     tasks.build.doLast {
         var paths = [
                 "fabric":   rootProject.file("build/libs/avoidlib+" +     "${project.minecraft_version}-${project.version}.jar"),
-                "neoforge": rootProject.file("build/libs/avoidlib+neoforge-${project.minecraft_version}-${project.version}.jar")
+                "neoforge": rootProject.file("build/libs/avoidlib+neoforge-${project.minecraft_version}-${project.version}.jar"),
+                "quilt":    rootProject.file("build/libs/avoidlib+quilt-${project.minecraft_version}-${project.version}.jar")
         ]
 
         final var loaders = getLoaders()
@@ -71,6 +72,35 @@ void scheduleMerging() {
                             [
                                     "file": "jars/avoid-fabric.jar"
                             ]
+                    ]
+            ]).getBytes(StandardCharsets.UTF_8))
+        }
+
+        if ("quilt" in loaders) {
+            zos.putNextEntry(new ZipEntry("quilt.mod.json"))
+            zos.write(JsonOutput.toJson([
+                    "schema_version": 1,
+                    "quilt_loader": [
+                        "group": "pl.olafcio.avoid",
+                        "id": "avoid_bundler",
+                        "version": "${version}",
+                        "metadata": [
+                            "name": "Avoid",
+                            "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
+                            "contributors": [
+                                "Olafcio": ""
+                            ],
+                            "contact": Map.of(),
+                            "icon": "assets/avoid-bundler/icon.png",
+                            "license": "Apache-2.0"
+                        ],
+                        "entrypoints": Map.of(),
+                        "depends": Map.of(),
+                        "jars": [
+                                [
+                                        "file": "jars/avoid-quilt.jar"
+                                ]
+                        ]
                     ]
             ]).getBytes(StandardCharsets.UTF_8))
         }
