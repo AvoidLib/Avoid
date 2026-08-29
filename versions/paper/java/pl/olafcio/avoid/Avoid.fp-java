@@ -1,0 +1,9 @@
+{
+    AvoidWrappedLoader.getModsPaths()
+    Set.<Path>of()
+}
+
+{
+    AvoidWrappedLoader.getGameDir()
+    Path.of(".")
+}

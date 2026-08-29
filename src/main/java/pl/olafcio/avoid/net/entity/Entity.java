@@ -23,6 +23,7 @@ import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.internal.VResourceKey;
+import pl.olafcio.avoid.mixinclass.EntityUtil;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
@@ -622,6 +623,16 @@ public abstract class Entity {
     }
 
     /**
+     * Returns whether the entity object is client-sided and represents the local client player.
+     */
+    public boolean isLocal() {
+        if (!isClient())
+            return false;
+
+        return EntityUtil.isLocal(underlyingEntity);
+    }
+
+    /**
      * Pushes the specified entity.
      */
     public void push(Entity entity) {
@@ -665,6 +676,7 @@ public abstract class Entity {
      */
     @ClientUnsafe
     public void damage(float amount, Damage damage) {
+        //at:damage
         if (isClient())
             underlyingEntity.hurtClient(new DamageSource(
                     AvoidLibClient.mc.player.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
@@ -677,14 +689,15 @@ public abstract class Entity {
             underlyingEntity.hurtServer(
                     (ServerLevel) underlyingEntity.level(),
                     new DamageSource(
-                            AvoidInternal.server.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
-                                                                 .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
+                            AvoidInternal.getServer().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                                                                      .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
                             damage.directEntity() == null ? null : EntityNative.convert(damage.directEntity()),
                             damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity()),
                             damage.damageSourcePosition() == null ? null : Vect3Native.convertFrom(damage.damageSourcePosition())
                     ),
                     amount
             );
+        //at:dmgend
     }
 
     private static final Damage DEFAULT_DAMAGE
@@ -751,6 +764,23 @@ public abstract class Entity {
      */
     public void setCanPickUpLoot(boolean value) {
         __cast(Mob.class).setCanPickUpLoot(value);
+    }
+
+    /**
+     * Sets whether the entity is invulnerable.
+     */
+    public void setInvulnerable(boolean value) {
+        underlyingEntity.setInvulnerable(value);
+    }
+
+    /**
+     * Sets whether the entity is invisible.
+     * <br/><br/>
+     * <b>NOTE:</b> Granting the invisibility effect is a safer option.<br/>
+     * &emsp;&emsp;&ensp;&ensp;&nbsp;This may cause issues I'm not aware of.
+     */
+    public void setInvisible(boolean value) {
+        underlyingEntity.setInvisible(value);
     }
 
     /**

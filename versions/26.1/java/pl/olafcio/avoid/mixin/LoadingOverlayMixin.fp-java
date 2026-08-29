@@ -1,0 +1,9 @@
+{
+    GuiGraphics
+    GuiGraphicsExtractor
+}
+
+{
+    "render"
+    "extractRenderState"
+}

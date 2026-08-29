@@ -1,0 +1,21 @@
+import org.bukkit.Bukkit;
+
+{
+    __castEnv(IServerPlayer.class, "[Player#setTablistOrder] This method can only be ran on server players!")
+    Bukkit.getPlayer(__castEnv(ServerPlayer.class, "[Player#setTablistOrder] This method can only be ran on server players!").getUUID())
+}
+
+{
+    .avoid$setTablistOrder(value);
+    .setPlayerListOrder(value);
+}
+
+{
+    __castEnv(IServerPlayer.class, "[Player#resetTablistOrder] This method can only be ran on server players!")
+    throw new RuntimeException("[Player#resetTablistOrder] Not implemented on Paper");
+}
+
+{
+    .avoid$setTablistOrder(null);
+    // .avoid$setTablistOrder(null);
+}

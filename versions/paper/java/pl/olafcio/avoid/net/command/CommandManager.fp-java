@@ -1,0 +1,4 @@
+{
+    private static void each(Consumer<Command> callback) {
+    public static void each(Consumer<Command> callback) {
+}

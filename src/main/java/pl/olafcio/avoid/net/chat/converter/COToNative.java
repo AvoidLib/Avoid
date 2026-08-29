@@ -93,13 +93,15 @@ public final class COToNative {
 
         if (src.font != null) dest = dest.withFont(new FontDescription.Resource(IdentificationNative.convert(src.font)));
 
+        if (src.click instanceof Click.OpenDialog)
+            throw new RuntimeException("Click.OpenDialog is not usable yet");
+
         if (src.click != null) dest = dest.withClickEvent(src.click instanceof Click.ChatCommand(String cmd) ? new ClickEvent.RunCommand(cmd) :
                                                           src.click instanceof Click.ChatSuggest(String cmd) ? new ClickEvent.SuggestCommand(cmd) :
                                                           src.click instanceof Click.Copy(String text)       ? new ClickEvent.CopyToClipboard(text) :
                                                           src.click instanceof Click.StartFile(String path)  ? new ClickEvent.OpenFile(path) :
                                                           src.click instanceof Click.StartURL(URI url)       ? new ClickEvent.OpenUrl(url) :
                                                           src.click instanceof Click.SwitchPage(int page)    ? new ClickEvent.ChangePage(page) :
-                                                          src.click instanceof Click.OpenDialog(Holder<Dialog> dialog) ? new ClickEvent.ShowDialog(dialog) :
                                                           src.click instanceof Click.Misc(Identification id, @Nullable NbtElement payload) ? new ClickEvent.Custom(IdentificationNative.convert(id), payload == null ? Optional.empty() : Optional.of(NbtNative.convert(payload))) :
                                                           null);
 

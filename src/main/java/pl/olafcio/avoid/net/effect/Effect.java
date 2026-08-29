@@ -2,6 +2,7 @@ package pl.olafcio.avoid.net.effect;
 
 import org.jetbrains.annotations.Range;
 import pl.olafcio.avoid.net.entity.Entity;
+import pl.olafcio.avoid.net.entity.values.Damage;
 import pl.olafcio.avoid.net.world.World;
 
 public abstract class Effect {
@@ -39,4 +40,18 @@ public abstract class Effect {
             Entity entity,
             @Range(from = 1, to = 256) int amplifier
     ) {}
+
+    /**
+     * Invoked when an entity with the effect is hurt.
+     */
+    public void onDamage(World world, Entity entity, int amplifier, Damage damage, float tickDelta) {
+        this.onMobHurt(world, entity, amplifier, damage, tickDelta);
+    }
+
+    /**
+     * Invoked when an entity with the effect is hurt.
+     * @deprecated Use {@link #onDamage} instead.
+     */
+    @Deprecated(since = "v1.19", forRemoval = true)
+    public void onMobHurt(World world, Entity entity, int amplifier, Damage damage, float tickDelta) {}
 }

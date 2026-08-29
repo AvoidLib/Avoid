@@ -28,7 +28,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @Native
 @ApiStatus.Internal
-public final class BlockNative {
+final class BlockNative {
     @ApiStatus.Internal
     private BlockNative() {}
 

@@ -1,0 +1,24 @@
+{
+    return this.graphics.scissorStack
+    return false; //this.graphics.scissorStack
+}
+
+{
+    this.graphics.scissorStack
+    //this.graphics.scissorStack
+}
+
+{
+    this.graphics.guiRenderState.submitText
+    }this.graphics.guiRenderState.submitText
+}
+
+{
+    this.graphics.guiRenderState.submit
+    }/*this.graphics.guiRenderState.submit
+}
+
+{
+    public void drawString(Font font, BaseComponent<?> component, int i, int j, int k) {
+    */public void drawString(Font font, BaseComponent<?> component, int i, int j, int k) {
+}

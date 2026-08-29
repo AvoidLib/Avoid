@@ -1,0 +1,9 @@
+{
+    target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIIIIII)V",
+    target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIIIIII)V",
+}
+
+{
+    import com.mojang.blaze3d.pipeline.RenderPipeline;
+    import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+}

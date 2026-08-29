@@ -5,6 +5,9 @@ import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.mods.event.UncancellableEventException;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
 
+/**
+ * <b>NOTE:</b> Not implemented on Paper (currently).
+ */
 @ApiStatus.Experimental
 public final class ServerPlayerAnvilFailEvent extends Cancellable {
     private final Reason reason;

@@ -1,0 +1,11 @@
+import pl.olafcio.avoid.Reflect;
+
+{
+    import pl.olafcio.avoid.mixin.accessors.IVillager;
+    // import pl.olafcio.avoid.mixin.accessors.IVillager;
+}
+
+{
+    ((IVillager) (Object) this).avoid$releaseAllPois();
+    Reflect.call(Villager.class, "releaseAllPois", this, new Class[]{}, new Object[]{});
+}

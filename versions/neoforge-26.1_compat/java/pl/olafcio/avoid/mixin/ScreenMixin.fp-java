@@ -1,0 +1,9 @@
+{
+    GuiGraphics
+    GuiGraphicsExtractor
+}
+
+{
+    @Inject(at = @At("HEAD"), method = "renderWithTooltipAndSubtitles")
+    @Inject(at = @At("HEAD"), method = "extractRenderStateWithTooltipAndSubtitles")
+}

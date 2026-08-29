@@ -1,0 +1,24 @@
+import java.lang.Math;
+
+{
+    this.stack.mulPose(quaternionfc);
+
+    //== replacement ==//
+
+    float qw = quaternionfc.w();
+    float qx = quaternionfc.x();
+    float qy = quaternionfc.y();
+    float qz = quaternionfc.z();
+
+    float n = 1.0f/(float)Math.sqrt(qx*qx+qy*qy+qz*qz+qw*qw);
+    qx *= n;
+    qy *= n;
+    qz *= n;
+    qw *= n;
+
+    this.stack.mulPose(new Matrix4f(
+            1.0f - 2.0f*qy*qy - 2.0f*qz*qz, 2.0f*qx*qy - 2.0f*qz*qw, 2.0f*qx*qz + 2.0f*qy*qw, 0.0f,
+            2.0f*qx*qy + 2.0f*qz*qw, 1.0f - 2.0f*qx*qx - 2.0f*qz*qz, 2.0f*qy*qz - 2.0f*qx*qw, 0.0f,
+            2.0f*qx*qz - 2.0f*qy*qw, 2.0f*qy*qz + 2.0f*qx*qw, 1.0f - 2.0f*qx*qx - 2.0f*qy*qy, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f));
+}

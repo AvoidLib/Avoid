@@ -1,5 +1,9 @@
 package pl.olafcio.avoid.net.nbt;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.*;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
@@ -40,6 +44,53 @@ public final class NbtNative {
 
             default ->
                 throw new RuntimeException("Unrecognized Avoid NBT element '" + element + "'");
+        };
+    }
+
+    public static Tag convertJSON(JsonElement element) {
+        return switch (element) {
+            case JsonObject cast -> {
+                var tag = new CompoundTag();
+                for (Map.Entry<String, JsonElement> entry : cast.entrySet())
+                    tag.put(entry.getKey(), convertJSON(entry.getValue()));
+
+                yield tag;
+            }
+
+            case JsonArray cast -> {
+                var tag = new ListTag();
+                for (JsonElement item : cast.asList())
+                    tag.add(convertJSON(item));
+
+                yield tag;
+            }
+
+            case JsonPrimitive cast -> {
+                if (cast.isNumber()) {
+                    var num = cast.getAsNumber();
+                    if (num instanceof Integer i)
+                        yield IntTag.valueOf(i);
+                    else if (num instanceof Float f)
+                        yield FloatTag.valueOf(f);
+                    else if (num instanceof Long l)
+                        yield LongTag.valueOf(l);
+                    else if (num instanceof Short s)
+                        yield ShortTag.valueOf(s);
+                    else if (num instanceof Double d)
+                        yield DoubleTag.valueOf(d);
+                    else if (num instanceof Byte b)
+                        yield ByteTag.valueOf(b);
+                } else if (cast.isString()) {
+                    yield StringTag.valueOf(cast.getAsString());
+                } else if (cast.isBoolean()) {
+                    yield ByteTag.valueOf(cast.getAsBoolean());
+                }
+
+                throw new RuntimeException("Unserializable JSON to NBT element '" + element + "'");
+            }
+
+            default ->
+                    throw new RuntimeException("Unserializable JSON to NBT element '" + element + "'");
         };
     }
 

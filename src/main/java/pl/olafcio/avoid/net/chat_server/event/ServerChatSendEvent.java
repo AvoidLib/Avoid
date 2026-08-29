@@ -10,6 +10,8 @@ import java.util.Objects;
 /**
  * Fired when the server sends a system message to a player.<br/>
  * This event won't be fired for player-sent messages if a mod like No Chat Reports isn't installed.
+ * <br/><br/>
+ * <b>NOTE:</b> Not implemented on Paper (currently).
  */
 @NeverRemoval
 public final class ServerChatSendEvent {

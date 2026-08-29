@@ -1,0 +1,97 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
+import java.nio.charset.StandardCharsets
+import java.nio.file.Path
+
+final class GitHubClient implements AutoCloseable {
+    private final HttpClient client
+    private final String token
+
+    public GitHubClient(token) {
+        if (token !instanceof String)
+            token = token.get()
+
+        if (!token.startsWith("Bearer "))
+            token = "Bearer " + token
+
+        this.client = HttpClient.newHttpClient()
+        this.token = token
+    }
+
+    public void createTag(String tag, String hash, String message) {
+        var data2 = JsonOutput.toJson([
+                "tag": tag,
+                "object": hash,
+                "type": "commit",
+                "message": message
+        ])
+
+        client.send(HttpRequest.newBuilder()
+                               .method("POST", HttpRequest.BodyPublishers.ofString(data2, StandardCharsets.UTF_8))
+                               .uri(URI.create("https://api.github.com/repos/AvoidLib/Avoid/git/tags"))
+                               .header("Accept", "application/vnd.github+json")
+                               .header("Authorization", this.token)
+                               .header("X-GitHub-Api-Version", "2026-03-10")
+                               .build(), HttpResponse.BodyHandlers.discarding())
+    }
+
+    public void createTag(object) {
+        createTag(object['tag'], object['hash'], object['message'])
+    }
+
+    public String createRelease(String tag, String branch, String name, String message, boolean make_latest = true) {
+        var data1 = JsonOutput.toJson([
+                "tag_name": tag,
+                "target_commitish": branch,
+                "name": name,
+                "body": message,
+                "make_latest": "${make_latest}"
+        ])
+
+        var respraw = client.send(HttpRequest.newBuilder()
+                                   .method("POST", HttpRequest.BodyPublishers.ofString(data1, StandardCharsets.UTF_8))
+                                   .uri(URI.create("https://api.github.com/repos/AvoidLib/Avoid/releases"))
+                                   .header("Accept", "application/vnd.github+json")
+                                   .header("Authorization", this.token)
+                                   .header("X-GitHub-Api-Version", "2026-03-10")
+                                   .build(), HttpResponse.BodyHandlers.ofByteArray()).body()
+
+        var resp = new JsonSlurper().parseText(
+                new String(respraw, StandardCharsets.UTF_8)
+        )
+
+        return resp['id']
+    }
+
+    public String createRelease(object) {
+        return createRelease((String)object['tag'], (String)object['branch'], (String)object['name'], (String)object['message'], "make_latest" in object ? (boolean)object['make_latest'] : true)
+    }
+
+    public void uploadRelease(String name, Path file, String release) {
+        client.send(HttpRequest.newBuilder()
+               .method("POST", HttpRequest.BodyPublishers.ofFile(file))
+               .uri(URI.create("https://uploads.github.com/repos/AvoidLib/Avoid/releases/${release}/assets?name=${name}"))
+               .header("Accept", "application/vnd.github+json")
+               .header("Authorization", this.token)
+               .header("X-GitHub-Api-Version", "2026-03-10")
+               .header("Content-Type", "application/octet-stram")
+               .build(), HttpResponse.BodyHandlers.discarding())
+    }
+
+    public void uploadRelease(object) {
+        uploadRelease((String)object['name'], (Path)object['file'], (String)object['release'])
+    }
+
+    @Override
+    void close() throws Exception {
+        this.client.close()
+    }
+}
+
+ext {
+    createGitHubClient = { token -> new GitHubClient(token) }
+}

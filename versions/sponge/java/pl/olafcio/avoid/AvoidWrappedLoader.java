@@ -18,14 +18,10 @@ public final class AvoidWrappedLoader {
     @ApiStatus.Internal
     private AvoidWrappedLoader() {}
 
-    /** Returns whether the wrapped loader is Fabric. (This changes during compile time for Avoid builds for other loaders) */
     public static boolean isFabric() { return false; }
-
-    /** Returns whether the wrapped loader is NeoForge. (This changes during compile time for Avoid builds for other loaders) */
     public static boolean isNeoForge() { return false; }
-
-    /** Returns whether the wrapped loader is Sponge. (This changes during compile time for Avoid builds for other loaders) */
     public static boolean isSponge() { return true; }
+    public static boolean isPaper() { return false; }
 
     /**
      * Returns the game directory.

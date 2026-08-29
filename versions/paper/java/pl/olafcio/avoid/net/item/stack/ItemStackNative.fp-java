@@ -1,0 +1,6 @@
+import net.minecraft.core.registries.BuiltInRegistries;
+
+{
+    return new ItemStack(ItemNative.convert(item.getItem()), item.getAmount(), map2);
+    return new ItemStack(BuiltInRegistries.ITEM.wrapAsHolder(ItemNative.convert(item.getItem())), item.getAmount(), map2.asPatch());
+}

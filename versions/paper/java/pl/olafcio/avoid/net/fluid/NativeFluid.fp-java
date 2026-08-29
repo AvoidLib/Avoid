@@ -1,0 +1,129 @@
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import pl.olafcio.avoid.Reflect;
+
+{
+    import pl.olafcio.avoid.mixin.accessors.IFlowingFluid;
+    // import pl.olafcio.avoid.mixin.accessors.IFlowingFluid;
+}
+
+{
+    import pl.olafcio.avoid.mixin.accessors.IFluid;
+    // import pl.olafcio.avoid.mixin.accessors.IFluid;
+}
+
+{
+    return IdentificationNative.convertFrom(BuiltInRegistries.BLOCK.getKey(((IFluid) fluid).avoid$createLegacyBlock(new net.minecraft.world.level.material.FluidState(fluid, new Reference2ObjectArrayMap<>(), null)).getBlock()));
+    return IdentificationNative.convertFrom(BuiltInRegistries.BLOCK.getKey(Reflect.callR(net.minecraft.world.level.material.Fluid.class, "createLegacyBlock", fluid, new Class[]{ net.minecraft.world.level.material.FluidState.class }, new Object[]{ new net.minecraft.world.level.material.FluidState(fluid, new Reference2ObjectArrayMap<>(), null) })));
+}
+
+{
+    ((IFluid) fluid).avoid$animateTick(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), fluidState.state, RandomProviderNative.convert(randomProvider));
+
+    Reflect.call(
+            net.minecraft.world.level.material.Fluid.class, "animateTick", fluid,
+            new Class[]{Level.class, net.minecraft.core.BlockPos.class, net.minecraft.world.level.material.FluidState.class, RandomSource.class},
+            new Object[]{WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), fluidState.state, RandomProviderNative.convert(randomProvider)}
+    );
+
+}
+
+{
+    ((IFluid) fluid).avoid$tick((ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), BlockDataNative.convert(blockData), fluidState.state);
+
+    Reflect.call(
+            net.minecraft.world.level.material.Fluid.class, "tick", fluid,
+            new Class[]{ServerLevel.class, net.minecraft.core.BlockPos.class, BlockState.class, net.minecraft.world.level.material.FluidState.class},
+            new Object[]{(ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), BlockDataNative.convert(blockData), fluidState.state}
+    );
+
+}
+
+{
+    ((IFluid) fluid).avoid$randomTick((ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), fluidState.state, RandomProviderNative.convert(randomProvider));
+
+    Reflect.call(
+            net.minecraft.world.level.material.Fluid.class, "randomTick", fluid,
+            new Class[]{Level.class, net.minecraft.core.BlockPos.class, net.minecraft.world.level.material.FluidState.class, RandomSource.class},
+            new Object[]{(ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), fluidState.state, RandomProviderNative.convert(randomProvider)}
+    );
+
+}
+
+{
+    return ((IFluid) fluid).avoid$isRandomlyTicking();
+    return Reflect.callR(net.minecraft.world.level.material.Fluid.class, "isRandomlyTicking", fluid, new Class[]{}, new Object[]{});
+}
+
+{
+    if (fluid instanceof IFlowingFluid ff)
+    if (fluid instanceof FlowingFluid ff)
+}
+
+{
+    ff.avoid$beforeDestroyingBlock(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), BlockDataNative.convert(blockData));
+
+    Reflect.call(FlowingFluid.class, "beforeDestroyingBlock", ff, new Class[]{
+            net.minecraft.world.level.LevelAccessor.class,
+            net.minecraft.core.BlockPos.class,
+            net.minecraft.world.level.block.state.BlockState.class
+    }, new Object[]{ WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), BlockDataNative.convert(blockData) });
+
+}
+
+{
+    return ((IFluid) fluid).avoid$getExplosionResistance();
+    return Reflect.callR(net.minecraft.world.level.material.Fluid.class, "getExplosionResistance", fluid, new Class[0], new Object[0]);
+}
+
+{
+    return ff.avoid$getSlopeFindDistance(WorldNative.convert(world));
+
+    return Reflect.callR(FlowingFluid.class, "getSlopeFindDistance", ff, new Class[]{
+            net.minecraft.world.level.LevelReader.class
+    }, new Object[]{ (WorldNative.convert(world)) });
+
+}
+
+{
+    return ff.avoid$getDropOff(WorldNative.convert(world));
+
+    return Reflect.callR(FlowingFluid.class, "getDropOff", ff, new Class[]{
+            net.minecraft.world.level.LevelReader.class
+    }, new Object[]{ (WorldNative.convert(world)) });
+
+}
+
+{
+    return BlockDataNative.convertFrom(((IFluid) fluid).avoid$createLegacyBlock(state.state));
+    return BlockDataNative.convertFrom(Reflect.callR(net.minecraft.world.level.material.Fluid.class, "createLegacyBlock", fluid,
+            new Class[]{ net.minecraft.world.level.material.FluidState.class }, new Object[]{ state.state }));
+}
+
+{
+    return fluid instanceof IFlowingFluid ff && ff.avoid$canConvertToSource((ServerLevel) WorldNative.convert(world));
+    return fluid instanceof FlowingFluid ff && (boolean)Reflect.callR(FlowingFluid.class, "canConvertToSource", ff,
+            new Class[]{ ServerLevel.class }, new Object[]{ ((ServerLevel) WorldNative.convert(world)) });
+}
+
+{
+    ((IFluid) fluid).avoid$entityInside(
+
+    Reflect.callx(net.minecraft.world.level.material.Fluid.class, "entityInside", fluid, new Class[]{ net.minecraft.world.level.Level.class,
+                    net.minecraft.core.BlockPos .class,
+                    net.minecraft.world.entity.Entity .class,
+                    net.minecraft.world.entity.InsideBlockEffectApplier .class},
+
+}
+
+{
+    ((IFluid) this.fluid).avoid$canBeReplacedWith(
+    Reflect.callx(net.minecraft.world.level.material.Fluid.class, "canBeReplacedWith", this.fluid, new Class[]{
+                    net.minecraft.world.level.material.FluidState .class,
+                    net.minecraft.world.level.BlockGetter .class,
+                    net.minecraft.core.BlockPos .class,
+                    Fluid .class,
+                    net.minecraft.core.Direction .class
+            },
+}

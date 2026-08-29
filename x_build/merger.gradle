@@ -1,0 +1,125 @@
+import groovy.json.JsonOutput
+
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
+apply from: project.file('x_build/loaders.gradle')
+
+File getMergeJAR() {
+    var loaders = getLoaders()
+    return rootProject.file("build/libs/avoidlib+${String.join("+", loaders)}-${project.minecraft_version}-${project.version}.jar")
+}
+
+void scheduleMerging() {
+    var mergeJAR = getMergeJAR()
+
+    tasks.build.doLast {
+        var paths = [
+                "fabric":   rootProject.file("build/libs/avoidlib+" +     "${project.minecraft_version}-${project.version}.jar"),
+                "neoforge": rootProject.file("build/libs/avoidlib+neoforge-${project.minecraft_version}-${project.version}.jar")
+        ]
+
+        final var loaders = getLoaders()
+        final var merge = loaders.collect { e -> paths[e] }
+
+        var bos = new ByteArrayOutputStream()
+        var zos = new ZipOutputStream(bos)
+
+        zos.putNextEntry(new ZipEntry("assets/avoid_bundler/icon.png"))
+
+        try (var zip = new ZipFile(merge[0])) {
+            byte[] data
+
+            try (var src = zip.getInputStream(zip.getEntry("assets/avoidlib/icon.png"))) {
+                data = src.readAllBytes()
+            }
+
+            zos.write(data)
+        }
+
+        int i = 0
+        for (var file : merge) {
+            zos.putNextEntry(new ZipEntry("jars/avoid-" + loaders[i++] + ".jar"))
+
+            var data = Files.readAllBytes(file.toPath())
+            zos.write(data)
+        }
+
+        if ("fabric" in loaders) {
+            zos.putNextEntry(new ZipEntry("fabric.mod.json"))
+            zos.write(JsonOutput.toJson([
+                    "schemaVersion": 1,
+                    "id": "avoid_bundler",
+                    "version": "${version}",
+                    "name": "Avoid",
+                    "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
+                    "authors": [ "Olafcio" ],
+                    "contact": Map.of(),
+                    "license": "Apache-2.0",
+                    "icon": "assets/avoid-bundler/icon.png",
+                    "environment": "*",
+                    "entrypoints": [
+                            "client": [],
+                            "main": []
+                    ],
+                    "mixins": [],
+                    "depends": Map.of(),
+                    "jars": [
+                            [
+                                    "file": "jars/avoid-fabric.jar"
+                            ]
+                    ]
+            ]).getBytes(StandardCharsets.UTF_8))
+        }
+
+        if ("neoforge" in loaders) {
+            zos.putNextEntry(new ZipEntry("META-INF/neoforge.mods.toml"))
+            zos.write("""
+license="Apache License 2.0"
+issueTrackerURL="https://github.com/AvoidLib/Avoid/issues"
+
+[[mods]]
+modId="avoid_bundler"
+version="${version}"
+displayName="Avoid"
+logoFile="assets/avoid_bundler/icon.png"
+authors="Olafcio"
+description='''
+Yet another library for everything Minecraft. Kinda like Bukkit.
+'''
+
+""".trim().getBytes(StandardCharsets.UTF_8))
+
+            zos.putNextEntry(new ZipEntry("META-INF/jarjar/metadata.json"))
+            zos.write(JsonOutput.toJson([
+                    "jars": [
+                            [
+                                    "identifier": [
+                                            "group": "pl.olafcio",
+                                            "artifact": "avoid"
+                                    ],
+                                    "version": [
+                                            "range": "[${project.version},)",
+                                            "artifactVersion": "${project.version}"
+                                    ],
+                                    "path": "jars/avoid-neoforge.jar",
+                                    "isObfuscated": false
+                            ]
+                    ]
+            ]).getBytes(StandardCharsets.UTF_8))
+        }
+
+        zos.close()
+
+        Files.write(mergeJAR.toPath(), bos.toByteArray())
+        bos.close()
+    }
+}
+
+ext {
+    getMergeJAR = this.&getMergeJAR
+    scheduleMerging = this.&scheduleMerging
+}

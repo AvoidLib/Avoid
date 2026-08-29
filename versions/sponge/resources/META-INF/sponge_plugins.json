@@ -12,11 +12,14 @@
       "entrypoint": "pl.olafcio.avoid.A4Sponge",
       "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
       "links": {
+        "homepage": "https://github.com/AvoidLib/Avoid/wiki",
+        "source": "https://github.com/AvoidLib/Avoid",
+        "issues": "https://github.com/AvoidLib/Avoid/issues"
       },
       "contributors": [
         {
           "name": "Olafcio",
-          "description": ""
+          "description": "Author"
         }
       ],
       "dependencies": [

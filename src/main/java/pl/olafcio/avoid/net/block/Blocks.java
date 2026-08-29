@@ -57,7 +57,7 @@ public final class Blocks {
                 ResourceKey.create(Registries.BLOCK, id),
                 callback,
                 getProperties(inst, inst.getClass())
-        );
+        );  //at:register
 
         Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
 
@@ -81,7 +81,7 @@ public final class Blocks {
                 ResourceKey.create(Registries.BLOCK, id),
                 callback,
                 getProperties(inst, inst.getClass())
-        );
+        );  //at:register
 
         Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
 
@@ -239,6 +239,7 @@ public final class Blocks {
     @NotNull
     private static ChosenPreset presetProperties(Class<? extends pl.olafcio.avoid.net.block.Block> block) {
         var presets = Map.<Class<? extends Annotation>, Function<? extends Annotation, Properties>>
+                //at:presets
                           of(_presetNetherStem.class, (_presetNetherStem preset) -> IBlocks.netherStemProperties(
                                     createMapColor(preset.mapColor(), preset.mapColorRGB())
                              ),
@@ -251,6 +252,7 @@ public final class Blocks {
                              _presetPiston.class, (_presetPiston preset) -> IBlocks.pistonProperties(),
                              _presetButton.class, (_presetButton preset) -> IBlocks.buttonProperties(),
                              _presetFlowerPot.class, (_presetFlowerPot preset) -> IBlocks.flowerPotProperties());
+        //at:presetend
 
         var picks = presets.keySet().stream().filter(block::isAnnotationPresent).toList();
         if (picks.size() > 1)

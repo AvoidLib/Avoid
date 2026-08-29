@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AnvilMenuMixin",
+    "BlockStateBaseMixin",
     "BuiltInRegistriesMixin",
     "CommandsMixin",
     "CraftingMenuMixin",
@@ -20,6 +21,7 @@
     "LlamaMixin",
     "MapColorMixin",
     "MinecraftServerMixin",
+    "MobMixin",
     "PlayerListMixin",
     "PlayerMixin",
     "ServerGamePacketListenerImplMixin",
@@ -48,10 +50,12 @@
     "KeyboardMixin",
     "LayerDefinitionsMixin",
     "LiquidBlockRendererMixin",
+    "LoadingOverlayMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
     "OptionsMixin",
     "ScreenMixin",
+    "TitleScreenMixin",
     "ToastManagerMixin",
     "accessors.IFogRenderer"
   ],

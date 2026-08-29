@@ -15,6 +15,7 @@ import net.minecraft.server.dialog.Dialog;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
+import pl.olafcio.avoid.internal.VResourceKey;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.component.event.Click;
 import pl.olafcio.avoid.net.chat.component.event.Hover;
@@ -73,7 +74,7 @@ public final class COFromNative {
                                                                  input.getStyle().getClickEvent() instanceof ClickEvent.ChangePage(int page) ? new Click.SwitchPage(page) :
                                                                  input.getStyle().getClickEvent() instanceof ClickEvent.RunCommand(String cmd) ? new Click.ChatCommand(cmd) :
                                                                  input.getStyle().getClickEvent() instanceof ClickEvent.SuggestCommand(String msg) ? new Click.ChatSuggest(msg) :
-                                                                 input.getStyle().getClickEvent() instanceof ClickEvent.ShowDialog(Holder<Dialog> dialog) ? new Click.OpenDialog(dialog) :
+                                                                 input.getStyle().getClickEvent() instanceof ClickEvent.ShowDialog(Holder<Dialog> dialog) ? new Click.OpenDialog(IdentificationNative.convertFrom(VResourceKey.identifier(dialog.unwrapKey().orElseThrow()))) :
                                                                  input.getStyle().getClickEvent() instanceof ClickEvent.Custom(Identifier id, Optional<Tag> payload) ? new Click.Misc(IdentificationNative.convertFrom(id), payload.map(NbtNative::convertFrom).orElse(null)) :
                                                                  null);
 

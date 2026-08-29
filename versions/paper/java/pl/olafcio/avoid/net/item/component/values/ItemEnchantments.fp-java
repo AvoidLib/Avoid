@@ -1,0 +1,6 @@
+import pl.olafcio.avoid.Reflect;
+
+{
+    return new net.minecraft.world.item.enchantment.ItemEnchantments(map);
+    return Reflect.construct(net.minecraft.world.item.enchantment.ItemEnchantments.class, new Class[]{Object2IntOpenHashMap.class}, new Object[]{map});
+}

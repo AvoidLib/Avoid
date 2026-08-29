@@ -1,0 +1,35 @@
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.util.function.Consumer
+
+void replaceEnvAnnot(String onlyIn, String dist) {
+    tasks.compileJava.doFirst {
+        var src = rootProject.file("src/main/java").toPath()
+
+        var walk = new Consumer<java.nio.file.Path>[2]
+
+        walk[0] = new Consumer<java.nio.file.Path>() {
+            @Override
+            void accept(java.nio.file.Path path) {
+                try (var files = Files.list(path)) {
+                    files.forEach(sub -> {
+                        if (Files.isDirectory(sub)) {
+                            walk[0].accept(sub)
+                        } else if (sub.getFileName().toString().endsWith(".java")) {
+                            Files.writeString(sub, Files.readString(sub, StandardCharsets.UTF_8) \
+                                                        .replace("net.fabricmc.api.Environment", onlyIn) \
+                                                        .replace("net.fabricmc.api.EnvType", dist) \
+                                                        .replace("@Environment(EnvType.", "@${onlyIn.split("\\.").toList().getLast()}(${dist.split("\\.").toList().getLast()}."), StandardCharsets.UTF_8)
+                        }
+                    })
+                }
+            }
+        }
+
+        walk[0].accept(src)
+    }
+}
+
+ext {
+    replaceEnvAnnot = this.&replaceEnvAnnot
+}

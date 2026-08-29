@@ -1,0 +1,47 @@
+import pl.olafcio.avoid.Reflect;
+
+{
+    return underlyingEntity.getDefaultGravity();
+    return Reflect.callR(net.minecraft.world.entity.Entity.class, "getDefaultGravity", underlyingEntity, new Class[0], new Object[0]);
+}
+
+{
+    //at:dmgend
+    */
+}
+
+{
+    //at:damage
+    //at:damage
+
+    if (isClient())
+        underlyingEntity.hurtClient(damage.damageSourcePosition() == null ? new DamageSource(
+                AvoidLibClient.mc.player.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                        .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
+                damage.directEntity() == null ? null : EntityNative.convert(damage.directEntity()),
+                damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity())
+        ) : new DamageSource(
+                AvoidLibClient.mc.player.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                                                         .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
+                Vect3Native.convertFrom(damage.damageSourcePosition())
+        ));
+    else if (isServer())
+        underlyingEntity.hurtServer(
+                (ServerLevel) underlyingEntity.level(),
+                damage.damageSourcePosition() == null ? new DamageSource(
+                        AvoidInternal.getServer().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                                                 .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
+                        damage.directEntity() == null ? null : EntityNative.convert(damage.directEntity()),
+                        damage.causingEntity() == null ? null : EntityNative.convert(damage.causingEntity())
+                ) : new DamageSource(
+                        AvoidInternal.getServer().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                                                 .getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(damage.source()))),
+                        Vect3Native.convertFrom(damage.damageSourcePosition())
+                ),
+                amount
+        );
+
+    //at:dmgend
+
+    /*
+}

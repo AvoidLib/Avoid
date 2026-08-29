@@ -4,6 +4,9 @@ import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.RunningEnv;
 
 import java.util.UUID;
 
@@ -53,7 +56,10 @@ public final class ClientSession {
      * Returns the active session player's nickname.
     */
     public static String getNick() {
-        return Minecraft.getInstance().getUser().getName();
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot ClientSession#getNick() on the server");
+
+        return ClientSessionNative.getNick();
     }
 
     /**
@@ -61,7 +67,10 @@ public final class ClientSession {
      * This persists through name changes.
      */
     public static UUID getUUID() {
-        return Minecraft.getInstance().getUser().getProfileId();
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot ClientSession#getUUID() on the server");
+
+        return ClientSessionNative.getUUID();
     }
 
     /**
@@ -69,7 +78,10 @@ public final class ClientSession {
      * For more info, see: {@link ClientSession}
      */
     public static String getAccessToken() {
-        return Minecraft.getInstance().getUser().getAccessToken();
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot ClientSession#getAccessToken() on the server");
+
+        return ClientSessionNative.getAccessToken();
     }
 
     /**
@@ -77,7 +89,10 @@ public final class ClientSession {
      */
     @Nullable
     public static String getClientID() {
-        return Minecraft.getInstance().getUser().getClientId().orElse(null);
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot ClientSession#getClientID() on the server");
+
+        return ClientSessionNative.getClientID();
     }
 
     /**
@@ -85,7 +100,10 @@ public final class ClientSession {
      */
     @Nullable
     public static String getXuid() {
-        return Minecraft.getInstance().getUser().getXuid().orElse(null);
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot ClientSession#getXuid() on the server");
+
+        return ClientSessionNative.getXuid();
     }
 
     /**
@@ -95,7 +113,10 @@ public final class ClientSession {
      * &emsp;&emsp;&ensp;&ensp;&nbsp;resulting in a kind-of cracked account.
      */
     public static void setNick(String value) {
-        Minecraft.getInstance().getUser().name = value;
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot ClientSession#setNick() on the server");
+
+        ClientSessionNative.setNick(value);
     }
 
     /**
@@ -105,7 +126,10 @@ public final class ClientSession {
      * &emsp;&emsp;&ensp;&ensp;&nbsp;resulting in a kind-of cracked account.
      */
     public static void setUUID(UUID value) {
-        Minecraft.getInstance().getUser().uuid = value;
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot ClientSession#setUUID() on the server");
+
+        ClientSessionNative.setUUID(value);
     }
 
     /**
@@ -115,6 +139,9 @@ public final class ClientSession {
      * &emsp;&emsp;&ensp;&ensp;&nbsp;resulting in a kind-of cracked account.
      */
     public static void setAccessToken(String value) {
-        Minecraft.getInstance().getUser().accessToken = value;
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot ClientSession#setAccessToken() on the server");
+
+        ClientSessionNative.setAccessToken(value);
     }
 }

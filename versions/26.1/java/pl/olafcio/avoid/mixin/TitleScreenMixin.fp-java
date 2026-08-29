@@ -1,0 +1,14 @@
+{
+    GuiGraphics
+    GuiGraphicsExtractor
+}
+
+{
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;III)V", shift = At.Shift.AFTER), method = "render")
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Ljava/lang/String;III)V", shift = At.Shift.AFTER), method = "extractRenderState")
+}
+
+{
+    guiGraphics.drawString(this.font, string, 2, this.height - 20, ARGB.white(g));
+    guiGraphics.text(this.font, string, 2, this.height - 20, ARGB.white(g));
+}

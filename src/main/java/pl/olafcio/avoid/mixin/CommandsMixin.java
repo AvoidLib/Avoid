@@ -209,7 +209,7 @@ public class CommandsMixin {
                         }
                     }
 
-                    tree.cmd.sendSyntaxException(executor, ctx, param);
+                    tree.cmd.sendSyntaxException(executor, new Usage((Map<String, Object>) args, executor), param);
 
                     return 2;
                 }

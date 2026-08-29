@@ -5,34 +5,34 @@
 - 26.1 *[LTS]*
 - 26.1.1 & 26.1.2
 - 26.2
-- 26.3-snapshot-9    *[TS]*
+- 26.3-snapshot-10 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
 - NeoForge
+- Sponge
+- Paper
 
 **🪵 Changelog:**
-- [Server Player] Set Food Level Event
-- [Server Player] Set Saturation Level Event
-- [Server Entity] Set Health Event
-- [Event Interfaces] EntityEvent
-- [Event Interfaces] PlayerEvent
-- [Client Entity] Mark events with EntityEvent
-- [Effect Creation API] Native effect class
-- [Entity API] Effect methods
-- Effects#get([Identification] id)
-- [Server Entity] Effect Add Event
-- [Server Entity] Effect Update Event
-- [Server Entity] Effect Remove Event
-- [ModLoader] Resource utilities
-- 'build.gradle' cleanup
-- Fix item component value type search in obfuscated environments
-- Fix fluids loading on server
-- Fix server early init
-- Fix entity renderers loading on server
-- Fix fogs loading on server
-- Don't crash when a class fails to load in a mod
-- Fix server loading issues
+- [Paper] Fix AvoidInternal#getServer()
+- [Paper] Fix CommandSystem player executors
+- AvoidWrappedLoader#isPaper()
+- '.avoid.zip' mod filetype support<br/>
+  *(alias to JAR, made to suppress parent loader warnings about invalid mod files)*
+- Mark Paper builds as compatible with Purpur
+- Avoid version text on the titlescreen on non-NeoForge platforms
+- [Entity API] #isLocal()
+- [ModLoader] A lot of mod-loading events
+- [Client Loading] Screen Render Mojang Event
+- [Server Entity] Inside Block Event
+- [Server Mob] Set Target Event, Clear Target Event
+- [Effect API] #onMobHurt()
+
+**🪵 Changelog (pre-release 1):**
+- [Client Session API] Do environment checking
+- [Command API] Use Avoid type in #sendSyntaxException()
+- Change Click.OpenDialog to Identification
+- Paper compatibility
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>

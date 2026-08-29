@@ -2,20 +2,26 @@ package pl.olafcio.avoid.net.effect;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
+import pl.olafcio.avoid.AvoidInternal;
 import pl.olafcio.avoid.net.effect.internal.IAvoidEffect;
 import pl.olafcio.avoid.net.effect.internal.NativeEffect;
 import pl.olafcio.avoid.net.effect.properties._category;
 import pl.olafcio.avoid.net.effect.properties._color;
 import pl.olafcio.avoid.net.effect.values.CategoryNative;
 import pl.olafcio.avoid.net.entity.EntityNative;
+import pl.olafcio.avoid.net.entity.values.Damage;
+import pl.olafcio.avoid.net.entity.values.DamageNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 public final class Effects {
     @ApiStatus.Internal
@@ -74,6 +80,17 @@ public final class Effects {
         @Override
         public void onEffectStarted(LivingEntity livingEntity, int i) {
             effect.onAction(EntityNative.convertFrom(livingEntity), i + 1);
+        }
+
+        @Override
+        public void onMobHurt(ServerLevel serverLevel, LivingEntity livingEntity, int i, DamageSource damageSource, float tickDelta) {
+            effect.onDamage(
+                    WorldNative.make(serverLevel),
+                    EntityNative.convertFromTry(livingEntity),
+                    i+1,
+                    DamageNative.convert(damageSource, AvoidInternal.getServer().registryAccess()),
+                    tickDelta
+            );
         }
     }
 }

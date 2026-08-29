@@ -5,6 +5,7 @@
 $ neoforge
 : {@name}
 ! neoforge-{@name}_compat
+! neoforge-post
 neoforge=1
 merge=["fabric", "neoforge"]
 neo_version={}
@@ -12,7 +13,16 @@ neo_version={}
 $ sponge
 : {@name}
 sponge=1
-release=1
+publish=1
+
+$ paper
+: {@name}
+! mixinless
+! mixinless-{@name}
+paper=1
+publish=1
+dev_mappings=OBFUSCATED
+alpha=1
 
 $ quilt
 : {@name}
@@ -31,7 +41,7 @@ fabric_version=0.135.0+1.21.10
 java_version=21
 include_jspecify=1
 include_permapi=0.5.0
-release=1
+publish=1
 
 # 1.21.8
 ! 1.21.10
@@ -42,11 +52,11 @@ fabric_version=0.136.1+1.21.8
 java_version=21
 include_jspecify=1
 include_permapi=0.4.0
-release=1
+publish=1
 
 # 1.21.11
-<- neoforge (21.11.42)
 <- sponge
+<- paper
 minecraft_version=1.21.11
 quilt_loader=0.30.0
 loader_version=0.19.1
@@ -78,13 +88,13 @@ quilt_loader=0.30.0
 loader_version=0.19.3
 fabric_version=0.154.0+26.2
 
-# 26.3-snapshot-9
+# 26.3-snapshot-10
 ; 26.2
 ! 26.3
-minecraft_version=26.3-snapshot-9
-minecraft_version_range=26.3-alpha.9
-minecraft_version_list=["26.3-snapshot-9"]
+minecraft_version=26.3-snapshot-10
+minecraft_version_range=26.3-alpha.10
+minecraft_version_list=["26.3-snapshot-10"]
 quilt_loader=0.30.0
 loader_version=0.19.3
 fabric_version=0.156.1+26.3
-release=1
+publish=1
