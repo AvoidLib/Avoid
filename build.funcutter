@@ -24,12 +24,18 @@ publish=1
 dev_mappings=OBFUSCATED
 alpha=1
 
+$ quilt
+: {@name}
+quilt=1
+release=1
+
 ////////////////
 /// VERSIONS ///
 ////////////////
 
 # 1.21.10
 minecraft_version=1.21.10
+quilt_loader=0.31.0-beta.1
 loader_version=0.19.1
 fabric_version=0.135.0+1.21.10
 java_version=21
@@ -40,6 +46,7 @@ publish=1
 # 1.21.8
 ! 1.21.10
 minecraft_version=1.21.8
+quilt_loader=0.31.0-beta.1
 loader_version=0.19.1
 fabric_version=0.136.1+1.21.8
 java_version=21
@@ -51,6 +58,7 @@ publish=1
 <- sponge
 <- paper
 minecraft_version=1.21.11
+quilt_loader=0.31.0-beta.1
 loader_version=0.19.1
 fabric_version=0.135.1+1.21.11
 java_version=21
@@ -58,9 +66,11 @@ java_version=21
 # 26.1
 <- neoforge (26.1.0.19-beta)
 <- sponge
+<- quilt
 minecraft_version=26.1
 minecraft_version_range=~26.1
 minecraft_version_list=["26.1", "26.1.1", "26.1.2"]
+quilt_loader=0.31.0-beta.1
 loader_version=0.19.3
 fabric_version=0.140.0+26.1
 java_version=25
@@ -70,9 +80,11 @@ omit_mappings=1
 : 26.1
 <- neoforge (26.2.0.8-beta)
 <- sponge
+<- quilt
 minecraft_version=26.2
 minecraft_version_range=26.2
 minecraft_version_list=["26.2"]
+quilt_loader=0.31.0-beta.1
 loader_version=0.19.3
 fabric_version=0.154.0+26.2
 
@@ -82,6 +94,7 @@ fabric_version=0.154.0+26.2
 minecraft_version=26.3-snapshot-10
 minecraft_version_range=26.3-alpha.10
 minecraft_version_list=["26.3-snapshot-10"]
+quilt_loader=0.31.0-beta.1
 loader_version=0.19.3
 fabric_version=0.156.1+26.3
 publish=1

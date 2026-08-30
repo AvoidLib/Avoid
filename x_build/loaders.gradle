@@ -11,6 +11,8 @@ List<String> getLoaders() {
         return ["sponge"];
     else if (ext.paper)
         return ["paper"];
+    else if (ext.quilt)
+        return ["quilt"];
     else
         return [];
 }

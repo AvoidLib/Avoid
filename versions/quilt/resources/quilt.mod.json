@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "quilt_loader": {
+    "group": "pl.olafcio.avoid",
+    "id": "avoidlib",
+    "version": "${version}",
+    "metadata": {
+      "name": "AvoidLib",
+      "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
+      "contributors": {
+        "Olafcio": "Author"
+      },
+      "contact": {
+        "website": "https://github.com/AvoidLib/Avoid",
+        "issues": "https://github.com/AvoidLib/Avoid/issues"
+      },
+      "icon": "assets/avoidlib/icon.png"
+    },
+    "intermediate_mappings": "net.fabricmc:intermediary",
+    "entrypoints": {
+      "init": "pl.olafcio.avoid.A4Fabric"
+    },
+    "depends": [
+      {"id": "quilt_loader", "versions": ">=${quilt_loader}"},
+      {"id": "minecraft",    "versions": "${minecraft_version_range}"},
+      {"id": "java",         "versions": ">=21"}
+    ]
+  },
+  "experimental_quilt_loader_plugin": {
+    "class": "pl.olafcio.avoid.qp.AvoidQuiltPlugin",
+    "packages": [
+      "pl.olafcio.avoid.qp"
+    ]
+  },
+  "access_widener": "avoidlib.accesswidener",
+  "mixin": "avoidlib.mixins.json"
+}
