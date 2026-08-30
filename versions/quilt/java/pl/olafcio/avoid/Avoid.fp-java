@@ -1,0 +1,4 @@
+{
+    AvoidWrappedLoader.getModsPaths()
+    Set.<Path>of()
+}

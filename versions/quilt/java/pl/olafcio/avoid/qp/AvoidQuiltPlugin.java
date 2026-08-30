@@ -6,13 +6,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.metadata.ModEnvironment;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.loader.api.*;
-import org.quiltmc.loader.api.gui.QuiltLoaderIcon;
-import org.quiltmc.loader.api.gui.QuiltLoaderText;
+import org.quiltmc.loader.api.gui.*;
 import org.quiltmc.loader.api.plugin.*;
-import org.quiltmc.loader.api.plugin.gui.PluginGuiTreeNode;
 import org.quiltmc.loader.api.plugin.solver.ModLoadOption;
 import org.quiltmc.loader.api.plugin.solver.QuiltFileHasher;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -32,8 +31,16 @@ public class AvoidQuiltPlugin implements QuiltLoaderPlugin {
     }
 
     @Override
-    public ModLoadOption[] scanUnknownFile(Path path, ModLocation location, PluginGuiTreeNode guiNode) throws IOException {
-        try (var zip = new ZipFile(path.toFile())) {
+    public ModLoadOption[] scanZip(Path path, Path root, ModLocation location, QuiltTreeNode guiNode) throws IOException {
+        File file;
+
+        try {
+            file = path.toFile();
+        } catch (java.lang.Exception e) {
+            return null;
+        }
+
+        try (var zip = new ZipFile(file)) {
             ZipEntry entry;
 
             if ((entry = zip.getEntry("avoid.mod.json")) != null) {
@@ -86,7 +93,7 @@ public class AvoidQuiltPlugin implements QuiltLoaderPlugin {
 
                             @Override
                             public String id() {
-                                return "avoid-mod-" + (mod++);
+                                return data.get("id").getAsString();
                             }
 
                             @Override
@@ -216,17 +223,54 @@ public class AvoidQuiltPlugin implements QuiltLoaderPlugin {
 
                     @Override
                     public QuiltLoaderIcon modFileIcon() {
-                        return null;
+                        return QuiltLoaderGui.iconJavaPackage();
                     }
 
                     @Override
                     public QuiltLoaderIcon modTypeIcon() {
-                        return null;
+                        return QuiltLoaderGui.iconPackage();
                     }
 
                     @Override
                     public ModContainerExt convertToMod(Path transformedResourceRoot) {
-                        return null;
+                        var mlo = this;
+
+                        return new ModContainerExt() {
+                            @Override
+                            public ModMetadataExt metadata() {
+                                return mlo.metadata();
+                            }
+
+                            @Override
+                            public String pluginId() {
+                                return context.pluginId();
+                            }
+
+                            @Override
+                            public String modType() {
+                                return "Avoid";
+                            }
+
+                            @Override
+                            public boolean shouldAddToQuiltClasspath() {
+                                return false;
+                            }
+
+                            @Override
+                            public Path rootPath() {
+                                return path;
+                            }
+
+                            @Override
+                            public List<List<Path>> getSourcePaths() {
+                                return loader().manager().convertToSourcePaths(path);
+                            }
+
+                            @Override
+                            public BasicSourceType getSourceType() {
+                                return ModContainer.BasicSourceType.OTHER;
+                            }
+                        };
                     }
 
                     @Override
@@ -247,7 +291,7 @@ public class AvoidQuiltPlugin implements QuiltLoaderPlugin {
             }
         }
 
-        return QuiltLoaderPlugin.super.scanUnknownFile(path, location, guiNode);
+        return QuiltLoaderPlugin.super.scanZip(path, root, location, guiNode);
     }
 
     @Override
