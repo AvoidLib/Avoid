@@ -1,0 +1,42 @@
+import groovy.json.JsonSlurper
+
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
+import java.nio.charset.StandardCharsets
+
+static Object getRelease(String repository, String versionName = "latest") {
+    var client = HttpClient.newHttpClient()
+    var resp = client.send(HttpRequest.newBuilder()
+                                                           .uri(URI.create("https://api.github.com/repos/${repository}/releases" + (versionName == "latest" ? "/latest" : "")))
+                                                           .method("GET", HttpRequest.BodyPublishers.noBody())
+                                                           .header("Accept", "application/vnd.github+json")
+                                                           .header("X-GitHub-Api-Version", "2026-03-10")
+                                                           .build(), HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
+
+    if (resp.statusCode() >= 400)
+        throw new RuntimeException("[GitHub] Failed to fetch '${repository}' versions (status code ${resp.statusCode()})")
+
+    var versions = new JsonSlurper().parseText(resp.body())
+    var version
+
+    if (versionName != "latest") {
+        for (var ver : versions) {
+            if (ver['tag_name'] == "v" + versionName) {
+                version = ver
+                break
+            }
+        }
+
+        if (version == null)
+            throw new RuntimeException("[GitHub] Missing '${repository}' version '${versionName}'")
+    } else {
+        version = versions
+    }
+
+    return version
+}
+
+ext {
+    github_getRelease = this.&getRelease
+}

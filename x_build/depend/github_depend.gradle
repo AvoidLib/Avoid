@@ -1,0 +1,49 @@
+import java.util.function.Predicate
+
+apply from: rootProject.file("x_build/api/github_api.gradle")
+
+String github(String repository, String versionName = "latest", Predicate<String> jarFinder = { _ -> true }, Predicate<String> sourcesJarFinder = { _ -> false }) {
+    var libs = project.file("libs-all").toPath()
+    var version = github_getRelease(repository, versionName)
+
+    def repoName = repository.substring(repository.indexOf("/") + 1)
+    def repoVersion = version['tag_name']
+
+    var jar = libs.resolve(repoName + "-" + repoVersion + ".jar")
+    var jarSources = libs.resolve(repoName + "-" + repoVersion + "-sources.jar")
+
+    for (var asset : version['assets']) {
+        if (jarFinder(asset['name'])) {
+            URI.create(asset['browser_download_url'] as String) \
+               .toURL() \
+               .withInputStream { i -> jar.withOutputStream { it << i }}
+
+            break
+        }
+    }
+
+    for (var asset : version['assets']) {
+        if (sourcesJarFinder(asset['name'])) {
+            URI.create(asset['browser_download_url'] as String) \
+               .toURL() \
+               .withInputStream { i -> jarSources.withOutputStream { it << i }}
+
+            break
+        }
+    }
+
+    return ":" + repoName + ":" + repoVersion
+}
+
+String github(kwargs, repository) {
+    return github(
+            (String)repository,
+            'versionName' in kwargs ? (String)kwargs['versionName'] : "latest",
+            'jarFinder' in kwargs ? (Predicate<String>)kwargs['jarFinder'] : { _ -> true },
+            'sourcesJarFinder' in kwargs ? (Predicate<String>)kwargs['sourcesJarFinder'] : { _ -> false }
+    )
+}
+
+ext {
+    github = this.&github
+}

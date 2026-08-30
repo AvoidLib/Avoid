@@ -1,0 +1,35 @@
+import groovy.json.JsonSlurper
+
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
+import java.nio.charset.StandardCharsets
+
+static def fetchVersion(HttpClient client, String project, String version) {
+    var resp = client.send(HttpRequest.newBuilder()
+                                          .uri(URI.create("https://api.modrinth.com/v3/project/${project}/version/${version}"))
+                                          .method("GET", HttpRequest.BodyPublishers.noBody())
+                                          .build(), HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
+
+    if (resp.statusCode() >= 400)
+        throw new RuntimeException("[Modrinth] Failed to fetch '${project}' version '${version}' (status code ${resp.statusCode()})")
+
+    return new JsonSlurper().parseText(resp.body())
+}
+
+static def fetchProject(HttpClient client, String project) {
+    var resp = client.send(HttpRequest.newBuilder()
+                                         .uri(URI.create("https://api.modrinth.com/v3/project/${project}"))
+                                         .method("GET", HttpRequest.BodyPublishers.noBody())
+                                         .build(), HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
+
+    if (resp.statusCode() >= 400)
+        throw new RuntimeException("[Modrinth] Failed to fetch '${project}' (status code ${resp.statusCode()})")
+
+    return new JsonSlurper().parseText(resp.body())
+}
+
+ext {
+    modrinth_fetchVersion = this.&fetchVersion
+    modrinth_fetchProject = this.&fetchProject
+}

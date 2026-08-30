@@ -1,16 +1,21 @@
 import com.google.gson.Gson
 import com.google.gson.JsonArray
-import me.modmuss50.mpp.platforms.modrinth.ModrinthEnvironment
 import net.fabricmc.loom.api.mappings.layered.MappingsNamespace
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 
 buildscript {
+    apply from: rootProject.file("x_build/depend/github_depend.gradle")
+
     repositories {
         maven {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
+        }
+
+        flatDir {
+            dirs "libs-all"
         }
 
         gradlePluginPortal()
@@ -18,7 +23,7 @@ buildscript {
 
     dependencies {
         classpath 'net.fabricmc:fabric-loom:1.17-SNAPSHOT'
-        classpath 'me.modmuss50:mod-publish-plugin:2.2.0'
+        classpath github("Olafcio1/LimePublishing")
         classpath 'com.gradleup.shadow:shadow-gradle-plugin:9.6.1'
     }
 }
@@ -52,7 +57,7 @@ if (contains("omit_mappings")) {
 }
 
 apply plugin: 'maven-publish'
-apply plugin: 'me.modmuss50.mod-publish-plugin'
+apply plugin: 'lime-publishing'
 
 version = project.mod_version
 group = project.maven_group
@@ -260,50 +265,68 @@ publishing {
     }
 }
 
-publishMods {
-    file = ("shadow" in project.getProperties() ? shadowJar.archiveFile : ("merge" in project.getProperties() ? getMergeJAR() : (("omit_mappings" !in project.getProperties()) ? remapJar.archiveFile : jar.archiveFile)))
-    changelog = Files.readString(rootProject.file("CHANGELOG").toPath())
-    type = ("alpha" in project.getProperties() ? ALPHA : STABLE)
+import pl.olafcio.limepublish.enums.Environment
+import pl.olafcio.limepublish.enums.VersionType
+import pl.olafcio.limepublish.enums.Platform
+
+release {
+    name           "Avoid v${project.version} [${minecraft_version}]"
+    version_number project.version
+    version_type   ("alpha" in project.getProperties() ? VersionType.ALPHA : VersionType.STABLE)
+    environment    Environment.CLIENT_OR_SERVER_PREFERS_BOTH
+    changelog      Files.readString(rootProject.file("CHANGELOG").toPath())
+
+    if ("minecraft_version_list" !in project.getProperties())
+        minecraft = [minecraft_version]
+    else
+        minecraft = new Gson().fromJson((String) project.minecraft_version_list, JsonArray.class).asList() \
+                              .collect { e -> e.getAsString() }
+
+    files {
+        main = (
+                "shadow" in project.getProperties()
+                        ? shadowJar.archiveFile.get().asFile
+                        :
+                "merge" in project.getProperties()
+                        ? getMergeJAR()
+                        :
+                "omit_mappings" !in project.getProperties()
+                        ? remapJar.archiveFile.get().asFile
+                        : jar     .archiveFile.get().asFile
+        ).toPath()
+    }
 
     var loaders = getPublicLoaders()
+    var platformList = new ArrayList<Platform>()
+
     for (String loader : loaders)
-        modLoaders.add(loader)
+        platformList.add(Platform.valueOf(loader.toUpperCase()))
+
+    it.setPlatforms(platformList)
+
+    if (minecraft_version.startsWith("1.") && minecraft_version != "1.21.11") {
+        requires {
+            project "backported-attr"
+        }
+    }
+
+    if (contains("include_permapi")) {
+        optional {
+            project "fabric-permissions-api"
+        }
+    }
 
     modrinth {
-        displayName = "Avoid v${project.version} [${minecraft_version}]"
-        accessToken = providers.environmentVariable("MODRINTH_API_KEY")
-        projectId = "LitgU0gE"
-        environment = ModrinthEnvironment.CLIENT_OR_SERVER_PREFERS_BOTH
-
-        if (minecraft_version.startsWith("1.") && minecraft_version != "1.21.11") {
-            requires {
-                id = "4jxrXtNS"
-                slug = "backported-attr"
-            }
-        }
-
-        if (contains("include_permapi")) {
-            optional {
-                id = "lzVo0Dll"
-                slug = "fabric-permissions-api"
-            }
-        }
-
-        if ("minecraft_version_list" !in project.getProperties())
-            minecraftVersions.add(minecraft_version)
-        else
-            minecraftVersions.addAll(new Gson().fromJson((String) project.minecraft_version_list, JsonArray.class).asList() \
-                                               .collect { e -> e.getAsString() })
-
-//        setAdditionalFiles(files(("omit_mappings" !in project.getProperties() ? remapSourcesJar.archiveFile : sourcesJar.archiveFile).get().asFile.toPath()))
+        slug  "avoid"
+        token providers.environmentVariable("MODRINTH_API_KEY")
     }
 }
 
-tasks.register("release") {
+tasks.register("considerRelease") {
     dependsOn build
 
     if (contains("merge") || contains("publish"))
-        dependsOn("publishMods")
+        dependsOn("release")
 }
 
 apply from: project.file('x_build/lib_github.gradle')

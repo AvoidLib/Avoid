@@ -27,7 +27,7 @@ alpha=1
 $ quilt
 : {@name}
 quilt=1
-release=1
+publish=1
 
 ////////////////
 /// VERSIONS ///
