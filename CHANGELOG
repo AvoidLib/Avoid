@@ -9,30 +9,24 @@
 
 **🔌 Supported ModLoaders:**
 - Fabric
+- Quilt
 - NeoForge
 - Sponge
 - Paper
 
 **🪵 Changelog:**
-- [Paper] Fix AvoidInternal#getServer()
-- [Paper] Fix CommandSystem player executors
-- AvoidWrappedLoader#isPaper()
-- '.avoid.zip' mod filetype support<br/>
-  *(alias to JAR, made to suppress parent loader warnings about invalid mod files)*
-- Mark Paper builds as compatible with Purpur
-- Avoid version text on the titlescreen on non-NeoForge platforms
-- [Entity API] #isLocal()
-- [ModLoader] A lot of mod-loading events
-- [Client Loading] Screen Render Mojang Event
-- [Server Entity] Inside Block Event
-- [Server Mob] Set Target Event, Clear Target Event
+- [Player API] #getInventory()
+- [Annotations] @Discouraged
+- Potential fix for net.player.Player loading
+- Fix AvoidMod#onDisable() doc
+- Correct modrinth dependencies for <1.21.11 versions
+- Fix sources-jar publishing
+- [Entity API] #{ setInvulnerable, setInvisible}([boolean] value)
+- Mark some Entity methods as final in customs I forgot about
+- [Effect API] Rename '#onMobHurt' to '#onDamage'
+- [Server Entity] Resurrect Event
+- Fix publishing exclusions
 - [Effect API] #onMobHurt()
-
-**🪵 Changelog (pre-release 1):**
-- [Client Session API] Do environment checking
-- [Command API] Use Avoid type in #sendSyntaxException()
-- Change Click.OpenDialog to Identification
-- Paper compatibility
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
