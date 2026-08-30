@@ -234,6 +234,7 @@ public class AvoidQuiltPlugin implements QuiltLoaderPlugin {
                     @Override
                     public ModContainerExt convertToMod(Path transformedResourceRoot) {
                         var mlo = this;
+                        var sourcePaths = loader().manager().convertToSourcePaths(path);
 
                         return new ModContainerExt() {
                             @Override
@@ -263,7 +264,7 @@ public class AvoidQuiltPlugin implements QuiltLoaderPlugin {
 
                             @Override
                             public List<List<Path>> getSourcePaths() {
-                                return loader().manager().convertToSourcePaths(path);
+                                return sourcePaths;
                             }
 
                             @Override
