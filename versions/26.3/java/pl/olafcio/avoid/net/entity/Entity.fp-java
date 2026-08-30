@@ -1,0 +1,4 @@
+{
+    underlyingEntity.setInvulnerable(
+    underlyingEntity.setPermanentlyInvulnerable(
+}
