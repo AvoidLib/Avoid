@@ -8,9 +8,11 @@
       "name": "AvoidLib",
       "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
       "contributors": {
-        "Olafcio": ""
+        "Olafcio": "Author"
       },
       "contact": {
+        "website": "https://github.com/AvoidLib/Avoid",
+        "issues": "https://github.com/AvoidLib/Avoid/issues"
       },
       "icon": "assets/avoidlib/icon.png"
     },
