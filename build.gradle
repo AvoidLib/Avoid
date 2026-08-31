@@ -78,6 +78,12 @@ loom {
         intermediaryMinecraftProvider = null
         // Wow it works but why the fuck did i have to do those undocumented things
     }
+
+    runs {
+        it.forEach {
+            it.getJvmArguments().add("-XX:StackShadowPages=32")
+        }
+    }
 }
 
 repositories {
