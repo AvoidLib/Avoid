@@ -1,0 +1,36 @@
+{
+    realScreen.renderables
+    //realScreen.renderables
+}
+
+{
+    realScreen.narratables
+    //realScreen.narratables
+}
+
+{
+    realScreen.children
+    //realScreen.children
+}
+
+{
+    //atend:removechild
+    */
+}
+
+{
+    //at:removechild
+    //at:removechild
+    //atend:removechild
+    /*
+}
+
+{
+    return realScreen.renderables.stream().map(NativeScreen::convertRenderable).toList();
+    return null;
+}
+
+{
+    el = realScreen.renderables.get(index);
+    el = null;
+}

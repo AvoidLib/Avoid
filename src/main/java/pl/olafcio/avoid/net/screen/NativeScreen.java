@@ -128,6 +128,7 @@ public final class NativeScreen extends Screen implements ParentElement {
     public void removeChild(Renderable widget) {
         net.minecraft.client.gui.components.Renderable wrapper = null;
 
+        //at:removechild
         for (var el : realScreen.renderables) {
             if (el instanceof IAvoidWidget avoid && avoid.getAvoid() == widget) {
                 wrapper = (net.minecraft.client.gui.components.Renderable) avoid;
@@ -142,6 +143,7 @@ public final class NativeScreen extends Screen implements ParentElement {
             realScreen.removeWidget(gel);
         else
             realScreen.renderables.remove(wrapper);
+        //atend:removechild
     }
 
     @Override
