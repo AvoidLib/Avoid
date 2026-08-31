@@ -1,10 +1,19 @@
 package pl.olafcio.avoid.net.screen;
 
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import org.jspecify.annotations.Nullable;
 import pl.olafcio.avoid.A4;
 import pl.olafcio.avoid.mixininterface.IScreen;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
+import pl.olafcio.avoid.net.screen.widget.able.*;
+import pl.olafcio.avoid.net.screen.widget.container.ParentElement;
+import pl.olafcio.avoid.net.screen.widget_impl.AWFull;
+import pl.olafcio.avoid.net.screen.widget_impl.AWRenderOnly;
+import pl.olafcio.avoid.net.screen.widget_impl.IAvoidWidget;
 
-public final class NativeScreen extends Screen {
+import java.util.stream.Collectors;
+
+public final class NativeScreen extends Screen implements ParentElement {
     public final net.minecraft.client.gui.screens.Screen realScreen;
 
     NativeScreen(IScreen castScreen) {
@@ -75,5 +84,94 @@ public final class NativeScreen extends Screen {
     @Override
     protected boolean isMouseOver(double x, double y) {
         return realScreen.isMouseOver(x, y);
+    }
+
+    @Override
+    public void append(Renderable widget) {
+        if (widget instanceof Focusable && widget instanceof Hoverable && widget instanceof Narratable)
+            realScreen.addRenderableWidget(new AWFull<>((Renderable & Focusable & Hoverable & Narratable) widget));
+        else if (widget instanceof Focusable)
+            throw new NativeWidgetAppendException("A minecraft screen cannot have widgets that are focusable without being hoverable and narratable");
+        else if (widget instanceof Hoverable)
+            throw new NativeWidgetAppendException("A minecraft screen cannot have widgets that are hoverable without being focusable and narratable");
+        else if (widget instanceof Narratable)
+            throw new NativeWidgetAppendException("A minecraft screen cannot have widgets that are narratable without being focusable and hoverable");
+        else
+            realScreen.addRenderableOnly(new AWRenderOnly(widget));
+    }
+
+    @Override
+    public void prepend(Renderable widget) {
+        if (widget instanceof Focusable && widget instanceof Hoverable && widget instanceof Narratable) {
+            var impl = new AWFull<>((Renderable & Focusable & Hoverable & Narratable) widget);
+
+            realScreen.renderables.addFirst(impl);
+            realScreen.narratables.addFirst(impl);
+            realScreen.children.addFirst(impl);
+        } else if (widget instanceof Focusable) {
+            throw new NativeWidgetAppendException("A minecraft screen cannot have widgets that are focusable without being hoverable and narratable");
+        } else if (widget instanceof Hoverable) {
+            throw new NativeWidgetAppendException("A minecraft screen cannot have widgets that are hoverable without being focusable and narratable");
+        } else if (widget instanceof Narratable) {
+            throw new NativeWidgetAppendException("A minecraft screen cannot have widgets that are narratable without being focusable and hoverable");
+        } else {
+            realScreen.renderables.addFirst(new AWRenderOnly(widget));
+        }
+    }
+
+    @Override
+    public void insert(Renderable widget, int index) {
+        throw new UnsupportedOperationException("Minecraft screens don't support #insert(Renderable, int)");
+    }
+
+    @Override
+    public void removeChild(Renderable widget) {
+        net.minecraft.client.gui.components.Renderable wrapper = null;
+
+        for (var el : realScreen.renderables) {
+            if (el instanceof IAvoidWidget avoid && avoid.getAvoid() == widget) {
+                wrapper = (net.minecraft.client.gui.components.Renderable) avoid;
+                break;
+            }
+        }
+
+        if (wrapper == null)
+            return;
+
+        if (wrapper instanceof GuiEventListener gel)
+            realScreen.removeWidget(gel);
+        else
+            realScreen.renderables.remove(wrapper);
+    }
+
+    @Override
+    public Iterable<Renderable> children() {
+        return realScreen.renderables.stream().map(NativeScreen::convertRenderable).toList();
+    }
+
+    private static Renderable convertRenderable(net.minecraft.client.gui.components.Renderable el) {
+        if (el instanceof IAvoidWidget avoid)
+            return avoid.getAvoid();
+
+        return new Renderable() {
+            @Override
+            public void render(Drawer ctx, int mouseX, int mouseY, float deltaTick) {
+                el.render(ctx.graphics, mouseX, mouseY, deltaTick);
+            }
+        };
+    }
+
+    @Override
+    @Nullable
+    public Renderable child(int index) {
+        net.minecraft.client.gui.components.Renderable el;
+
+        try {
+            el = realScreen.renderables.get(index);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+
+        return convertRenderable(el);
     }
 }

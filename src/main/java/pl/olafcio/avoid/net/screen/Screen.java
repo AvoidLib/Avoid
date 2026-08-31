@@ -3,6 +3,8 @@ package pl.olafcio.avoid.net.screen;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.screen.widget.able.Renderable;
+import pl.olafcio.avoid.net.screen.widget.container.Container;
 
 /**
  * An abstract screen class.
@@ -11,7 +13,7 @@ import pl.olafcio.avoid.net.chat.component.BaseComponent;
  * Its goal is <u>rendering</u> and <u>handling mouse and keyboard</u> events.
  */
 @NeverRemoval
-public abstract class Screen {
+public abstract class Screen extends Container {
     final BaseComponent<?> accessibilityTitle;
 
     protected double lastMouseX = -1;
@@ -120,5 +122,18 @@ public abstract class Screen {
 
     protected boolean isMouseOver(double x, double y) {
         return true;
+    }
+
+    //===========//
+    // CONTAINER //
+    //===========//
+
+    /**
+     * @apiNote This doesn't work on native (non-avoid) screens!
+     */
+    @Override
+    @ApiStatus.Experimental
+    public void insert(Renderable widget, int index) {
+        super.insert(widget, index);
     }
 }
