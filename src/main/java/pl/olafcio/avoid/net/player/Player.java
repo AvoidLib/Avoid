@@ -431,4 +431,11 @@ public class Player extends Entity implements Executor {
     public Inventory getInventory() {
         return inventory;
     }
+
+    /**
+     * Returns whether the player can use operator blocks, such as command blocks.
+     */
+    public boolean canUseOPBlocks() {
+        return __cast(net.minecraft.world.entity.player.Player.class).canUseGameMasterBlocks();
+    }
 }
