@@ -590,4 +590,9 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     public final boolean clearEffects() {
         return super.clearEffects();
     }
+
+    @Override
+    public final boolean is(pl.olafcio.avoid.net.entity.Entity entity) {
+        return super.is(entity);
+    }
 }

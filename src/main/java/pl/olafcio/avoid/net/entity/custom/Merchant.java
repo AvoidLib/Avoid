@@ -7,6 +7,7 @@ import org.jspecify.annotations.NonNull;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.effect.instance.EffectInstance;
+import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.custom_internal.IAvoidEntity;
 import pl.olafcio.avoid.net.entity.values.Damage;
 import pl.olafcio.avoid.net.entity.values.Hand;
@@ -645,5 +646,10 @@ public abstract class Merchant extends pl.olafcio.avoid.net.entity.type.Merchant
     @Override
     public final boolean clearEffects() {
         return super.clearEffects();
+    }
+
+    @Override
+    public final boolean is(Entity entity) {
+        return super.is(entity);
     }
 }

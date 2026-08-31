@@ -873,4 +873,8 @@ public abstract class Entity {
                 "uuid=" + uuidString + ", " +
                 "name=" + name + ']';
     }
+
+    public boolean is(Entity entity) {
+        return underlyingEntity.is(EntityNative.convert(entity));
+    }
 }
