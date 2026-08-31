@@ -14,4 +14,8 @@ public final class DrawerNative {
         d.graphics = graphics;
         return d;
     }
+
+    public static GuiGraphics graphicsOf(Drawer drawer) {
+        return drawer.graphics;
+    }
 }

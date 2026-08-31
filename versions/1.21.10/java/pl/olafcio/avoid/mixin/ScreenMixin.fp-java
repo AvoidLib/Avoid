@@ -1,0 +1,9 @@
+{
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(II)V")
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(Lnet/minecraft/client/Minecraft;II)V")
+}
+
+{
+    public void init(int i, int j, CallbackInfo ci) {
+    public void init(Minecraft minecraft, int i, int j, CallbackInfo ci) {
+}
