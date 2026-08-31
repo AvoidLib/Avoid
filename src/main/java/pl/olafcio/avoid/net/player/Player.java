@@ -432,6 +432,19 @@ public class Player extends Entity implements Executor {
         return inventory;
     }
 
+    private final Container enderchest
+            = new Container(__cast(net.minecraft.world.entity.player.Player.class).getEnderChestInventory());
+
+    /**
+     * Returns the player's enderchest inventory.
+     * <br/><br/>
+     * <b>NOTE:</b> The current client implementation is non-interactive.
+     */
+    @ClientUnsafe
+    public Container getEnderchest() {
+        return enderchest;
+    }
+
     /**
      * Returns whether the player can use operator blocks, such as command blocks.
      */

@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.player;
 
+import net.minecraft.world.SimpleContainer;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.Discouraged;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
@@ -27,11 +28,9 @@ import pl.olafcio.avoid.net.item.stack.ItemStackNative;
  * </ul>
  */
 @ApiStatus.Experimental
-public class Inventory {
-    private final Object inventory;
-
+public class Inventory extends pl.olafcio.avoid.net.player.Container {
     Inventory(Object inventory) {
-        this.inventory = inventory;
+        super(inventory);
     }
 
     /**
@@ -51,16 +50,8 @@ public class Inventory {
         return ((net.minecraft.world.entity.player.Inventory) inventory).getSuitableHotbarSlot();
     }
 
-    public void give(ItemStack itemStack) {
-        ((net.minecraft.world.entity.player.Inventory) inventory).add(ItemStackNative.convert(itemStack));
-    }
-
     public void clear(ItemStack itemStack) {
         ((net.minecraft.world.entity.player.Inventory) inventory).removeItem(ItemStackNative.convert(itemStack));
-    }
-
-    public void clear() {
-        ((net.minecraft.world.entity.player.Inventory) inventory).clearContent();
     }
 
     public boolean contains(ItemStack itemStack) {
@@ -72,21 +63,8 @@ public class Inventory {
         ((net.minecraft.world.entity.player.Inventory) inventory).add(slot, ItemStackNative.convert(itemStack));
     }
 
-    public void setItem(int slot, ItemStack itemStack) {
-        ((net.minecraft.world.entity.player.Inventory) inventory).setItem(slot, ItemStackNative.convert(itemStack));
-    }
-
-    public ItemStack getItem(int slot) {
-        return ItemStackNative.convertFrom(((net.minecraft.world.entity.player.Inventory) inventory).getItem(slot));
-    }
-
     @Discouraged(reason = "There's a high chance this might be refactored away to another object in a future release.")
     public ItemStack getHotbarItem() {
         return ItemStackNative.convertFrom(((net.minecraft.world.entity.player.Inventory) inventory).getSelectedItem());
-    }
-
-    @Discouraged(reason = "This method may get renamed.")
-    public int getSize() {
-        return ((net.minecraft.world.entity.player.Inventory) inventory).getContainerSize();
     }
 }
