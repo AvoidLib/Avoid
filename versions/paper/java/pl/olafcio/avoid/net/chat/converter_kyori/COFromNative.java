@@ -61,8 +61,8 @@ public final class COFromNative {
                         convert(sprite.sprite())
                 );
             else
-                throw new RuntimeException("Unknown minecraft object component type '" + content.contents() + "'");
-        else throw new RuntimeException("Unknown minecraft component type '" + input + "'");
+                throw new RuntimeException("Unknown kyori object component type '" + content.contents() + "'");
+        else throw new RuntimeException("Unknown kyori component type '" + input + "'");
 
         if (input.style().color()       != null) comp.color (new Color(input.style().color().value()));
         if (input.style().shadowColor() != null) comp.shadow(new Color(input.style().shadowColor().value()));
@@ -86,7 +86,7 @@ public final class COFromNative {
                                                                input.style().clickEvent().action() == ClickEvent.Action.CUSTOM ? new Click.Misc(convert(((ClickEvent.Payload.Custom) input.style().clickEvent().payload()).key()), NbtNative.convertFrom(NbtUtils.snbtToStructure(((ClickEvent.Payload.Custom) input.style().clickEvent().payload()).nbt().string()))) :
                                                                null);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException("AvoidLib failed to unserialize chat component", e);
+            throw new RuntimeException("AvoidLib failed to unserialize kyori chat component", e);
         }
 
         if (input.style().hoverEvent() != null) comp.hover(input.style().hoverEvent().action() == HoverEvent.Action.SHOW_TEXT ? new Hover.ViewText(from((Component) input.style().hoverEvent().value())) :
