@@ -1,0 +1,62 @@
+{
+    import net.minecraft.client.input.MouseButtonEvent;
+    // import net.minecraft.client.input.MouseButtonEvent;
+}
+
+{
+    (KeyEvent keyEvent) {
+    (int i, int j, int k) {
+}
+
+{
+    EventsInternal.set(keyboard, keyEvent);
+    EventsInternal.set(keyboard, new KeyEvent(i, j, k));
+}
+
+{
+    return GuiEventListener.super.keyReleased(keyEvent);
+    return false;
+}
+
+{
+    return GuiEventListener.super.keyPressed(keyEvent);
+    return false;
+}
+
+{
+    (MouseButtonEvent mouseButtonEvent
+    (double a, double b, int c
+}
+
+{
+    EventsInternal.set(mouse, mouseButtonEvent);
+    EventsInternal.set(mouse, a, b, c);
+}
+
+{
+    return GuiEventListener.super.mouse
+    return false;//
+}
+
+{
+    //atend:stfai
+    */
+}
+
+{
+    //at:stfai
+    //atend:stfai
+    /*
+}
+
+{
+    public boolean mouseClicked(double a, double b, int c, boolean bl) {
+    public boolean mouseClicked(double a, double b, int c) {
+}
+
+{
+    return ((Attachable) element).onMousePressed(mouse, bl);
+
+    // TODO: Calculate double click state
+    return ((Attachable) element).onMousePressed(mouse, false);
+}

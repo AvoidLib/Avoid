@@ -1,0 +1,19 @@
+{
+    import net.minecraft.client.input.MouseButtonEvent;
+    // import net.minecraft.client.input.MouseButtonEvent;
+}
+
+{
+    public static void set(MouseEvent event, MouseButtonEvent minecraft) {
+    public static void set(MouseEvent event, double a, double b, int c) {
+}
+
+{
+    event.event = minecraft;  //at:mouse
+
+    //at:mouse
+    event.x = a;
+    event.y = b;
+    event.button = c;
+    //atend:mouse
+}

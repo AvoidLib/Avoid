@@ -68,10 +68,12 @@ public record AWFull<T extends Renderable & Focusable & Hoverable & Narratable>(
     //=== EVENTLISTENER ===//
     //=====================//
 
+    //at:stfai
     @Override
     public boolean shouldTakeFocusAfterInteraction() {
         return element.shouldFocusAfterInteraction();
     }
+    //atend:stfai
 
     @Override
     public boolean isMouseOver(double d, double e) {

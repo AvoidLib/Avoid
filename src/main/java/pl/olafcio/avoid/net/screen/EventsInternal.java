@@ -23,6 +23,6 @@ public final class EventsInternal {
     }
 
     public static void set(MouseEvent event, MouseButtonEvent minecraft) {
-        event.event = minecraft;
+        event.event = minecraft;  //at:mouse
     }
 }
