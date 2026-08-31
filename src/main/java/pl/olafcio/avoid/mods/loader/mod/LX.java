@@ -2,6 +2,6 @@ package pl.olafcio.avoid.mods.loader.mod;
 
 import java.nio.file.Path;
 
-sealed interface LX permits LXScreenOverwrite {
+sealed interface LX permits LXScreenOverwrite, LXScreenModifier {
     Path mod();
 }

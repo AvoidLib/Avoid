@@ -42,7 +42,7 @@ import java.util.jar.JarFile;
 
 @ApiStatus.Internal
 public final class ModLoad
-             implements LXItem, LXScreenOverwrite, LXCommand, LXSelector, LXEntity, LXFluid, LXFog, LXEffect,
+             implements LXItem, LXScreenOverwrite, LXScreenModifier, LXCommand, LXSelector, LXEntity, LXFluid, LXFog, LXEffect,
                         LXKeyHandler
 {
     @ApiStatus.Internal
@@ -227,6 +227,9 @@ public final class ModLoad
             var className = klass.getName();
 
             if (registerScreenOverwrite(klass, className))
+                continue;
+
+            if (registerScreenModifier(klass, className))
                 continue;
 
             if (registerAutoCommand(klass))

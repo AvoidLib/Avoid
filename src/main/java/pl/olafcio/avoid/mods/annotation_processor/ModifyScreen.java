@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.screen_modifier;
+package pl.olafcio.avoid.mods.annotation_processor;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.screen.ScreenMarker;
