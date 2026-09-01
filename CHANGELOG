@@ -15,18 +15,15 @@
 - Paper
 
 **🪵 Changelog:**
-- [Player API] #getInventory()
-- [Annotations] @Discouraged
-- Potential fix for net.player.Player loading
-- Fix AvoidMod#onDisable() doc
-- Correct modrinth dependencies for <1.21.11 versions
-- Fix sources-jar publishing
-- [Entity API] #{ setInvulnerable, setInvisible}([boolean] value)
-- Mark some Entity methods as final in customs I forgot about
-- [Effect API] Rename '#onMobHurt' to '#onDamage'
-- [Server Entity] Resurrect Event
-- Fix publishing exclusions
-- [Effect API] #onMobHurt()
+- [Quilt] Store the sourcePaths in a field
+- [Player API] #canUseOPBlocks()
+- [Entity API] #is([Entity] entity)
+- Correct kyori COFromNative error messages
+- Screen Widget API
+- [Player API] #getEnderchest()
+- [ModLoader] @ModifyScreen annotation
+- Screen Modifier API
+- Fix RenderLayers
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
