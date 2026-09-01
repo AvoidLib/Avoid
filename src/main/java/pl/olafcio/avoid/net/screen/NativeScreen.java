@@ -176,4 +176,10 @@ public final class NativeScreen extends Screen implements ParentElement {
 
         return convertRenderable(el);
     }
+
+    @Override
+    @Nullable
+    public Renderable widget(WidgetMarker marker) {
+        return convertRenderable(((IScreen) realScreen).avoid$widget(marker));
+    }
 }

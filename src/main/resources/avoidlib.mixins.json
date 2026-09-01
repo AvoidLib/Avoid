@@ -55,7 +55,7 @@
     "MinecraftMixin",
     "OptionsMixin",
     "ScreenMixin",
-    "TitleScreenMixin",
+    "screen.TitleScreenMixin",
     "ToastManagerMixin",
     "accessors.IFogRenderer"
   ],

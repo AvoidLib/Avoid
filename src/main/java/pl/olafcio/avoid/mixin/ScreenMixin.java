@@ -3,6 +3,7 @@ package pl.olafcio.avoid.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -12,6 +13,7 @@ import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.screen.Drawer;
 import pl.olafcio.avoid.net.screen.DrawerNative;
 import pl.olafcio.avoid.net.screen.NativeScreenNative;
+import pl.olafcio.avoid.net.screen.WidgetMarker;
 import pl.olafcio.avoid.net.screen.event.ScreenInitEvent;
 import pl.olafcio.avoid.net.screen_modifier.*;
 
@@ -130,5 +132,10 @@ public class ScreenMixin
             }, 4, "render");
         else
             original.call(instance, guiGraphics, i, j, f);
+    }
+
+    @Override
+    public Renderable avoid$widget(WidgetMarker marker) {
+        return null;
     }
 }

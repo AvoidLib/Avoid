@@ -1,0 +1,9 @@
+{
+    var string = "Avoid " + Avoid.getVersion();
+    // var string = "Avoid " + Avoid.getVersion();
+}
+
+{
+    guiGraphics.drawString(this.font, string, 2, this.height - 20, ARGB.white(g));
+    //guiGraphics.drawString(this.font, string, 2, this.height - 20, ARGB.white(g));
+}

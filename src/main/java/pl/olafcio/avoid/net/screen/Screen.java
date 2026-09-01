@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.screen;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.screen.widget.able.Renderable;
@@ -13,7 +14,7 @@ import pl.olafcio.avoid.net.screen.widget.container.Container;
  * Its goal is <u>rendering</u> and <u>handling mouse and keyboard</u> events.
  */
 @NeverRemoval
-public abstract class Screen extends Container {
+public abstract class Screen extends Container implements MarkedScreen {
     final BaseComponent<?> accessibilityTitle;
 
     protected double lastMouseX = -1;
@@ -135,5 +136,12 @@ public abstract class Screen extends Container {
     @ApiStatus.Experimental
     public void insert(Renderable widget, int index) {
         super.insert(widget, index);
+    }
+
+    @Override
+    @Nullable
+    @ApiStatus.Experimental
+    public Renderable widget(WidgetMarker marker) {
+        return null;
     }
 }
