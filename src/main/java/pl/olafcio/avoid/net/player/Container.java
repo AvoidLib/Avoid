@@ -18,7 +18,7 @@ public class Container {
         else if (inventory instanceof SimpleContainer inv)
             inv.addItem(ItemStackNative.convert(itemStack));
         else
-            throw new UnsupportedOperationException("[Inventory#give] This container doesn't support this action");
+            throw new UnsupportedOperationException("[Container#give] This container doesn't support this action");
     }
 
     public void clear() {
