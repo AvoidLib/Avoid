@@ -21,6 +21,10 @@ public final class Client {
     @ApiStatus.Internal
     private Client() {}
 
+    /**
+     * Gets the current launcher brand.<br/>
+     * This should be something like {@code ATLauncher}, I think.
+     */
     @Nullable
     @ApiStatus.Experimental
     public static String getLauncherBrand()  {
@@ -30,6 +34,10 @@ public final class Client {
         return ClientNative.getLauncherBrand();
     }
 
+    /**
+     * Gets the local player instance.<br/>
+     * This is the player object for the client controlled player.
+     */
     @Nullable
     @NeverRemoval
     public static Player getPlayer() {
@@ -39,6 +47,11 @@ public final class Client {
         return ClientNative.getPlayer();
     }
 
+    /**
+     * Gets the camera entity.<br/>
+     * This is the entity object that the client has the FOV from.<br/><br/>
+     * This is usually equal to the {@linkplain Client#getPlayer() local player object}.
+     */
     @Nullable
     @NeverRemoval
     public static Entity getCamera() {
@@ -48,6 +61,10 @@ public final class Client {
         return ClientNative.getCamera();
     }
 
+    /**
+     * Gets the local world instance.<br/>
+     * This is the world object that the {@linkplain Client#getPlayer() local player} is in.
+     */
     @Nullable
     @NeverRemoval
     public static World getWorld() {
@@ -57,6 +74,10 @@ public final class Client {
         return ClientNative.getWorld();
     }
 
+    /**
+     * Gets the active screen instance.<br/>
+     * This is kinda the "view" that the client is displaying.
+     */
     @Nullable
     @NeverRemoval
     public static Screen getScreen() {
@@ -66,6 +87,9 @@ public final class Client {
         return ClientNative.getScreen();
     }
 
+    /**
+     * Gets the current FPS <i>(frames per second)</i>.
+     */
     @NeverRemoval
     public static int getFPS() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)

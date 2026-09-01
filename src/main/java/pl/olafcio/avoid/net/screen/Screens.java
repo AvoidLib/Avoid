@@ -5,11 +5,14 @@ import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.net.client.Client;
 
 import java.util.function.Supplier;
 
 /**
  * A namespace used to manage client screen state.
+ * <br/><br/>
+ * <b>Note:</b> To get the current screen, use {@link Client#getScreen()}.
  */
 @NeverRemoval
 public final class Screens {
