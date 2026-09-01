@@ -1,9 +1,14 @@
 package pl.olafcio.avoid.net.server;
 
+import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.AvoidInternal;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.annotations.env.DedicatedServerOnly;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
@@ -100,5 +105,13 @@ public final class Server {
 
     public static void stopServer() {
         AvoidInternal.getServer().stopServer();
+    }
+
+    @DedicatedServerOnly
+    public static Properties getProperties() {
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.SERVER)
+            throw new ImproperEnvironment("[Server#getProperties] Can only be called from the server");
+
+        return new Properties(((DedicatedServer) AvoidInternal.getServer()).getProperties());
     }
 }

@@ -1,0 +1,4 @@
+{
+    return ((DedicatedServerProperties) object).managementServerAllowedOrigins;
+    return null;
+}
