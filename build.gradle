@@ -340,6 +340,16 @@ release {
         }
     }
 
+    if (paper) {
+        optional {
+            project "placeholderapi"
+        }
+    } else {
+        optional {
+            project "placeholder-api"
+        }
+    }
+
     modrinth {
         slug  "avoid"
         token providers.environmentVariable("MODRINTH_API_KEY")
