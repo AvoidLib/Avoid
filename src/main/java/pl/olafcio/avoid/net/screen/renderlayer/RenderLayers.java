@@ -37,7 +37,7 @@ public final class RenderLayers {
                     String path = pipeline.getLocation().getPath();
 
                     if (path.startsWith("pipeline/"))
-                        PRESENT.put(path.substring(9), pipeline);
+                        PRESENT.put(path.substring(9).toLowerCase(), pipeline);
                 }
             } catch (IllegalAccessException | ClassCastException e) {
                 Avoid.LOGGER.error("Couldn't register RenderPipeline '{}'; ignoring", field);
@@ -142,7 +142,7 @@ public final class RenderLayers {
     }
 
     private static RenderLayer registerClient(String name) {
-        var pipeline = PRESENT.get(name);
+        var pipeline = PRESENT.get(name.toLowerCase());
         var isPresent = pipeline != null;
 
         return new RenderLayer() {
