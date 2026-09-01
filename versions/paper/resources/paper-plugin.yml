@@ -11,8 +11,8 @@ website: https://github.com/AvoidLib/Avoid/wiki/
 bootstrapper: pl.olafcio.avoid.PaperBootstrap
 
 dependencies:
-  server: {}
-#    packetevents:
-#      required: true
-#      load: BEFORE
-#      join-classpath: true
+  server:
+    PlaceholderAPI:
+      required: true
+      load: BEFORE
+      join-classpath: true

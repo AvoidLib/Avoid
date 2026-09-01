@@ -112,6 +112,18 @@ repositories {
             url 'https://maven.quiltmc.org/repository/release/'
         }
     }
+
+    if (!paper) {
+        maven {
+            url "https://maven.nucleoid.xyz/"
+            name "Nucleoid"
+        }
+    } else {
+        maven {
+            url "https://repo.extendedclip.com/releases/"
+            name "ExtendedClip"
+        }
+    }
 }
 
 if (sponge) {
@@ -190,6 +202,12 @@ dependencies {
 
     if ("include_permapi" in project.getProperties()) {
         mod "me.lucko:fabric-permissions-api:${project.include_permapi}"
+    }
+
+    if (paper) {
+        compileOnly "me.clip:placeholderapi:2.12.3"
+    } else if (project.text_papi_version != '-') {
+        mod "eu.pb4:placeholder-api:${project.text_papi_version}"
     }
 }
 

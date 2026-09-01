@@ -29,6 +29,9 @@
     "minecraft": "${minecraft_version_range}",
     "java": ">=21"
   },
+  "suggests": {
+    "placeholder-api": "*"
+  },
   "custom": {
     "modmenu": {
       "links": {

@@ -24,6 +24,9 @@
       {"id": "quilt_loader", "versions": ">=${quilt_loader}"},
       {"id": "minecraft",    "versions": "${minecraft_version_range}"},
       {"id": "java",         "versions": ">=21"}
+    ],
+    "suggests": [
+      {"id": "placeholder-api", "versions": "*"}
     ]
   },
   "experimental_quilt_loader_plugin": {
