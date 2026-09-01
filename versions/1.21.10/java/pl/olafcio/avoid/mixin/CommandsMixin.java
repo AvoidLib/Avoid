@@ -16,6 +16,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Coerce;
+import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.net.command_server.event.ServerCommandExecuteEvent;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.internal.PermAPI;
@@ -43,6 +46,17 @@ public class CommandsMixin {
     @Shadow
     @Final
     private CommandDispatcher<CommandSourceStack> dispatcher;
+
+    @Inject(at = @At("HEAD"), method = "performCommand", cancellable = true)
+    public void performCommand(@Coerce Object parseResults, String string, CallbackInfo ci) {
+        var event = new ServerCommandExecuteEvent(string);
+
+        EventManager.fire(event);
+
+        if (event.isCancelled()) {
+            ci.cancel();
+        }
+    }
 
     @Unique
     private static final LinkedHashMap<String, CommandParameter<?>> EMPTY
