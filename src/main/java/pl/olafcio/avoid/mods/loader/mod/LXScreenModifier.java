@@ -41,9 +41,9 @@ public non-sealed interface LXScreenModifier
                             } catch (InvocationTargetException e) {
                                 throw new RuntimeException(e);
                             }
-                        }
-//                        , klass.getDeclaredAnnotation(ModifyScreen.class).value()
-                        //FIXME
+                        },
+                        klass.getDeclaredAnnotation(ModifyScreen.class)
+                             .value()
                 );
             });
         }

@@ -37,18 +37,19 @@ public class ScreenMixin
 
         EventManager.fire(new ScreenInitEvent(screen, i, j));
 
-        if (ScreenModifiersNative.modifiers.isEmpty()) {
+        var typeOnly = ScreenModifiersNative.modifiers.get(((Screen) (Object) this).getClass());
+        if (typeOnly == null) {
             modifiers = EMPTY;
             original.call(instance);
             return;
         }
 
         // TODO: Get this value from cache
-        modifiers = new ScreenModifier[ScreenModifiersNative.modifiers.size()];
+        modifiers = new ScreenModifier[typeOnly.size()];
 
         int index = 0;
 
-        for (var mod : ScreenModifiersNative.modifiers) {
+        for (var mod : typeOnly) {
             var screenModifier = mod.get();
 
             ScreenModifierNative.setScreen(screenModifier, screen);

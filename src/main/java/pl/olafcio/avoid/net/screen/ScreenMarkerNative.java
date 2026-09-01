@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.screen;
 
 import net.minecraft.client.gui.screens.*;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.achievement.StatsScreen;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.debug.DebugOptionsScreen;
@@ -31,8 +32,8 @@ import java.util.HashMap;
 public enum ScreenMarkerNative {
     ;
 
-    static final HashMap<ScreenMarker, Class<?>> LOOKUP
-           = new HashMap<>();
+    public static final HashMap<ScreenMarker, Class<? extends Screen>> LOOKUP
+                  = new HashMap<>();
 
     static {
         LOOKUP.put(TITLESCREEN, TitleScreen.class);
