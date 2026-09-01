@@ -1,9 +1,11 @@
+import net.minecraft.client.Minecraft;
+
 {
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(II)V")
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(Lnet/minecraft/client/Minecraft;II)V")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(II)V")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(Lnet/minecraft/client/Minecraft;II)V")
 }
 
 {
-    public void init(int i, int j, CallbackInfo ci) {
-    public void init(Minecraft minecraft, int i, int j, CallbackInfo ci) {
+    public void init(Screen instance, Operation<Void> original, int i, int j) {
+    public void init(Screen instance, Operation<Void> original, Minecraft mc, int i, int j) {
 }
