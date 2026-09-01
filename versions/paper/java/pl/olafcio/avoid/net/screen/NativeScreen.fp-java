@@ -26,11 +26,16 @@
 }
 
 {
-    return realScreen.renderables.stream().map(NativeScreen::convertRenderable).toList();
+    return //realScreen.renderables.stream().map(NativeScreen::convertRenderable).toList();
     return null;
 }
 
 {
-    el = realScreen.renderables.get(index);
+    el = //realScreen.renderables.get(index);
     el = null;
+}
+
+{
+    realScreen.addRenderable
+    {}//
 }
