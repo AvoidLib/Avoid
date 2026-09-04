@@ -1,0 +1,4 @@
+{
+    serverboundCommandSuggestionPacket.getCommand()
+    serverboundCommandSuggestionPacket.command()
+}
