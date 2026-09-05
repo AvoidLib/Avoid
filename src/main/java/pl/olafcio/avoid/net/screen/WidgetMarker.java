@@ -35,4 +35,14 @@ public sealed interface WidgetMarker {
         TELEMETRY,
         CREDITS_AND_ATTRIBUTION
     }
+
+    enum PauseScreen implements WidgetMarker {
+        BACK_TO_GAME_BUTTON,
+        ADVANCEMENTS_BUTTON,
+        STATS_BUTTON,
+        OPTIONS_BUTTON,
+        OPEN_TO_LAN_BUTTON,
+        PLAYER_REPORTING_BUTTON,
+        DISCONNECT_BUTTON
+    }
 }

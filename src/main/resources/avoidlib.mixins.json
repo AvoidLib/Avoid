@@ -59,6 +59,7 @@
     "accessors.IFogRenderer",
     "screen.MultiplayerScreenMixin",
     "screen.OptionsScreenMixin",
+    "screen.PauseScreenMixin",
     "screen.SelectWorldScreenMixin",
     "screen.TitleScreenMixin"
   ],
