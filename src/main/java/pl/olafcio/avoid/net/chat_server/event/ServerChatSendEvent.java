@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * Fired when the server sends a system message to a player.<br/>
- * This event won't be fired for player-sent messages if a mod like No Chat Reports isn't installed.
+ * This event will be fired for player-sent messages unless a mod like No Chat Reports is installed.
  * <br/><br/>
  * <b>NOTE:</b> Not implemented on Paper (currently).
  */
