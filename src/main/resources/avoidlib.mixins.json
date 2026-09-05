@@ -58,6 +58,7 @@
     "ToastManagerMixin",
     "accessors.IFogRenderer",
     "screen.MultiplayerScreenMixin",
+    "screen.SelectWorldScreenMixin",
     "screen.TitleScreenMixin"
   ],
   "injectors": {

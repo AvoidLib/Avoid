@@ -14,4 +14,12 @@ public sealed interface WidgetMarker {
         EDIT_BUTTON,
         DELETE_BUTTON
     }
+
+    enum Singleplayer implements WidgetMarker {
+        SELECT_BUTTON,
+        DELETE_BUTTON,
+        RENAME_BUTTON,
+        COPY_BUTTON,
+        SEARCH_BOX
+    }
 }
