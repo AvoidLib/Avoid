@@ -10,6 +10,7 @@ import pl.olafcio.avoid.net.client.server.ServerEntry;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.screen.Screen;
+import pl.olafcio.avoid.net.screen.font.Font;
 import pl.olafcio.avoid.net.world.World;
 
 /**
@@ -85,6 +86,14 @@ public final class Client {
             throw new ImproperEnvironment("Cannot Client#getScreen() on the server");
 
         return ClientNative.getScreen();
+    }
+
+    @ApiStatus.Experimental
+    public static Font getFont() {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getFont() on the server");
+
+        return ClientNative.getFont();
     }
 
     /**

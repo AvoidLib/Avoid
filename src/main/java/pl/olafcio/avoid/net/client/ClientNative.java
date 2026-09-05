@@ -17,6 +17,8 @@ import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.screen.AvoidScreen;
 import pl.olafcio.avoid.net.screen.NativeScreenNative;
 import pl.olafcio.avoid.net.screen.Screen;
+import pl.olafcio.avoid.net.screen.font.Font;
+import pl.olafcio.avoid.net.screen.font.FontNative;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.WorldNative;
 
@@ -68,6 +70,10 @@ final class ClientNative {
         return screen instanceof AvoidScreen avoid
                 ? avoid.screen
                 : NativeScreenNative.create((IScreen) screen);
+    }
+
+    static Font getFont() {
+        return FontNative.convertFrom(Minecraft.getInstance().font);
     }
 
     static int getFPS() {
