@@ -7,3 +7,8 @@
     guiGraphics.drawString(this.font, string, 2, this.height - 20, ARGB.white(g));
     //guiGraphics.drawString(this.font, string, 2, this.height - 20, ARGB.white(g));
 }
+
+{
+    guiGraphics.text(this.font, string, 2, this.height - 20, ARGB.white(g));
+    //guiGraphics.text(this.font, string, 2, this.height - 20, ARGB.white(g));
+}
