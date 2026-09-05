@@ -130,6 +130,18 @@ public abstract class Screen extends Container implements MarkedScreen {
         return true;
     }
 
+    //======//
+    // SIZE //
+    //======//
+
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
+    }
+
     //===========//
     // CONTAINER //
     //===========//

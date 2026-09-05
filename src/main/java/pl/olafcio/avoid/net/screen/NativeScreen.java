@@ -238,4 +238,14 @@ public final class NativeScreen extends Screen implements ParentElement {
 
         return true;
     }
+
+    @Override
+    public int width() {
+        return realScreen.width;
+    }
+
+    @Override
+    public int height() {
+        return realScreen.height;
+    }
 }
