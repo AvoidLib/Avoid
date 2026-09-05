@@ -30,8 +30,13 @@ import pl.olafcio.avoid.net.id.Identification;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +44,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 @ApiStatus.Internal
 public final class ModLoad
@@ -92,6 +98,14 @@ public final class ModLoad
                     ? ModEnvironment.valueOf(manifest.get("environment").getAsString().toUpperCase())
                     : ModEnvironment.ALL;
 
+            List<String> libraries = manifest.has("libraries")
+                                            ? manifest.getAsJsonArray("libraries")
+                                                      .asList()
+                                                      .stream()
+                                                      .map(JsonElement::getAsString)
+                                                      .toList()
+                                            : List.of();
+
             if (env == ModEnvironment.CLIENT) {
                 if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
                     Avoid.LOGGER.warn("Skipping client-only mod: {} [{}]", name, id);
@@ -104,14 +118,51 @@ public final class ModLoad
                 }
             }
 
+            var URLs = new ArrayList<URL>();
+
+            final var mirror = "https://maven-central-eu.storage-download.googleapis.com/maven2/";
+            final var http = HttpClient.newHttpClient();
+
+            try {
+                for (var lib : libraries) {
+                    var parts = lib.split(":", 3);
+                    var slash = parts[0].replace(".", "/")
+                              + "/" + parts[1]
+                              + "/" + parts[2].replace(":", "/")
+                              + "/" + parts[1] + "-" + parts[2].replace(":", "/") + ".jar";
+
+                    var libpath = Path.of("libraries/" + slash);
+
+                    URLs.add(libpath.toUri().toURL());
+
+                    if (!Files.isRegularFile(libpath)) {
+                        Files.createDirectories(libpath.getParent());
+
+                        var url = mirror + slash;
+
+                        Avoid.LOGGER.info("[Library Downloader] Using '{}' (mod = '{}')", lib, id);
+
+                        http.send(HttpRequest.newBuilder()
+                                             .uri(URI.create(url))
+                                             .build(), HttpResponse.BodyHandlers.ofFile(libpath));
+                    }
+                }
+            } catch (InterruptedException | IOException e) {
+                throw new RuntimeException("AvoidLib failed to download maven dependencies (from mirror) for mod: '%s' (%s)".formatted(id, mod.toString()), e);
+            } finally {
+                http.close();
+            }
+
             List<String> skipClasses = manifest.has("skip-classes")
                     ? manifest.get("skip-classes").getAsJsonArray().asList().stream()
                                                                             .map(JsonElement::getAsString)
                                                                             .toList()
                     : List.of();
 
+            URLs.add(mod.toUri().toURL());
+
             var classLoader = URLClassLoader.newInstance(
-                    new URL[]{mod.toUri().toURL()},
+                    URLs.toArray(URL[]::new),
                     Avoid.class.getClassLoader()
             );
 
@@ -133,7 +184,7 @@ public final class ModLoad
 
             var meta = new AvoidModMeta(id, version, versionSystem,
                                         name, author, description,
-                                        env, klass);
+                                        env, libraries, klass);
 
             scanAllClasses(jar, classLoader, id, skipClasses, meta);
 
