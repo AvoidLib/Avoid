@@ -5,13 +5,17 @@ import net.minecraft.network.protocol.game.ClientboundSetHealthPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.AvoidInternal;
 import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.annotations.env.ClientOnly;
 import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
@@ -22,6 +26,7 @@ import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.entity.Entity;
+import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
@@ -32,6 +37,7 @@ import pl.olafcio.avoid.net.player.values.RespawnPoint;
 import pl.olafcio.avoid.net.player_server.ChatVisibility;
 import pl.olafcio.avoid.net.world.location.conv.RespawnDataNative;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
+import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 import java.util.UUID;
 
@@ -450,5 +456,30 @@ public class Player extends Entity implements Executor {
      */
     public boolean canUseOPBlocks() {
         return __cast(net.minecraft.world.entity.player.Player.class).canUseGameMasterBlocks();
+    }
+
+    @ClientOnly
+    public Raycast raycast(float distance) {
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("[Player#raycast] This can be called only on local players");
+        else if (!(underlyingEntity instanceof LocalPlayer))
+            throw new UncontrollablePlayerException("[Player#raycast] This can be called only on local players");
+
+        var result = __cast(LocalPlayer.class).raycastHitResult(distance, underlyingEntity);
+
+        return new Raycast(
+                result.getType() == HitResult.Type.ENTITY ? Raycast.Type.ENTITY :
+                result.getType() == HitResult.Type.BLOCK  ? Raycast.Type.BLOCK  :
+                                                            Raycast.Type.MISS,
+
+                Vect3Native.convert(result.getLocation()),
+
+                (
+                             result instanceof EntityHitResult ehr &&
+                    ehr.getEntity() instanceof net.minecraft.world.entity.Entity e
+                )
+                         ? EntityNative.convertFrom(e)
+                         : null
+        );
     }
 }
