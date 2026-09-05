@@ -9,7 +9,7 @@ import pl.olafcio.avoid.mods.events_loader.AllModsLoadedEvent;
 import pl.olafcio.avoid.mods.events_loader.AllModsLoadingEvent;
 import pl.olafcio.avoid.mods.loader.ModLoad;
 import pl.olafcio.avoid.net.block.values.NoteBlockInstrument;
-import pl.olafcio.avoid_lateinit.LateInitializer;
+import pl.olafcio.avoid_common.LateInitializer;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

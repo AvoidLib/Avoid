@@ -1,4 +1,4 @@
-package pl.olafcio.avoid_lateinit;
+package pl.olafcio.avoid_common;
 
 import org.jetbrains.annotations.ApiStatus;
 

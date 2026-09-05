@@ -3,7 +3,6 @@ package pl.olafcio.avoid.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.datafixers.util.Either;
 import net.minecraft.network.Connection;
 import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.chat.Component;
@@ -26,6 +25,7 @@ import pl.olafcio.avoid.net.command_server.suggestions.Suggestion;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.player_server.event.ServerPlayerKickEvent;
 import pl.olafcio.avoid.net.player_server.event.ServerPlayerUpdateAbilitiesEvent;
+import pl.olafcio.avoid_common.Either;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
