@@ -22,4 +22,17 @@ public sealed interface WidgetMarker {
         COPY_BUTTON,
         SEARCH_BOX
     }
+
+    enum Options implements WidgetMarker {
+        SKIN_CUSTOMIZATION,
+        SOUNDS,
+        VIDEO,
+        CONTROLS,
+        LANGUAGE,
+        CHAT,
+        RESOURCE_PACK,
+        ACCESSIBILITY,
+        TELEMETRY,
+        CREDITS_AND_ATTRIBUTION
+    }
 }
