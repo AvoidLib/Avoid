@@ -55,9 +55,10 @@
     "MinecraftMixin",
     "OptionsMixin",
     "ScreenMixin",
-    "screen.TitleScreenMixin",
     "ToastManagerMixin",
-    "accessors.IFogRenderer"
+    "accessors.IFogRenderer",
+    "screen.MultiplayerScreenMixin",
+    "screen.TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

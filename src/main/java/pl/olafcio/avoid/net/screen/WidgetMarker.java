@@ -8,4 +8,10 @@ public sealed interface WidgetMarker {
         OPTIONS,
         QUIT_GAME
     }
+
+    enum Multiplayer implements WidgetMarker {
+        SELECT_BUTTON,
+        EDIT_BUTTON,
+        DELETE_BUTTON
+    }
 }
