@@ -1,10 +1,9 @@
 package pl.olafcio.avoid.net.screen_modifier;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.net.screen.Drawer;
-import pl.olafcio.avoid.net.screen.KeyboardEvent;
-import pl.olafcio.avoid.net.screen.MouseEvent;
-import pl.olafcio.avoid.net.screen.Screen;
+import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.net.screen.*;
+import pl.olafcio.avoid.net.screen.widget.able.Renderable;
 
 import java.util.Objects;
 
@@ -28,6 +27,11 @@ public abstract class ScreenModifier {
 
     public Screen getScreen() {
         return screen;
+    }
+
+    @Nullable
+    public Renderable widget(WidgetMarker marker) {
+        return screen.widget(marker);
     }
 
     //============//
