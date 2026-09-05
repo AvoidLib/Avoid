@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Tells the modloader to automatically register this class as a fluid, with the {@link Fluids} namespace.
+ * @see pl.olafcio.avoid.net.fluid.Fluid net.fluid\Fluid
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

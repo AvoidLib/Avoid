@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Tells the modloader to automatically register this class as an entity, with the {@link EntityTypes} namespace.
+ * @see pl.olafcio.avoid.net.entity.custom.Entity net.entity.custom\Entity
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

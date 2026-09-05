@@ -12,6 +12,8 @@ import java.lang.annotation.Target;
 /**
  * Tells the modloader to automatically register the annotated method as the screen overwrite for the screen type that
  * matches the given marker, with the {@link Screens} namespace.
+ * @see pl.olafcio.avoid.net.screen.Screen net.screens\Screen
+ * @see pl.olafcio.avoid.net.screen.Screens net.screens\Screens
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

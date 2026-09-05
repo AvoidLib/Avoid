@@ -17,6 +17,7 @@ import java.lang.annotation.Target;
  * and when it fires and the key value matches, it triggers the annotated method.
  * <br/><br/>
  * (This is done with the {@link EventManager}.)
+ * @see pl.olafcio.avoid.net.keyboard.bind.Keybinds net.keyboard.bind\Keybinds
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

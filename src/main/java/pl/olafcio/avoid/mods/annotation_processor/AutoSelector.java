@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Tells the modloader to automatically register this class as an entity selector, with the {@link EntitySelectors} namespace.
+ * @see pl.olafcio.avoid.net.entity_selector.EntitySelector net.entity_selector\EntitySelector
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

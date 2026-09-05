@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Tells the modloader to automatically register this class as a fog, with the {@link Fogs} namespace.
+ * @see pl.olafcio.avoid.net.fog.Fog net.fog\Fog
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

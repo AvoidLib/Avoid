@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * Tells the modloader that this class is a block class, and an item should be automatically made out of it.
+ * @see AutoBlock @AutoBlock
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

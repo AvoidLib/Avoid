@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Tells the modloader to automatically register this class as an effect, with the {@link Effects} namespace.
+ * @see pl.olafcio.avoid.net.effect.Effect net.effect\Effect
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

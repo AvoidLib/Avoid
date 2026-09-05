@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Tells the modloader to automatically register this class as a block, with the {@link Blocks} namespace.
+ * @see pl.olafcio.avoid.net.block.Block net.block\Block
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

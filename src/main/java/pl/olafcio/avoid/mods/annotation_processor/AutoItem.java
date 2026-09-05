@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Tells the modloader to automatically register this class as an item, with the {@link Items} namespace.
+ * @see pl.olafcio.avoid.net.item.custom.Item net.item.custom\Item
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
