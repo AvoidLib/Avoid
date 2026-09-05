@@ -5,7 +5,7 @@
 - 26.1 *[LTS]*
 - 26.1.1 & 26.1.2
 - 26.2
-- 26.3-snapshot-10 *[TS]*
+- 26.3-pre-1 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
@@ -15,15 +15,15 @@
 - Paper
 
 **🪵 Changelog:**
-- [Quilt] Store the sourcePaths in a field
-- [Player API] #canUseOPBlocks()
-- [Entity API] #is([Entity] entity)
-- Correct kyori COFromNative error messages
-- Screen Widget API
-- [Player API] #getEnderchest()
-- [ModLoader] @ModifyScreen annotation
-- Screen Modifier API
-- Fix RenderLayers
+- I am not even writing a commit message
+- [Annotations] @DedicatedServerOnly
+- Server Properties API
+- Placeholder API
+- Screen Widget Marker API
+- [Server Command] Execute Event
+- Update to 26.3-pre-1
+- [Server Command] Suggest Event
+- [Documentation] Improve wording in ServerChatSendEvent
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
