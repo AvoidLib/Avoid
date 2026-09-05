@@ -44,6 +44,8 @@
     "CameraMixin",
     "ChatHudMixin",
     "ChatScreenMixin",
+    "CommandSuggestionsMixin",
+    "CommandSuggestionsMixin$SuggestionsListMixin",
     "GameRendererMixin",
     "GuiGraphicsMixin",
     "GuiMixin",
