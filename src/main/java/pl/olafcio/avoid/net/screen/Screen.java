@@ -1,11 +1,16 @@
 package pl.olafcio.avoid.net.screen;
 
+import com.google.common.base.CaseFormat;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.screen.widget.able.Renderable;
 import pl.olafcio.avoid.net.screen.widget.container.Container;
+
+import java.net.MalformedURLException;
 
 /**
  * An abstract screen class.
@@ -143,5 +148,36 @@ public abstract class Screen extends Container implements MarkedScreen {
     @ApiStatus.Experimental
     public Renderable widget(WidgetMarker marker) {
         return null;
+    }
+
+    //====//
+    // IS //
+    //====//
+
+    public boolean is(Identification id) {
+        final var klass = this.getClass();
+        final var klassName = CaseFormat.UPPER_CAMEL.to(
+                                                            CaseFormat.LOWER_UNDERSCORE,
+                                                            klass.getName()
+                                                                 .replaceAll("(\\..*)(Screen|(\\$.*)Screen)", "$1$3")
+                                                                 .replace(".", "/")
+                                                       );
+
+        for (var addon : AvoidModLoader.getLoadedAddons()) {
+            try {
+                if (AvoidModLoader.getLoadedAddonFile(addon).toUri().toURL().equals(klass.getProtectionDomain().getCodeSource().getLocation())) {
+                    if (!addon.id().equalsIgnoreCase(id.namespace()))
+                        return false;
+
+                    if (!klassName.toLowerCase().endsWith(id.path().toLowerCase()))
+                        return false;
+
+                    return true;
+                }
+            } catch (MalformedURLException ignored) {
+            }
+        }
+
+        return false;
     }
 }

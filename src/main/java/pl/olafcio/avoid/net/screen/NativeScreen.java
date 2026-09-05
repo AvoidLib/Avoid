@@ -1,17 +1,20 @@
 package pl.olafcio.avoid.net.screen;
 
+import com.google.common.base.CaseFormat;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import org.jspecify.annotations.Nullable;
 import pl.olafcio.avoid.A4;
+import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.mixininterface.IScreen;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
+import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.screen.widget.able.*;
 import pl.olafcio.avoid.net.screen.widget.container.ParentElement;
 import pl.olafcio.avoid.net.screen.widget_impl.AWFull;
 import pl.olafcio.avoid.net.screen.widget_impl.AWRenderOnly;
 import pl.olafcio.avoid.net.screen.widget_impl.IAvoidWidget;
 
-import java.util.stream.Collectors;
+import java.net.MalformedURLException;
 
 public final class NativeScreen extends Screen implements ParentElement {
     public final net.minecraft.client.gui.screens.Screen realScreen;
@@ -181,5 +184,58 @@ public final class NativeScreen extends Screen implements ParentElement {
     @Nullable
     public Renderable widget(WidgetMarker marker) {
         return convertRenderable(((IScreen) realScreen).avoid$widget(marker));
+    }
+
+    @Override
+    public boolean is(Identification id) {
+        final var klass = realScreen.getClass();
+        final var klassName = CaseFormat.UPPER_CAMEL.to(
+                                                               CaseFormat.LOWER_UNDERSCORE,
+                                                               klass.getName()
+                                                                    .replaceAll("(\\..*)(Screen|(\\$.*)Screen)", "$1$3")
+                                                                    .replace(".", "/")
+                                                       );
+
+        if (id.namespace().equals("minecraft")) {
+            return isMinecraft(id, klass, klassName);
+        }
+
+        return isModded(id, klass, klassName);
+    }
+
+    private boolean isModded(Identification id, Class<?> klass, String klassName) {
+        for (var addon : AvoidWrappedLoader.getModsPaths()) {
+            try {
+                if (addon.toUri().toURL().equals(klass.getProtectionDomain().getCodeSource().getLocation())) {
+                    //FIXME
+                    if (!addon.getFileName().toString().toLowerCase().contains(id.namespace().toLowerCase()))
+                        return false;
+
+                    if (!klassName.toLowerCase().endsWith(id.path().toLowerCase()))
+                        return false;
+
+                    return true;
+                }
+            } catch (MalformedURLException ignored) {
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isMinecraft(Identification id, Class<?> klass, String klassName) {
+        try {
+            var marker = ScreenMarker.valueOf(id.path().toUpperCase());
+            return marker.is((IScreen) realScreen);
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        if (!klass.getName().startsWith("net.minecraft."))
+            return false;
+
+        if (!klassName.toLowerCase().endsWith(id.path().toLowerCase()))
+            return false;
+
+        return true;
     }
 }
