@@ -4,13 +4,13 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
 
+import java.util.HashMap;
+
 @Native
 @ApiStatus.Internal
-public final class RenderLayerNative {
-    @ApiStatus.Internal
-    private RenderLayerNative() {}
+final class RenderLayersNative {
+    static HashMap<String, RenderPipeline> PRESENT;
 
-    public static RenderPipeline convert(RenderLayer layer) {
-        return (RenderPipeline) layer.get();
-    }
+    @ApiStatus.Internal
+    private RenderLayersNative() {}
 }

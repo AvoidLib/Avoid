@@ -16,9 +16,8 @@ public final class RenderLayers {
     @ApiStatus.Internal
     private RenderLayers() {}
 
-    private static final HashMap<String, RenderPipeline> PRESENT;
     static {
-        PRESENT = new HashMap<>();
+        RenderLayersNative.PRESENT = new HashMap<>();
 
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
             clinit();
@@ -37,7 +36,7 @@ public final class RenderLayers {
                     String path = pipeline.getLocation().getPath();
 
                     if (path.startsWith("pipeline/"))
-                        PRESENT.put(path.substring(9).toLowerCase(), pipeline);
+                        RenderLayersNative.PRESENT.put(path.substring(9).toLowerCase(), pipeline);
                 }
             } catch (IllegalAccessException | ClassCastException e) {
                 Avoid.LOGGER.error("Couldn't register RenderPipeline '{}'; ignoring", field);
@@ -142,7 +141,7 @@ public final class RenderLayers {
     }
 
     private static RenderLayer registerClient(String name) {
-        var pipeline = PRESENT.get(name.toLowerCase());
+        var pipeline = RenderLayersNative.PRESENT.get(name.toLowerCase());
         var isPresent = pipeline != null;
 
         return new RenderLayer() {
@@ -157,7 +156,7 @@ public final class RenderLayers {
             }
 
             @Override
-            RenderPipeline get() {
+            Object get() {
                 return pipeline;
             }
         };
