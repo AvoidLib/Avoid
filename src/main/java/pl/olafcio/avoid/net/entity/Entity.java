@@ -877,4 +877,12 @@ public abstract class Entity {
     public boolean is(Entity entity) {
         return underlyingEntity.is(EntityNative.convert(entity));
     }
+
+    public static double getViewScale() {
+        return net.minecraft.world.entity.Entity.getViewScale();
+    }
+
+    public static void setViewScale(double value) {
+        net.minecraft.world.entity.Entity.setViewScale(value);
+    }
 }
