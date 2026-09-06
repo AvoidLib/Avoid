@@ -30,6 +30,7 @@ public @interface KeyHandler {
     Category category() default Category.__NOT_SET__;
 
     String displayName() default "";
+    boolean ingame() default true;
 
     enum Trigger {
         PRESS,

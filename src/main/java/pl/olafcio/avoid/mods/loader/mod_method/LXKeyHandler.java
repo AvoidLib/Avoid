@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.mods.annotation_processor.KeyHandler;
 import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.net.client.Client;
 import pl.olafcio.avoid.net.keyboard.bind.Category;
 import pl.olafcio.avoid.net.keyboard.bind.Keybinds;
 import pl.olafcio.avoid.net.keyboard.event.ClientKeyEvent;
@@ -83,11 +84,17 @@ public interface LXKeyHandler {
                 Avoid.LOGGER.error("Cannot register KeyHandler#displayName() without setting the category");
             } else {
                 var supplier = Keybinds.register(displayName, key, out);
-                return event -> supplier.get();
+                if (annotation.ingame())
+                    return event -> supplier.get();
             }
         } else if (annotation.category() != KeyHandler.Category.__NOT_SET__) {
             Avoid.LOGGER.error("Cannot register KeyHandler#category() without setting the display name");
         }
+
+        if (annotation.ingame())
+            return event -> {
+                return event.getKey() == key && Client.getScreen() == null;
+            };
 
         return event -> event.getKey() == key;
     }
