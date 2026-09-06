@@ -15,6 +15,7 @@ import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.ModEnvironment;
 import pl.olafcio.avoid.mods.annotation_processor.*;
 import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.mods.events_loader.ModBeforeLoadEvent;
 import pl.olafcio.avoid.mods.events_loader.ModLoadedEvent;
 import pl.olafcio.avoid.mods.events_loader.ModEnablingEvent;
 import pl.olafcio.avoid.mods.events_loader.error.ModErrorEvent;
@@ -165,6 +166,8 @@ public final class ModLoad
                     URLs.toArray(URL[]::new),
                     Avoid.class.getClassLoader()
             );
+
+            EventManager.fire(new ModBeforeLoadEvent(id, manifest, jar));
 
             String klassName = manifest.get("main-class").getAsString();
 
