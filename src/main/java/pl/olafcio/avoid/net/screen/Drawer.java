@@ -174,6 +174,15 @@ public final class Drawer {
         this.drawString(font, formattedCharSequence, i - FontNative.convert(font).width(formattedCharSequence) / 2, j, k);
     }
 
+    public void drawCenteredString(Font font, String string, int x, int y, int color, boolean shadow) {
+        this.drawString(font, string, x - font.width(string) / 2, y, color, shadow);
+    }
+
+    public void drawCenteredString(Font font, BaseComponent<?> component, int i, int j, int k, boolean shadow) {
+        FormattedCharSequence formattedCharSequence = COToNative.from(component).getVisualOrderText();
+        this.drawString(font, formattedCharSequence, i - FontNative.convert(font).width(formattedCharSequence) / 2, j, k, shadow);
+    }
+
     private void drawCenteredString(Font font, FormattedCharSequence formattedCharSequence, int i, int j, int k) {
         this.drawString(font, formattedCharSequence, i - FontNative.convert(font).width(formattedCharSequence) / 2, j, k);
     }
