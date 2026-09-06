@@ -45,6 +45,7 @@ public abstract class Screen extends Container implements MarkedScreen {
      * Called when the screen should render.
      */
     public void render(Drawer gui, int mouseX, int mouseY, float tickDelta) {
+        super.render(gui, mouseX, mouseY, tickDelta);
     }
 
     /**
