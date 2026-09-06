@@ -169,40 +169,40 @@ public final class Drawer {
         this.drawString(font, string, x - font.width(string) / 2, y, color);
     }
 
-    public void drawCenteredString(Font font, BaseComponent<?> component, int i, int j, int k) {
+    public void drawCenteredString(Font font, BaseComponent<?> component, int x, int y, int color) {
         FormattedCharSequence formattedCharSequence = COToNative.from(component).getVisualOrderText();
-        this.drawString(font, formattedCharSequence, i - FontNative.convert(font).width(formattedCharSequence) / 2, j, k);
+        this.drawString(font, formattedCharSequence, x - FontNative.convert(font).width(formattedCharSequence) / 2, y, color);
     }
 
     public void drawCenteredString(Font font, String string, int x, int y, int color, boolean shadow) {
         this.drawString(font, string, x - font.width(string) / 2, y, color, shadow);
     }
 
-    public void drawCenteredString(Font font, BaseComponent<?> component, int i, int j, int k, boolean shadow) {
+    public void drawCenteredString(Font font, BaseComponent<?> component, int x, int y, int color, boolean shadow) {
         FormattedCharSequence formattedCharSequence = COToNative.from(component).getVisualOrderText();
-        this.drawString(font, formattedCharSequence, i - FontNative.convert(font).width(formattedCharSequence) / 2, j, k, shadow);
+        this.drawString(font, formattedCharSequence, x - FontNative.convert(font).width(formattedCharSequence) / 2, y, color, shadow);
     }
 
-    private void drawCenteredString(Font font, FormattedCharSequence formattedCharSequence, int i, int j, int k) {
-        this.drawString(font, formattedCharSequence, i - FontNative.convert(font).width(formattedCharSequence) / 2, j, k);
+    private void drawCenteredString(Font font, FormattedCharSequence formattedCharSequence, int x, int y, int color) {
+        this.drawString(font, formattedCharSequence, x - FontNative.convert(font).width(formattedCharSequence) / 2, y, color);
     }
 
-    public void drawString(Font font, @Nullable String string, int i, int j, int k) {
-        this.drawString(font, string, i, j, k, true);
+    public void drawString(Font font, @Nullable String string, int x, int y, int color) {
+        this.drawString(font, string, x, y, color, true);
     }
 
-    public void drawString(Font font, @Nullable String string, int i, int j, int k, boolean bl) {
+    public void drawString(Font font, @Nullable String string, int x, int y, int color, boolean shadow) {
         if (string != null) {
-            this.drawString(font, Language.getInstance().getVisualOrder(FormattedText.of(string)), i, j, k, bl);
+            this.drawString(font, Language.getInstance().getVisualOrder(FormattedText.of(string)), x, y, color, shadow);
         }
     }
 
-    private void drawString(Font font, FormattedCharSequence formattedCharSequence, int i, int j, int k) {
-        this.drawString(font, formattedCharSequence, i, j, k, true);
+    private void drawString(Font font, FormattedCharSequence formattedCharSequence, int x, int y, int color) {
+        this.drawString(font, formattedCharSequence, x, y, color, true);
     }
 
-    private void drawString(Font font, FormattedCharSequence formattedCharSequence, int i, int j, int k, boolean shadow) {
-        if (Coloring.getAlpha(k) != 0) {
+    private void drawString(Font font, FormattedCharSequence formattedCharSequence, int x, int y, int color, boolean shadow) {
+        if (Coloring.getAlpha(color) != 0) {
             // TODO: Should I copy-lock GuiTextRenderState?
             //       Probably not, because the array of those is fucked up
             //       However it's probably doable with access-wideners
@@ -211,48 +211,70 @@ public final class Drawer {
                     FontNative.convert(font),
                     formattedCharSequence,
                     new Matrix3x2f(this.graphics.pose()),
-                    i, j,
-                    k, 0,
+                    x, y,
+                    color, 0,
                     shadow, false,
                     this.graphics.scissorStack.peek()
             ));
         }
     }
 
-    public void drawString(Font font, BaseComponent<?> component, int i, int j, int k) {
-        this.drawString(font, component, i, j, k, true);
+    /**
+     * Renders a chat component <i>(basically a more advanced form of text)</i> with shadow.
+     * @param font The font to render with.
+     * @param component The chat component to render.
+     * @param x The screen X to render at. <i>(affected by pose)</i>
+     * @param y The screen Y to render at. <i>(affected by pose)</i>
+     * @param color The text color.
+     */
+    public void drawString(Font font, BaseComponent<?> component, int x, int y, int color) {
+        this.drawString(font, component, x, y, color, true);
     }
 
-    public void drawString(Font font, BaseComponent<?> component, int i, int j, int k, boolean bl) {
-        this.drawString(font, COToNative.from(component).getVisualOrderText(), i, j, k, bl);
+    /**
+     * Renders a chat component <i>(basically a more advanced form of text)</i>.
+     * @param font The font to render with.
+     * @param component The chat component to render.
+     * @param x The screen X to render at. <i>(affected by pose)</i>
+     * @param y The screen Y to render at. <i>(affected by pose)</i>
+     * @param color The text color.
+     * @param shadow Whether to use native text shadow.
+     */
+    public void drawString(Font font, BaseComponent<?> component, int x, int y, int color, boolean shadow) {
+        this.drawString(font, COToNative.from(component).getVisualOrderText(), x, y, color, shadow);
     }
 
-    public void drawWordWrap(Font font, BaseComponent<?> component, int i, int j, int k, int l) {
-        this.drawWordWrap(font, component, i, j, k, l, true);
+    public void drawWordWrap(Font font, BaseComponent<?> component, int x, int y, int maxWidth, int color) {
+        this.drawWordWrap(font, component, x, y, maxWidth, color, true);
     }
 
-    public void drawWordWrap(Font font, BaseComponent<?> component, int x, int y, int k, int l, boolean bl) {
+    public void drawWordWrap(Font font, BaseComponent<?> component, int x, int y, int maxWidth, int color, boolean shadow) {
         var formattedText = COToNative.from(component);
-        for(FormattedCharSequence formattedCharSequence : FontNative.convert(font).split(formattedText, k)) {
-            this.drawString(font, formattedCharSequence, x, y, l, bl);
+        for(FormattedCharSequence formattedCharSequence : FontNative.convert(font).split(formattedText, maxWidth)) {
+            this.drawString(font, formattedCharSequence, x, y, color, shadow);
             Objects.requireNonNull(font);
             y += 9;
         }
 
     }
 
-    public void drawStringWithBackdrop(Font font, BaseComponent<?> component, int i, int j, int k, int l) {
-        int m = AvoidLibClient.mc.options.getBackgroundColor(0.0F);
-        if (m != 0) {
+    public void drawStringWithBackdrop(Font font, BaseComponent<?> component, int x, int y, int width, int color) {
+        int textBG = AvoidLibClient.mc.options.getBackgroundColor(0.0F);
+        if (textBG != 0) {
             int n = 2;
-            int var10001 = i - 2;
-            int var10002 = j - 2;
-            int var10003 = i + k + 2;
+
+            int myX = x - n;
+            int myY = y - n;
+
+            int myX2 = x + width + n;
+            int myY2 = y + 9 + n;
+
             Objects.requireNonNull(font);
-            this.fill(var10001, var10002, var10003, j + 9 + 2, ARGB.multiply(m, l));
+
+            this.fill(myX, myY, myX2, myY2, ARGB.multiply(textBG, color));
         }
 
-        this.drawString(font, component, i, j, l, true);
+        this.drawString(font, component, x, y, color, true);
     }
 
     /**
@@ -272,54 +294,102 @@ public final class Drawer {
 
     /**
      * Renders a texture on the screen.
+     * @param renderLayer The layer to draw on.
+     * @param id The texture ID to draw.
+     * @param x The screen X to draw the texture at. <i>(affected by pose)</i>
+     * @param y The screen Y to draw the texture at. <i>(affected by pose)</i>
+     * @param textureX The X offset to draw the texture from. It's basically {@code u}.
+     * @param textureY The Y offset to draw the texture from. It's basically {@code v}.
+     * @param width The screen width to draw the texture in. <i>(affected by pose)</i>
+     * @param height The screen height to draw the texture in. <i>(affected by pose)</i>
+     * @param textureWidth The full width of the texture file.
+     * @param textureHeight The full height of the texture file.
+     * @param color An overlay color for the texture. {@code -1} if none.
      */
-    public void blit(RenderLayer renderLayer, Identification id, int i, int j, float f, float g, int k, int l, int m, int n, int o) {
-        this.blit(renderLayer, id, i, j, f, g, k, l, k, l, m, n, o);
+    public void blit(RenderLayer renderLayer, Identification id, int x, int y, float textureX, float textureY, int width, int height, int textureWidth, int textureHeight, int color) {
+        this.blit(renderLayer, id, x, y, textureX, textureY, width, height, width, height, textureWidth, textureHeight, color);
+    }
+
+    /**
+     * Renders a sprite from a texture on the screen.
+     * @param renderLayer The layer to draw on.
+     * @param id The texture ID to draw.
+     * @param x The screen X to draw the texture at. <i>(affected by pose)</i>
+     * @param y The screen Y to draw the texture at. <i>(affected by pose)</i>
+     * @param textureX The X offset to draw the texture from. It's basically {@code u}.
+     * @param textureY The Y offset to draw the texture from. It's basically {@code v}.
+     * @param width The screen width to draw the texture in. <i>(affected by pose)</i>
+     * @param height The screen height to draw the texture in. <i>(affected by pose)</i>
+     * @param textureWidth The full width of the texture file.
+     * @param textureHeight The full height of the texture file.
+     */
+    public void blit(RenderLayer renderLayer, Identification id, int x, int y, float textureX, float textureY, int width, int height, int textureWidth, int textureHeight) {
+        this.blit(renderLayer, id, x, y, textureX, textureY, width, height, width, height, textureWidth, textureHeight);
+    }
+
+    /**
+     * Renders a scaled sprite from a texture on the screen.
+     * <br/><br/>
+     * If you need an overlay color, see: {@link Drawer#blit(RenderLayer, Identification, int, int, float, float, int, int, int, int, int, int, int)}
+     * @param renderLayer The layer to draw on.
+     * @param id The texture ID to draw.
+     * @param x The screen X to draw the texture at. <i>(affected by pose)</i>
+     * @param y The screen Y to draw the texture at. <i>(affected by pose)</i>
+     * @param textureX The X offset to draw the texture from. It's basically {@code u}.
+     * @param textureY The Y offset to draw the texture from. It's basically {@code v}.
+     * @param width The screen width to draw the texture in. <i>(affected by pose)</i>
+     * @param height The screen height to draw the texture in. <i>(affected by pose)</i>
+     * @param spriteWidth The width of the asset to draw from the texture.
+     * @param spriteHeight The height of the asset to draw from the texture.
+     * @param textureWidth The full width of the texture file.
+     * @param textureHeight The full height of the texture file.
+     */
+    public void blit(RenderLayer renderLayer, Identification id, int x, int y, float textureX, float textureY, int width, int height, int spriteWidth, int spriteHeight, int textureWidth, int textureHeight) {
+        this.blit(renderLayer, id, x, y, textureX, textureY, width, height, spriteWidth, spriteHeight, textureWidth, textureHeight, -1);
+    }
+
+    /**
+     * Renders a scaled sprite from a texture on the screen.
+     * @param renderLayer The layer to draw on.
+     * @param id The texture ID to draw.
+     * @param x The screen X to draw the texture at. <i>(affected by pose)</i>
+     * @param y The screen Y to draw the texture at. <i>(affected by pose)</i>
+     * @param textureX The X offset to draw the texture from. It's basically {@code u}.
+     * @param textureY The Y offset to draw the texture from. It's basically {@code v}.
+     * @param width The screen width to draw the texture in. <i>(affected by pose)</i>
+     * @param height The screen height to draw the texture in. <i>(affected by pose)</i>
+     * @param spriteWidth The width of the asset to draw from the texture.
+     * @param spriteHeight The height of the asset to draw from the texture.
+     * @param textureWidth The full width of the texture file.
+     * @param textureHeight The full height of the texture file.
+     * @param color An overlay color for the texture. {@code -1} if none.
+     */
+    public void blit(RenderLayer renderLayer, Identification id, int x, int y, float textureX, float textureY, int width, int height, int spriteWidth, int spriteHeight, int textureWidth, int textureHeight, int color) {
+        this.innerBlit(renderLayer, id, x, x + width, y, y + height, (textureX + 0.0F) / (float)textureWidth, (textureX + (float)spriteWidth) / (float)textureWidth, (textureY + 0.0F) / (float)textureHeight, (textureY + (float)spriteHeight) / (float)textureHeight, color);
     }
 
     /**
      * Renders a texture on the screen.
      */
-    public void blit(RenderLayer renderLayer, Identification id, int i, int j, float f, float g, int k, int l, int m, int n) {
-        this.blit(renderLayer, id, i, j, f, g, k, l, k, l, m, n);
+    public void blit(Identification id, int x0, int y0, int x1, int y1, float u0, float u1, float v0, float v1) {
+        this.innerBlit(RenderLayers.GUI_TEXTURED, id, x0, x1, y0, y1, u0, u1, v0, v1, -1);
     }
 
-    /**
-     * Renders a texture on the screen.
-     */
-    public void blit(RenderLayer renderLayer, Identification id, int i, int j, float f, float g, int k, int l, int m, int n, int o, int p) {
-        this.blit(renderLayer, id, i, j, f, g, k, l, m, n, o, p, -1);
-    }
-
-    /**
-     * Renders a texture on the screen.
-     */
-    public void blit(RenderLayer renderLayer, Identification id, int i, int j, float f, float g, int k, int l, int m, int n, int o, int p, int q) {
-        this.innerBlit(renderLayer, id, i, i + k, j, j + l, (f + 0.0F) / (float)o, (f + (float)m) / (float)o, (g + 0.0F) / (float)p, (g + (float)n) / (float)p, q);
-    }
-
-    /**
-     * Renders a texture on the screen.
-     */
-    public void blit(Identification id, int i, int j, int k, int l, float f, float g, float h, float m) {
-        this.innerBlit(RenderLayers.GUI_TEXTURED, id, i, k, j, l, f, g, h, m, -1);
-    }
-
-    private void innerBlit(RenderLayer renderLayer, Identification identifier, int i, int j, int k, int l, float f, float g, float h, float m, int n) {
+    private void innerBlit(RenderLayer renderLayer, Identification identifier, int x0, int x1, int y0, int y1, float u0, float u1, float v0, float v1, int color) {
         AbstractTexture abstractTexture = AvoidLibClient.mc.getTextureManager().getTexture(IdentificationNative.convert(identifier));
-        this.submitBlit(renderLayer, abstractTexture.getTextureView(), abstractTexture.getSampler(), i, k, j, l, f, g, h, m, n);
+        this.submitBlit(renderLayer, abstractTexture.getTextureView(), abstractTexture.getSampler(), x0, y0, x1, y1, u0, u1, v0, v1, color);
     }
 
-    private void submitBlit(RenderLayer renderLayer, GpuTextureView gpuTextureView, GpuSampler gpuSampler, int i, int j, int k, int l, float f, float g, float h, float m, int n) {
+    private void submitBlit(RenderLayer renderLayer, GpuTextureView gpuTextureView, GpuSampler gpuSampler, int x0, int y0, int x1, int y1, float u0, float u1, float v0, float v1, int color) {
         this.graphics.guiRenderState.submitGuiElement(new BlitRenderState(
                 RenderLayerNative.convert(renderLayer),
                 TextureSetup.singleTexture(gpuTextureView, gpuSampler),
                 new Matrix3x2f(this.graphics.pose()),
-                i, j,
-                k, l,
-                f, g,
-                h, m,
-                n,
+                x0, y0,
+                x1, y1,
+                u0, u1,
+                v0, v1,
+                color,
                 this.graphics.scissorStack.peek()
         ));
     }
