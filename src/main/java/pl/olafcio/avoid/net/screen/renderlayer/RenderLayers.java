@@ -10,6 +10,7 @@ import pl.olafcio.avoid.RunningEnv;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 @ApiStatus.Experimental
 public final class RenderLayers {
@@ -18,6 +19,7 @@ public final class RenderLayers {
 
     static {
         RenderLayersNative.PRESENT = new HashMap<>();
+        RenderLayersNative.CUSTOM = new HashMap<>();
 
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
             clinit();
@@ -141,6 +143,11 @@ public final class RenderLayers {
     }
 
     private static RenderLayer registerClient(String name) {
+        var namelc = name.toLowerCase();
+
+        if (RenderLayersNative.CUSTOM.containsKey(namelc))
+            return RenderLayersNative.CUSTOM.get(namelc);
+
         var pipeline = RenderLayersNative.PRESENT.get(name.toLowerCase());
         var isPresent = pipeline != null;
 
@@ -160,5 +167,125 @@ public final class RenderLayers {
                 return pipeline;
             }
         };
+    }
+
+    @ApiStatus.Experimental
+    public static final class Builder {
+        private String name;
+        private String shader_vertex;
+        private String shader_fragment;
+        private boolean cull = true;
+        private boolean depthwrite = true;
+        private ArrayList<String> samplers
+          = new ArrayList<>();
+        private HashMap<String, Float> defines
+          = new HashMap<>();
+
+        /**
+         * Sets the name and location of the builded renderlayer.
+         *
+         * @param name The renderlayer name. This shouldn't start {@code pipeline/}, as that is already prepended.
+         *             This should also be lowercase.
+         */
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder shader(String shader) {
+            this.shader_vertex = shader;
+            this.shader_fragment = shader;
+            return this;
+        }
+
+        public Builder shader_vertex(String shader) {
+            this.shader_vertex = shader;
+            return this;
+        }
+
+        public Builder shader_fragment(String shader) {
+            this.shader_fragment = shader;
+            return this;
+        }
+
+        public Builder sampler(String sampler) {
+            this.samplers.add(sampler);
+            return this;
+        }
+
+        public Builder define(String property, float value) {
+            this.defines.put(property, value);
+            return this;
+        }
+
+        //TODO Snippets
+        //TODO Vertex Format
+        //TODO Polygon Mode
+        //TODO Blend
+        //TODO Depth Test
+
+        public Builder noCull() {
+            this.cull = false;
+            return this;
+        }
+
+        public Builder noDepthWrite() {
+            this.depthwrite = false;
+            return this;
+        }
+
+        public RenderLayer buildAndRegister() {
+            if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
+                return createClient();
+
+            throw new ImproperEnvironment("[RenderLayers/Builder#buildAndRegister] Cannot be run in server environment!");
+        }
+
+        private RenderLayer createClient() {
+            var builder = RenderPipeline.builder(new RenderPipeline.Snippet[0])
+                                        .withLocation("pipeline/" + name.toLowerCase());
+
+            if (shader_vertex != null)
+                builder.withVertexShader(shader_vertex);
+
+            if (shader_fragment != null)
+                builder.withFragmentShader(shader_fragment);
+
+            for (var sampler : samplers)
+                builder.withSampler(sampler);
+
+            for (var entry : defines.entrySet())
+                builder.withShaderDefine(entry.getKey(), entry.getValue());
+
+            if (!depthwrite)
+                builder.withDepthWrite(false);
+
+            if (!cull)
+                builder.withCull(false);
+
+            var pipeline = RenderPipelines.register(builder.build());
+            var systemName = name.toUpperCase();
+
+            var layer = new RenderLayer() {
+                @Override
+                public String getName() {
+                    return systemName;
+                }
+
+                @Override
+                public boolean isPresent() {
+                    return true;
+                }
+
+                @Override
+                Object get() {
+                    return pipeline;
+                }
+            };
+
+            RenderLayersNative.CUSTOM.put(name.toLowerCase(), layer);
+
+            return layer;
+        }
     }
 }

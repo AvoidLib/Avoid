@@ -10,6 +10,7 @@ import java.util.HashMap;
 @ApiStatus.Internal
 final class RenderLayersNative {
     static HashMap<String, RenderPipeline> PRESENT;
+    static HashMap<String, RenderLayer>    CUSTOM;
 
     @ApiStatus.Internal
     private RenderLayersNative() {}
