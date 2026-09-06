@@ -38,6 +38,7 @@ public abstract class ScreenModifier {
     // INJECTIONS //
     //============//
 
+    @ApiStatus.OverrideOnly
     public void init() {
         cancel = false;
 
@@ -45,6 +46,7 @@ public abstract class ScreenModifier {
             invoke("init");
     }
 
+    @ApiStatus.OverrideOnly
     public void render(Drawer gui, int mouseX, int mouseY, float tickDelta) {
         cancel = false;
 
