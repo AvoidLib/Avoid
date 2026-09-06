@@ -42,7 +42,9 @@ public abstract class ScreenModifier {
     public void init() {
         cancel = false;
 
-        if (!skip)
+        if (skip)
+            skip = false;
+        else
             invoke("init");
     }
 
@@ -50,7 +52,9 @@ public abstract class ScreenModifier {
     public void render(Drawer gui, int mouseX, int mouseY, float tickDelta) {
         cancel = false;
 
-        if (!skip)
+        if (skip)
+            skip = false;
+        else
             invoke("render", gui, mouseX, mouseY, tickDelta);
     }
 
