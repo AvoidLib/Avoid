@@ -288,6 +288,17 @@ public final class Drawer {
         this.fill(x + w - 1, y + 1, x + w, y + h - 1, color);
     }
 
+    /**
+     * Renders a stroked rectangle on the screen using the given RGB color and the given renderlayer.<br/>
+     * <b>NOTE:</b> This uses width and height, instead of x2 and y2!
+     */
+    public void renderOutline(RenderLayer layer, int x, int y, int w, int h, int color) {
+        this.fill(layer, x, y, x + w, y + 1, color);
+        this.fill(layer, x, y + h - 1, x + w, y + h, color);
+        this.fill(layer, x, y + 1, x + 1, y + h - 1, color);
+        this.fill(layer, x + w - 1, y + 1, x + w, y + h - 1, color);
+    }
+
     private static GuiSpriteScaling getSpriteScaling(TextureAtlasSprite textureAtlasSprite) {
         return textureAtlasSprite.contents().getAdditionalMetadata(GuiMetadataSection.TYPE).orElse(GuiMetadataSection.DEFAULT).scaling();
     }
