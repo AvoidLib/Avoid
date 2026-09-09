@@ -1,3 +1,5 @@
+import com.mojang.blaze3d.pipeline.DepthStencilState;
+
 {
     "TRANSLUCENT_MOVING_BLOCK"
     "TRANSLUCENT_BLOCK"
@@ -36,4 +38,9 @@
 {
     "DRAGON_EXPLOSION_ALPHA"
     "GUI_TEXTURED_PREMULTIPLIED_ALPHA" /* Is this bs? */
+}
+
+{
+    builder.withDepthWrite(false);
+    builder.withDepthStencilState(DepthStencilState.DEFAULT);
 }

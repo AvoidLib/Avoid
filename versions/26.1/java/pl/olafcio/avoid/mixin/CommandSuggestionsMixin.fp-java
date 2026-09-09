@@ -1,0 +1,14 @@
+{
+    GuiGraphics
+    GuiGraphicsExtractor
+}
+
+{
+    "render"
+    "extractRenderState"
+}
+
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;III)V", ordinal = 0), method = "extractRenderState")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Ljava/lang/String;III)V", ordinal = 0), method = "extractRenderState")
+}
