@@ -1,0 +1,16 @@
+import net.minecraft.client.gui.components.SpriteIconButton;
+
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/PauseScreen;openScreenButton(Lnet/minecraft/network/chat/Component;Ljava/util/function/Supplier;)Lnet/minecraft/client/gui/components/Button;", ordinal = 4), method = "createPauseMenu")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/SpriteIconButton$Builder;build()Lnet/minecraft/client/gui/components/SpriteIconButton;", ordinal = 2), method = "createPauseMenu")
+}
+
+{
+    public Button createPauseMenu__openScreenButton__4(PauseScreen instance, Component component, Supplier<Screen> supplier, Operation<Button> original) {
+    public SpriteIconButton createPauseMenu__openScreenButton__4(SpriteIconButton.Builder instance, Operation<SpriteIconButton> original) {
+}
+
+{
+    return (Button)(player_reporting = original.call(instance, component, supplier));
+    return (SpriteIconButton)(player_reporting = original.call(instance));
+}

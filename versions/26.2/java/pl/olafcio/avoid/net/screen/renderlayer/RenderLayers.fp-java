@@ -1,0 +1,6 @@
+import com.mojang.blaze3d.pipeline.BindGroupLayout;
+
+{
+    builder.withSampler(sampler);
+    builder.withBindGroupLayout(BindGroupLayout.builder().withSampler(sampler).build());
+}
