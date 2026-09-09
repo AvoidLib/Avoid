@@ -1,0 +1,13 @@
+{
+    var result = __cast(LocalPlayer.class).raycastHitResult(distance, underlyingEntity);
+
+    throw new RuntimeException("Player#raycast is not implemented on MC 1.21.10");
+
+    /*var result = __cast(LocalPlayer.class).raycastHitResult(distance, underlyingEntity);
+}
+
+{
+    );  //at:raycast
+    );  //at:raycast
+    */
+}

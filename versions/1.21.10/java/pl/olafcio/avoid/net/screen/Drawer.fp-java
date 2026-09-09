@@ -22,3 +22,13 @@
     shadow, false,
     shadow,
 }
+
+{
+    private void submitBlit(RenderLayer renderLayer, GpuTextureView gpuTextureView, GpuSampler gpuSampler, int x0, int y0, int x1, int y1, float u0, float u1, float v0, float v1, int color) {
+    private void submitBlit(RenderLayer renderLayer, GpuTextureView gpuTextureView,                        int x0, int y0, int x1, int y1, float u0, float u1, float v0, float v1, int color) {
+}
+
+{
+    this.submitBlit(renderLayer, abstractTexture.getTextureView(), abstractTexture.getSampler(), x0, y0, x1, y1, u0, u1, v0, v1, color);
+    this.submitBlit(renderLayer, abstractTexture.getTextureView(),                               x0, y0, x1, y1, u0, u1, v0, v1, color);
+}
