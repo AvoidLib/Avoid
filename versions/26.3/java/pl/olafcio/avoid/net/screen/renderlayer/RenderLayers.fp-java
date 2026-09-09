@@ -1,4 +1,11 @@
+import com.mojang.renderpearl.api.pipeline.UniformType;
+
 {
-    import com.mojang.blaze3d.pipeline.RenderPipeline;
-    import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+    com.mojang.blaze3d.
+    com.mojang.renderpearl.api.
+}
+
+{
+    builder.withBindGroupLayout(BindGroupLayout.builder().withSampler(sampler).build());
+    builder.withBindGroupLayout(BindGroupLayout.builder().withUniform(sampler, UniformType.COMBINED_IMAGE_SAMPLER).build());
 }

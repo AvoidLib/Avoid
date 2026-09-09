@@ -5,6 +5,11 @@
 }
 
 {
+    accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/blaze3d/pipeline/RenderPipeline;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
+    accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;)Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;
+}
+
+{
     accessible method net/minecraft/world/entity/EntityFluidInteraction$Tracker <init> ()V
     accessible method net/minecraft/world/entity/EntityFluidInteraction$Tracker <init> (Lnet/minecraft/core/Holder;)V
 }
