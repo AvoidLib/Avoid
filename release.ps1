@@ -17,4 +17,5 @@ echo "sources jar :: $jar";
 echo "";
 
 echo "[--- publishing versions ---]"
+funcutter build --no-configuration-cache
 funcutter considerRelease --no-configuration-cache
