@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.entity;
 
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -12,7 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.AvoidInternal;
+import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
@@ -915,5 +918,29 @@ public abstract class Entity {
 
     public double z() {
         return position().z();
+    }
+
+    @ServerOnly
+    public void showParticle(
+            Identification particleID,
+            double x, double y, double z,
+            float offsetX, float offsetY, float offsetZ,
+            float maxSpeed,
+            int count,
+            boolean canUpgradeFromMinimal,
+            boolean force
+    ) {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
+            throw new ImproperEnvironment("[Entity#showParticle] This method can only be ran on server entities!");
+
+        ((ServerLevel) this.underlyingEntity.level()).sendParticles(
+                (ParticleOptions) BuiltInRegistries.PARTICLE_TYPE.getValue(IdentificationNative.convert(particleID)),
+                canUpgradeFromMinimal,
+                force,
+                x, y, z,
+                count,
+                offsetX, offsetY, offsetZ,
+                maxSpeed
+        );
     }
 }
