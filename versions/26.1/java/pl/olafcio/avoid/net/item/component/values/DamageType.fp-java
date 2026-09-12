@@ -1,0 +1,21 @@
+import pl.olafcio.avoid.AvoidInternal;
+
+{
+    import net.minecraft.world.item.EitherHolder;
+    import net.minecraft.core.Holder;
+}
+
+{
+    return new EitherHolder<>(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(value.id)));
+    return AvoidInternal.registry.lookup(Registries.DAMAGE_TYPE).orElseThrow().getOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, IdentificationNative.convert(value.id)));
+}
+
+{
+    EitherHolder
+    Holder
+}
+
+{
+    key()
+    unwrapKey()
+}
