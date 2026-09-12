@@ -28,6 +28,7 @@ import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.Blocks;
 import pl.olafcio.avoid.net.id.Identification;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -87,12 +88,12 @@ public final class ModLoad
                 return;
             }
 
-            String id            = manifest.get("id").getAsString();
-            String version       = manifest.get("version").getAsString();
+            String id = manifest.get("id").getAsString();
+            String version = manifest.get("version").getAsString();
             String versionSystem = manifest.get("version-system").getAsString();
 
-            String name        = manifest.get("name").getAsString();
-            String author      = manifest.get("author").getAsString();
+            String name = manifest.get("name").getAsString();
+            String author = manifest.get("author").getAsString();
             String description = manifest.get("description").getAsString();
 
             ModEnvironment env = manifest.has("environment")
@@ -100,12 +101,12 @@ public final class ModLoad
                     : ModEnvironment.ALL;
 
             List<String> libraries = manifest.has("libraries")
-                                            ? manifest.getAsJsonArray("libraries")
-                                                      .asList()
-                                                      .stream()
-                                                      .map(JsonElement::getAsString)
-                                                      .toList()
-                                            : List.of();
+                    ? manifest.getAsJsonArray("libraries")
+                    .asList()
+                    .stream()
+                    .map(JsonElement::getAsString)
+                    .toList()
+                    : List.of();
 
             if (env == ModEnvironment.CLIENT) {
                 if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
@@ -128,9 +129,9 @@ public final class ModLoad
                 for (var lib : libraries) {
                     var parts = lib.split(":", 3);
                     var slash = parts[0].replace(".", "/")
-                              + "/" + parts[1]
-                              + "/" + parts[2].replace(":", "/")
-                              + "/" + parts[1] + "-" + parts[2].replace(":", "/") + ".jar";
+                            + "/" + parts[1]
+                            + "/" + parts[2].replace(":", "/")
+                            + "/" + parts[1] + "-" + parts[2].replace(":", "/") + ".jar";
 
                     var libpath = Path.of("libraries/" + slash);
 
@@ -144,8 +145,8 @@ public final class ModLoad
                         Avoid.LOGGER.info("[Library Downloader] Using '{}' (mod = '{}')", lib, id);
 
                         http.send(HttpRequest.newBuilder()
-                                             .uri(URI.create(url))
-                                             .build(), HttpResponse.BodyHandlers.ofFile(libpath));
+                                .uri(URI.create(url))
+                                .build(), HttpResponse.BodyHandlers.ofFile(libpath));
                     }
                 }
             } catch (InterruptedException | IOException e) {
@@ -156,8 +157,8 @@ public final class ModLoad
 
             List<String> skipClasses = manifest.has("skip-classes")
                     ? manifest.get("skip-classes").getAsJsonArray().asList().stream()
-                                                                            .map(JsonElement::getAsString)
-                                                                            .toList()
+                    .map(JsonElement::getAsString)
+                    .toList()
                     : List.of();
 
             URLs.add(mod.toUri().toURL());
@@ -183,11 +184,11 @@ public final class ModLoad
 
             //noinspection unchecked
             var klass = (Class<? extends AvoidMod>)
-                        klassUnc;
+                    klassUnc;
 
             var meta = new AvoidModMeta(id, version, versionSystem,
-                                        name, author, description,
-                                        env, libraries, klass);
+                    name, author, description,
+                    env, libraries, klass);
 
             scanAllClasses(jar, classLoader, id, skipClasses, meta);
 
@@ -215,6 +216,9 @@ public final class ModLoad
             avoidMods.add(meta.name() + " " + meta.version());
 
             EventManager.fire(new ModLoadedEvent(meta));
+        } catch (FileNotFoundException e) {
+            Avoid.LOGGER.warn("Failed to resolve mod .jar file symbolic link target: {}", mod.toAbsolutePath());
+            EventManager.fire(new ModErrorEvent(mod, e));
         } catch (IOException e) {
             Avoid.LOGGER.error("Failed to read mod .jar file [IOException]: {}", mod.toAbsolutePath(), e);
             EventManager.fire(new ModErrorEvent(mod, e));
