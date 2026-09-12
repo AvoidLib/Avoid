@@ -358,6 +358,9 @@ release {
 
 tasks.register("considerRelease") {
     dependsOn build
+    dependsOn {
+        Thread.sleep(2000)
+    }
 
     if (contains("merge") || contains("publish"))
         dependsOn("release")
