@@ -1,6 +1,5 @@
 package pl.olafcio.avoid.net._3d.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.joml.*;
@@ -11,9 +10,9 @@ import pl.olafcio.avoid.net._3d.apex.ApexConsumerNative;
 import pl.olafcio.avoid.net._3d.stack.MatrixStack;
 import pl.olafcio.avoid.net._3d.layer._native.PartTransformNative;
 import pl.olafcio.avoid.net._3d.stack.MatrixStackNative;
-import pl.olafcio.avoid.net.block.random.RandomProvider;
+import pl.olafcio.avoid.net.random.RandomProvider;
 import pl.olafcio.avoid.net._3d.layer.PartTransform;
-import pl.olafcio.avoid.net.block.random.RandomProviderNative;
+import pl.olafcio.avoid.net.random.RandomProviderNative;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -92,6 +91,11 @@ public final class ModelPart {
     }
 
     public Box getRandomBox(RandomProvider randomProvider) {
+        return new Box(this.part.getRandomCube(RandomProviderNative.convert(randomProvider)));
+    }
+
+    @Deprecated(forRemoval = true, since = "v1.23")
+    public Box getRandomBox(pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {
         return new Box(this.part.getRandomCube(RandomProviderNative.convert(randomProvider)));
     }
 

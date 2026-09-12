@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.block.random;
+package pl.olafcio.avoid.net.random;
 
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.ApiStatus;
@@ -14,7 +14,7 @@ public final class RandomProviderNative {
         return new RandomProvider(source);
     }
 
-    public static RandomSource convert(RandomProvider provider) {
+    public static RandomSource convert(pl.olafcio.avoid.net.block.random.RandomProvider provider) {
         return provider.source;
     }
 }

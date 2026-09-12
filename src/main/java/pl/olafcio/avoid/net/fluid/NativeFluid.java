@@ -5,7 +5,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.InsideBlockEffectType;
-import net.minecraft.world.level.material.FlowingFluid;
 import org.jetbrains.annotations.UnknownNullability;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.mixin.accessors.IFlowingFluid;
@@ -13,8 +12,8 @@ import pl.olafcio.avoid.mixin.accessors.IFluid;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
-import pl.olafcio.avoid.net.block.random.RandomProvider;
-import pl.olafcio.avoid.net.block.random.RandomProviderNative;
+import pl.olafcio.avoid.net.random.RandomProvider;
+import pl.olafcio.avoid.net.random.RandomProviderNative;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.fluid.inside_block.InsideBlock;
@@ -55,6 +54,12 @@ public final class NativeFluid extends Fluid {
     }
 
     @Override
+    @Deprecated(forRemoval = true, since = "v1.23")
+    public boolean animateTick(World world, BlockPos blockPos, FluidState fluidState, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {
+        return this.animateTick(world, blockPos, fluidState, (RandomProvider) randomProvider);
+    }
+
+    @Override
     public boolean tick(World world, BlockPos blockPos, FluidState fluidState, BlockData blockData) {
         ((IFluid) fluid).avoid$tick((ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), BlockDataNative.convert(blockData), fluidState.state);
         return OK;
@@ -64,6 +69,12 @@ public final class NativeFluid extends Fluid {
     public boolean randomTick(World world, BlockPos blockPos, FluidState fluidState, RandomProvider randomProvider) {
         ((IFluid) fluid).avoid$randomTick((ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), fluidState.state, RandomProviderNative.convert(randomProvider));
         return OK;
+    }
+
+    @Override
+    @Deprecated(forRemoval = true, since = "v1.23")
+    public boolean randomTick(World world, BlockPos blockPos, FluidState fluidState, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {
+        return this.randomTick(world, blockPos, fluidState, (RandomProvider) randomProvider);
     }
 
     @Override

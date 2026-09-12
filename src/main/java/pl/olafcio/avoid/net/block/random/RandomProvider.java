@@ -1,13 +1,16 @@
 package pl.olafcio.avoid.net.block.random;
 
 import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.ApiStatus;
 
-@SuppressWarnings("ClassCanBeRecord")
-public final class RandomProvider {
-    final RandomSource source;
+@Deprecated(forRemoval = true, since = "v1.23")
+public class RandomProvider {
+    @ApiStatus.Internal
+    public final RandomSource source;
 
-    RandomProvider(RandomSource source) {
-        this.source = source;
+    @ApiStatus.Internal
+    public RandomProvider(Object source) {
+        this.source = (RandomSource) source;
     }
 
     public void setSeed(long l) {

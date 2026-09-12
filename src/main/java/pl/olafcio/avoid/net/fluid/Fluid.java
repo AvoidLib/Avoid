@@ -2,10 +2,9 @@ package pl.olafcio.avoid.net.fluid;
 
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.net._3d.Direction;
-import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.properties._liquid;
-import pl.olafcio.avoid.net.block.random.RandomProvider;
+import pl.olafcio.avoid.net.random.RandomProvider;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.fluid.inside_block.InsideBlock;
 import pl.olafcio.avoid.net.id.Identification;
@@ -46,6 +45,11 @@ public abstract class Fluid {
     protected static final boolean OK = false;
 
     public boolean animateTick(World world, BlockPos blockPos, FluidState fluidState, RandomProvider randomProvider) {
+        return animateTick(world, blockPos, fluidState, (pl.olafcio.avoid.net.block.random.RandomProvider) randomProvider);
+    }
+
+    @Deprecated(forRemoval = true, since = "v1.23")
+    public boolean animateTick(World world, BlockPos blockPos, FluidState fluidState, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {
         return CALL_SUPER;
     }
 
@@ -54,6 +58,11 @@ public abstract class Fluid {
     }
 
     public boolean randomTick(World world, BlockPos blockPos, FluidState fluidState, RandomProvider randomProvider) {
+        return randomTick(world, blockPos, fluidState, (pl.olafcio.avoid.net.block.random.RandomProvider) randomProvider);
+    }
+
+    @Deprecated(forRemoval = true, since = "v1.23")
+    public boolean randomTick(World world, BlockPos blockPos, FluidState fluidState, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {
         return CALL_SUPER;
     }
 

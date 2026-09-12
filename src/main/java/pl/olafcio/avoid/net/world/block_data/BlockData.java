@@ -7,8 +7,8 @@ import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
-import pl.olafcio.avoid.net.block.random.RandomProvider;
-import pl.olafcio.avoid.net.block.random.RandomProviderNative;
+import pl.olafcio.avoid.net.random.RandomProvider;
+import pl.olafcio.avoid.net.random.RandomProviderNative;
 import pl.olafcio.avoid.net.block.values.MapColor;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.WorldNative;
@@ -40,6 +40,26 @@ public final class BlockData extends Block {
     @Override
     @NeverRemoval
     public void randomlyTick(World world, BlockPos blockPos, RandomProvider randomProvider) {
+        state.randomTick(
+                (ServerLevel) WorldNative.convert(world),
+                BlockPosNative.convertFrom(blockPos),
+                RandomProviderNative.convert(randomProvider)
+        );
+    }
+
+    @Override
+    @Deprecated(forRemoval = true, since = "v1.23")
+    public void tick(World world, BlockPos blockPos, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {
+        state.tick(
+                (ServerLevel) WorldNative.convert(world),
+                BlockPosNative.convertFrom(blockPos),
+                RandomProviderNative.convert(randomProvider)
+        );
+    }
+
+    @Override
+    @Deprecated(forRemoval = true, since = "v1.23")
+    public void randomlyTick(World world, BlockPos blockPos, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {
         state.randomTick(
                 (ServerLevel) WorldNative.convert(world),
                 BlockPosNative.convertFrom(blockPos),

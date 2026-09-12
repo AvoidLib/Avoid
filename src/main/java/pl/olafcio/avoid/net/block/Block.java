@@ -1,7 +1,7 @@
 package pl.olafcio.avoid.net.block;
 
 import pl.olafcio.avoid.net.block.pos.BlockPos;
-import pl.olafcio.avoid.net.block.random.RandomProvider;
+import pl.olafcio.avoid.net.random.RandomProvider;
 import pl.olafcio.avoid.net.block.values.Explosion;
 import pl.olafcio.avoid.net.block.values.MapColor;
 import pl.olafcio.avoid.net.world.World;
@@ -10,8 +10,19 @@ import pl.olafcio.avoid.net.world.block_data.BlockData;
 public abstract class Block {
     public abstract MapColor getMapColor();
 
-    public void tick(World world, BlockPos blockPos, RandomProvider randomProvider) {}
-    public void randomlyTick(World world, BlockPos blockPos, RandomProvider randomProvider) {}
+    public void tick(World world, BlockPos blockPos, RandomProvider randomProvider) {
+        this.tick(world, blockPos, (pl.olafcio.avoid.net.block.random.RandomProvider) randomProvider);
+    }
+
+    public void randomlyTick(World world, BlockPos blockPos, RandomProvider randomProvider) {
+        this.randomlyTick(world, blockPos, (pl.olafcio.avoid.net.block.random.RandomProvider) randomProvider);
+    }
+
+    @Deprecated(forRemoval = true, since = "v1.23")
+    public void tick(World world, BlockPos blockPos, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {}
+
+    @Deprecated(forRemoval = true, since = "v1.23")
+    public void randomlyTick(World world, BlockPos blockPos, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {}
 
     public boolean dropFromExplosion(Explosion explosion) {
         return true;
