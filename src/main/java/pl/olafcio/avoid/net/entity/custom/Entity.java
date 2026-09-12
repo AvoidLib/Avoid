@@ -72,8 +72,8 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
 
     @Override
     @Deprecated(since = "v1.15", forRemoval = true)
-    public final IVect3 velocity() {
-        return super.velocity();
+    public final IVect3 getInitialVelocity() {
+        return super.getInitialVelocity();
     }
 
     @Override
@@ -94,6 +94,11 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     @Override
     public final @NotNull BaseComponent<?> getNameComponent() {
         return super.getNameComponent();
+    }
+
+    @Override
+    public final IVect3 initialPosition() {
+        return super.initialPosition();
     }
 
     @Override
@@ -594,5 +599,30 @@ public abstract class Entity extends pl.olafcio.avoid.net.entity.Entity {
     @Override
     public final boolean is(pl.olafcio.avoid.net.entity.Entity entity) {
         return super.is(entity);
+    }
+
+    @Override
+    public final void playSound(Identification soundID) {
+        super.playSound(soundID);
+    }
+
+    @Override
+    public final void playSound(Identification soundID, float volume, float pitch) {
+        super.playSound(soundID, volume, pitch);
+    }
+
+    @Override
+    public final double x() {
+        return super.x();
+    }
+
+    @Override
+    public final double y() {
+        return super.y();
+    }
+
+    @Override
+    public final double z() {
+        return super.z();
     }
 }

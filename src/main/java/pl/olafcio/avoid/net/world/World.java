@@ -21,6 +21,8 @@ import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid.net.sound.category.SoundCategory;
+import pl.olafcio.avoid.net.sound.category.SoundCategoryNative;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
 import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
 
@@ -220,5 +222,35 @@ public final class World {
             cast.getGameRules().set((GameRule<Boolean>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)), value, AvoidInternal.getServer());
         else
             throw new ImproperEnvironment("[World#setGameRule] This method can only be ran on server worlds!");
+    }
+
+    @ApiStatus.Experimental
+    public void playSeededSound(Entity entity, double x, double y, double z, Identification soundID, SoundCategory category, float volume, float pitch, long seed) {
+        this.level.playSeededSound(EntityNative.convert(entity), x, y, z, BuiltInRegistries.SOUND_EVENT.get(IdentificationNative.convert(soundID)).orElseThrow(), SoundCategoryNative.convert(category), volume, pitch, seed);
+    }
+
+    @ApiStatus.Experimental
+    public void playSound(Entity entity, double x, double y, double z, Identification soundID, SoundCategory category, float volume, float pitch) {
+        this.level.playSound(EntityNative.convert(entity), x, y, z, BuiltInRegistries.SOUND_EVENT.get(IdentificationNative.convert(soundID)).orElseThrow(), SoundCategoryNative.convert(category), volume, pitch);
+    }
+
+    @ApiStatus.Experimental
+    public void playSeededSound(Entity entity, double x, double y, double z, Identification soundID, SoundCategory category, long seed) {
+        this.playSeededSound(entity, x, y, z, soundID, category, 1f, 1f, seed);
+    }
+
+    @ApiStatus.Experimental
+    public void playSound(Entity entity, double x, double y, double z, Identification soundID, SoundCategory category) {
+        this.playSound(entity, x, y, z, soundID, category, 1f, 1f);
+    }
+
+    @ApiStatus.Experimental
+    public void playSeededSound(Entity entity, Identification soundID, SoundCategory category, long seed) {
+        this.playSeededSound(entity, entity.x(), entity.y(), entity.z(), soundID, category, 1f, 1f, seed);
+    }
+
+    @ApiStatus.Experimental
+    public void playSound(Entity entity, Identification soundID, SoundCategory category) {
+        this.playSound(entity, entity.x(), entity.y(), entity.z(), soundID, category, 1f, 1f);
     }
 }

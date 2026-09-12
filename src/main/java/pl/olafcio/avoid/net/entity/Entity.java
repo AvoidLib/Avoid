@@ -1,14 +1,10 @@
 package pl.olafcio.avoid.net.entity;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.ApiStatus;
@@ -28,7 +24,6 @@ import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COFromNative;
-import pl.olafcio.avoid.net.effect.Effect;
 import pl.olafcio.avoid.net.effect.instance.EffectInstance;
 import pl.olafcio.avoid.net.effect.instance.EffectInstanceNative;
 import pl.olafcio.avoid.net.entity.values.Damage;
@@ -38,7 +33,6 @@ import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.player.Player;
-import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.WorldNative;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
@@ -60,7 +54,7 @@ import java.util.UUID;
  *     <li>int &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&emsp;&ensp;{@linkplain Entity#id()}</li>
  *     <li>EntityType &nbsp;&nbsp;&emsp;&emsp;{@linkplain Entity#type()}</li>
  *     <li>IVect3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&emsp;&nbsp;&emsp;{@linkplain Entity#position()}</li>
- *     <li>IVect3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&emsp;&emsp;{@linkplain Entity#velocity()}</li>
+ *     <li>IVect3 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&emsp;&emsp;{@linkplain Entity#getInitialVelocity()}</li>
  *     <li>UUID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ensp;{@linkplain Entity#uuid()}</li>
  *     <li>BaseComponent {@linkplain Entity#getDisplayName()}</li>
  * </ul>
@@ -117,18 +111,18 @@ public abstract class Entity {
     }
 
     /**
-     * Gets the initial entity position (from the constructor time).
+     * Gets the current entity position.
      */
-    @Deprecated(since = "v1.15", forRemoval = true)
+    @ApiStatus.Experimental
     public IVect3 position() {
-        return position;
+        return Vect3Native.convert(underlyingEntity.position());
     }
 
     /**
      * Gets the initial entity velocity (from the constructor time).
      */
     @Deprecated(since = "v1.15", forRemoval = true)
-    public IVect3 velocity() {
+    public IVect3 getInitialVelocity() {
         return velocity;
     }
 
@@ -147,6 +141,14 @@ public abstract class Entity {
     @NotNull
     public BaseComponent<?> getNameComponent() {
         return COFromNative.from(underlyingEntity.getName());
+    }
+
+    /**
+     * Gets the initial entity position (from the constructor time).
+     */
+    @Deprecated(since = "v1.15", forRemoval = true)
+    public IVect3 initialPosition() {
+        return position;
     }
 
     public boolean isAlive() {
@@ -884,5 +886,34 @@ public abstract class Entity {
 
     public static void setViewScale(double value) {
         net.minecraft.world.entity.Entity.setViewScale(value);
+    }
+
+    /**
+     * @param volume May be wrong!
+     * @param pitch May be wrong!
+     */
+    @ApiStatus.Experimental
+    public void playSound(Identification soundID, float volume, float pitch) {
+        var value = BuiltInRegistries.SOUND_EVENT.getValue(IdentificationNative.convert(soundID));
+        if (value == null)
+            throw new NullPointerException("[Entity#playSound] Non-existent sound '%s'".formatted(soundID.toString()));
+
+        underlyingEntity.playSound(value, volume, pitch);
+    }
+
+    public void playSound(Identification soundID) {
+        playSound(soundID, 1f, 1f);
+    }
+
+    public double x() {
+        return position().x();
+    }
+
+    public double y() {
+        return position().y();
+    }
+
+    public double z() {
+        return position().z();
     }
 }
