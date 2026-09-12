@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.world;
 
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.flag.FeatureFlags;
@@ -21,8 +22,11 @@ import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.EntityNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid.net.sound.category.SoundCategory;
+import pl.olafcio.avoid.net.sound.category.SoundCategoryNative;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
 import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
+import pl.olafcio.avoid.net.world.vect3.IVect3;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -219,5 +223,55 @@ public final class World {
             cast.getGameRules().set((GameRule<Boolean>) BuiltInRegistries.GAME_RULE.getValue(IdentificationNative.convert(id)), value, AvoidInternal.getServer());
         else
             throw new ImproperEnvironment("[World#setGameRule] This method can only be ran on server worlds!");
+    }
+
+    @ApiStatus.Experimental
+    public void playSeededSound(Entity entity, double x, double y, double z, Identification soundID, SoundCategory category, float volume, float pitch, long seed) {
+        this.level.playSeededSound(EntityNative.convert(entity), x, y, z, BuiltInRegistries.SOUND_EVENT.get(IdentificationNative.convert(soundID)).orElseThrow(), SoundCategoryNative.convert(category), volume, pitch, seed);
+    }
+
+    @ApiStatus.Experimental
+    public void playSound(Entity entity, double x, double y, double z, Identification soundID, SoundCategory category, float volume, float pitch) {
+        this.level.playSound(EntityNative.convert(entity), x, y, z, BuiltInRegistries.SOUND_EVENT.get(IdentificationNative.convert(soundID)).orElseThrow(), SoundCategoryNative.convert(category), volume, pitch);
+    }
+
+    @ApiStatus.Experimental
+    public void playSeededSound(Entity entity, double x, double y, double z, Identification soundID, SoundCategory category, long seed) {
+        this.playSeededSound(entity, x, y, z, soundID, category, 1f, 1f, seed);
+    }
+
+    @ApiStatus.Experimental
+    public void playSound(Entity entity, double x, double y, double z, Identification soundID, SoundCategory category) {
+        this.playSound(entity, x, y, z, soundID, category, 1f, 1f);
+    }
+
+    @ApiStatus.Experimental
+    public void playSeededSound(Entity entity, Identification soundID, SoundCategory category, long seed) {
+        this.playSeededSound(entity, entity.x(), entity.y(), entity.z(), soundID, category, 1f, 1f, seed);
+    }
+
+    @ApiStatus.Experimental
+    public void playSound(Entity entity, Identification soundID, SoundCategory category) {
+        this.playSound(entity, entity.x(), entity.y(), entity.z(), soundID, category, 1f, 1f);
+    }
+
+    @ApiStatus.Experimental
+    public void spawnParticle(Identification particleID, double x, double y, double z, double r, double g, double b) {
+        this.level.addParticle((ParticleOptions) BuiltInRegistries.PARTICLE_TYPE.getValue(IdentificationNative.convert(particleID)), x, y, z, r, g, b);
+    }
+
+    @ApiStatus.Experimental
+    public void spawnParticle(Identification particleID, double x, double y, double z, double r, double g, double b, boolean force, boolean canUpgradeFromMinimal) {
+        this.level.addParticle((ParticleOptions) BuiltInRegistries.PARTICLE_TYPE.getValue(IdentificationNative.convert(particleID)), force, canUpgradeFromMinimal, x, y, z, r, g, b);
+    }
+
+    @ApiStatus.Experimental
+    public void spawnParticle(Identification particleID, IVect3 xyz, double r, double g, double b) {
+        this.spawnParticle(particleID, xyz.x(), xyz.y(), xyz.z(), r, g, b);
+    }
+
+    @ApiStatus.Experimental
+    public void spawnParticle(Identification particleID, IVect3 xyz, double r, double g, double b, boolean force, boolean canUpgradeFromMinimal) {
+        this.spawnParticle(particleID, xyz.x(), xyz.y(), xyz.z(), r, g, b, force, canUpgradeFromMinimal);
     }
 }
