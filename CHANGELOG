@@ -4,7 +4,7 @@
 - 26.1 *[LTS]*
 - 26.1.1 & 26.1.2
 - 26.2
-- 26.3-pre-3 *[TS]*
+- 26.3-rc-2 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
@@ -14,32 +14,11 @@
 - Paper
 
 **🪵 Changelog:**
-- [SWM] Multiplayer Screen (buttons)
-- [SWM] Singleplayer Screen (buttons)
-- [SWM] Options Screen (buttons)
-- [SWM] Pause Screen (buttons)
-- Stupid Either fix
-- [Client Command] Suggest Event
-- [Documentation] ModLoader annotations
-- [Documentation] Fog
-- [Documentation] `@ModifyScreen`
-- [Screen Modifier API] #widget([WidgetMarker] marker)
-- [Player API] #raycast([float] distance)
-- [Screen API] #is([Identification] id)
-- [ModLoader] Library Downloading
-- [Client] #getFont()
-- [Screen API] #{ width, height }()
-- [Screen API] Drawer#drawCenteredString(...) shadow variants
-- [Documentation] Drawer# methods
-- [Render Layer API] Potential fixes for non-Minecraft-dependent projects
-- [ModLoader] [@KeyHandler] #ingame() [default = true]
-- [Screen API] Widget rendering on custom screens
-- [Screen API] Drawer#renderOutline(...) with renderlayer variant
-- [Render Layer API] Creation API
-- [Screen Modifier API] Mark the injection methods as override-only
-- [Screen Modifier API] Make double invoking force-call the target method
-- [ModLoader] Mod Before Load Event
-- [Entity API] Static view state functions
+- Sound integration into the framework
+- Particle integration into the framework
+- Move RandomProvider into net.random
+- [Item Components] Transform DAMAGE_TYPE
+- Mark Paper PAPI as softdepend
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
