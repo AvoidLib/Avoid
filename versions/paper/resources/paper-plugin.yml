@@ -13,6 +13,6 @@ bootstrapper: pl.olafcio.avoid.PaperBootstrap
 dependencies:
   server:
     PlaceholderAPI:
-      required: true
+      required: false
       load: BEFORE
       join-classpath: true
