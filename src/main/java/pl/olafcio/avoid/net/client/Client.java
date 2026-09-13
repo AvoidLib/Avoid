@@ -157,7 +157,7 @@ public final class Client {
     }
 
     @ApiStatus.Experimental
-    public boolean isMoving() {
+    public static boolean isMoving() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot Client#isMoving() on the server");
 
@@ -165,7 +165,7 @@ public final class Client {
     }
 
     @ApiStatus.Experimental
-    public boolean isHandsBusy() {
+    public static boolean isHandsBusy() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot Client#isHandsBusy() on the server");
 
