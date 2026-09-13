@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.compile.DoNotRename;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 
 import java.nio.file.Path;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
  * <b>NOTE:</b> If you want the Avoid addon loader API, take a look at {@link AvoidModLoader}.
  */
 @ApiStatus.Experimental
+@DoNotRename
 public final class AvoidWrappedLoader {
     @ApiStatus.Internal
     private AvoidWrappedLoader() {}

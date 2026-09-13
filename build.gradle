@@ -1,6 +1,22 @@
 import com.google.gson.Gson
 import com.google.gson.JsonArray
+import groovy.transform.CompileStatic
 import net.fabricmc.loom.api.mappings.layered.MappingsNamespace
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.Handle
+import org.objectweb.asm.Opcodes
+import org.objectweb.asm.Type
+import org.objectweb.asm.tree.AnnotationNode
+import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.FieldInsnNode
+import org.objectweb.asm.tree.InsnNode
+import org.objectweb.asm.tree.LdcInsnNode
+import org.objectweb.asm.tree.LocalVariableNode
+import org.objectweb.asm.tree.MethodInsnNode
+import org.objectweb.asm.tree.MethodNode
+import org.objectweb.asm.tree.TypeInsnNode
+import org.objectweb.asm.tree.VarInsnNode
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -293,6 +309,12 @@ import pl.olafcio.limepublish.enums.Environment
 import pl.olafcio.limepublish.enums.VersionType
 import pl.olafcio.limepublish.enums.Platform
 
+import java.util.function.BiConsumer
+import java.util.function.UnaryOperator
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
 release {
     name           "Avoid v${project.version} [${minecraft_version}]"
     version_number project.version
@@ -356,6 +378,526 @@ release {
     }
 }
 
+enum Refactor {
+    /** The element has not been refactored.          */ NONE,
+    /** The element has been split into API and IMPL. */ SPLIT,
+    /** The element has been moved into IMPL.         */ FULL
+}
+
+/**
+ * Fills out the {@code internal} field.
+ */
+class APIScanner {
+    private final HashMap<String, Refactor> internal
+    private final ZipOutputStream zos
+
+    APIScanner(HashMap<String, Refactor> internal, ZipOutputStream zos) {
+        this.internal = internal
+        this.zos = zos
+    }
+
+    void process(ClassNode node) {
+        if (isPartOfNetAvoid(new Node(node.access, node.invisibleAnnotations, node.name))) {
+            internal.put(node.name, Refactor.NONE)
+
+            if (
+                    (node.access & Opcodes.ACC_FINAL)  == Opcodes.ACC_FINAL  &&
+                    (node.access & Opcodes.ACC_RECORD) != Opcodes.ACC_RECORD &&
+                    (node.access & Opcodes.ACC_ENUM)   != Opcodes.ACC_ENUM    &&
+                    node.methods.every {
+                        m -> m.name.contains("<") ||
+                                         (m.access & Opcodes.ACC_SYNTHETIC) == Opcodes.ACC_SYNTHETIC ||
+                                         (m.access & Opcodes.ACC_STATIC)    == Opcodes.ACC_STATIC
+                    }
+            ) {
+                internal.put(node.name, Refactor.SPLIT)
+            }
+        } else {
+            internal.put(node.name, Refactor.FULL)
+        }
+    }
+
+    //
+    // Note that this **does not** fully indicate whether it is public or not!
+    // For that distinction, head to the {@code separateAPI} task.
+    //
+    private static boolean isPartOfNetAvoid(Node node) {
+        if (node.name().contains("/mixin"))
+            return true
+
+        for (var ann : node.invisibleAnnotations()) {
+            if (ann.desc == 'Lpl/olafcio/avoid/annotations/compile/DoNotRename;')
+                return true
+        }
+
+        for (var ann : node.invisibleAnnotations()) {
+            if (ann.desc == "Lpl/olafcio/avoid/annotations/Native;")
+                return false
+            else if (ann.desc == 'Lorg/jetbrains/annotations/ApiStatus$Internal;')
+                return false
+        }
+
+        if (
+                (node.access() & Opcodes.ACC_PUBLIC)    == Opcodes.ACC_PUBLIC ||
+                (node.access() & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED
+        )
+            return true
+
+        return false
+    }
+}
+
+/**
+ * Creates the {@code api} and {@code impl} class variants.
+ */
+class APISplitter {
+    private final HashMap<String, Refactor> internal
+    private final ZipOutputStream zos
+
+    public HashMap<String, ClassNode> apiClasses
+
+    APISplitter(HashMap<String, Refactor> internal, ZipOutputStream zos) {
+        this.internal = internal
+        this.zos = zos
+
+        this.apiClasses = new HashMap<>()
+    }
+
+    void process(ClassNode node) {
+        //TODO Optimize caller
+
+        var implName = node.name.replace("/avoid/", "/avoid_impl/")
+        var refactor = internal.get(node.name)
+
+        var outer = node.outerClass
+        if (outer == null && node.name.contains('$'))
+            outer = node.name.substring(0, node.name.indexOf('$'))
+
+        if (outer != null && internal.get(outer) == Refactor.FULL) {
+            internal.put(node.name, refactor = Refactor.FULL)
+        }
+
+        if (refactor == Refactor.SPLIT) {
+            var apiNode = new ClassNode()
+
+            copyAttributes(node, apiNode)
+
+            for (var method : node.methods) {
+                if (method.name.contains("<")) {
+                    continue
+                } else if (
+                        (method.access & Opcodes.ACC_PUBLIC)    != Opcodes.ACC_PUBLIC &&
+                        (method.access & Opcodes.ACC_PROTECTED) != Opcodes.ACC_PROTECTED
+                ) {
+                    internal.put(node.name + "#" + method.name + method.desc, Refactor.FULL)
+                    continue
+                }
+
+                createWrapper(method, implName, apiNode)
+            }
+
+            var writer = new ClassWriter(0)
+            apiNode.accept(writer)
+            var data = writer.toByteArray()
+
+            zos.putNextEntry(new ZipEntry(node.name + ".class"))
+            zos.write(data)
+        }
+
+        apiClasses.put(node.name, node)
+
+        if (refactor != Refactor.NONE) {
+            node.name = implName
+        }
+    }
+
+    private void createWrapper(MethodNode method, String implName, ClassNode apiNode) {
+        var m = new MethodNode(method.access, method.name, method.desc, method.signature, method.exceptions.toArray(String[]::new))
+
+        m.parameters = method.parameters
+
+        int offset = 0
+
+        if ((method.access & Opcodes.ACC_STATIC) != Opcodes.ACC_STATIC) {
+            offset = 1
+            m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0))
+        }
+
+        var inLiteral = false
+        var parameters = new ArrayList<Integer>()
+
+        for (var ch : method.desc.split("\\(", 2)[1].toCharArray()) {
+            if (inLiteral) {
+                if (ch == ';') {
+                    parameters.add(Opcodes.ALOAD)
+                    inLiteral = false
+                }
+            } else if (ch == 'L') {
+                inLiteral = true
+            } else if (ch == 'I' || ch == 'B' || ch == 'D' || ch == 'S' || ch == 'Z') {
+                parameters.add(Opcodes.ILOAD)
+            } else if (ch == 'D') {
+                parameters.add(Opcodes.DLOAD)
+            } else if (ch == 'F') {
+                parameters.add(Opcodes.FLOAD)
+            } else if (ch == 'J') {
+                parameters.add(Opcodes.LLOAD)
+            } else if (ch == ')') {
+                break
+            }
+        }
+
+        for (var load : parameters)
+            m.instructions.add(new VarInsnNode(load, offset++))
+
+        m.maxLocals = offset
+        m.maxStack  = offset
+
+        m.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, implName, method.name, method.desc, false))
+
+        if (method.desc.endsWith(")V")) {
+            m.instructions.add(new InsnNode(Opcodes.RETURN))
+        } else {
+            // Unoptimized code go brr
+            var ch = method.desc.toCharArray().toList().last
+
+            if (ch == 'I' || ch == 'B' || ch == 'D' || ch == 'S' || ch == 'Z') {
+                m.instructions.add(new InsnNode(Opcodes.IRETURN))
+            } else if (ch == 'D') {
+                m.instructions.add(new InsnNode(Opcodes.DRETURN))
+            } else if (ch == 'F') {
+                m.instructions.add(new InsnNode(Opcodes.FRETURN))
+            } else if (ch == 'J') {
+                m.instructions.add(new InsnNode(Opcodes.LRETURN))
+            } else {
+                m.instructions.add(new InsnNode(Opcodes.ARETURN))
+            }
+        }
+
+        apiNode.methods.add(m)
+    }
+
+    private void copyAttributes(ClassNode node, ClassNode apiNode) {
+        apiNode.access = node.access
+        apiNode.access |= Opcodes.ACC_SYNTHETIC
+
+        apiNode.visibleAnnotations       = node.visibleAnnotations
+        apiNode.visibleTypeAnnotations   = node.visibleTypeAnnotations
+        apiNode.invisibleAnnotations     = node.invisibleAnnotations
+        apiNode.invisibleTypeAnnotations = node.invisibleTypeAnnotations
+
+        apiNode.name       = node.name
+        apiNode.interfaces = node.interfaces
+        apiNode.superName  = node.superName
+        apiNode.version    = node.version
+        apiNode.outerClass = node.outerClass
+    }
+}
+
+/**
+ * Fixes class code referring to {@code impl}.
+ */
+class APITransformer {
+    private final HashMap<String, Refactor> internal
+    private final HashMap<String, ClassNode> apiClasses
+    private final ZipOutputStream zos
+
+    APITransformer(HashMap<String, Refactor> internal, HashMap<String, ClassNode> apiClasses, ZipOutputStream zos) {
+        this.internal = internal
+        this.apiClasses = apiClasses
+        this.zos = zos
+//        for (var k : apiClasses)
+//            println "${k.getKey()} -> ${k.getValue().name} (${internal.get(k.getKey())})"
+    }
+
+    private def getName(ClassNode node, boolean publicAccess = true) {
+        var refactor = internal.get(node.name)
+        var requestImpl = publicAccess ? (refactor == Refactor.FULL)
+                                                : (refactor != Refactor.NONE)
+
+        return requestImpl
+                    ? node.name.replace("/avoid/", "/avoid_impl/")  // Code like o'block
+                    : node.name.replace("/avoid_impl/", "/avoid/")
+    }
+
+    private def processLiteral(String value, UnaryOperator<String> processor) {
+        if (value.startsWith("[")) {
+            var split = value.split("L", 2)
+            var entry = split[1].replaceFirst(";", "")
+
+            return split[0] + "L" + processor.apply(entry) + ";"
+        } else {
+            return processor.apply(value)
+        }
+    }
+
+    private def processDescriptor(String value, UnaryOperator<String> processor) {
+        if (value == null)
+            return null
+
+        var String out = ""
+        var String literal = null
+
+        for (def ch : value) {
+            if (literal != null) {
+                if (ch == ';') {
+                    out += "L"
+                    out += processor.apply(literal)
+                    out += ";"
+
+                    literal = null
+                } else {
+                    literal += ch
+                }
+            } else if (ch == 'L') {
+                literal = ""
+            } else {
+                out += ch
+            }
+        }
+
+        return out
+    }
+
+    void process(ClassNode node) {
+        node.permittedSubclasses = node.permittedSubclasses \
+                                       .collect { it -> getName(apiClasses.get(it), false) }
+
+        node.interfaces = node.interfaces \
+                              .collect { it ->
+                                            def v = apiClasses.get(it)
+                                            if (v == null)
+                                                return it
+
+                                            getName(v, false)
+                                       }
+
+        if (node.superName != null)
+            node.superName = transformName(node.superName, false)
+
+        if (node.outerClass != null)
+            node.outerClass = transformName(node.outerClass, false)
+
+        for (var field : node.fields) {
+            field.desc = processDescriptor(field.desc, val -> {
+                var entry = apiClasses.get(val)
+                if (entry == null)
+                    return val
+
+                return getName(entry)
+            })
+
+            field.signature = processDescriptor(field.signature, val -> {
+                var entry = apiClasses.get(val)
+                if (entry == null)
+                    return val
+
+                return getName(entry)
+            })
+        }
+
+        for (var method : node.methods) {
+            method.desc = processDescriptor(method.desc, val -> {
+                var entry = apiClasses.get(val)
+                if (entry == null)
+                    return val
+
+                return getName(entry)
+            })
+
+            method.signature = processDescriptor(method.signature, val -> {
+                var entry = apiClasses.get(val)
+                if (entry == null)
+                    return val
+
+                return getName(entry)
+            })
+
+            if (method.localVariables != null)
+                method.localVariables.forEach { insn ->
+                    insn.desc = processDescriptor(insn.desc, val -> {
+                        var entry = apiClasses.get(val)
+                        if (entry == null)
+                            return val
+
+                        return getName(entry)
+                    })
+
+                    insn.signature = processDescriptor(insn.signature, val -> {
+                        var entry = apiClasses.get(val)
+                        if (entry == null)
+                            return val
+
+                        return getName(entry)
+                    })
+                }
+
+            for (var insn : method.instructions) {
+                if (insn instanceof MethodInsnNode) {
+                    if (isAvoid(insn.owner)) {
+                        var requestAPI = insn.opcode == Opcodes.INVOKESTATIC &&
+                                         internal.getOrDefault(insn.owner + "#" + insn.name + insn.desc, null) != Refactor.FULL
+
+                        insn.owner = transformChecked(insn.owner, requestAPI)
+                    }
+                } else if (insn instanceof LdcInsnNode) {
+                    if (insn.cst instanceof Type) {
+                        if (insn.cst.getSort() == Type.OBJECT) {
+                            var name = insn.cst.getInternalName()
+                            if (isAvoid(name))
+                                insn.cst = Type.getObjectType(getName(apiClasses.get(name)))
+                        }
+                    } else if (insn.cst instanceof Handle) {
+                        if (isAvoid(insn.cst.owner)) {
+                            insn.cst = getName(apiClasses.get(insn.cst.owner))
+                        }
+                    }
+                } else if (insn instanceof TypeInsnNode) {
+                    insn.desc = transformName(insn.desc)
+                } else if (insn instanceof FieldInsnNode) {
+                    insn.desc = processDescriptor(insn.desc, val -> {
+                        var entry = apiClasses.get(val)
+                        if (entry == null)
+                            return val
+
+                        return getName(entry)
+                    })
+
+                    insn.owner = transformName(insn.owner, false)
+                }
+            }
+        }
+    }
+
+    private def transformName(String value, boolean publicAccess = true) {
+        if (!isAvoid(value))
+            return value
+
+        return processLiteral(value, val -> {
+            var entry = apiClasses.get(val)
+            return getName(entry, publicAccess)
+        })
+    }
+
+    private def transformChecked(String value, boolean publicAccess = true) {
+        return processLiteral(value, val -> {
+            var entry = apiClasses.get(val)
+            return getName(entry, publicAccess)
+        })
+    }
+
+    private static boolean isAvoid(String whateverTheFuck) {
+        return whateverTheFuck.contains("pl/olafcio/avoid")
+    }
+}
+
+class APIRefactor {
+    private final ZipFile zip
+    private final ZipOutputStream zos
+
+    APIRefactor(File file) {
+        var bos = new ByteArrayOutputStream()
+            zos = new ZipOutputStream(bos)
+
+        var internal, classes
+
+        try (var zip = new ZipFile(file)) {
+            this.zip = zip
+
+            processAll((entry, stream) -> {
+                if (!entry.name.endsWith(".class")) {
+                    zos.putNextEntry(entry)
+                    stream.transferTo(zos)
+                }
+            })
+
+            internal = new HashMap<String, Refactor>()
+            classes  = new ArrayList<ClassNode>()
+
+            processAll((entry, stream) -> {
+                if (entry.name.endsWith(".class")) {
+                    var reader = new ClassReader(stream.readAllBytes())
+                    var node = new ClassNode()
+
+                    reader.accept(node, 0)
+
+                    classes.add(node)
+                }
+            })
+        }
+
+        // transformations
+        var scanner = new APIScanner(internal, zos)
+
+        for (var node : classes)
+            scanner.process(node)
+
+        var splitter = new APISplitter(internal, zos)
+
+        for (var node : classes)
+            splitter.process(node)
+
+        var transformer = new APITransformer(internal, splitter.apiClasses, zos)
+
+        for (var node : classes)
+            transformer.process(node)
+
+        // writing
+        for (var node : classes) {
+            var writer = new ClassWriter(0)
+            node.accept(writer)
+
+            var data = writer.toByteArray()
+
+            zos.putNextEntry(new ZipEntry(node.name + ".class"))
+            zos.write(data)
+        }
+
+        // complete
+        zos.close()
+
+        Files.write(file.toPath(), bos.toByteArray())
+
+        bos.close()
+    }
+
+    private def processAll(BiConsumer<ZipEntry, InputStream> processor) {
+        var entries = zip.entries()
+
+        while (entries.hasMoreElements()) {
+            var entry = entries.nextElement()
+
+            try (var stream = zip.getInputStream(entry)) {
+                processor.accept(entry, stream)
+            }
+        }
+    }
+}
+
+build {
+    doLast {
+        var file = (contains("omit_mappings") ? jar : remapJar).archiveFile.get().asFile
+        while (!file.isFile());
+
+        println "Refactoring public API"
+
+        new APIRefactor(file)
+    }
+}
+
+@CompileStatic
+record Node(int access, List<AnnotationNode> invisibleAnnotations, String name) {}
+
+tasks.register("separateAPI") {
+    doLast {
+        var file = (contains("omit_mappings") ? jar : remapJar).archiveFile.get().asFile
+
+        while (!file.isFile());
+
+        println "Creating API jar"
+    }
+}
+
 tasks.register("considerRelease") {
     dependsOn build
     dependsOn {
@@ -370,6 +912,7 @@ apply from: project.file('x_build/lib_github.gradle')
 
 tasks.register("publishGitHub") {
     dependsOn build
+    dependsOn separateAPI
 
     doLast {
         try (var client = createGitHubClient(providers.environmentVariable("GITHUB_TOKEN").get())) {

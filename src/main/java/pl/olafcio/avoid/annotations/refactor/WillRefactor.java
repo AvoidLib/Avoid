@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.annotations.refactor;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.compile.DoNotRename;
 
 import java.lang.annotation.*;
 
@@ -17,6 +18,7 @@ import java.lang.annotation.*;
 @WillRefactor(aspect = "name")
 @ApiStatus.Internal
 @ApiStatus.NonExtendable
+@DoNotRename
 public @interface WillRefactor {
     /**
      * Why the element will be changed.

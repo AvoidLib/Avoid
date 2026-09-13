@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.annotations.describe;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.compile.DoNotRename;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 
 import java.lang.annotation.*;
@@ -14,4 +15,5 @@ import java.lang.annotation.*;
 @WillRefactor(aspect = "name")
 @ApiStatus.Internal
 @ApiStatus.NonExtendable
+@DoNotRename
 public @interface CanIgnoreReturnValue {}

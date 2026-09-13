@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.annotations;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.compile.DoNotRename;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 
 import java.lang.annotation.*;
@@ -16,8 +17,9 @@ import java.lang.annotation.*;
  */
 @Documented
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 @WillRefactor(aspect = "name")
 @ApiStatus.Internal
 @ApiStatus.NonExtendable
+@DoNotRename
 public @interface Native {}

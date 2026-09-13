@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.annotations;
 
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.compile.DoNotRename;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 
 import java.lang.annotation.ElementType;
@@ -17,6 +18,7 @@ import java.lang.annotation.Target;
 @WillRefactor(aspect = "name")
 @ApiStatus.Internal
 @ApiStatus.NonExtendable
+@DoNotRename
 public @interface Untested {
     String specifically() default "";
 }
