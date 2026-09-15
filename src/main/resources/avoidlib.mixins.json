@@ -39,6 +39,7 @@
     "accessors.IVillager"
   ],
   "client": [
+    "BlockOutlineRenderStateMixin",
     "BlocksMixin",
     "BuiltInPackSourceMixin",
     "CameraMixin",
@@ -51,6 +52,7 @@
     "GuiMixin",
     "KeyboardMixin",
     "LayerDefinitionsMixin",
+    "LevelRendererMixin",
     "LiquidBlockRendererMixin",
     "LoadingOverlayMixin",
     "LocalPlayerMixin",
