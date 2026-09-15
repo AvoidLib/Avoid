@@ -44,7 +44,7 @@ public abstract class LevelRendererMixin {
                             poseStack, vertexConsumer,
                             camera.x, camera.y, camera.z,
                             blockOutlineRenderState,
-                            custom.color_highcontrast(),//at:linewidth
+                            secondaryColor,//at:linewidth
                             custom.lineWidth_secondary()
                             //at:lwend
                     );
