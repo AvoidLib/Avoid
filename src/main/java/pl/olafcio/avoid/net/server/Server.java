@@ -50,8 +50,26 @@ public final class Server {
         }).toList();
     }
 
+    /**
+     * <b>NOTE:</b> This may perform a Mojang servers lookup.
+     */
+    public static void addOperator(String nick) {
+        var profile = AvoidInternal.getServer().services().nameToIdCache().get(nick).orElseThrow();
+
+        AvoidInternal.getServer().getPlayerList().op(profile);
+    }
+
     public static void addOperator(String nick, UUID uuid) {
         AvoidInternal.getServer().getPlayerList().op(new NameAndId(uuid, nick));
+    }
+
+    /**
+     * <b>NOTE:</b> This may perform a Mojang servers lookup.
+     */
+    public static void removeOperator(String nick) {
+        var profile = AvoidInternal.getServer().services().nameToIdCache().get(nick).orElseThrow();
+
+        AvoidInternal.getServer().getPlayerList().deop(profile);
     }
 
     public static void removeOperator(String nick, UUID uuid) {
@@ -64,6 +82,15 @@ public final class Server {
 
     public static void clearOperators() {
         AvoidInternal.getServer().getPlayerList().getOps().clear();
+    }
+
+    /**
+     * <b>NOTE:</b> This may perform a Mojang servers lookup.
+     */
+    public static boolean canBypassPlayerLimit(String nick) {
+        var profile = AvoidInternal.getServer().services().nameToIdCache().get(nick).orElseThrow();
+
+        return AvoidInternal.getServer().getPlayerList().getOps().canBypassPlayerLimit(profile);
     }
 
     public static boolean canBypassPlayerLimit(String nick, UUID uuid) {
