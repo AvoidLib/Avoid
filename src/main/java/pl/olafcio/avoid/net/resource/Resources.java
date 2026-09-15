@@ -4,6 +4,12 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 
+/**
+ * <span style="color: #89b03c">
+ * TODO Please fix this.<br/>
+ * &emsp;&emsp;&emsp;The overriding doesn't work half of the time.
+ * </span>
+ */
 @ApiStatus.Experimental
 public final class Resources {
     @ApiStatus.Internal
