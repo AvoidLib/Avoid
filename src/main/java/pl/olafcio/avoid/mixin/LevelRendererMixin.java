@@ -44,8 +44,9 @@ public abstract class LevelRendererMixin {
                             poseStack, vertexConsumer,
                             camera.x, camera.y, camera.z,
                             blockOutlineRenderState,
-                            custom.color_highcontrast(),
+                            custom.color_highcontrast(),//at:linewidth
                             custom.lineWidth_secondary()
+                            //at:lwend
                     );
                 }
 
@@ -57,10 +58,11 @@ public abstract class LevelRendererMixin {
                             poseStack, vertexConsumer,
                             camera.x, camera.y, camera.z,
                             blockOutlineRenderState,
-                            color,
+                            color,//at:linewidth
                             custom.lineWidth() == null
                                     ? this.minecraft.getWindow().getAppropriateLineWidth()
                                     : custom.lineWidth()
+                            //at:lwend
                     );
                 }
 

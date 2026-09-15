@@ -1,0 +1,24 @@
+{
+    import net.minecraft.client.renderer.rendertype.RenderTypes;
+    import net.minecraft.client.renderer.RenderType;
+}
+
+{
+    RenderTypes
+    RenderType
+}
+
+{
+    protected abstract void renderHitOutline(PoseStack poseStack, VertexConsumer vertexConsumer, double d, double e, double f, BlockOutlineRenderState blockOutlineRenderState, int i, float g);
+    protected abstract void renderHitOutline(PoseStack poseStack, VertexConsumer vertexConsumer, double d, double e, double f, BlockOutlineRenderState blockOutlineRenderState, int i);
+}
+
+{
+    ,//at:linewidth
+    /*
+}
+
+{
+    //at:lwend
+    */
+}
