@@ -7,3 +7,24 @@
     getBlockHolder()
     typeHolder()
 }
+
+{
+    import net.minecraft.client.renderer.state.BlockOutlineRenderState;
+    import net.minecraft.client.renderer.state.level.BlockOutlineRenderState;
+}
+
+{
+    import net.minecraft.client.renderer.ItemBlockRenderTypes;
+    // import net.minecraft.client.renderer.ItemBlockRenderTypes;
+}
+
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+
+{
+    boolean translucent = ItemBlockRenderTypes.getChunkRenderType(v_blockState).sortOnUpload();
+
+    //== replacement ==//
+
+    BlockStateModel blockStateModel = AvoidLibClient.mc.getModelManager().getBlockStateModelSet().get(v_blockState);
+    boolean translucent = blockStateModel.hasMaterialFlag(1);
+}
