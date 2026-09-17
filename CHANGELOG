@@ -4,21 +4,30 @@
 - 26.1 *[LTS]*
 - 26.1.1 & 26.1.2
 - 26.2
-- 26.3-rc-2 *[TS]*
+- 26.3
 
 **🔌 Supported ModLoaders:**
 - Fabric
-- Quilt
 - NeoForge
 - Sponge
 - Paper
 
 **🪵 Changelog:**
-- Sound integration into the framework
-- Particle integration into the framework
-- Move RandomProvider into net.random
-- [Item Components] Transform DAMAGE_TYPE
-- Mark Paper PAPI as softdepend
+- Add the missing World methods to Paper
+- Fix. Ultra stupid. 1.21.11 releasing.
+- [Client] Fix some methods being non-accessible
+- [World API] Block highlighting
+- [Server API] Mojang-based method variants
+- Update to 26.3
+- Remove Quilt support
+- [Block API] #emitLight([BlockData] blockData)
+- [Block API] #isSuffocating([BlockData] blockData, [World] world, [BlockPos] blockPos)
+- [Block API] #isViewBlocking([BlockData] blockData, [World] world, [BlockPos] blockPos)
+- [Block API] #isValidSpawn([BlockData] blockData, [World] world, [BlockPos] blockPos, [EntityType] entityType)
+- [Block Creation API] Colored lightning
+
+**🪵 Changelog (1.24-prerelease-1):**
+- More friendly error message when a symbolic link mod file fails to resolve
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
