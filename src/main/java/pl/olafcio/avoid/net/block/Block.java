@@ -51,6 +51,14 @@ public abstract class Block {
         return 0;
     }
 
+    /**
+     * Processes the light color.<br/>
+     * This method allows you to add colored lightning to your block.
+     */
+    public int processLight(int value) {
+        return value;
+    }
+
     public boolean isSuffocating(BlockData blockData, World world, BlockPos blockPos) {
         return blockData.blocksMotion() && blockData.isFullSolid(world, blockPos);
     }
