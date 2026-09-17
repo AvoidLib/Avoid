@@ -17,3 +17,8 @@
 
     var mapColor = instance.getMapColor();
 }
+
+{
+    properties = properties.isViewBlocking((blockState, blockGetter, blockPos) -> {
+    properties = properties.isViewBlocking((blockState, blockGetter, blockPos, entityType) -> {
+}

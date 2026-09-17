@@ -1,0 +1,6 @@
+import net.minecraft.tags.BlockTags;
+
+{
+    return state.blocksMotion();
+    return state.is(BlockTags.CAUSES_SUFFOCATION);
+}
