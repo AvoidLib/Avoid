@@ -45,6 +45,13 @@ public class Avoid extends LateInitializer {
     private Avoid() {}
 
     public void onInitialize() {
+        try {
+            Class.forName("org.quiltmc.loader.api.QuiltLoader");
+
+            throw new RuntimeException("Quilt is not supported and may break with AvoidLib. Please try Fabric instead; it runs 99% of the mods you use on Quilt.");
+        } catch (ClassNotFoundException ignored) {
+        }
+
         NoteBlockInstrument.clinit();
         EventManager.fire(new AllModsLoadedEvent());
 
