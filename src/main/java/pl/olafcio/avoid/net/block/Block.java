@@ -48,4 +48,8 @@ public abstract class Block {
     public int emitLight(BlockData blockData) {
         return 0;
     }
+
+    public boolean isSuffocating(BlockData blockData, World world, BlockPos blockPos) {
+        return blockData.blocksMotion() && blockData.isFullSolid(world, blockPos);
+    }
 }

@@ -66,4 +66,16 @@ public final class BlockData extends Block {
                 RandomProviderNative.convert(randomProvider)
         );
     }
+
+    @ApiStatus.Experimental
+    public boolean blocksMotion() {
+        return state.blocksMotion();
+    }
+
+    /**
+     * Returns whether the block collision expands to a whole block hitbox.
+     */
+    public boolean isFullSolid(World world, BlockPos blockPos) {
+        return state.isCollisionShapeFullBlock(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos));
+    }
 }

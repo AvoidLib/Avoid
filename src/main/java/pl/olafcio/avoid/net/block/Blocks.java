@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.mixin.accessors.IBlocks;
 import pl.olafcio.avoid.mods.loader.AvoidPackageOnly;
+import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.block.properties.*;
 import pl.olafcio.avoid.net.block.properties.preset.*;
 import pl.olafcio.avoid.net.block.values.MapColorNative;
@@ -24,6 +26,7 @@ import pl.olafcio.avoid.net.block.values.OffsetTypeNative;
 import pl.olafcio.avoid.net.block.values.PushReactionNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid.net.world.WorldNative;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
 import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
 
@@ -204,6 +207,10 @@ public final class Blocks {
 
         properties = properties.lightLevel(blockState -> {
             return instance.emitLight(BlockDataNative.convertFrom(blockState));
+        });
+
+        properties = properties.isSuffocating((blockState, blockGetter, blockPos) -> {
+            return instance.isSuffocating(BlockDataNative.convertFrom(blockState), WorldNative.make((Level) blockGetter), BlockPosNative.convert(blockPos));
         });
 
         if (block.isAnnotationPresent(_air.class))
