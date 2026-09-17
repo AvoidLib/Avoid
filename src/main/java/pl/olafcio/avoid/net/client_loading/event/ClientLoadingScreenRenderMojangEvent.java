@@ -5,6 +5,9 @@ import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.net.screen.Drawer;
 import pl.olafcio.avoid.net.screen.DrawerNative;
 
+/**
+ * An event fired when the Mojang Logo on the loading screen is rendered.
+ */
 public final class ClientLoadingScreenRenderMojangEvent extends Cancellable {
     static final ClientLoadingScreenRenderMojangEvent INSTANCE
            = new ClientLoadingScreenRenderMojangEvent();

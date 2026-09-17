@@ -68,6 +68,10 @@ public final class BlockData extends Block {
         );
     }
 
+    /**
+     * Returns whether a block with this data causes the player to suffocate, and thus block his vision (typically rendering
+     *         the causing block texture).
+     */
     @ApiStatus.Experimental
     public boolean blocksMotion() {
         return state.blocksMotion();

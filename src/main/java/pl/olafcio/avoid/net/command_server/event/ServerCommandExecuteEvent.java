@@ -4,6 +4,9 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.Discouraged;
 import pl.olafcio.avoid.mods.event.Cancellable;
 
+/**
+ * Fired when a command is executed on the server.
+ */
 @ApiStatus.Experimental
 public final class ServerCommandExecuteEvent extends Cancellable {
     private final String input;

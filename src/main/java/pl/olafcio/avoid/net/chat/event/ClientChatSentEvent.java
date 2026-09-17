@@ -6,6 +6,10 @@ import pl.olafcio.avoid.mods.event.Cancellable;
 
 import java.util.Objects;
 
+/**
+ * Fired when a message is being sent from the client.<br/>
+ * Contrary to the event name, it is cancellable. Sorry for the confusion :3
+ */
 @NeverRemoval
 public final class ClientChatSentEvent extends Cancellable {
     private final @NotNull String message;

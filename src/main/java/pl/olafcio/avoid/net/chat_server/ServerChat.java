@@ -6,6 +6,12 @@ import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 
+/**
+ * The namespace used to manage the chat on the server.<br/>
+ * For precise player messaging, use the {@link pl.olafcio.avoid.net.player.Player#sendMessage(BaseComponent) Player#sendMessage} method on player objects.
+ * <br/><br/>
+ * Broadcast a message with {@link ServerChat#broadcast(BaseComponent) broadcast([BaseComponent] data)}.
+ */
 @ApiStatus.Experimental
 public final class ServerChat {
     @ApiStatus.Internal

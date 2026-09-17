@@ -9,6 +9,31 @@ import pl.olafcio.avoid.net.id.Identification;
 import java.awt.*;
 import java.util.function.Function;
 
+/**
+ * A chat style object.
+ * <br/><br/>
+ * When you have a chat component and want to, let's say, colorize it - this is what you modify.<br/>
+ * E.g. {@link BaseComponent#color(Color)}. It sets the color of the underlying style object.
+ * <br/><br/>
+ * This is no secret, however. You can access this object freely through {@link BaseComponent#style()}, as it's part of
+ *      the public API.
+ * <br/><br/>
+ * If you need access to this object within a one-liner, you probably wanna use the {@link ChatStyle#fun()} method.<br/>
+ * It provides a functional-access wrapper object to this style.
+ * <br/><br/>
+ * E.g.:
+ * <br/>
+ * <hr/>
+ * <pre>
+ *     {@code
+ *           Chat.receiveMessage(
+ *                  Components.literal("Hi!")
+ *                            .style().fun()
+ *                                    .withColor(new Color(255, 0, 0).getRGB())
+ *                                    .back());
+ *     }
+ * </pre>
+ */
 @NeverRemoval
 public final class ChatStyle {
     public Color color = null;

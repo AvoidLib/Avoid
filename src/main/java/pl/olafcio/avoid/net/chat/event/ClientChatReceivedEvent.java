@@ -9,6 +9,9 @@ import pl.olafcio.avoid.net.chat.tag.ChatTag;
 
 import java.util.Objects;
 
+/**
+ * Fired when a message is received on the client.
+ */
 @NeverRemoval
 public final class ClientChatReceivedEvent extends Cancellable {
     private final @NotNull BaseComponent<?> message;

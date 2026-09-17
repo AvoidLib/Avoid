@@ -2,10 +2,14 @@ package pl.olafcio.avoid.net.command_server.suggestions;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.command_server.event.ServerCommandSuggestEvent;
 import pl.olafcio.avoid_common.Either;
 
 import java.util.Objects;
 
+/**
+ * @see ServerCommandSuggestEvent
+ */
 @ApiStatus.Experimental
 public class Suggestion {
     private final int rangeStart;

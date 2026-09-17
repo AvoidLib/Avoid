@@ -1,9 +1,7 @@
 package pl.olafcio.avoid.net.chat.component;
 
-import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
-import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.event.Click;
 import pl.olafcio.avoid.net.chat.component.event.Hover;
 import pl.olafcio.avoid.net.chat.component.type.ParentComponent;
@@ -12,6 +10,29 @@ import pl.olafcio.avoid.net.id.Identification;
 import java.awt.*;
 import java.util.function.Consumer;
 
+/**
+ * A chat component.
+ * <br/><br/>
+ * This is an object representing a text segment displayed in the UI.<br/>
+ * It can be the chat, a screen, an actionbar, a title, an entity display name, in the scoreboard, in the tablist, maybe somewhere even more.
+ * <br/><br/>
+ * It's very often called a chat component. That is because the name has normalized in server-only environments such as
+ *      Paper, in which there's no screens and fewer places to send these components in.
+ * <br><br/>
+ * Also, these plugin-based server-only platforms are older than Avoid - in which the times of there might've been no
+ *       other places than chat. Beta minecraft, titles, scoreboards, tablist didn't exist (":
+ * <br/><br/>
+ * To make components, look at the {@link Components} namespace.<br>
+ * There's a few types of them:
+ * <ul>
+ *     <li>{@linkplain Components#literal text literals} (plain),</li>
+ *     <li>{@linkplain Components#keymap key bindings} (displays the key bound to a keybind),</li>
+ *     <li>{@linkplain Components#translation translations} (translates the content using pack language files),</li>
+ *     <li>{@linkplain Components#translationFallback translations with fallback} (translates the content, or if no translation is available, displays the fallback),</li>
+ *     <li>{@linkplain Components#head player head} (displays the head object of the specified player),</li>
+ *     <li>{@linkplain Components#atlas atlases} (displays a texture).</li>
+ * </ul>
+ */
 @NeverRemoval
 public abstract class BaseComponent<T extends BaseComponent<T>> {
     ChatStyle style

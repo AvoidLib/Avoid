@@ -2,9 +2,13 @@ package pl.olafcio.avoid.net.command_client.suggestion;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.command_client.event.ClientCommandSuggestEvent;
 import pl.olafcio.avoid.net.command_server.suggestions.Suggestion;
 import pl.olafcio.avoid_common.Either;
 
+/**
+ * @see ClientCommandSuggestEvent
+ */
 @ApiStatus.Experimental
 public class ClientSuggestion extends Suggestion {
     private Integer background = null,

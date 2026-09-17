@@ -7,6 +7,9 @@ import pl.olafcio.avoid.net.command_server.suggestions.Suggestion;
 
 import java.util.List;
 
+/**
+ * Fired when the server sends a player command suggestions.
+ */
 @ApiStatus.Experimental
 public final class ServerCommandSuggestEvent extends Cancellable {
     private final String input;

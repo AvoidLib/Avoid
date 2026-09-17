@@ -6,6 +6,9 @@ import pl.olafcio.avoid.mods.event.Cancellable;
 
 import java.util.Objects;
 
+/**
+ * Fired when a message on the client, that is to be sent, is being normalized (stripped of whitespace).
+ */
 @ApiStatus.Experimental
 public final class ClientChatNormalizeEvent {
     private final @NotNull String input;

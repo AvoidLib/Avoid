@@ -3,6 +3,9 @@ package pl.olafcio.avoid.net.block.random;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.ApiStatus;
 
+/**
+ * @deprecated Use {@link pl.olafcio.avoid.net.random.RandomProvider net.random.RandomProvider} instead.
+ */
 @Deprecated(forRemoval = true, since = "v1.23")
 public class RandomProvider {
     @ApiStatus.Internal

@@ -7,6 +7,12 @@ import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 
+/**
+ * The namespace used to manage the chat on the client.
+ * <br/><br/>
+ * Send a message with {@link Chat#sendMessage(String) sendMessage([String] msg)}.<br/>
+ * Spoof a message with {@link Chat#receiveMessage(BaseComponent) receiveMessage([BaseComponent] msg)}.
+ */
 @NeverRemoval
 public final class Chat {
     @ApiStatus.Internal

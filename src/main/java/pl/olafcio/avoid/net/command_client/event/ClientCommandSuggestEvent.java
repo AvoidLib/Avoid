@@ -6,6 +6,9 @@ import pl.olafcio.avoid.net.command_client.suggestion.ClientSuggestion;
 
 import java.util.List;
 
+/**
+ * Fired when the command suggestion list is received on the client.
+ */
 @ApiStatus.Experimental
 public final class ClientCommandSuggestEvent {
     private final String input;

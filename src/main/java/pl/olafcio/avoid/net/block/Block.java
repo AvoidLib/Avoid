@@ -11,6 +11,14 @@ import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
 
 public abstract class Block {
+    /**
+     * Returns the sort-of <i>color</i> for this block.
+     * <br/><br/>
+     * This is used among other things for drawing maps.
+     * <br/><br/>
+     * It is not possible to create your own map colors right now, or it may require hacks<br/>
+     * (I think Avoid Block Creation API allows defining those?)
+     */
     public abstract MapColor getMapColor();
 
     public void tick(World world, BlockPos blockPos, RandomProvider randomProvider) {
@@ -63,6 +71,9 @@ public abstract class Block {
         return value;
     }
 
+    /**
+     * Returns whether this block, with the provided parameters, may cause suffocation.
+     */
     public boolean isSuffocating(BlockData blockData, World world, BlockPos blockPos) {
         return blockData.blocksMotion() && blockData.isFullSolid(world, blockPos);
     }
@@ -71,6 +82,9 @@ public abstract class Block {
         return isSuffocating(blockData, world, blockPos);
     }
 
+    /**
+     * Returns whether an entity, of the provided type, can spawn on this block, with the provided parameters.
+     */
     public boolean isValidSpawn(BlockData blockData, World world, BlockPos blockPos, EntityType entityType) {
         return blockData.isFaceSturdy(world, blockPos, Direction.UP) && blockData.getLightEmission() < 14;
     }

@@ -6,6 +6,9 @@ import pl.olafcio.avoid.mods.event.Cancellable;
 
 import java.util.Objects;
 
+/**
+ * Fired when a command is sent on the client.
+ */
 @NeverRemoval
 public final class ClientChatCommandEvent extends Cancellable {
     private final @NotNull String message;

@@ -45,6 +45,9 @@ public final class Blocks {
     @ApiStatus.Internal
     private Blocks() {}
 
+    /**
+     * Creates a default instance of the given block ID.
+     */
     public static BlockData create(Identification id) {
         return BlockDataNative.convertFrom(BuiltInRegistries.BLOCK.getValue(IdentificationNative.convert(id)).defaultBlockState());
     }
