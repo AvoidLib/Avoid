@@ -70,7 +70,6 @@ publish=1
 # 26.1
 <- neoforge (26.1.0.19-beta)
 <- sponge
-<- quilt
 minecraft_version=26.1
 minecraft_version_range=~26.1
 minecraft_version_list=["26.1", "26.1.1", "26.1.2"]
@@ -85,7 +84,6 @@ text_papi_version=3.0.0+26.1
 : 26.1
 <- neoforge (26.2.0.8-beta)
 <- sponge
-<- quilt
 minecraft_version=26.2
 minecraft_version_range=26.2
 minecraft_version_list=["26.2"]
