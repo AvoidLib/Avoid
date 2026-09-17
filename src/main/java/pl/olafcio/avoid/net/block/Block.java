@@ -52,4 +52,8 @@ public abstract class Block {
     public boolean isSuffocating(BlockData blockData, World world, BlockPos blockPos) {
         return blockData.blocksMotion() && blockData.isFullSolid(world, blockPos);
     }
+
+    public boolean isViewBlocking(BlockData blockData, World world, BlockPos blockPos) {
+        return isSuffocating(blockData, world, blockPos);
+    }
 }

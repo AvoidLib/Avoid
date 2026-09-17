@@ -213,6 +213,10 @@ public final class Blocks {
             return instance.isSuffocating(BlockDataNative.convertFrom(blockState), WorldNative.make((Level) blockGetter), BlockPosNative.convert(blockPos));
         });
 
+        properties = properties.isViewBlocking((blockState, blockGetter, blockPos) -> {
+            return instance.isViewBlocking(BlockDataNative.convertFrom(blockState), WorldNative.make((Level) blockGetter), BlockPosNative.convert(blockPos));
+        });
+
         if (block.isAnnotationPresent(_air.class))
             properties = properties.air();
 
