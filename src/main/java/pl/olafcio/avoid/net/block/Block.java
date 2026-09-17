@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.block;
 
+import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.entity_type.EntityType;
@@ -49,6 +50,17 @@ public abstract class Block {
      */
     public int emitLight(BlockData blockData) {
         return 0;
+    }
+
+    /**
+     * Processes the light color.<br/>
+     * This method allows you to add colored lightning to your block.
+     * <br/><br/>
+     * <b>NOTE:</b> This doesn't really work yet!
+     */
+    @ApiStatus.Experimental
+    public int processLight(int value) {
+        return value;
     }
 
     public boolean isSuffocating(BlockData blockData, World world, BlockPos blockPos) {

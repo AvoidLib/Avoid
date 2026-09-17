@@ -24,11 +24,15 @@ import pl.olafcio.avoid.net.world.vect3.Vect3Native;
 
 @Native
 @ApiStatus.Internal
-final class BlockNative {
+public final class BlockNative {
     @ApiStatus.Internal
     private BlockNative() {}
 
-    public static Block make(pl.olafcio.avoid.net.block.Block avoidBlock, BlockBehaviour.Properties properties) {
+    public interface IAvoidBlock {
+        pl.olafcio.avoid.net.block.Block avoid$block();
+    }
+
+    static Block make(pl.olafcio.avoid.net.block.Block avoidBlock, BlockBehaviour.Properties properties) {
         var abc = avoidBlock.getClass();
         if (abc.isAnnotationPresent(_liquid.class)) {
             var liquid = abc.getDeclaredAnnotation(_liquid.class);
@@ -36,100 +40,128 @@ final class BlockNative {
                 return makeLiquid(liquid.fluid(), avoidBlock, properties);
         }
 
-        return new Block(properties) {
-            @Override
-            protected void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-                super.tick(blockState, serverLevel, blockPos, randomSource);
-
-                avoidBlock.tick(
-                        WorldNative.make(serverLevel),
-                        BlockPosNative.convert(blockPos),
-                        RandomProviderNative.create(randomSource)
-                );
-            }
-
-            @Override
-            protected void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-                super.randomTick(blockState, serverLevel, blockPos, randomSource);
-
-                avoidBlock.randomlyTick(
-                        WorldNative.make(serverLevel),
-                        BlockPosNative.convert(blockPos),
-                        RandomProviderNative.create(randomSource)
-                );
-            }
-
-            @Override
-            public boolean dropFromExplosion(Explosion explosion) {
-                return avoidBlock.dropFromExplosion(new pl.olafcio.avoid.net.block.values.Explosion(
-                        WorldNative.make(explosion.level()),
-                        EntityNative.convertFrom(explosion.getDirectSourceEntity()),
-                        EntityNative.convertFrom(explosion.getIndirectSourceEntity()),
-                        explosion.radius(),
-                        Vect3Native.convert(explosion.center()),
-                        explosion.canTriggerBlocks(),
-                        explosion.shouldAffectBlocklikeEntities()
-                ));
-            }
-
-            @Override
-            public void destroy(LevelAccessor levelAccessor, BlockPos blockPos, BlockState blockState) {
-                if (!avoidBlock.destroy(
-                        WorldNative.make((Level) levelAccessor),
-                        BlockPosNative.convert(blockPos),
-                        BlockDataNative.convertFrom(blockState)
-                ))
-                    super.destroy(levelAccessor, blockPos, blockState);
-            }
-        };
+        return new MyBlock(properties, avoidBlock);
     }
 
-    private static LiquidBlock makeLiquid(Class<? extends Fluid> fluidClass, pl.olafcio.avoid.net.block.Block avoidBlock, BlockBehaviour.Properties properties) {
-        return new LiquidBlock(FluidsNative.convertFrom(fluidClass), properties) {
-            @Override
-            protected void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-                super.tick(blockState, serverLevel, blockPos, randomSource);
+    static LiquidBlock makeLiquid(Class<? extends Fluid> fluidClass, pl.olafcio.avoid.net.block.Block avoidBlock, BlockBehaviour.Properties properties) {
+        return new MyLiquidBlock(fluidClass, properties, avoidBlock);
+    }
 
-                avoidBlock.tick(
-                        WorldNative.make(serverLevel),
-                        BlockPosNative.convert(blockPos),
-                        RandomProviderNative.create(randomSource)
-                );
-            }
+    private static class MyBlock extends Block implements IAvoidBlock {
+        private final pl.olafcio.avoid.net.block.Block avoidBlock;
 
-            @Override
-            protected void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-                super.randomTick(blockState, serverLevel, blockPos, randomSource);
+        public MyBlock(Properties properties, pl.olafcio.avoid.net.block.Block avoidBlock) {
+            super(properties);
+            this.avoidBlock = avoidBlock;
+        }
 
-                avoidBlock.randomlyTick(
-                        WorldNative.make(serverLevel),
-                        BlockPosNative.convert(blockPos),
-                        RandomProviderNative.create(randomSource)
-                );
-            }
+        @Override
+        public pl.olafcio.avoid.net.block.Block avoid$block() {
+            return avoidBlock;
+        }
 
-            @Override
-            public boolean dropFromExplosion(Explosion explosion) {
-                return avoidBlock.dropFromExplosion(new pl.olafcio.avoid.net.block.values.Explosion(
-                        WorldNative.make(explosion.level()),
-                        EntityNative.convertFrom(explosion.getDirectSourceEntity()),
-                        EntityNative.convertFrom(explosion.getIndirectSourceEntity()),
-                        explosion.radius(),
-                        Vect3Native.convert(explosion.center()),
-                        explosion.canTriggerBlocks(),
-                        explosion.shouldAffectBlocklikeEntities()
-                ));
-            }
+        @Override
+        protected void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+            super.tick(blockState, serverLevel, blockPos, randomSource);
 
-            @Override
-            public void destroy(LevelAccessor levelAccessor, BlockPos blockPos, BlockState blockState) {
-                if (!avoidBlock.destroy(
-                        WorldNative.make((Level) levelAccessor),
-                        BlockPosNative.convert(blockPos),
-                        BlockDataNative.convertFrom(blockState)
-                ))
-                    super.destroy(levelAccessor, blockPos, blockState);
-            }
-        };
+            avoidBlock.tick(
+                    WorldNative.make(serverLevel),
+                    BlockPosNative.convert(blockPos),
+                    RandomProviderNative.create(randomSource)
+            );
+        }
+
+        @Override
+        protected void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+            super.randomTick(blockState, serverLevel, blockPos, randomSource);
+
+            avoidBlock.randomlyTick(
+                    WorldNative.make(serverLevel),
+                    BlockPosNative.convert(blockPos),
+                    RandomProviderNative.create(randomSource)
+            );
+        }
+
+        @Override
+        public boolean dropFromExplosion(Explosion explosion) {
+            return avoidBlock.dropFromExplosion(new pl.olafcio.avoid.net.block.values.Explosion(
+                    WorldNative.make(explosion.level()),
+                    EntityNative.convertFrom(explosion.getDirectSourceEntity()),
+                    EntityNative.convertFrom(explosion.getIndirectSourceEntity()),
+                    explosion.radius(),
+                    Vect3Native.convert(explosion.center()),
+                    explosion.canTriggerBlocks(),
+                    explosion.shouldAffectBlocklikeEntities()
+            ));
+        }
+
+        @Override
+        public void destroy(LevelAccessor levelAccessor, BlockPos blockPos, BlockState blockState) {
+            if (!avoidBlock.destroy(
+                    WorldNative.make((Level) levelAccessor),
+                    BlockPosNative.convert(blockPos),
+                    BlockDataNative.convertFrom(blockState)
+            ))
+                super.destroy(levelAccessor, blockPos, blockState);
+        }
+    }
+
+    private static class MyLiquidBlock extends LiquidBlock implements IAvoidBlock {
+        private final pl.olafcio.avoid.net.block.Block avoidBlock;
+
+        public MyLiquidBlock(Class<? extends Fluid> fluidClass, Properties properties, pl.olafcio.avoid.net.block.Block avoidBlock) {
+            super(FluidsNative.convertFrom(fluidClass), properties);
+            this.avoidBlock = avoidBlock;
+        }
+
+        @Override
+        public pl.olafcio.avoid.net.block.Block avoid$block() {
+            return avoidBlock;
+        }
+
+        @Override
+        protected void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+            super.tick(blockState, serverLevel, blockPos, randomSource);
+
+            avoidBlock.tick(
+                    WorldNative.make(serverLevel),
+                    BlockPosNative.convert(blockPos),
+                    RandomProviderNative.create(randomSource)
+            );
+        }
+
+        @Override
+        protected void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+            super.randomTick(blockState, serverLevel, blockPos, randomSource);
+
+            avoidBlock.randomlyTick(
+                    WorldNative.make(serverLevel),
+                    BlockPosNative.convert(blockPos),
+                    RandomProviderNative.create(randomSource)
+            );
+        }
+
+        @Override
+        public boolean dropFromExplosion(Explosion explosion) {
+            return avoidBlock.dropFromExplosion(new pl.olafcio.avoid.net.block.values.Explosion(
+                    WorldNative.make(explosion.level()),
+                    EntityNative.convertFrom(explosion.getDirectSourceEntity()),
+                    EntityNative.convertFrom(explosion.getIndirectSourceEntity()),
+                    explosion.radius(),
+                    Vect3Native.convert(explosion.center()),
+                    explosion.canTriggerBlocks(),
+                    explosion.shouldAffectBlocklikeEntities()
+            ));
+        }
+
+        @Override
+        public void destroy(LevelAccessor levelAccessor, BlockPos blockPos, BlockState blockState) {
+            if (!avoidBlock.destroy(
+                    WorldNative.make((Level) levelAccessor),
+                    BlockPosNative.convert(blockPos),
+                    BlockDataNative.convertFrom(blockState)
+            ))
+                super.destroy(levelAccessor, blockPos, blockState);
+        }
     }
 }
