@@ -101,5 +101,4 @@ minecraft_version_list=["26.3"]
 quilt_loader=0.31.0-beta.1
 loader_version=0.19.3
 fabric_version=0.159.1+26.3
-publish=1
 text_papi_version=-
