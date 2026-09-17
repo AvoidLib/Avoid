@@ -1,6 +1,8 @@
 package pl.olafcio.avoid.net.block;
 
+import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
+import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.random.RandomProvider;
 import pl.olafcio.avoid.net.block.values.Explosion;
 import pl.olafcio.avoid.net.block.values.MapColor;
@@ -55,5 +57,9 @@ public abstract class Block {
 
     public boolean isViewBlocking(BlockData blockData, World world, BlockPos blockPos) {
         return isSuffocating(blockData, world, blockPos);
+    }
+
+    public boolean isValidSpawn(BlockData blockData, World world, BlockPos blockPos, EntityType entityType) {
+        return blockData.isFaceSturdy(world, blockPos, Direction.UP) && blockData.getLightEmission() < 14;
     }
 }

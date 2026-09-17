@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
@@ -72,10 +73,19 @@ public final class BlockData extends Block {
         return state.blocksMotion();
     }
 
+    @ApiStatus.Experimental
+    public int getLightEmission() {
+        return state.getLightEmission();
+    }
+
     /**
      * Returns whether the block collision expands to a whole block hitbox.
      */
     public boolean isFullSolid(World world, BlockPos blockPos) {
         return state.isCollisionShapeFullBlock(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos));
+    }
+
+    public boolean isFaceSturdy(World world, BlockPos blockPos, Direction direction) {
+        return state.isFaceSturdy(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), net.minecraft.core.Direction.valueOf(direction.name()));
     }
 }

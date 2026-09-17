@@ -24,6 +24,7 @@ import pl.olafcio.avoid.net.block.values.MapColorNative;
 import pl.olafcio.avoid.net.block.values.NoteBlockInstrumentNative;
 import pl.olafcio.avoid.net.block.values.OffsetTypeNative;
 import pl.olafcio.avoid.net.block.values.PushReactionNative;
+import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.world.WorldNative;
@@ -215,6 +216,10 @@ public final class Blocks {
 
         properties = properties.isViewBlocking((blockState, blockGetter, blockPos) -> {
             return instance.isViewBlocking(BlockDataNative.convertFrom(blockState), WorldNative.make((Level) blockGetter), BlockPosNative.convert(blockPos));
+        });
+
+        properties = properties.isValidSpawn((blockState, blockGetter, blockPos, entityType) -> {
+            return instance.isValidSpawn(BlockDataNative.convertFrom(blockState), WorldNative.make((Level) blockGetter), BlockPosNative.convert(blockPos), EntityTypeNative.convertFrom(entityType));
         });
 
         if (block.isAnnotationPresent(_air.class))
