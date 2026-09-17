@@ -202,6 +202,10 @@ public final class Blocks {
             ));
         }
 
+        properties = properties.lightLevel(blockState -> {
+            return instance.emitLight(BlockDataNative.convertFrom(blockState));
+        });
+
         if (block.isAnnotationPresent(_air.class))
             properties = properties.air();
 

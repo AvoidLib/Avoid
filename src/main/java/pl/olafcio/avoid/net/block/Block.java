@@ -35,4 +35,17 @@ public abstract class Block {
     public boolean destroy(World world, BlockPos blockPos, BlockData blockData) {
         return false;
     }
+
+    /**
+     * Returns a 0-15 int describing how much light should the block emit.<br/>
+     * It works like for light blocks.
+     * <br/><br/>
+     * Note that Minecraft may not check whether this value is valid.<br/>
+     * It may, but additional checking is very recommended.
+     * @return The amount of light to emit.<br/>
+     *         {@code 0} is none, {@code 15} is max.
+     */
+    public int emitLight(BlockData blockData) {
+        return 0;
+    }
 }
