@@ -19,3 +19,8 @@ import com.mojang.authlib.GameProfile;
     NameAndId
     GameProfile
 }
+
+{
+    services().nameToIdCache()
+    getProfileCache()
+}
