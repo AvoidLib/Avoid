@@ -15,6 +15,7 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mixin.accessors.IBlocks;
 import pl.olafcio.avoid.mods.loader.AvoidPackageOnly;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
@@ -211,11 +212,11 @@ public final class Blocks {
         });
 
         properties = properties.isSuffocating((blockState, blockGetter, blockPos) -> {
-            return instance.isSuffocating(BlockDataNative.convertFrom(blockState), WorldNative.make((Level) blockGetter), BlockPosNative.convert(blockPos));
+            return instance.isSuffocating(BlockDataNative.convertFrom(blockState), WorldNative.make(AvoidLibClient.mc.level), BlockPosNative.convert(blockPos));
         });
 
         properties = properties.isViewBlocking((blockState, blockGetter, blockPos) -> {
-            return instance.isViewBlocking(BlockDataNative.convertFrom(blockState), WorldNative.make((Level) blockGetter), BlockPosNative.convert(blockPos));
+            return instance.isViewBlocking(BlockDataNative.convertFrom(blockState), WorldNative.make(AvoidLibClient.mc.level), BlockPosNative.convert(blockPos));
         });
 
         properties = properties.isValidSpawn((blockState, blockGetter, blockPos, entityType) -> {
