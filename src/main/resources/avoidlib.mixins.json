@@ -39,6 +39,7 @@
     "accessors.IVillager"
   ],
   "client": [
+    "BlockModelGeneratorsMixin",
     "BlockOutlineRenderStateMixin",
     "BlocksMixin",
     "BuiltInPackSourceMixin",

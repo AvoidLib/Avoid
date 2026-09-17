@@ -65,6 +65,7 @@ public final class Blocks {
         );  //at:register
 
         Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
+        BlocksNative.blocks.add(block);
 
         for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
             Block.BLOCK_STATE_REGISTRY.add(blockState);
@@ -89,6 +90,7 @@ public final class Blocks {
         );  //at:register
 
         Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
+        BlocksNative.blocks.add(block);
 
         for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
             Block.BLOCK_STATE_REGISTRY.add(blockState);
