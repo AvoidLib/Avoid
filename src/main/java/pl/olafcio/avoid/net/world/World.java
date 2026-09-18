@@ -375,4 +375,9 @@ public final class World {
     public float getRainLevel(float tickDelta) {
         return level.getRainLevel(tickDelta);
     }
+
+    @ApiStatus.Experimental
+    public float getThunderLevel(float tickDelta) {
+        return level.getThunderLevel(tickDelta);
+    }
 }
