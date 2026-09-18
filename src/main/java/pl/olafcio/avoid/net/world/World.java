@@ -370,4 +370,9 @@ public final class World {
     public boolean isStorm() {
         return level.isThundering();
     }
+
+    @ApiStatus.Experimental
+    public float getRainLevel(float tickDelta) {
+        return level.getRainLevel(tickDelta);
+    }
 }
