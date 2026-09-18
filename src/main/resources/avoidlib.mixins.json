@@ -12,6 +12,7 @@
     "DefaultAttributesMixin",
     "EnchantmentHelperMixin",
     "EnchantmentMenuMixin",
+    "EnderDragonMixin",
     "EntityMixin",
     "EntitySelectorParserMixin",
     "FarmBlockMixin",
