@@ -7,6 +7,8 @@ String github(String repository, String versionName = "latest", Predicate<String
     var repoName = repository.substring(repository.indexOf("/") + 1)
     var libs = project.file("libs-all").toPath()
 
+    Files.createDirectories(libs)
+
     if (versionName == "latest") {
         try (var allLibs = Files.list(libs)) {
             String ret = null
