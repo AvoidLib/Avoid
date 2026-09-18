@@ -23,3 +23,6 @@ run-server
 
 # Dynamic libraries
 libs-all
+
+# GoPowered
+.gopowered

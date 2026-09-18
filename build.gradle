@@ -23,8 +23,10 @@ buildscript {
 
     dependencies {
         classpath 'net.fabricmc:fabric-loom:1.17-SNAPSHOT'
-        classpath github("Olafcio1/LimePublishing")
         classpath 'com.gradleup.shadow:shadow-gradle-plugin:9.6.1'
+
+        if (System.getProperty("ACTIONS_SKIP_PUBLISHING", null) != "1")
+            classpath github("Olafcio1/LimePublishing")
     }
 }
 
@@ -57,7 +59,9 @@ if (contains("omit_mappings")) {
 }
 
 apply plugin: 'maven-publish'
-apply plugin: 'lime-publishing'
+
+if (System.getProperty("ACTIONS_SKIP_PUBLISHING", null) != "1")
+    apply plugin: 'lime-publishing'
 
 version = project.mod_version
 group = project.maven_group
@@ -289,6 +293,7 @@ publishing {
     }
 }
 
+//#region limepublish
 import pl.olafcio.limepublish.enums.Environment
 import pl.olafcio.limepublish.enums.VersionType
 import pl.olafcio.limepublish.enums.Platform
@@ -365,6 +370,8 @@ tasks.register("considerRelease") {
     if (contains("merge") || contains("publish"))
         dependsOn("release")
 }
+
+//#region limepublishEnd
 
 apply from: project.file('x_build/lib_github.gradle')
 
