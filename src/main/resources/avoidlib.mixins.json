@@ -13,6 +13,7 @@
     "EnchantmentHelperMixin",
     "EnchantmentMenuMixin",
     "EnderDragonMixin",
+    "EnderDragonPhaseManagerMixin",
     "EntityMixin",
     "EntitySelectorParserMixin",
     "FarmBlockMixin",
