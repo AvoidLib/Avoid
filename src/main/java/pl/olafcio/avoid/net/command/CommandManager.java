@@ -4,14 +4,8 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
-import pl.olafcio.avoid.net.command.annotation.Permission;
-import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
-import pl.olafcio.avoid.net.command.annotation.Syntax;
-import pl.olafcio.avoid.net.command.annotation.Unknown;
-import pl.olafcio.avoid.net.command.exception.DuplicatePermissionDeclaration;
-import pl.olafcio.avoid.net.command.exception.DuplicateSyntaxException;
-import pl.olafcio.avoid.net.command.exception.InvalidSyntaxException;
-import pl.olafcio.avoid.net.command.exception.SyntaxInitException;
+import pl.olafcio.avoid.net.command.annotation.*;
+import pl.olafcio.avoid.net.command.exception.*;
 import pl.olafcio.avoid.net.command.exception.late.TooLateException;
 import pl.olafcio.avoid.net.command.exception.use.CannotCallException;
 import pl.olafcio.avoid.net.command.handling.CommandHandler;
@@ -60,6 +54,8 @@ public final class CommandManager {
 
         String lastNameRecorded = null;
         CommandHandler unknownhandler = null;
+
+        var flat = new HashMap<String, SyntaxTree>();
 
         for (var method : methods) {
             if (method.isAnnotationPresent(Syntax.class)) {
@@ -207,6 +203,8 @@ public final class CommandManager {
                 node.cmd = cmd;
 
                 markPermission(method, node);
+
+                flat.put(paramraw, node);
             } else if (method.isAnnotationPresent(Unknown.class)) {
                 if (unknownhandler != null)
                     throw new DuplicateSyntaxException("@Unknown method present twice");
@@ -222,6 +220,39 @@ public final class CommandManager {
                         throw new CannotCallException("Reflection failure", e);
                     }
                 };
+            }
+        }
+
+        for (var method : methods) {
+            if (method.isAnnotationPresent(Tabcomplete.class)) {
+                var paramraw = method.getAnnotation(Tabcomplete.class)
+                                     .value();
+
+                if (method.getParameterCount() > 1)
+                    throw new InvalidMethodException("@Tabcomplete method '%s#%s' has %d parameters, expected 0-1".formatted(cmd.getClass().getSimpleName(), method.getName(), method.getParameterCount()));
+
+                if (!flat.containsKey(paramraw))
+                    throw new InvalidMethodException("@Tabcomplete method '%s#%s' refers to non-implemented syntax".formatted(cmd.getClass().getSimpleName(), method.getName()));
+
+                if (flat.get(paramraw) == null)
+                    throw new InvalidMethodException("@Tabcomplete method '%s#%s' refers to duplicated syntax".formatted(cmd.getClass().getSimpleName(), method.getName()));
+
+                flat.get(paramraw).tabcomplete = input -> {
+                    try {
+                        if (method.getParameterCount() == 1)
+                            return (String[]) method.invoke(cmd, input);
+                        else
+                            return (String[]) method.invoke(cmd);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        var out = new StringWriter();
+                        e.printStackTrace(new PrintWriter(out));
+                        Avoid.LOGGER.debug("Couldn't invoke tabcomplete method\n{}", out);
+
+                        throw new CannotCallException("Reflection failure", e);
+                    }
+                };
+
+                flat.put(paramraw, null);
             }
         }
 

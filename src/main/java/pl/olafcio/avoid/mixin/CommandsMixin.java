@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -40,6 +41,7 @@ import pl.olafcio.avoid.net.player.PlayerNative;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
@@ -116,9 +118,14 @@ public class CommandsMixin {
 
             node = addNodePermissions_unsafe(entry.getValue(), node);
 
-            if (node instanceof RequiredArgumentBuilder<?,?> rab)
+            if (node instanceof RequiredArgumentBuilder<?,?> rab) {
+                Function<CommandContext<?>, String[]> suggester = entry.getValue().tabcomplete == null
+
+                                    ? ctx -> entry.getKey().tabcomplete()
+                                    : ctx -> entry.getValue().tabcomplete.apply(ctx.getInput());
+
                 node = (ArgumentBuilder<CommandSourceStack, ?>) rab.suggests((ctx, builder) -> {
-                    var suggestions = entry.getKey().tabcomplete();
+                    var suggestions = suggester.apply(ctx);
                     if (suggestions != null)
                         for (var sug : suggestions)
                             if (sug.startsWith(builder.getRemaining()))
@@ -126,6 +133,7 @@ public class CommandsMixin {
 
                     return CompletableFuture.completedFuture(builder.build());
                 });
+            }
 
             if (entry.getValue().isNodeExecutable()) {
                 node = node.executes(executing(entry.getValue(), entryStack, cmdName));
