@@ -362,4 +362,12 @@ public final class World {
     public boolean isRaining() {
         return level.isRaining();
     }
+
+    /**
+     * Returns whether it is currently thunder in the world.
+     */
+    @ApiStatus.Experimental
+    public boolean isStorm() {
+        return level.isThundering();
+    }
 }
