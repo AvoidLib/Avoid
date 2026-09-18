@@ -17,6 +17,7 @@ import pl.olafcio.avoid.net.command.exception.use.CannotCallException;
 import pl.olafcio.avoid.net.command.handling.CommandHandler;
 import pl.olafcio.avoid.net.command.parameter.CommandParameter;
 import pl.olafcio.avoid.net.command.parameter.CommandParameters;
+import pl.olafcio.avoid.net.command.parameter.impl.LiteralParameter;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -153,9 +154,39 @@ public final class CommandManager {
                             throw new InvalidSyntaxException("Each parameter must be preceded by a space");
 
                         inTag = true;
+                    } else if (ch == ' ') {
+                        if (!value.isEmpty()) {
+                            var paramName = value.toString();
+
+                            if (taken.contains(paramName))
+                                throw new InvalidSyntaxException("Parameter name already taken");
+
+                            taken.add(paramName);
+
+                            node = node.compute(new LiteralParameter(paramName), (x, y) -> new SyntaxTree());
+
+                            value.setLength(0);
+                        }
+                    } else {
+                        value.append(ch);
                     }
 
                     prev = ch;
+                }
+
+                if (!inTag) {
+                    if (!value.isEmpty()) {
+                        var paramName = value.toString();
+
+                        if (taken.contains(paramName))
+                            throw new InvalidSyntaxException("Parameter name already taken");
+
+                        taken.add(paramName);
+
+                        node = node.compute(new LiteralParameter(paramName), (x, y) -> new SyntaxTree());
+
+                        value.setLength(0);
+                    }
                 }
 
                 if (node.method != null)
