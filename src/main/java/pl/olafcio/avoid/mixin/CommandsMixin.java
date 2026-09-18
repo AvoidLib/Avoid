@@ -4,6 +4,8 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.ParsedArgument;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -24,6 +26,7 @@ import pl.olafcio.avoid.mixinclass.MyUnknownExecutor;
 import pl.olafcio.avoid.mixinclass.Overload;
 import org.spongepowered.asm.mixin.injection.Coerce;
 import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.net.command.parameter.impl.LiteralParameter;
 import pl.olafcio.avoid.net.command_server.event.ServerCommandExecuteEvent;
 import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.executor.Executor;
@@ -89,17 +92,32 @@ public class CommandsMixin {
 
     @Unique
     @SuppressWarnings("unchecked")
+    private <T extends ArgumentBuilder<CommandSourceStack, T>> T addNodePermissions_unsafe(SyntaxTree entry, ArgumentBuilder<CommandSourceStack, ?> obj) {
+        return addNodePermissions(entry, (T) obj);
+    }
+
+    @Unique
+    @SuppressWarnings("unchecked")
     private <T extends ArgumentBuilder<CommandSourceStack, ?>> T walk(SyntaxTree tree, T root, LinkedHashMap<String, CommandParameter<?>> stack, String cmdName) {
         for (var entry : tree.entrySet()) {
-            var node = Commands.argument(entry.getKey().getName(), StringArgumentType.word());
+            var node =
+
+                    entry.getKey() instanceof LiteralParameter lp
+
+                ? Commands.literal(lp.getValue())
+                : Commands.argument(
+                        entry.getKey().getName(),
+                        StringArgumentType.word()
+                );
+
             var entryStack = (LinkedHashMap<String, CommandParameter<?>>) stack.clone();
 
             entryStack.put(entry.getKey().getName(), entry.getKey());
 
-            node = addNodePermissions(entry.getValue(), node);
+            node = addNodePermissions_unsafe(entry.getValue(), node);
 
-            if (entry.getValue().isNodeExecutable()) {
-                node = node.suggests((ctx, builder) -> {
+            if (node instanceof RequiredArgumentBuilder<?,?> rab)
+                node = (ArgumentBuilder<CommandSourceStack, ?>) rab.suggests((ctx, builder) -> {
                     var suggestions = entry.getKey().tabcomplete();
                     if (suggestions != null)
                         for (var sug : suggestions)
@@ -109,6 +127,7 @@ public class CommandsMixin {
                     return CompletableFuture.completedFuture(builder.build());
                 });
 
+            if (entry.getValue().isNodeExecutable()) {
                 node = node.executes(executing(entry.getValue(), entryStack, cmdName));
             }
 
@@ -120,6 +139,7 @@ public class CommandsMixin {
         return root;
     }
 
+    @Unique
     private static <T extends ArgumentBuilder<CommandSourceStack, T>> T addNodePermissions(SyntaxTree entry, T node) {
         var perm = entry.getPermission();
         if (perm != null) {
