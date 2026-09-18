@@ -354,4 +354,12 @@ public final class World {
     public boolean isDebug() {
         return level.isDebug();
     }
+
+    /**
+     * Returns whether it is currently raining in the world.
+     */
+    @ApiStatus.Experimental
+    public boolean isRaining() {
+        return level.isRaining();
+    }
 }
