@@ -346,4 +346,12 @@ public final class World {
                    pos.getZ() == blockPos.z();
         });
     }
+
+    /**
+     * Returns whether the world is a debug world.
+     */
+    @ApiStatus.Experimental
+    public boolean isDebug() {
+        return level.isDebug();
+    }
 }
