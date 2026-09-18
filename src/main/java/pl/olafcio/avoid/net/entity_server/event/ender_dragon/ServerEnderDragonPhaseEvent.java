@@ -8,11 +8,19 @@ import pl.olafcio.avoid.net.entity.values.EnderDragonPhase;
  * <b>Note:</b> Cancelling this event may break the ender dragon.
  */
 public final class ServerEnderDragonPhaseEvent extends Cancellable {
-    public final Entity dragon;
-    public final EnderDragonPhase phase;
+    private final Entity dragon;
+    private final EnderDragonPhase phase;
 
     public ServerEnderDragonPhaseEvent(Entity dragon, EnderDragonPhase phase) {
         this.dragon = dragon;
         this.phase = phase;
+    }
+
+    public Entity getDragon() {
+        return dragon;
+    }
+
+    public EnderDragonPhase getPhase() {
+        return phase;
     }
 }

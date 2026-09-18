@@ -11,15 +11,31 @@ import pl.olafcio.avoid.net.world.World;
  * &emsp;&emsp;&emsp;however you can cancel the affectance of it on the ender dragon.
  */
 public final class ServerEnderDragonCrystalBrokenProcessEvent extends Cancellable {
-    public final World world;
-    public final Entity crystal;
-    public final BlockPos blockPos;
-    public final Damage damage;
+    private final World world;
+    private final Entity crystal;
+    private final BlockPos blockPos;
+    private final Damage damage;
 
     public ServerEnderDragonCrystalBrokenProcessEvent(World world, Entity crystal, BlockPos blockPos, Damage damage) {
         this.world = world;
         this.crystal = crystal;
         this.blockPos = blockPos;
         this.damage = damage;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public Entity getCrystal() {
+        return crystal;
+    }
+
+    public BlockPos getBlockPos() {
+        return blockPos;
+    }
+
+    public Damage getDamage() {
+        return damage;
     }
 }
