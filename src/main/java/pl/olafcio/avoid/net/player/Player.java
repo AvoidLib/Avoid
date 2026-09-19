@@ -93,6 +93,27 @@ public class Player extends Entity implements Executor {
     }
 
     /**
+     * Displays an actionbar for the player.<br/><br/>
+     * This only works from the server and on the local player.
+     * If you try using it on remote players from the client,
+     * it will throw an exception.
+     */
+    @NeverRemoval
+    public void sendActionbar(BaseComponent<?> component) {
+        if (underlyingEntity instanceof ServerPlayer)
+            ((ServerGamePacketListenerImpl) connection).send(new ClientboundSystemChatPacket(COToNative.from(component), true));
+
+        else if (
+                AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
+                underlyingEntity instanceof LocalPlayer client
+        )
+            client.displayClientMessage(COToNative.from(component), true);
+
+        else
+            throw new UncontrollablePlayerException("[Player#sendActionbar] Remote players can't be controlled from the client");
+    }
+
+    /**
      * Sets the player's health and sends a SetHealthC2SPacket.<br/>
      * This looks more smooth than just a {@code setHealth} call on the client.
      */
