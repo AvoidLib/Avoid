@@ -43,6 +43,11 @@ public record Identification(String namespace, String path) {
     }
 
     @ApiStatus.Experimental
+    public boolean is(String id) {
+        return Identification.of(id).equals(this);
+    }
+
+    @ApiStatus.Experimental
     public boolean is(String namespace, String path) {
         return this.namespace.equals(namespace) && this.path.equals(path);
     }
