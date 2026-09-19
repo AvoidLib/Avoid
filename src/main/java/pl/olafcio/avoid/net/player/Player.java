@@ -204,7 +204,7 @@ public class Player extends Entity implements Executor {
 
     /**
      * Sets the player's health and sends a SetHealthC2SPacket.<br/>
-     * This looks more smooth than just a {@code setHealth} call on the client.
+     * This looks more smooth than just a {@link #setHealth} call on the client.
      */
     @ServerOnly
     public void updateHealth(float health) {
