@@ -1,10 +1,7 @@
 package pl.olafcio.avoid.net.player;
 
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.protocol.game.ClientboundSetHealthPacket;
-import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
-import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
-import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
+import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.phys.EntityHitResult;
@@ -156,6 +153,27 @@ public class Player extends Entity implements Executor {
 
         else
             throw new UncontrollablePlayerException("[Player#sendSubtitle] Remote players can't be controlled from the client");
+    }
+
+    /**
+     * Sets the title animation timings for the player.<br/><br/>
+     * This only works from the server and on the local player.
+     * If you try using it on remote players from the client,
+     * it will throw an exception.
+     */
+    @NeverRemoval
+    public void setTitleAnimations(int fadeIn, int stay, int fadeOut) {
+        if (underlyingEntity instanceof ServerPlayer)
+            ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetTitlesAnimationPacket(fadeIn, stay, fadeOut));
+
+        else if (
+                AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
+                underlyingEntity instanceof LocalPlayer
+        )
+            AvoidLibClient.mc.gui.setTimes(fadeIn, stay, fadeOut);
+
+        else
+            throw new UncontrollablePlayerException("[Player#setTitleAnimations] Remote players can't be controlled from the client");
     }
 
     /**
