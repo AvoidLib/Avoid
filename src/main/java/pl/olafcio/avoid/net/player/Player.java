@@ -177,6 +177,32 @@ public class Player extends Entity implements Executor {
     }
 
     /**
+     * Clears titles (and optionally title animation timings) for the player.<br/><br/>
+     * This only works from the server and on the local player.
+     * If you try using it on remote players from the client,
+     * it will throw an exception.
+     */
+    @NeverRemoval
+    public void clearTitles(boolean resetAnimations) {
+        if (underlyingEntity instanceof ServerPlayer)
+            ((ServerGamePacketListenerImpl) connection).send(new ClientboundClearTitlesPacket(resetAnimations));
+
+        else if (
+                AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
+                underlyingEntity instanceof LocalPlayer
+        )
+        {
+            AvoidLibClient.mc.gui.clearTitles();
+
+            if (resetAnimations)
+                AvoidLibClient.mc.gui.resetTitleTimes();
+        }
+
+        else
+            throw new UncontrollablePlayerException("[Player#clearTitles] Remote players can't be controlled from the client");
+    }
+
+    /**
      * Sets the player's health and sends a SetHealthC2SPacket.<br/>
      * This looks more smooth than just a {@code setHealth} call on the client.
      */
