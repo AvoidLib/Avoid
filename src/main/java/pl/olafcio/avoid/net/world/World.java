@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 @SuppressWarnings("ClassCanBeRecord")
 @NeverRemoval
@@ -93,6 +94,19 @@ public final class World {
             //noinspection ConstantValue
             if (e != null)
                 callback.accept(EntityNative.convertFrom(e));
+    }
+
+    @ApiStatus.Experimental
+    public boolean findEntity(Predicate<Entity> predicate) {
+        var iter = ((ILevel) level).avoid$getEntities().getAll();
+
+        for (var e : iter)
+            //noinspection ConstantValue
+            if (e != null)
+                if (predicate.test(EntityNative.convertFrom(e)))
+                    return true;
+
+        return false;
     }
 
     @ApiStatus.Experimental
