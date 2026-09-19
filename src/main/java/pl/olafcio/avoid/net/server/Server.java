@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 @ApiStatus.Experimental
 public final class Server {
@@ -116,6 +117,16 @@ public final class Server {
 
         for (var world : worlds)
             world.eachEntity(callback);
+    }
+
+    public static boolean findEntity(Predicate<Entity> callback) {
+        var worlds = getWorlds();
+
+        for (var world : worlds)
+            if (world.findEntity(callback))
+                return true;
+
+        return false;
     }
 
     public static World getOverworld() {
