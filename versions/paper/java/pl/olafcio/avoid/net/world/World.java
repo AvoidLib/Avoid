@@ -31,6 +31,7 @@ import pl.olafcio.avoid.net.world.vect3.IVect3;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @SuppressWarnings("ClassCanBeRecord")
@@ -79,8 +80,22 @@ public final class World {
         var iter = Util.convertFrom(level).getEntities();
 
         for (var e : iter)
+            //noinspection ConstantValue
             if (e != null)
                 callback.accept(EntityNative.convertFrom(Util.convertEntity(e)));
+    }
+
+    @ApiStatus.Experimental
+    public boolean findEntity(Predicate<Entity> predicate) {
+        var iter = Util.convertFrom(level).getEntities();
+
+        for (var e : iter)
+            //noinspection ConstantValue
+            if (e != null)
+                if (predicate.test(EntityNative.convertFrom(Util.convertEntity(e))))
+                    return true;
+
+        return false;
     }
 
     @ApiStatus.Experimental
