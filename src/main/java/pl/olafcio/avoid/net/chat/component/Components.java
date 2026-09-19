@@ -2,6 +2,7 @@ package pl.olafcio.avoid.net.chat.component;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.net.chat.component._parse.MiniMessageParser;
 import pl.olafcio.avoid.net.chat.component.type.*;
 import pl.olafcio.avoid.net.id.Identification;
 
@@ -23,7 +24,14 @@ import java.util.UUID;
 @NeverRemoval
 @ApiStatus.NonExtendable
 public interface Components {
-    ;
+    interface Parse {
+        /**
+         * Parses the specified minimessage text.
+         */
+        static BaseComponent<?> minimessage(String text) {
+            return new MiniMessageParser(text).parse();
+        }
+    }
 
     /**
      * Returns a component displaying the provided text.

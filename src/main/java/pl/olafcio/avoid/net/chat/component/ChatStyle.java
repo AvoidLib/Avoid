@@ -195,4 +195,17 @@ public final class ChatStyle {
     public static Function<BaseComponent<?>, BaseComponent<?>> merging(ChatStyle from) {
         return cmp -> cmp.style(st -> st.merge().override(from));
     }
+
+    // ////// //
+    //  MISC  //
+    // ////// //
+
+    @Override
+    public ChatStyle clone() {
+        try {
+            return (ChatStyle) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Failed to clone() a ChatStyle", e);
+        }
+    }
 }
