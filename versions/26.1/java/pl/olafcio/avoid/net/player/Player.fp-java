@@ -2,3 +2,8 @@
     displayClientMessage(COToNative.from(component), false)
     sendSystemMessage(COToNative.from(component))
 }
+
+{
+    displayClientMessage(COToNative.from(component), true)
+    sendOverlayMessage(COToNative.from(component))
+}
