@@ -1,4 +1,5 @@
 **🧧 Supported Versions:**
+- 1.21.8
 - 1.21.10
 - 1.21.11 *[LTS]*
 - 26.1 *[LTS]*
@@ -13,21 +14,24 @@
 - Paper
 
 **🪵 Changelog:**
-- Add the missing World methods to Paper
-- Fix. Ultra stupid. 1.21.11 releasing.
-- [Client] Fix some methods being non-accessible
-- [World API] Block highlighting
-- [Server API] Mojang-based method variants
-- Update to 26.3
-- Remove Quilt support
-- [Block API] #emitLight([BlockData] blockData)
-- [Block API] #isSuffocating([BlockData] blockData, [World] world, [BlockPos] blockPos)
-- [Block API] #isViewBlocking([BlockData] blockData, [World] world, [BlockPos] blockPos)
-- [Block API] #isValidSpawn([BlockData] blockData, [World] world, [BlockPos] blockPos, [EntityType] entityType)
-- [Block Creation API] Colored lightning
-
-**🪵 Changelog (1.24-prerelease-1):**
-- More friendly error message when a symbolic link mod file fails to resolve
+- Some documentation
+- Restore 1.21.8 support
+- Fix sponge on client
+- Use PAPI on 26.3
+- GitHub workflow
+- [Server Entity] Ender Dragon Crystal Broken Process Event
+- [World API] #isDebug()
+- [World API] #isRaining()
+- [World API] #isStorm()
+- [World API] #getRainLevel([float] tickDelta)
+- [World API] #getThunderLevel([float] tickDelta)
+- [Server Entity] Ender Dragon Phase Event
+- [Entity API] Ender Dragon subclass
+- [Command API] Literal parameters
+- [Command API] @Tabcomplete
+- Fix tabcompletions
+- [World API] #findEntity([Entity -> boolean] predicate)
+- [Server API] #findEntity([Entity -> boolean] predicate)
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
