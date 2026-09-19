@@ -87,9 +87,9 @@ public abstract class ServerGamePacketListenerImplMixin extends ServerCommonPack
                                        sg.getRange().getStart(),
                                        sg.getRange().getEnd(),
                                        sg.getText(),
-                                       sg.getTooltip() instanceof Component cmp
-                                               ? Either.left(COFromNative.from(cmp))
-                                               : Either.right(sg.getTooltip().getString())
+                                       sg.getTooltip() == null                  ? null                                :
+                                       sg.getTooltip() instanceof Component cmp ? Either.left(COFromNative.from(cmp)) :
+                                                                                  Either.right(sg.getTooltip().getString())
                                ))
                                .toList()
             );
