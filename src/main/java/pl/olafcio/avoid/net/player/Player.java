@@ -2,6 +2,7 @@ package pl.olafcio.avoid.net.player;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.game.ClientboundSetHealthPacket;
+import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -19,6 +20,7 @@ import pl.olafcio.avoid.annotations.env.ClientOnly;
 import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.client.AvoidLibClient;
 import pl.olafcio.avoid.mixininterface.IServerPlayer;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
@@ -111,6 +113,27 @@ public class Player extends Entity implements Executor {
 
         else
             throw new UncontrollablePlayerException("[Player#sendActionbar] Remote players can't be controlled from the client");
+    }
+
+    /**
+     * Displays a title for the player.<br/><br/>
+     * This only works from the server and on the local player.
+     * If you try using it on remote players from the client,
+     * it will throw an exception.
+     */
+    @NeverRemoval
+    public void sendTitle(BaseComponent<?> component) {
+        if (underlyingEntity instanceof ServerPlayer)
+            ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetTitleTextPacket(COToNative.from(component)));
+
+        else if (
+                AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
+                underlyingEntity instanceof LocalPlayer
+        )
+            AvoidLibClient.mc.gui.setTitle(COToNative.from(component));
+
+        else
+            throw new UncontrollablePlayerException("[Player#sendTitle] Remote players can't be controlled from the client");
     }
 
     /**
