@@ -3,7 +3,6 @@ package pl.olafcio.avoid.net.entity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
-import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
@@ -12,7 +11,6 @@ import pl.olafcio.avoid.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.entity.custom_internal.IAvoidEntity;
 import pl.olafcio.avoid.net.entity.type.EnderDragonNative;
 import pl.olafcio.avoid.net.entity.type.MerchantNative;
-import pl.olafcio.avoid.net.entity.type.PrimedTNT;
 import pl.olafcio.avoid.net.entity.type.PrimedTNTNative;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.player.PlayerNative;
@@ -59,7 +57,6 @@ public final class EntityNative {
                 Vect3Native.convert(entity.position()),
                 Vect3Native.convert(entity.getDeltaMovement()),
                 entity.getUUID(),
-                entity.getStringUUID(),
                 name,
                 entity
         ) {};

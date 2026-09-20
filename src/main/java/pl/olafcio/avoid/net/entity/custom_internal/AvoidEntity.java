@@ -40,7 +40,6 @@ public final class AvoidEntity extends Entity implements IAvoidEntity {
                 Vect3Native.convert(this.position()),
                 Vect3Native.convert(this.getDeltaMovement()),
                 this.getUUID(),
-                this.getStringUUID(),
                 name,
                 this
         );

@@ -33,8 +33,16 @@ import java.util.UUID;
  * merchant entities, such as {@code openTradingScreen}.
  */
 public abstract class Merchant extends Entity {
+    public Merchant(int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) {
+        super(id, type, position, velocity, uuid, name, underlyingEntity);
+    }
+
+    /**
+     * @deprecated Use the constructor without the {@code uuidString} parameter instead.
+     */
+    @Deprecated(since = "v1.26", forRemoval = true)
     public Merchant(int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) {
-        super(id, type, position, velocity, uuid, uuidString, name, underlyingEntity);
+        this(id, type, position, velocity, uuid, name, underlyingEntity);
     }
 
     /**

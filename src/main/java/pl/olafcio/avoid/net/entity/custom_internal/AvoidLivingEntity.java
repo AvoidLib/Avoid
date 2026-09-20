@@ -42,7 +42,6 @@ public final class AvoidLivingEntity extends LivingEntity implements IAvoidEntit
                 Vect3Native.convert(this.position()),
                 Vect3Native.convert(this.getDeltaMovement()),
                 this.getUUID(),
-                this.getStringUUID(),
                 name,
                 this
         );

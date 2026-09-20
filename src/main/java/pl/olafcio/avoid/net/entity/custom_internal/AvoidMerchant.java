@@ -47,7 +47,6 @@ public final class AvoidMerchant extends Villager implements IAvoidEntity {
                 Vect3Native.convert(this.position()),
                 Vect3Native.convert(this.getDeltaMovement()),
                 this.getUUID(),
-                this.getStringUUID(),
                 name,
                 this
         );

@@ -28,7 +28,6 @@ public final class EnderDragonNative {
                 Vect3Native.convert(entity.position()),
                 Vect3Native.convert(entity.getDeltaMovement()),
                 entity.getUUID(),
-                entity.getStringUUID(),
                 name,
                 entity
         ) {};

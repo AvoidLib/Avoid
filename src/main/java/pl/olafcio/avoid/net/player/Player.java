@@ -56,7 +56,7 @@ public class Player extends Entity implements Executor {
             PlayerProfile profile, @Nullable Object connection,
             net.minecraft.world.entity.player.Player player
     ) {
-        super(id, type, pos, velocity, uuid, uuidString, name, player);
+        super(id, type, pos, velocity, uuid, name, player);
 
         this.profile = profile;
         this.connection = connection;
