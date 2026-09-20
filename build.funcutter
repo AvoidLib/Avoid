@@ -1,3 +1,6 @@
+$ no-placeholders
+text_papi_version=-
+
 ///////////////
 /// LOADERS ///
 ///////////////
@@ -6,6 +9,7 @@ $ neoforge
 : {@name}
 ! neoforge-{@name}_compat
 ! neoforge-post
+: no-placeholders
 neoforge=1
 merge=["fabric", "neoforge"]
 neo_version={}
@@ -13,6 +17,7 @@ dev_mappings=OBFUSCATED
 
 $ sponge
 : {@name}
+: no-placeholders
 sponge=1
 publish=1
 dev_mappings=OBFUSCATED

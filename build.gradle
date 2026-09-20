@@ -375,7 +375,7 @@ release {
         optional {
             project "placeholderapi"
         }
-    } else {
+    } else if (project.text_papi_version != '-') {
         optional {
             project "placeholder-api"
         }
