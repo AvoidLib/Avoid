@@ -35,7 +35,7 @@ import java.util.function.Function;
  * </pre>
  */
 @NeverRemoval
-public final class ChatStyle {
+public final class ChatStyle implements Cloneable {
     public Color color = null;
     public Color shadow = null;
 
