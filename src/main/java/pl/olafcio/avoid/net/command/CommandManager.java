@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.net.command;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
@@ -9,9 +10,6 @@ import pl.olafcio.avoid.net.command.exception.*;
 import pl.olafcio.avoid.net.command.exception.late.TooLateException;
 import pl.olafcio.avoid.net.command.exception.use.CannotCallException;
 import pl.olafcio.avoid.net.command.handling.CommandHandler;
-import pl.olafcio.avoid.net.command.parameter.CommandParameter;
-import pl.olafcio.avoid.net.command.parameter.CommandParameters;
-import pl.olafcio.avoid.net.command.parameter.impl.LiteralParameter;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -19,7 +17,6 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
@@ -55,136 +52,21 @@ public final class CommandManager {
         String lastNameRecorded = null;
         CommandHandler unknownhandler = null;
 
-        var flat = new HashMap<String, SyntaxTree>();
-
         for (var method : methods) {
             if (method.isAnnotationPresent(Syntax.class)) {
                 var paramraw = method.getAnnotation(Syntax.class)
                                      .value();
 
-                var commandSpace = paramraw.indexOf(" ");
-                var commandLine = commandSpace == -1
-                                    ? paramraw
-                                    : paramraw.substring(0, commandSpace);
+                var commandLine = extractCommandLine(paramraw);
 
-                if (!commandLine.startsWith("/"))
-                    throw new InvalidSyntaxException("Syntax line must start with /  (e.g. /warp)");
-
-                if (lastNameRecorded != null && !commandLine.equals(lastNameRecorded))
-                    throw new InvalidSyntaxException("Command name must be equal in all @Syntax definitions");
-
-                lastNameRecorded = commandLine;
-
-                var paramch = paramraw.substring(commandLine.length())
-                                      .toCharArray();
-
-                var node = syntaxes;
-                var taken = new ArrayList<String>();
-
-                var value = new StringBuilder();
-                var inTag = false;
-
-                Character prev = null;
-
-                for (char ch : paramch) {
-                    if (inTag) {
-                        if (ch == '>') {
-                            var tagName = value.toString();
-                            var paramName = tagName;
-
-                            boolean renamed = false;
-
-                            if (tagName.contains(" = ")) {
-                                var split = tagName.split(" = ", 2);
-
-                                tagName = split[1];
-                                paramName = split[0];
-
-                                if (!paramName.startsWith("'") || !paramName.endsWith("'"))
-                                    throw new InvalidSyntaxException("Parameter name must be surrounded with 'apostrophes'");
-
-                                paramName = paramName.substring(1, paramName.length() - 1);
-                                renamed = true;
-                            }
-
-                            var tagType = CommandParameters.queryTag(tagName);
-                            if (tagType == null)
-                                throw new InvalidSyntaxException("Unrecognized tag '%s'".formatted(tagName));
-
-                            if (taken.contains(paramName)) {
-                                if (renamed)
-                                    throw new InvalidSyntaxException("Parameter name already taken");
-
-                                int i = 2;
-
-                                while (true) {
-                                    String newName = paramName + "-" + (i++);
-
-                                    if (!taken.contains(newName)) {
-                                        paramName = newName;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            taken.add(paramName);
-
-                            CommandParameter<?> param;
-
-                            try {
-                                param = CommandParameters.queryTagConstructor(tagName)
-                                                         .newInstance(paramName);
-                            } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                                throw new SyntaxInitException("Failed to construct tag '%s'".formatted(tagName), e);
-                            }
-
-                            node = node.computeIfAbsent(param, n -> new SyntaxTree());
-
-                            inTag = false;
-                            value.setLength(0);
-                        } else {
-                            value.append(ch);
-                        }
-                    } else if (ch == '<') {
-                        if (!Objects.equals(prev, ' '))
-                            throw new InvalidSyntaxException("Each parameter must be preceded by a space");
-
-                        inTag = true;
-                    } else if (ch == ' ') {
-                        if (!value.isEmpty()) {
-                            var paramName = value.toString();
-
-                            if (taken.contains(paramName))
-                                throw new InvalidSyntaxException("Parameter name already taken");
-
-                            taken.add(paramName);
-
-                            node = node.compute(new LiteralParameter(paramName), (x, y) -> new SyntaxTree());
-
-                            value.setLength(0);
-                        }
-                    } else {
-                        value.append(ch);
-                    }
-
-                    prev = ch;
+                if (lastNameRecorded != null) {
+                    if (!commandLine.equals(lastNameRecorded))
+                        throw new InvalidSyntaxException("Command name must be equal in all @Syntax definitions");
+                } else {
+                    lastNameRecorded = commandLine;
                 }
 
-                if (!inTag) {
-                    if (!value.isEmpty()) {
-                        var paramName = value.toString();
-
-                        if (taken.contains(paramName))
-                            throw new InvalidSyntaxException("Parameter name already taken");
-
-                        taken.add(paramName);
-
-                        node = node.compute(new LiteralParameter(paramName), (x, y) -> new SyntaxTree());
-
-                        value.setLength(0);
-                    }
-                }
-
+                var node = new SyntaxTreeParser().parse(paramraw, commandLine, syntaxes);
                 if (node.method != null)
                     throw new DuplicateSyntaxException("Syntax '%s' present twice".formatted(paramraw));
 
@@ -203,8 +85,6 @@ public final class CommandManager {
                 node.cmd = cmd;
 
                 markPermission(method, node);
-
-                flat.put(paramraw, node);
             } else if (method.isAnnotationPresent(Unknown.class)) {
                 if (unknownhandler != null)
                     throw new DuplicateSyntaxException("@Unknown method present twice");
@@ -223,6 +103,11 @@ public final class CommandManager {
             }
         }
 
+        if (lastNameRecorded == null)
+            throw new NoSyntaxException("No @Syntax method present in class: '" + cmd.getClass().getName() + "'");
+
+        var used = new ArrayList<SyntaxTree>();
+
         for (var method : methods) {
             if (method.isAnnotationPresent(Tabcomplete.class)) {
                 var paramraw = method.getAnnotation(Tabcomplete.class)
@@ -231,13 +116,22 @@ public final class CommandManager {
                 if (method.getParameterCount() > 1)
                     throw new InvalidMethodException("@Tabcomplete method '%s#%s' has %d parameters, expected 0-1".formatted(cmd.getClass().getSimpleName(), method.getName(), method.getParameterCount()));
 
-                if (!flat.containsKey(paramraw))
-                    throw new InvalidMethodException("@Tabcomplete method '%s#%s' refers to non-implemented syntax".formatted(cmd.getClass().getSimpleName(), method.getName()));
+                var commandLine = extractCommandLine(paramraw);
+                if (!commandLine.equals(lastNameRecorded))
+                    throw new InvalidSyntaxException("Command name must be equal in all @Syntax definitions");
 
-                if (flat.get(paramraw) == null)
+                SyntaxTree syntax;
+
+                try {
+                    syntax = new SyntaxTreeParser.Reading().parse(paramraw, commandLine, syntaxes);
+                } catch (NotFoundSyntaxException e) {
+                    throw new InvalidMethodException("@Tabcomplete method '%s#%s' refers to non-implemented syntax".formatted(cmd.getClass().getSimpleName(), method.getName()));
+                }
+
+                if (used.contains(syntax))
                     throw new InvalidMethodException("@Tabcomplete method '%s#%s' refers to duplicated syntax".formatted(cmd.getClass().getSimpleName(), method.getName()));
 
-                flat.get(paramraw).tabcomplete = input -> {
+                syntax.tabcomplete = input -> {
                     try {
                         if (method.getParameterCount() == 1)
                             return (String[]) method.invoke(cmd, input);
@@ -252,11 +146,23 @@ public final class CommandManager {
                     }
                 };
 
-                flat.put(paramraw, null);
+                used.add(syntax);
             }
         }
 
         commands.put(cmd, new CommandMetadata(lastNameRecorded.substring(1), syntaxes, unknownhandler));
+    }
+
+    private static @NotNull String extractCommandLine(String paramraw) {
+        var commandSpace = paramraw.indexOf(" ");
+        var commandLine = commandSpace == -1
+                            ? paramraw
+                            : paramraw.substring(0, commandSpace);
+
+        if (!commandLine.startsWith("/"))
+            throw new InvalidSyntaxException("Syntax line must start with /  (e.g. /warp)");
+
+        return commandLine;
     }
 
     private static void markPermission(AnnotatedElement element, SyntaxTree node) {
