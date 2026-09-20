@@ -9,7 +9,7 @@ $ neoforge
 : {@name}
 ! neoforge-{@name}_compat
 ! neoforge-post
-: no-placeholders
+! no-placeholders
 neoforge=1
 merge=["fabric", "neoforge"]
 neo_version={}
