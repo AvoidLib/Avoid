@@ -4,7 +4,6 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.item.Item;
-import pl.olafcio.avoid.net.item.ItemNative;
 import pl.olafcio.avoid.net.item.component.ItemComponentType;
 import pl.olafcio.avoid.net.item.component.map.EditableItemComponentMap;
 import pl.olafcio.avoid.net.item.component.map.ItemComponentMap;

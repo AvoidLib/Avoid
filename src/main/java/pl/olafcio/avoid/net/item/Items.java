@@ -18,7 +18,6 @@ import pl.olafcio.avoid.net.item.component.values.Rarity;
 import pl.olafcio.avoid.net.item.properties.*;
 import pl.olafcio.avoid.net.item.properties.spawnegg.ID;
 import pl.olafcio.avoid.net.item.values.SlotDescriptionNative;
-import pl.olafcio.avoid.net.item.custom.Item;
 
 import java.util.HashMap;
 import java.util.function.Function;
@@ -29,21 +28,28 @@ public final class Items {
     @ApiStatus.Internal
     private Items() {}
 
-    static final HashMap<Item, net.minecraft.world.item.Item> CUSTOM_MAP
-           = new HashMap<>();
-
+    /**
+     * @deprecated Use {@link Item#getName()} instead.
+     */
+    @Deprecated(since = "v1.26")
     public static BaseComponent<?> getName(Item customItem) {
-        var item = CUSTOM_MAP.get(customItem);
-        return COFromNative.from(item.getName());
+        return customItem.getName();
     }
 
+    /**
+     * @deprecated Use {@link Item#getID()} instead.
+     */
+    @Deprecated(since = "v1.26")
     public static Identification getID(Item customItem) {
-        var item = CUSTOM_MAP.get(customItem);
-        return IdentificationNative.convertFrom(BuiltInRegistries.ITEM.getKey(item));
+        return customItem.getID();
     }
 
-    public static void register(Identification blockID, Supplier<? extends Item> constructor) {
-        var id = IdentificationNative.convert(blockID);
+    /**
+     * @deprecated Use {@link Items#register(Identification, Function, Class)} instead.
+     */
+    @Deprecated(since = "v1.26", forRemoval = true)
+    public static void register(Identification itemID, Supplier<? extends Item> constructor) {
+        var id = IdentificationNative.convert(itemID);
 
         Function<Properties, net.minecraft.world.item.Item> callback = properties -> ItemNative.make(
                 constructor.get(),
@@ -57,9 +63,27 @@ public final class Items {
         );
     }
 
+    public static void register(Identification itemID, Function<net.minecraft.world.item.Item, ? extends Item> constructor, Class<? extends Item> itemClass) {
+        var id = IdentificationNative.convert(itemID);
+
+        Function<Properties, net.minecraft.world.item.Item> callback = properties -> {
+            var mcItem = new AvoidItem(properties);
+
+            mcItem.item = constructor.apply(mcItem);
+
+            return mcItem;
+        };
+
+        net.minecraft.world.item.Items.registerItem(
+                ResourceKey.create(Registries.ITEM, id),
+                callback,
+                getProperties(itemClass)
+        );
+    }
+
     @ApiStatus.Internal
-    public static void register(Identification blockID, Supplier<? extends Item> constructor, AvoidPackageOnly<net.minecraft.world.item.Item> interceptor) {
-        var id = IdentificationNative.convert(blockID);
+    public static void register(Identification itemID, Supplier<? extends Item> constructor, AvoidPackageOnly<net.minecraft.world.item.Item> interceptor) {
+        var id = IdentificationNative.convert(itemID);
 
         Function<Properties, net.minecraft.world.item.Item> callback = properties -> ItemNative.make(
                 constructor.get(),

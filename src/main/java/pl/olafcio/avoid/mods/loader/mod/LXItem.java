@@ -6,13 +6,15 @@ import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.mods.annotation_processor.AutoID;
 import pl.olafcio.avoid.mods.annotation_processor.AutoItem;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.item.custom.Item;
+import pl.olafcio.avoid.net.item.Item;
+import pl.olafcio.avoid.net.item.ItemNative;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
 public interface LXItem {
+    @SuppressWarnings("unchecked")
     default boolean registerAutoItem(String id, Class<?> klass, String className, AtomicBoolean usedAutoID)
             throws NoSuchMethodException
     {
@@ -46,15 +48,16 @@ public interface LXItem {
 
             Avoid.LOGGER.debug("Registering item '{}'", idstr);
 
-            pl.olafcio.avoid.net.item.Items.register(Identification.of(idstr), () -> {
+            pl.olafcio.avoid.net.item.Items.register(Identification.of(idstr), mcItem -> {
                 try {
+                    ItemNative.itemconstruct.put(Thread.currentThread().threadId(), mcItem);
                     return (Item) constructor.newInstance();
                 } catch (InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException("Failed to construct item (%s)".formatted(idstr), e);
                 } catch (InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
-            });
+            }, (Class<? extends Item>) klass);
         }
 
         return false;

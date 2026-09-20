@@ -6,15 +6,18 @@ import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.item.Items;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
 import pl.olafcio.avoid.net.item.values.UseStatus;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player_server.values.HandType;
 import pl.olafcio.avoid.net.world.World;
 
+/**
+ * @deprecated Use & extend {@link pl.olafcio.avoid.net.item.Item Item} instead.
+ */
 @NeverRemoval
-public abstract class Item extends AbstractItem {
+@Deprecated(since = "v1.26")
+public abstract class Item extends pl.olafcio.avoid.net.item.Item {
     //=============//
     // OVERRIDABLE //
     //=============//
@@ -39,12 +42,12 @@ public abstract class Item extends AbstractItem {
 
     @Override
     public final BaseComponent<?> getName() {
-        return Items.getName(this);
+        return super.getName();
     }
 
     @Override
     public final Identification getID() {
-        return Items.getID(this);
+        return super.getID();
     }
 
     @Override
