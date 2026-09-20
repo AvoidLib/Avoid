@@ -208,4 +208,12 @@ public final class ChatStyle implements Cloneable {
             throw new RuntimeException("Failed to clone() a ChatStyle", e);
         }
     }
+
+    @Override
+    public String toString() {
+        return ("ChatStyle[bold=%b, italic=%b, underlined=%b," +
+                         " strikethrough=%b, obfuscated=%b," +
+                         " color=%s, shadow=%s," +
+                         " font=%s]").formatted(bold, italic, underlined, strikethrough, obfuscated, (color == null ? "null" : Integer.toHexString(color.getRGB())), (shadow == null ? "null" : Integer.toHexString(shadow.getRGB())), font);
+    }
 }
