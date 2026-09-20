@@ -2,6 +2,7 @@ package pl.olafcio.avoid.net.chat.component;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
+import pl.olafcio.avoid.net.chat.component._parse.BukkitParser;
 import pl.olafcio.avoid.net.chat.component._parse.MiniMessageParser;
 import pl.olafcio.avoid.net.chat.component.type.*;
 import pl.olafcio.avoid.net.id.Identification;
@@ -30,6 +31,13 @@ public interface Components {
          */
         static BaseComponent<?> minimessage(String text) {
             return new MiniMessageParser(text).parse();
+        }
+
+        /**
+         * Parses the specified &-styled text.
+         */
+        static BaseComponent<?> bukkit(String text) {
+            return new BukkitParser(text).parse();
         }
     }
 
