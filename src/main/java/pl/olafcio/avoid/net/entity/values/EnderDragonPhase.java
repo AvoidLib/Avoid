@@ -8,7 +8,7 @@ public enum EnderDragonPhase {
     GOING_TO_LAND(net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase.LANDING_APPROACH),
     LANDING(net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase.LANDING),
     FINISHED_PERCHING(net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase.TAKEOFF),
-    // TODO What is ChargingPlayer?
+    CHARGING(net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase.CHARGING_PLAYER),
     PERCHING(net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase.SITTING_SCANNING),
     PERCHING_ATTACKING(net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase.SITTING_ATTACKING),
     PERCHING_SHOOTING(net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase.SITTING_FLAMING),
