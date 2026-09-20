@@ -27,6 +27,7 @@
     "PlayerListMixin",
     "PlayerMixin",
     "ServerGamePacketListenerImplMixin",
+    "ServerLevelMixin",
     "ServerPlayerMixin",
     "SmithingMenuMixin",
     "accessors.IBlocks",
