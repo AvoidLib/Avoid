@@ -30,6 +30,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'groovy'
+}
+
 boolean contains(String value) {
     return value in project.getProperties()
 }
@@ -213,6 +217,13 @@ dependencies {
     } else if (project.text_papi_version != '-') {
         mod "eu.pb4:placeholder-api:${project.text_papi_version}"
     }
+
+    // Tests
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation 'org.apache.groovy:groovy:5.0.8'
 }
 
 apply from: project.file('x_build/loaders.gradle')
@@ -254,6 +265,21 @@ tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         it.options.release.set(targetJavaVersion)
     }
+}
+
+tasks.named("compileTestGroovy", GroovyCompile) {
+    it.options.release.set(25)
+}
+
+tasks.named("compileJava", JavaCompile) {
+    if (gradle.startParameter.taskNames[0] == "test") {
+        it.options.compilerArgs << "-Xlint:-deprecation"
+        it.options.compilerArgs << "-Xlint:-removal"
+    }
+}
+
+test {
+    useJUnitPlatform()
 }
 
 java {
