@@ -18,6 +18,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicLongArray;
 import java.util.function.Consumer;
 
 /**
@@ -131,16 +133,29 @@ public final class CommandManager {
                 if (used.contains(syntax))
                     throw new InvalidMethodException("@Tabcomplete method '%s#%s' refers to duplicated syntax".formatted(cmd.getClass().getSimpleName(), method.getName()));
 
+                final var lastError = new AtomicLong(-1L);
+
                 syntax.tabcomplete = input -> {
                     try {
                         if (method.getParameterCount() == 1)
                             return (String[]) method.invoke(cmd, input);
                         else
                             return (String[]) method.invoke(cmd);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
+                    } catch (InvocationTargetException e) {
+                        var now = System.currentTimeMillis();
+                        if (now - lastError.get() > 10_000) {
+                            lastError.set(now);
+                        } else {
+                            var out = new StringWriter();
+                            e.printStackTrace(new PrintWriter(out));
+                            Avoid.LOGGER.warn("Couldn't invoke tabcomplete method\n{}", out);
+                        }
+
+                        throw new CannotCallException("Invocation failure", e);
+                    } catch (IllegalAccessException e) {
                         var out = new StringWriter();
                         e.printStackTrace(new PrintWriter(out));
-                        Avoid.LOGGER.debug("Couldn't invoke tabcomplete method\n{}", out);
+                        Avoid.LOGGER.debug("Couldn't access tabcomplete method\n{}", out);
 
                         throw new CannotCallException("Reflection failure", e);
                     }
