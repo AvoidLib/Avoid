@@ -80,12 +80,14 @@ loom {
         accessWidenerPath = rootProject.file("src/main/resources/avoidlib.accesswidener")
 
     if ("dev_mappings" in project.getProperties()) {
-        noIntermediateMappings()
-        useIntermediateMappings.set(false)
-        productionNamespace.set(project.getProperties().dev_mappings == "OBFUSCATED" ? MappingsNamespace.NAMED.toString() : MappingsNamespace.OFFICIAL.toString())
-        remapConfigurations.clear()
-        intermediaryMinecraftProvider = null
-        // Wow it works but why the fuck did i have to do those undocumented things
+        if ("omit_mappings" !in project.getProperties()) {
+            noIntermediateMappings()
+            useIntermediateMappings.set(false)
+            productionNamespace.set(project.getProperties().dev_mappings == "OBFUSCATED" ? MappingsNamespace.NAMED.toString() : MappingsNamespace.OFFICIAL.toString())
+            remapConfigurations.clear()
+            intermediaryMinecraftProvider = null
+            // Wow it works but why the fuck did i have to do those undocumented things
+        }
     }
 
     runs {
