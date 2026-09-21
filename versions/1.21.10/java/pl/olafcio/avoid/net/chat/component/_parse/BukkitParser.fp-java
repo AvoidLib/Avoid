@@ -1,0 +1,12 @@
+{
+    CharUtils.isHex
+    isHex
+}
+
+{
+    public class BukkitParser {
+    public class BukkitParser {
+        private static boolean isHex(char ch) {
+            return (ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'F') || (ch >= 'a' && ch <= 'f');
+        }
+}
