@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.mixin.accessors.IEntityType;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
@@ -151,18 +152,26 @@ public final class EntityNative {
 
         var kls = entity.getClass();
 
-        for (var type : types) {
-            var nec = type.apply(kls);
-            if (nec != null)
-                return nec.construct(
-                        entity.getId(),
-                        EntityTypeNative.convertFrom(entity.getType()),
-                        Vect3Native.convert(entity.position()),
-                        Vect3Native.convert(entity.getDeltaMovement()),
-                        entity.getUUID(),
-                        name,
-                        entity
-                );
+        try {
+            for (var type : types) {
+                var nec = type.apply(kls);
+                if (nec != null)
+                    return nec.construct(
+                            entity.getId(),
+                            EntityTypeNative.convertFrom(entity.getType()),
+                            Vect3Native.convert(entity.position()),
+                            Vect3Native.convert(entity.getDeltaMovement()),
+                            entity.getUUID(),
+                            name,
+                            entity
+                    );
+            }
+        } catch (Exception e) {
+            Avoid.LOGGER.error("===========================================");
+            Avoid.LOGGER.error("An error has been detected in creating a entity wrapper for %s.".formatted(entity.getClass().getName()));
+            Avoid.LOGGER.error("If your world is currently loading, SHUT DOWN YOUR GAME AS SOON AS POSSIBLE!");
+            Avoid.LOGGER.error("This may break your world if you're in that stage.");
+            Avoid.LOGGER.error("===========================================");
         }
 
         return new Entity(
