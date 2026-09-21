@@ -1,0 +1,91 @@
+import java.nio.file.Files
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
+plugins {
+    id 'groovy'
+    id 'groovy-gradle-plugin'
+}
+
+group = 'pl.olafcio'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.groovy:groovy:5.0.8'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    compileOnly gradleApi()
+
+    implementation 'org.ow2.asm:asm:9.10.1'
+    implementation 'org.ow2.asm:asm-tree:9.10.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.findAll { f -> ['asm-'].stream().anyMatch { f.name.startsWith(it) } }
+                                       .collect {
+                                            // exclude does not work. hurray!
+                                            var file = (File) it
+                                            var path = file.toPath()
+
+                                            def filename = path.getFileName().toString()
+                                            def nometainf = java.nio.file.Path.of(System.getenv("USERPROFILE") + "/.gradle/caches/Tedge-ML/libraries-sharp/")
+
+                                            Files.createDirectories(nometainf)
+
+                                            var nmi = nometainf.resolve(filename.substring(0, filename.length() - 4) + "-nometainf.jar")
+                                            var nmiFile = nmi.toFile()
+
+                                            if (!nmiFile.exists()) {
+                                                var bos = new ByteArrayOutputStream();
+                                                var zos = new ZipOutputStream(bos);
+
+                                                try (var zip = new ZipFile(file)) {
+                                                    var entries = zip.entries()
+                                                    for (var e : entries) {
+                                                        var name = e.getName()
+                                                        if (!name.startsWith("META-INF") && name.lastIndexOf("/") > 2) {
+                                                            zos.putNextEntry(e)
+
+                                                            try (var stream = zip.getInputStream(e)) {
+                                                                zos.write(stream.readAllBytes())
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                zos.close()
+
+                                                try (var fileStream = new FileOutputStream(nmiFile)) {
+                                                    fileStream.write(bos.toByteArray())
+                                                }
+                                            }
+
+                                            zipTree(nmiFile)
+                                       }
+    }
+
+    // omg what is this code
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+gradlePlugin {
+    plugins {
+        myPlugins {
+            id = 'avoid-build'
+            implementationClass = 'pl.olafcio.avoidbuild.MainPlugin'
+        }
+    }
+}

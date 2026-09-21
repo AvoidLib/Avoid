@@ -24,5 +24,8 @@ run-server
 # Dynamic libraries
 libs-all
 
+# Generated src
+src/main/generated
+
 # GoPowered
 .gopowered

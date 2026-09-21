@@ -7,4 +7,6 @@ pluginManagement {
 
         gradlePluginPortal()
     }
+
+    includeBuild "src_build"
 }

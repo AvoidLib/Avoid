@@ -32,6 +32,7 @@ buildscript {
 
 plugins {
     id 'groovy'
+    id 'avoid-build'
 }
 
 boolean contains(String value) {
@@ -249,6 +250,14 @@ processResources {
     filteringCharset "UTF-8"
     filesMatching([".version", "fabric.mod.json", "quilt.mod.json", "paper-plugin.yml", "META-INF/neoforge.mods.toml", "META-INF/sponge_plugins.json"]) {
         expand inputs.properties
+    }
+}
+
+//apply from: project.file('x_build/generation.gradle')
+
+sourceSets {
+    main {
+        java { srcDir 'src/main/generated' }
     }
 }
 
