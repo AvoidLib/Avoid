@@ -31,5 +31,5 @@ public enum MapPostProcessing {
     }
 
     public static final _value_type<MapPostProcessing> TYPE
-                  = new _value_type<>(net.minecraft.world.item.component.MapPostProcessing.class, new Controller());
+                  = new _value_type<>(null, net.minecraft.world.item.component.MapPostProcessing.STREAM_CODEC, new Controller());
 }

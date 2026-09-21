@@ -55,5 +55,5 @@ public record MapDecorations(Map<String, Entry> decorations) {
     }
 
     public static final _value_type<MapDecorations> TYPE
-                  = new _value_type<>(net.minecraft.world.item.component.MapDecorations.class, new Controller());
+                  = new _value_type<>(net.minecraft.world.item.component.MapDecorations.CODEC, null, new Controller());
 }

@@ -24,5 +24,9 @@ public record DamageType(Identification id) {
     }
 
     public static final _value_type<DamageType> TYPE
-                  = new _value_type<>(EitherHolder.class, new Controller());
+                  = new _value_type<>(
+                          net.minecraft.world.damagesource.DamageType.CODEC,
+                          net.minecraft.world.damagesource.DamageType.STREAM_CODEC,
+                          new Controller()
+                  );
 }

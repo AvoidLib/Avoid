@@ -32,7 +32,7 @@ public enum SwingAnimationType {
 
     static {
         Arrays.stream(SwingAnimationType.values()).forEach(type -> {
-            var mctype = net.minecraft.world.item.SwingAnimationType.valueOf(type.name);
+            var mctype = net.minecraft.world.item.SwingAnimationType.valueOf(type.name());
 
             LOOKUP.put(type, mctype);
             REV_LOOKUP.put(mctype, type);
