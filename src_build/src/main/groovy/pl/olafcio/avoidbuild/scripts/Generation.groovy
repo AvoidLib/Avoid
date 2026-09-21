@@ -74,7 +74,7 @@ class Generation {
                         if (project.file("src/main/java/" + outPath + ".java").exists())
                             continue
 
-                        if (project.file("src/main/generated/" + outPath + ".disabled").exists())
+                        if (project.file("src/main/generated/" + outPath + ".disable").exists())
                             continue
 
                         var out = """
