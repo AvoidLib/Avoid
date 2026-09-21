@@ -1,0 +1,9 @@
+{
+    WeightedList<ExplosionParticleInfo> weightedList,
+    //WeightedList<ExplosionParticleInfo> weightedList,
+}
+
+{
+    import net.minecraft.core.particles.ExplosionParticleInfo;
+    //import net.minecraft.core.particles.ExplosionParticleInfo;
+}
