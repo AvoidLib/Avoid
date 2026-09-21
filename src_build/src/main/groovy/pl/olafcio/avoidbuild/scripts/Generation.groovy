@@ -77,6 +77,7 @@ class Generation {
                         var out = """
 package ${outPath.substring(0, outPath.lastIndexOf("/")).replace("/", ".")};
 
+import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.type.base.annotations.AutoEntityAttach;
@@ -88,6 +89,8 @@ import java.util.UUID;
 
 @AutoEntityAttach
 @Class(${node.name.replace("/", ".")}.class)
+
+@ApiStatus.Experimental
 
 public class ${simpleName} extends Entity {
     public ${simpleName}(int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) {
