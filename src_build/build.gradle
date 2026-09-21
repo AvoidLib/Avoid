@@ -40,7 +40,7 @@ jar {
                                             var path = file.toPath()
 
                                             def filename = path.getFileName().toString()
-                                            def nometainf = java.nio.file.Path.of(System.getenv("USERPROFILE") + "/.gradle/caches/Tedge-ML/libraries-sharp/")
+                                            def nometainf = gradle.gradleUserHomeDir.toPath().resolve("caches/Avoid/libraries-build/")
 
                                             Files.createDirectories(nometainf)
 
