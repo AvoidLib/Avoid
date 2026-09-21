@@ -92,7 +92,7 @@ public final class EntityNative {
 
                             final var ident = id(path);
 
-                            System.out.println("Registering " + klass.getSimpleName());
+                            Avoid.LOGGER.debug("Registering " + klass.getSimpleName());
                             register(mcEntity, (int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) -> {
                                 try {
                                     return (Entity) constructor.newInstance(id, type, position, velocity, uuid, name, underlyingEntity);
