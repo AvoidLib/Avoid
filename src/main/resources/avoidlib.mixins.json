@@ -33,6 +33,7 @@
     "accessors.IBlocks",
     "accessors.ICommandContext",
     "accessors.ICommandManager",
+    "accessors.IEntityType",
     "accessors.IFlowingFluid",
     "accessors.IFluid",
     "accessors.ILevel",

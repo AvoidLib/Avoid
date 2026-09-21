@@ -10,6 +10,8 @@ import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.EntityNative;
+import pl.olafcio.avoid.net.entity.type.base.annotations.AutoEntityAttach;
+import pl.olafcio.avoid.net.entity.type.base.annotations.klass.Class;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
@@ -32,6 +34,10 @@ import java.util.UUID;
  * This class provides additional specific methods available only for
  * merchant entities, such as {@code openTradingScreen}.
  */
+
+@AutoEntityAttach
+@Class(AbstractVillager.class)
+
 public abstract class Merchant extends Entity {
     public Merchant(int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) {
         super(id, type, position, velocity, uuid, name, underlyingEntity);
