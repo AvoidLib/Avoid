@@ -38,7 +38,7 @@ import java.util.UUID;
 @AutoEntityAttach
 @Class(AbstractVillager.class)
 
-public abstract class Merchant extends Entity {
+public class Merchant extends Entity {
     public Merchant(int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) {
         super(id, type, position, velocity, uuid, name, underlyingEntity);
     }

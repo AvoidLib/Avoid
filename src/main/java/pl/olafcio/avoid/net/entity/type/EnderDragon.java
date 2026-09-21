@@ -17,7 +17,7 @@ import java.util.UUID;
 @Namespace("minecraft")
 @Value    ("ender_dragon")
 
-public abstract class EnderDragon extends Entity {
+public class EnderDragon extends Entity {
     public EnderDragon(int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) {
         super(id, type, position, velocity, uuid, name, underlyingEntity);
     }

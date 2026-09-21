@@ -16,7 +16,7 @@ import java.util.UUID;
 @Namespace("minecraft")
 @Value    ("tnt")
 
-public abstract class PrimedTNT extends Entity {
+public class PrimedTNT extends Entity {
     public PrimedTNT(int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) {
         super(id, type, position, velocity, uuid, name, underlyingEntity);
     }
