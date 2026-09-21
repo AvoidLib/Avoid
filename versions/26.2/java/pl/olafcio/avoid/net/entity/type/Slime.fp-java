@@ -1,0 +1,4 @@
+{
+    @Class(net.minecraft.world.entity.monster.Slime.class)
+    @Class(net.minecraft.world.entity.monster.cubemob.Slime.class)
+}

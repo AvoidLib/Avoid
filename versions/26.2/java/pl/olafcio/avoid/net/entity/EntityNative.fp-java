@@ -1,0 +1,75 @@
+{
+    entity.getId()
+    idOverride != null
+            ? idOverride
+            : entity.getId()
+}
+
+{
+    public static Entity convertFrom(net.minecraft.world.entity.Entity entity) {
+    public static Entity convertFrom(net.minecraft.world.entity.Entity entity, Integer idOverride) {
+}
+
+{
+    public final class EntityNative {
+    public final class EntityNative {
+        private static int getID(net.minecraft.world.entity.Entity entity) {
+            try                 { return entity.getId(); }
+            catch (Exception e) { return 0;              }
+        }
+
+        public static Entity convertFrom(net.minecraft.world.entity.Entity entity) {
+            return convertFrom(entity, null);
+        }
+}
+
+{
+    return PlayerNative.convertFrom(player);
+    return PlayerNative.convertFrom(player, idOverride);
+}
+
+{
+    public static Entity convertFromTry(net.minecraft.world.entity.Entity entity) {return convertFrom(entity);}
+    public static Entity convertFromTry(net.minecraft.world.entity.Entity entity) {
+        int id = getID(entity);
+
+        BaseComponent<?> name;
+
+        try                 { name = COFromNative.from(entity.getName()); }
+        catch (Exception e) { name = null;                                }
+
+        var kls = entity.getClass();
+
+        try {
+            for (var type : types) {
+                var nec = type.apply(kls);
+                if (nec != null)
+                    return nec.construct(
+                            id,
+                            EntityTypeNative.convertFrom(entity.getType()),
+                            Vect3Native.convert(entity.position()),
+                            Vect3Native.convert(entity.getDeltaMovement()),
+                            entity.getUUID(),
+                            name,
+                            entity
+                    );
+            }
+        } catch (Exception e) {
+            Avoid.LOGGER.error("===========================================");
+            Avoid.LOGGER.error("An error has been detected in creating a entity wrapper for %s.".formatted(entity.getClass().getName()));
+            Avoid.LOGGER.error("If your world is currently loading, SHUT DOWN YOUR GAME AS SOON AS POSSIBLE!");
+            Avoid.LOGGER.error("This may break your world if you're in that stage.");
+            Avoid.LOGGER.error("===========================================");
+        }
+
+        return new Entity(
+                id,
+                EntityTypeNative.convertFrom(entity.getType()),
+                Vect3Native.convert(entity.position()),
+                Vect3Native.convert(entity.getDeltaMovement()),
+                entity.getUUID(),
+                name,
+                entity
+        ) {};
+    }
+}
