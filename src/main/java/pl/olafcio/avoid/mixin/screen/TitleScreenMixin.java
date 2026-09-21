@@ -30,6 +30,7 @@ public class TitleScreenMixin extends Screen implements IScreen {
         super(component);
     }
 
+    //#region renderStart
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;III)V", shift = At.Shift.AFTER), method = "render")
     public void render(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci) {
         float g = 1.0F;
@@ -45,6 +46,7 @@ public class TitleScreenMixin extends Screen implements IScreen {
 
         guiGraphics.drawString(this.font, string, 2, this.height - 20, ARGB.white(g));
     }
+    //#region renderEnd
 
     @Unique
     Renderable singleplayer,

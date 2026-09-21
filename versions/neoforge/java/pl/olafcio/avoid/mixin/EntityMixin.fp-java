@@ -1,0 +1,14 @@
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"), method = "updateSwimming")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"), method = "updateSwimming", require = 0)
+}
+
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getTags()Ljava/util/stream/Stream;"), method = "updateFluidOnEyes")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getTags()Ljava/util/stream/Stream;"), method = "updateFluidOnEyes", require = 0)
+}
+
+{
+    @Inject(at = @At("HEAD"), method = "updateInWaterStateAndDoWaterCurrentPushing")
+    @Inject(at = @At("HEAD"), method = "updateInWaterStateAndDoWaterCurrentPushing", require = 0)
+}
