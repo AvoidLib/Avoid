@@ -64,7 +64,6 @@ publish=1
 text_papi_version=2.7.2+1.21.8
 
 # 1.21.11
-<- neoforge (21.11.42)
 <- sponge
 <- paper
 minecraft_version=1.21.11
