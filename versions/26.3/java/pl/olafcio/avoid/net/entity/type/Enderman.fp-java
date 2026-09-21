@@ -1,0 +1,4 @@
+{
+    net.minecraft.world.entity.monster.EnderMan.class
+    net.minecraft.world.entity.monster.Enderman.class
+}
