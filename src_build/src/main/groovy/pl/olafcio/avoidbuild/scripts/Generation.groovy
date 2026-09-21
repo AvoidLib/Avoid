@@ -74,6 +74,9 @@ class Generation {
                         if (project.file("src/main/java/" + outPath + ".java").exists())
                             continue
 
+                        if (project.file("src/main/generated/" + outPath + ".disabled").exists())
+                            continue
+
                         var out = """
 package ${outPath.substring(0, outPath.lastIndexOf("/")).replace("/", ".")};
 
