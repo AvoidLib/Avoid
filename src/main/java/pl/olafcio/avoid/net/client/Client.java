@@ -12,6 +12,7 @@ import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.screen.font.Font;
 import pl.olafcio.avoid.net.world.World;
+import pl.olafcio.avoid_impl.net.client.ClientNative;
 
 /**
  * A class containing static utilities from the client.<br/>

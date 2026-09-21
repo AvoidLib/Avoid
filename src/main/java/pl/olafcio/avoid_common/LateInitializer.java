@@ -35,7 +35,7 @@ public class LateInitializer {
     /**
      * Stops callback collection and runs all of them immediately.
      */
-    protected final void Realize() {
+    public final void Realize() {
         for (var init : Initializers)
             init.run();
 

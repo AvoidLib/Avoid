@@ -8,7 +8,7 @@ import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
-import pl.olafcio.avoid.net.entity.EntityNative;
+import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
 import pl.olafcio.avoid.net.item.stack.ItemStackNative;
 import pl.olafcio.avoid.net.item.values.UseStatus;

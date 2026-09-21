@@ -6,6 +6,7 @@ import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.client.Client;
+import pl.olafcio.avoid_impl.net.screen.ScreensNative;
 
 import java.util.function.Supplier;
 

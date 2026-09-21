@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "avoidlib",
+  "version": "${version}",
+  "name": "AvoidLib",
+  "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
+  "accessWidener": "avoidlib.accesswidener",
+  "authors": [ "Olafcio" ],
+  "contact": {
+    "homepage": "https://github.com/AvoidLib/Avoid/wiki",
+    "issues": "https://github.com/AvoidLib/Avoid/issues",
+    "sources": "https://github.com/AvoidLib/Avoid"
+  },
+  "license": "Apache-2.0",
+  "icon": "assets/avoidlib/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+    ],
+    "main": [
+      "pl.olafcio.avoid_impl.A4Fabric"
+    ]
+  },
+  "mixins": [
+    "avoidlib.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_version_range}",
+    "java": ">=21"
+  },
+  "suggests": {
+    "placeholder-api": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/SqTNnev3Rs",
+        "modmenu.modrinth": "https://modrinth.com/mod/avoid"
+      },
+      "badges": [ "library" ],
+      "parent": {
+        "id": "avoid_bundler",
+        "name": "Avoid Bundler",
+        "description": "AvoidLib bundler for Fabric & NeoForge",
+        "icon": "assets/avoidlib/icon.png",
+        "badges": [ "library" ]
+      },
+      "update_checker": false
+    }
+  }
+}

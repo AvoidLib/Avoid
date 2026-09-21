@@ -10,7 +10,6 @@ import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 
 import java.nio.file.Path;
-import java.util.HashMap;
 
 /**
  * Represents the Avoid addon loader.<br/><br/>
@@ -19,22 +18,13 @@ import java.util.HashMap;
 @ApiStatus.Experimental
 @NullMarked
 public final class AvoidModLoader {
-    static final HashMap<String, AvoidModMeta> metadatas
-           = new HashMap<>();
-
-    static final HashMap<AvoidModMeta, AvoidMod> instances
-           = new HashMap<>();
-
-    static final HashMap<AvoidModMeta, Path> files
-           = new HashMap<>();
-
     private AvoidModLoader() {}
 
     /**
      * Checks whether an Avoid addon, under the given ID, is loaded.
      */
     public static boolean isLoadedAddon(String id) {
-        return metadatas.containsKey(id);
+        return pl.olafcio.avoid_impl.mods.loader.AvoidModLoader.isLoadedAddon(id);
     }
 
     /**
@@ -43,7 +33,7 @@ public final class AvoidModLoader {
      */
     @Nullable
     public static AvoidModMeta getLoadedAddon(String id) {
-        return metadatas.get(id);
+        return pl.olafcio.avoid_impl.mods.loader.AvoidModLoader.getLoadedAddon(id);
     }
 
     /**
@@ -52,7 +42,7 @@ public final class AvoidModLoader {
      */
     @UnknownNullability
     public static AvoidMod getLoadedAddonClass(AvoidModMeta meta) {
-        return instances.get(meta);
+        return pl.olafcio.avoid_impl.mods.loader.AvoidModLoader.getLoadedAddonClass(meta);
     }
 
     /**
@@ -61,7 +51,7 @@ public final class AvoidModLoader {
      */
     @UnknownNullability
     public static Path getLoadedAddonFile(AvoidModMeta meta) {
-        return files.get(meta);
+        return pl.olafcio.avoid_impl.mods.loader.AvoidModLoader.getLoadedAddonFile(meta);
     }
 
     /**
@@ -69,6 +59,6 @@ public final class AvoidModLoader {
      */
     @NotNull
     public static AvoidModMeta[] getLoadedAddons() {
-        return metadatas.values().toArray(AvoidModMeta[]::new);
+        return pl.olafcio.avoid_impl.mods.loader.AvoidModLoader.getLoadedAddons();
     }
 }

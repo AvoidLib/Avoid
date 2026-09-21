@@ -3,7 +3,7 @@ package pl.olafcio.avoid.net.item.component.values;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.net.item.component.TransformingItemComponentValue;
 import pl.olafcio.avoid.net.world.block_location.BlockLocation;
-import pl.olafcio.avoid.net.world.block_location.BlockLocationNative;
+import pl.olafcio.avoid_impl.net.world.block_location.BlockLocationNative;
 
 import java.util.Optional;
 

@@ -77,7 +77,7 @@ base {
 
 loom {
     if (!paper)
-        accessWidenerPath = rootProject.file("src/main/resources/avoidlib.accesswidener")
+        accessWidenerPath = rootProject.file("src/impl/resources/avoidlib.accesswidener")
 
     if ("dev_mappings" in project.getProperties()) {
         if ("omit_mappings" !in project.getProperties()) {
@@ -260,6 +260,9 @@ processResources {
 sourceSets {
     main {
         java { srcDir 'src/main/generated' }
+        java { srcDir 'src/impl/java'      }
+
+        resources { srcDir 'src/impl/resources' }
     }
 }
 
@@ -307,7 +310,7 @@ jar {
 
     if (sponge) {
         manifest {
-            from 'src/main/resources/META-INF/MANIFEST.MF'
+            from 'src/impl/resources/META-INF/MANIFEST.MF'
         }
     }
 }

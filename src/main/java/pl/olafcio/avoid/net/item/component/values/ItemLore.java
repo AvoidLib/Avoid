@@ -4,8 +4,8 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.chat.component.ChatStyle;
 import pl.olafcio.avoid.net.chat.component.Colors;
-import pl.olafcio.avoid.net.chat.converter.COFromNative;
-import pl.olafcio.avoid.net.chat.converter.COToNative;
+import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
+import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.item.component.TransformingItemComponentValue;
 
 import java.util.List;

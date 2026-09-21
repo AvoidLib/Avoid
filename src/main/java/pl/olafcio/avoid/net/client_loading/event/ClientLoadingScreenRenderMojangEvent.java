@@ -3,7 +3,7 @@ package pl.olafcio.avoid.net.client_loading.event;
 import net.minecraft.client.gui.GuiGraphics;
 import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.net.screen.Drawer;
-import pl.olafcio.avoid.net.screen.DrawerNative;
+import pl.olafcio.avoid_impl.net.screen.DrawerNative;
 
 /**
  * An event fired when the Mojang Logo on the loading screen is rendered.

@@ -3,7 +3,7 @@ package pl.olafcio.avoid.net.server;
 import net.minecraft.server.dedicated.DedicatedServerProperties;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import pl.olafcio.avoid.AvoidInternal;
+import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
 import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
 

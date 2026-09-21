@@ -1,28 +1,14 @@
 package pl.olafcio.avoid.net.screen;
 
-import net.minecraft.client.input.MouseButtonEvent;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.screen.eventinterface.ModifierInterface;
 
 @ApiStatus.Experimental
-public final class MouseEvent implements ModifierInterface {
-    MouseButtonEvent event;
+@ApiStatus.NonExtendable
+public abstract class MouseEvent implements ModifierInterface {
+    public abstract double getX();
+    public abstract double getY();
 
-    MouseEvent() {}
-
-    public double getX() {
-        return event.x();
-    }
-
-    public double getY() {
-        return event.y();
-    }
-
-    public int getButton() {
-        return event.button();
-    }
-
-    public int getModifiers() {
-        return event.modifiers();
-    }
+    public abstract int getButton();
+    public abstract int getModifiers();
 }

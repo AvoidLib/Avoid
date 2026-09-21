@@ -6,7 +6,7 @@ import org.jetbrains.annotations.UnknownNullability;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.effect.instance.EffectInstance;
-import pl.olafcio.avoid.net.entity.custom_internal.IAvoidEntity;
+import pl.olafcio.avoid_impl.net.entity.custom_internal.IAvoidEntity;
 import pl.olafcio.avoid.net.entity.values.Damage;
 import pl.olafcio.avoid.net.entity.values.Hand;
 import pl.olafcio.avoid.net.entity_type.EntityType;

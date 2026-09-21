@@ -1,0 +1,28 @@
+package pl.olafcio.avoid_impl.net.world.vect3;
+
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.net.world.vect3.IVect3;
+import pl.olafcio.avoid.net.world.vect3.Vect3;
+
+@Native
+@ApiStatus.Internal
+public final class Vect3Native {
+    @ApiStatus.Internal
+    private Vect3Native() {}
+
+    public static IVect3 convert(Vec3 vec3) {
+        if (vec3.x == 0 && vec3.y == 0 && vec3.z == 0)
+            return Vect3.ZERO;
+
+        return new Vect3(vec3.x, vec3.y, vec3.z);
+    }
+
+    public static Vec3 convertFrom(IVect3 vec3) {
+        if (vec3.x() == 0 && vec3.y() == 0 && vec3.z() == 0)
+            return Vec3.ZERO;
+
+        return new Vec3(vec3.x(), vec3.y(), vec3.z());
+    }
+}

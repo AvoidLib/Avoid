@@ -9,8 +9,9 @@ import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player_server.values.HandType;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
+import pl.olafcio.avoid_impl.net.client.CIMNative;
 
-import static pl.olafcio.avoid.net.client.interaction.cim_native.nah;
+import static pl.olafcio.avoid_impl.net.client.CIMNative.nah;
 
 @ApiStatus.Experimental
 public final class ClientInteractionManager {
@@ -22,7 +23,7 @@ public final class ClientInteractionManager {
             throw new ImproperEnvironment("Cannot ClientInteractionManager#interact() on the server");
 
         if (nah()) return;
-        cim_native.interact(entity, type);
+        CIMNative.interact(entity, type);
     }
 
     public static void interactAt(Entity entity, IVect3 location, HandType type) {
@@ -30,7 +31,7 @@ public final class ClientInteractionManager {
             throw new ImproperEnvironment("Cannot ClientInteractionManager#interactAt() on the server");
 
         if (nah()) return;
-        cim_native.interactAt(entity, location, type);
+        CIMNative.interactAt(entity, location, type);
     }
 
     public static void attack(Entity entity) {
@@ -38,7 +39,7 @@ public final class ClientInteractionManager {
             throw new ImproperEnvironment("Cannot ClientInteractionManager#attack() on the server");
 
         if (nah()) return;
-        cim_native.attack(entity);
+        CIMNative.attack(entity);
     }
 
     public static void destroyBlock(BlockPos blockPos) {
@@ -46,7 +47,7 @@ public final class ClientInteractionManager {
             throw new ImproperEnvironment("Cannot ClientInteractionManager#destroyBlock() on the server");
 
         if (nah()) return;
-        cim_native.destroyBlock(blockPos);
+        CIMNative.destroyBlock(blockPos);
     }
 
     public static void startDestroyBlock(BlockPos blockPos, Direction direction) {
@@ -54,7 +55,7 @@ public final class ClientInteractionManager {
             throw new ImproperEnvironment("Cannot ClientInteractionManager#startDestroyBlock() on the server");
 
         if (nah()) return;
-        cim_native.startDestroyBlock(blockPos, direction);
+        CIMNative.startDestroyBlock(blockPos, direction);
     }
 
     public static void continueDestroyBlock(BlockPos blockPos, Direction direction) {
@@ -62,7 +63,7 @@ public final class ClientInteractionManager {
             throw new ImproperEnvironment("Cannot ClientInteractionManager#continueDestroyBlock() on the server");
 
         if (nah()) return;
-        cim_native.continueDestroyBlock(blockPos, direction);
+        CIMNative.continueDestroyBlock(blockPos, direction);
     }
 
     public static void stopDestroyBlock() {
@@ -70,7 +71,7 @@ public final class ClientInteractionManager {
             throw new ImproperEnvironment("Cannot ClientInteractionManager#stopDestroyBlock() on the server");
 
         if (nah()) return;
-        cim_native.stopDestroyBlock();
+        CIMNative.stopDestroyBlock();
     }
 
     public static boolean isDestroying() {
@@ -78,7 +79,7 @@ public final class ClientInteractionManager {
             throw new ImproperEnvironment("Cannot ClientInteractionManager#isDestroying() on the server");
 
         if (nah()) return false;
-        return cim_native.isDestroying();
+        return CIMNative.isDestroying();
     }
 
     public static void useItem(HandType hand) {
@@ -86,7 +87,7 @@ public final class ClientInteractionManager {
             throw new ImproperEnvironment("Cannot ClientInteractionManager#useItem() on the server");
 
         if (nah()) return;
-        cim_native.useItem(hand);
+        CIMNative.useItem(hand);
     }
 
     public static void useItemOn(HandType hand, BlockPos blockPos, Direction direction, boolean isMiss, boolean isInside, boolean isWorldBorder) {
@@ -94,6 +95,6 @@ public final class ClientInteractionManager {
             throw new ImproperEnvironment("Cannot ClientInteractionManager#useItemOn() on the server");
 
         if (nah()) return;
-        cim_native.useItemOn(hand, blockPos, direction, isMiss, isInside, isWorldBorder);
+        CIMNative.useItemOn(hand, blockPos, direction, isMiss, isInside, isWorldBorder);
     }
 }

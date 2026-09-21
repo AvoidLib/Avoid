@@ -5,7 +5,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.annotations.Native;
-import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 
 import java.util.Optional;
 
