@@ -1,0 +1,9 @@
+{
+    com.mojang.blaze3d.pipeline.BindGroupLayout
+    com.mojang.renderpearl.api.pipeline.BindGroupLayout
+}
+
+{
+    com.mojang.blaze3d.pipeline.DepthStencilState
+    com.mojang.renderpearl.api.pipeline.DepthStencilState
+}

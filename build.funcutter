@@ -100,6 +100,7 @@ text_papi_version=3.1.0-beta.1+26.2
 
 # 26.3
 ; 26.2
+! renderpearl
 <- neoforge (26.3.0.3-beta)
 minecraft_version=26.3
 minecraft_version_range=26.3
@@ -108,3 +109,12 @@ quilt_loader=0.31.0-beta.1
 loader_version=0.19.3
 fabric_version=0.159.1+26.3
 text_papi_version=3.2.0+26.3
+
+# 26.4
+; 26.2
+! 26.3
+: no-placeholders
+minecraft_version=26.4-snapshot-1
+minecraft_version_range=26.4-snapshot.1
+minecraft_version_list=["26.4-snapshot-1"]
+loader_version=0.19.3
