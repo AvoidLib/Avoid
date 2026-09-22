@@ -13,6 +13,7 @@ import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.Util;
 import pl.olafcio.avoid.annotations.Untested;
+import pl.olafcio.avoid.annotations.env.ClientOnly;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid_impl.internal.VResourceKey;
@@ -288,5 +289,51 @@ public final class World {
     @ApiStatus.Experimental
     public void spawnParticle(Identification particleID, IVect3 xyz, double r, double g, double b, boolean force, boolean canUpgradeFromMinimal) {
         this.spawnParticle(particleID, xyz.x(), xyz.y(), xyz.z(), r, g, b, force, canUpgradeFromMinimal);
+    }
+
+    @ClientOnly
+    @ApiStatus.Experimental
+    public void highlight(BlockPos blockPos, Highlight highlight) {
+        throw new ImproperEnvironment("[World#highlight] This method can only be ran on client worlds!");
+    }
+
+    @ClientOnly
+    @ApiStatus.Experimental
+    public void unhighlight(BlockPos blockPos) {
+        throw new ImproperEnvironment("[World#highlight] This method can only be ran on client worlds!");
+    }
+
+    /**
+     * Returns whether the world is a debug world.
+     */
+    @ApiStatus.Experimental
+    public boolean isDebug() {
+        return level.isDebug();
+    }
+
+    /**
+     * Returns whether it is currently raining in the world.
+     */
+    @ApiStatus.Experimental
+    public boolean isRaining() {
+        return level.isRaining();
+    }
+
+    /**
+     * Returns whether it is currently thunder in the world.
+     */
+    @ApiStatus.Experimental
+    public boolean isStorm() {
+        return level.isThundering();
+    }
+
+    @ApiStatus.Experimental
+    public float getRainLevel(float tickDelta) {
+        return level.getRainLevel(tickDelta);
+    }
+
+    @ApiStatus.Experimental
+    public float getThunderLevel(float tickDelta) {
+        return level.getThunderLevel(tickDelta);
     }
 }
