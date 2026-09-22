@@ -261,10 +261,13 @@ processResources {
 
 sourceSets {
     main {
-        java { srcDir 'src/main/generated' }
-        java { srcDir 'src/impl/java'      }
+        java { srcDir 'src/main/generated'   }
 
-        resources { srcDir 'src/impl/resources' }
+        java { srcDir 'src/impl/java'        }
+        java { srcDir 'src/impl_mixins/java' }
+
+        resources { srcDir 'src/impl/resources'        }
+        resources { srcDir 'src/impl_mixins/resources' }
     }
 }
 
