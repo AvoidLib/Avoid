@@ -1,5 +1,12 @@
+/////////////
+/// PARTS ///
+/////////////
+
 $ no-placeholders
 text_papi_version=-
+
+$ mixinless
+mixinless=1
 
 ///////////////
 /// LOADERS ///
@@ -24,8 +31,7 @@ dev_mappings=OBFUSCATED
 
 $ paper
 : {@name}
-! mixinless
-! mixinless-{@name}
+: mixinless
 paper=1
 publish=1
 dev_mappings=OBFUSCATED

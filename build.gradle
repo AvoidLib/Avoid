@@ -262,12 +262,14 @@ processResources {
 sourceSets {
     main {
         java { srcDir 'src/main/generated'   }
-
         java { srcDir 'src/impl/java'        }
-        java { srcDir 'src/impl_mixins/java' }
 
-        resources { srcDir 'src/impl/resources'        }
-        resources { srcDir 'src/impl_mixins/resources' }
+        resources { srcDir 'src/impl/resources' }
+
+        if ('mixinless' !in project.properties) {
+            java      { srcDir 'src/impl_mixins/java'      }
+            resources { srcDir 'src/impl_mixins/resources' }
+        }
     }
 }
 
