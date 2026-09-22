@@ -21,6 +21,7 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid_impl.internal.VResourceKey;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 import pl.olafcio.avoid.net.world.vect3.Vect3;
+import pl.olafcio.avoid_impl.AvoidInternal;
 
 import java.util.Objects;
 

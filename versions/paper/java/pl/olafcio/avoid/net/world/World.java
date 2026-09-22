@@ -15,7 +15,7 @@ import pl.olafcio.avoid.Util;
 import pl.olafcio.avoid.annotations.Untested;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
-import pl.olafcio.avoid.internal.VResourceKey;
+import pl.olafcio.avoid_impl.internal.VResourceKey;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.entity.Entity;

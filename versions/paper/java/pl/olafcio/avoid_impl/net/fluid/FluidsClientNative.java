@@ -4,6 +4,7 @@ import pl.olafcio.avoid.annotations.dist.Dist;
 import pl.olafcio.avoid.annotations.dist.OnlyIn;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.net.fluid.Fluid;
 
 @Native
 @OnlyIn(Dist.CLIENT)

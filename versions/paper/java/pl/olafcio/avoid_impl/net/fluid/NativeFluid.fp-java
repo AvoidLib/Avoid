@@ -2,16 +2,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
-import pl.olafcio.avoid.Reflect;
 
 {
-    import pl.olafcio.avoid.mixin.accessors.IFlowingFluid;
-    // import pl.olafcio.avoid.mixin.accessors.IFlowingFluid;
+    import pl.olafcio.avoid_impl.mixin.accessors.IFlowingFluid;
+    // import pl.olafcio.avoid_impl.mixin.accessors.IFlowingFluid;
 }
 
 {
-    import pl.olafcio.avoid.mixin.accessors.IFluid;
-    // import pl.olafcio.avoid.mixin.accessors.IFluid;
+    import pl.olafcio.avoid_impl.mixin.accessors.IFluid;
+    // import pl.olafcio.avoid_impl.mixin.accessors.IFluid;
 }
 
 {
@@ -20,34 +19,34 @@ import pl.olafcio.avoid.Reflect;
 }
 
 {
-    ((IFluid) fluid).avoid$animateTick(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), fluidState.state, RandomProviderNative.convert(randomProvider));
+    ((IFluid) fluid).avoid$animateTick(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), getState(fluidState), RandomProviderNative.convert(randomProvider));
 
     Reflect.call(
             net.minecraft.world.level.material.Fluid.class, "animateTick", fluid,
             new Class[]{Level.class, net.minecraft.core.BlockPos.class, net.minecraft.world.level.material.FluidState.class, RandomSource.class},
-            new Object[]{WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), fluidState.state, RandomProviderNative.convert(randomProvider)}
+            new Object[]{WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), getState(fluidState), RandomProviderNative.convert(randomProvider)}
     );
 
 }
 
 {
-    ((IFluid) fluid).avoid$tick((ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), BlockDataNative.convert(blockData), fluidState.state);
+    ((IFluid) fluid).avoid$tick((ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), BlockDataNative.convert(blockData), getState(fluidState));
 
     Reflect.call(
             net.minecraft.world.level.material.Fluid.class, "tick", fluid,
             new Class[]{ServerLevel.class, net.minecraft.core.BlockPos.class, BlockState.class, net.minecraft.world.level.material.FluidState.class},
-            new Object[]{(ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), BlockDataNative.convert(blockData), fluidState.state}
+            new Object[]{(ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), BlockDataNative.convert(blockData), getState(fluidState)}
     );
 
 }
 
 {
-    ((IFluid) fluid).avoid$randomTick((ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), fluidState.state, RandomProviderNative.convert(randomProvider));
+    ((IFluid) fluid).avoid$randomTick((ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), getState(fluidState), RandomProviderNative.convert(randomProvider));
 
     Reflect.call(
             net.minecraft.world.level.material.Fluid.class, "randomTick", fluid,
             new Class[]{Level.class, net.minecraft.core.BlockPos.class, net.minecraft.world.level.material.FluidState.class, RandomSource.class},
-            new Object[]{(ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), fluidState.state, RandomProviderNative.convert(randomProvider)}
+            new Object[]{(ServerLevel) WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), getState(fluidState), RandomProviderNative.convert(randomProvider)}
     );
 
 }
@@ -97,9 +96,9 @@ import pl.olafcio.avoid.Reflect;
 }
 
 {
-    return BlockDataNative.convertFrom(((IFluid) fluid).avoid$createLegacyBlock(state.state));
+    return BlockDataNative.convertFrom(((IFluid) fluid).avoid$createLegacyBlock(getState(state)));
     return BlockDataNative.convertFrom(Reflect.callR(net.minecraft.world.level.material.Fluid.class, "createLegacyBlock", fluid,
-            new Class[]{ net.minecraft.world.level.material.FluidState.class }, new Object[]{ state.state }));
+            new Class[]{ net.minecraft.world.level.material.FluidState.class }, new Object[]{ getState(state) }));
 }
 
 {

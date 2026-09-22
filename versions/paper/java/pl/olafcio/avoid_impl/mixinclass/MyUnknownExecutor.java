@@ -2,7 +2,7 @@ package pl.olafcio.avoid_impl.mixinclass;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
-import pl.olafcio.avoid.net.chat.converter_kyori.COToNative;
+import pl.olafcio.avoid_impl.net.chat.converter_kyori.COToNative;
 import pl.olafcio.avoid.net.command.executor.UnknownExecutor;
 
 public final class MyUnknownExecutor extends UnknownExecutor {
