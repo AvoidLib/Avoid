@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mixin;
+package pl.olafcio.avoid_impl.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pl.olafcio.avoid.client.AvoidLibClient;
+import pl.olafcio.avoid_impl.client.AvoidLibClient;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 import pl.olafcio.avoid.mods.event.EventManager;

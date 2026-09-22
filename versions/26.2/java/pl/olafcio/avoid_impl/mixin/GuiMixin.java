@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mixin;
+package pl.olafcio.avoid_impl.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -16,14 +16,14 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pl.olafcio.avoid.mixininterface.IMinecraft;
-import pl.olafcio.avoid.mixininterface.IScreen;
+import pl.olafcio.avoid_impl.mixininterface.IMinecraft;
+import pl.olafcio.avoid_impl.mixininterface.IScreen;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.fog.delta.TickTrackerNative;
 import pl.olafcio.avoid.net.gui.event.RenderHudEvent;
 import pl.olafcio.avoid.net.screen.event.ScreenOpenEvent;
 import pl.olafcio.avoid.net.screen.event.ScreenOpenEventNative;
-import pl.olafcio.avoid.net.screen.DrawerNative;
+import pl.olafcio.avoid_impl.net.screen.DrawerNative;
 
 import java.util.HashMap;
 import java.util.function.Supplier;
