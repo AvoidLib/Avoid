@@ -2,7 +2,7 @@ package pl.olafcio.avoid.net.placeholder;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import pl.olafcio.avoid.AvoidInternal;
+import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
