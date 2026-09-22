@@ -8,11 +8,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import pl.olafcio.avoid.mixininterface.IEntityFluidInteraction;
-import pl.olafcio.avoid.net.fluid.AvoidFluid;
+import pl.olafcio.avoid_impl.mixininterface.IEntityFluidInteraction;
+import pl.olafcio.avoid_impl.net.fluid.AvoidFluid;
 import pl.olafcio.avoid.net.fluid.Fluid;
-import pl.olafcio.avoid.net.fluid.FluidNative;
-import pl.olafcio.avoid.net.fluid.FluidsNative;
+import pl.olafcio.avoid_impl.net.fluid.FluidNative;
+import pl.olafcio.avoid_impl.net.fluid.FluidsNative;
 
 import java.util.HashMap;
 import java.util.Set;

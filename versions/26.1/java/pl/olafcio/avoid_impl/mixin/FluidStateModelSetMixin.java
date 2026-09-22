@@ -17,7 +17,7 @@ import net.minecraft.world.level.material.Fluid;
 import org.spongepowered.asm.mixin.Mixin;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.fluid.FluidStateNative;
-import pl.olafcio.avoid.net.fluid.FluidsNative;
+import pl.olafcio.avoid_impl.net.fluid.FluidsNative;
 import pl.olafcio.avoid.net.fluid.properties._layer;
 import pl.olafcio.avoid.net.fluid.properties._model;
 import pl.olafcio.avoid.net.fluid.properties.layer.ChunkLayer;

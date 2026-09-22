@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pl.olafcio.avoid.mixininterface.IBlockOutlineRenderState;
+import pl.olafcio.avoid_impl.mixininterface.IBlockOutlineRenderState;
 import pl.olafcio.avoid.net.world.WorldNative;
 
 @Mixin(LevelRenderer.class)

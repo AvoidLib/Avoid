@@ -7,9 +7,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import pl.olafcio.avoid.mixininterface.IEntityFluidInteraction;
-import pl.olafcio.avoid.mixininterface.IFoodData;
-import pl.olafcio.avoid.net.fluid.FluidsNative;
+import pl.olafcio.avoid_impl.mixininterface.IEntityFluidInteraction;
+import pl.olafcio.avoid_impl.mixininterface.IFoodData;
+import pl.olafcio.avoid_impl.net.fluid.FluidsNative;
 import pl.olafcio.avoid.net.fluid.properties._swimmable;
 
 @Mixin(Player.class)

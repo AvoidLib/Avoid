@@ -7,7 +7,7 @@ import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import pl.olafcio.avoid.mixininterface.IScreen;
+import pl.olafcio.avoid_impl.mixininterface.IScreen;
 import pl.olafcio.avoid.net.screen.WidgetMarker;
 
 @Mixin(SelectWorldScreen.class)
