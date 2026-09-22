@@ -32,7 +32,7 @@ void reflectionizeMixinAccessors() {
 
                         line = line.trim()
 
-                        if (orig.startsWith(" ") && line.endsWithAny(';', '{')) {
+                        if (orig.startsWith(" ") && line.endsWithAny(';', '{') && line.contains("(")) {
                             def method = line.split("\\(")[0].trim().split(" ").last()
                             def ref = mixin.split("\\.").last()
 
