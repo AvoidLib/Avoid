@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mixin;
+package pl.olafcio.avoid_impl.mixin;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -24,11 +24,11 @@ import pl.olafcio.avoid.net.command.parameter.impl.LiteralParameter;
 import pl.olafcio.avoid.net.command_server.event.ServerCommandExecuteEvent;
 import pl.olafcio.avoid.Avoid;
 import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.internal.PermAPI;
-import pl.olafcio.avoid.mixin.accessors.ICommandContext;
-import pl.olafcio.avoid.mixin.accessors.ICommandManager;
-import pl.olafcio.avoid.mixinclass.MyUnknownExecutor;
-import pl.olafcio.avoid.mixinclass.Overload;
+import pl.olafcio.avoid_impl.internal.PermAPI;
+import pl.olafcio.avoid_impl.mixin.accessors.ICommandContext;
+import pl.olafcio.avoid_impl.mixin.accessors.ICommandManager;
+import pl.olafcio.avoid_impl.mixinclass.MyUnknownExecutor;
+import pl.olafcio.avoid_impl.mixinclass.Overload;
 import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.command.SyntaxTree;

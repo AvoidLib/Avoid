@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mixin;
+package pl.olafcio.avoid_impl.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -19,11 +19,14 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pl.olafcio.avoid.mixinclass.FluidModels;
+import pl.olafcio.avoid_impl.mixinclass.FluidModels;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.fluid.*;
 import pl.olafcio.avoid.net.fluid.properties._model;
 import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
+import pl.olafcio.avoid_impl.net.fluid.AvoidFluid;
+import pl.olafcio.avoid_impl.net.fluid.FluidNative;
+import pl.olafcio.avoid_impl.net.fluid.FluidsNative;
 
 import java.util.HashMap;
 

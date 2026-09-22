@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.internal;
+package pl.olafcio.avoid_impl.internal;
 
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.resources.Identifier;

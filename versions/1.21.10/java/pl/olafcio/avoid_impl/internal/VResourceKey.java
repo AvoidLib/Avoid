@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.internal;
+package pl.olafcio.avoid_impl.internal;
 
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
