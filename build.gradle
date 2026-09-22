@@ -343,7 +343,9 @@ import pl.olafcio.limepublish.enums.Platform
 release {
     name           "Avoid v${project.version} [${minecraft_version}]"
     version_number project.version
-    version_type   ("alpha" in project.getProperties() ? VersionType.ALPHA : VersionType.STABLE)
+    version_type   ("alpha" in project.getProperties()         ? VersionType.ALPHA :
+                    project.version.contains("-experimental-") ? VersionType.BETA  :
+                                                                 VersionType.STABLE)
     environment    Environment.CLIENT_OR_SERVER_PREFERS_BOTH
     changelog      Files.readString(rootProject.file("CHANGELOG").toPath())
 

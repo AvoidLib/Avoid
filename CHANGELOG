@@ -6,6 +6,7 @@
 - 26.1.1 & 26.1.2
 - 26.2
 - 26.3
+- 26.4-snapshot-1 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
@@ -14,30 +15,10 @@
 - Paper
 
 **🪵 Changelog:**
-- Identification#is([String] id)
-- [Player API] #sendActionbar(...)
-- [Player API] #sendTitle(...)
-- [Player API] #sendSubtitle(...)
-- [Player API] #setTitleAnimations(...)
-- [Player API] #clearTitles(...)
-- [Chat Components] [Parsing] MiniMessage (partial)
-- [Chat Components] [Parsing] Bukkit
-- [ChatStyle] Fix cloning
-- [ChatStyle] #toString()
-- Test setup
-- Bring back NeoForge 1.21.11 support
-- Remove unneccessary things from non-supported platforms
-- [Command API] Standard syntax parsing in `@Tabcomplete`
-- [Command API] Improved error messages
-- [Server] Explode Event
-- [Entity API] Primed TNT subclass
-- [Entity API] Remove the 'uuidString' parameter
-- [Entity API] EnderDragonPhase::CHARGING
-- [Item API] #use(...)
-- [Item API] Refactor
-- [Item Components] Fixes
-- Entity Type Auto-Native
-- Entity Type Generation
+- Fix entity type generator file disabling
+- Fix JarManager for external invocations
+- Implementation separation
+- MC 26.4 compatibility
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
