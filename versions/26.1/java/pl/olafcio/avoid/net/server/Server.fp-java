@@ -1,4 +1,4 @@
-import pl.olafcio.avoid.mixin.accessors.IMinecraftServer;
+import pl.olafcio.avoid_impl.mixin.accessors.IMinecraftServer;
 
 {
     AvoidInternal.getServer().stopServer();

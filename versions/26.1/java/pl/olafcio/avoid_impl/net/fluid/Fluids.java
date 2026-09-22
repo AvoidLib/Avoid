@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.fluid;
+package pl.olafcio.avoid_impl.net.fluid;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

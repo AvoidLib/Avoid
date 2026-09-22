@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mixin.accessors;
+package pl.olafcio.avoid_impl.mixin.accessors;
 
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;

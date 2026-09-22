@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mixininterface;
+package pl.olafcio.avoid_impl.mixininterface;
 
 import pl.olafcio.avoid.net.fluid.Fluid;
 

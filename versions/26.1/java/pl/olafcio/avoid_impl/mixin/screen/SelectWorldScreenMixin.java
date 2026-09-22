@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mixin.screen;
+package pl.olafcio.avoid_impl.mixin.screen;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;

@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mixin;
+package pl.olafcio.avoid_impl.mixin;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
