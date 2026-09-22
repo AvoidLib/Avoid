@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.entity_renderer;
+package pl.olafcio.avoid_impl.net.entity_renderer;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -10,10 +10,14 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.net._3d.model.ModelPartNative;
-import pl.olafcio.avoid.net.entity.EntityNative;
+import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
-import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.id.IdentificationNative;
+import pl.olafcio.avoid.net.entity_renderer.Baker;
+import pl.olafcio.avoid.net.entity_renderer.EntityRenderer;
+import pl.olafcio.avoid.net.entity_renderer.LivingEntityRenderer;
+import pl.olafcio.avoid.net.entity_renderer.EntityModelAccessor;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -43,7 +47,7 @@ public final class EntityRenderersNative {
                         EntityTypeNative.convert(type),
 
                 context -> {
-                    var renderer = supplier.apply(new Baker(context));
+                    var renderer = supplier.apply(new pl.olafcio.avoid_impl.net.entity_renderer.BakerImpl(context));
 
                     LivingRenderer.lastStateSupplier = stateSupplier;
 
@@ -53,7 +57,7 @@ public final class EntityRenderersNative {
     }
 
     private static <S> EntityModel<AvoidLivingRenderState<S>> createModel(pl.olafcio.avoid.net.entity_renderer.EntityModel<S> model) {
-        return new EntityModel<AvoidLivingRenderState<S>>(ModelPartNative.convertFrom(model.modelPart)) {
+        return new EntityModel<AvoidLivingRenderState<S>>(ModelPartNative.convertFrom(EntityModelAccessor.getPart(model))) {
             @Override
             public void setupAnim(AvoidLivingRenderState<S> state) {
                 model.setupAnim(state.wrappedState);
@@ -76,12 +80,12 @@ public final class EntityRenderersNative {
         private static Supplier<?> lastStateSupplier;
 
         public LivingRenderer(EntityRendererProvider.Context context, LivingEntityRenderer<T, S> renderer, Supplier<S> stateSupplier) {
-            super(context, EntityRenderersNative.createModel(renderer.model), renderer.shadowRadius);
+            super(context, EntityRenderersNative.createModel(EntityModelAccessor.getModel(renderer)), EntityModelAccessor.getShadowRadius(renderer));
 
             this.renderer = renderer;
             this.stateSupplier = stateSupplier;
 
-            renderer.finishInit(this, context, context.getModelSet(), null);
+            EntityModelAccessor.finishInit(renderer, this, context, context.getModelSet(), null);
         }
 
         @Override

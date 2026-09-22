@@ -1,4 +1,0 @@
-{
-    getPlayer(text)
-    getPlayerByName(text)
-}

@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mixin;
+package pl.olafcio.avoid_impl.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -20,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import pl.olafcio.avoid.mixininterface.IBlockOutlineRenderState;
-import pl.olafcio.avoid.net.block.BlockNative.IAvoidBlock;
+import pl.olafcio.avoid_impl.mixininterface.IBlockOutlineRenderState;
+import pl.olafcio.avoid_impl.net.block.BlockNative.IAvoidBlock;
 import pl.olafcio.avoid.net.world.WorldNative;
 
 @Mixin(LevelRenderer.class)

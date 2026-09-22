@@ -1,10 +1,10 @@
-package pl.olafcio.avoid.net.screen;
+package pl.olafcio.avoid_impl.net.screen;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.screen.eventinterface.ModifierInterface;
 
 @ApiStatus.Experimental
-public final class MouseEvent implements ModifierInterface {
+public final class MouseEvent extends pl.olafcio.avoid.net.screen.MouseEvent implements ModifierInterface {
     double x;
     double y;
     int button;

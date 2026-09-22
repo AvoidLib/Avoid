@@ -1,0 +1,19 @@
+{
+    import net.minecraft.client.renderer.PlayerSkinRenderCache;
+    // import net.minecraft.client.renderer.PlayerSkinRenderCache;
+}
+
+{
+    obj.addLayer(new CustomHeadLayer(obj, context.getModelSet(), context.getPlayerSkinRenderCache()));
+    obj.addLayer(new CustomHeadLayer(obj, context.getModelSet(), CustomHeadLayer.Transforms.DEFAULT));
+}
+
+{
+    PlayerSkinRenderCache playerSkinRenderCache)
+    Void unused)
+}
+
+{
+    op.execute(renderer, context, entityModelSet, playerSkinRenderCache);
+    op.execute(renderer, context, entityModelSet, null);
+}

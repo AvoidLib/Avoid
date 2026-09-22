@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.world.location.conv;
+package pl.olafcio.avoid_impl.net.world.location;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -6,9 +6,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
-import pl.olafcio.avoid.internal.VResourceKey;
+import pl.olafcio.avoid_impl.internal.VResourceKey;
 import pl.olafcio.avoid.net.block.pos.BlockPosNative;
-import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.world.location.Location;
 
 @Native

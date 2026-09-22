@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mixin;
+package pl.olafcio.avoid_impl.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -13,10 +13,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import pl.olafcio.avoid.mixininterface.IScreen;
+import pl.olafcio.avoid_impl.mixininterface.IScreen;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.client.event.ClientScreenInPortalEvent;
-import pl.olafcio.avoid.net.screen.NativeScreenNative;
+import pl.olafcio.avoid_impl.net.screen.NativeScreenNative;
 
 @Mixin(LocalPlayer.class)
 public class LocalPlayerMixin {
