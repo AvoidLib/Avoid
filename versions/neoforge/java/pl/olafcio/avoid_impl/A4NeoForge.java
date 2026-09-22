@@ -1,4 +1,4 @@
-package pl.olafcio.avoid;
+package pl.olafcio.avoid_impl;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;

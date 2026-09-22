@@ -1,4 +1,4 @@
-package pl.olafcio.avoid;
+package pl.olafcio.avoid_impl;
 
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.ApiStatus;
