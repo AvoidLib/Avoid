@@ -52,6 +52,15 @@ public final class Reflect {
     }
 
     @SuppressWarnings("unchecked")
+    public static <T> T get(Class<?> klass, String name, Class<T> type) {
+        try {
+            return (T) MethodHandles.privateLookupIn(klass, MethodHandles.lookup()).findStaticVarHandle(klass, name, type).get();
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            throw new RuntimeException("AvoidLib failed to reflectively get '%s'".formatted(klass.getName()), e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
     public static <T> T get(Class<?> klass, String name, Class<T> type, Object instance) {
         try {
             return (T) MethodHandles.privateLookupIn(klass, MethodHandles.lookup()).findVarHandle(klass, name, type).get(instance);
