@@ -51,6 +51,16 @@ public final class Reflect {
         }
     }
 
+    public static <T> T constructx(Class<T> klass, Class<?>[] args, Object... argv) {
+        try {
+            var c = klass.getDeclaredConstructor(args);
+            c.setAccessible(true);
+            return c.newInstance(argv);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
+            throw new RuntimeException("AvoidLib failed to reflectively construct '%s'".formatted(klass.getName()), e);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> T get(Class<?> klass, String name, Class<T> type) {
         try {
