@@ -146,11 +146,13 @@ if (sponge) {
 }
 
 apply from: project.file('x_build/env_processing.gradle')
+apply from: project.file('x_build/unmixin_accessors.gradle')
 
 if (neoforge) {
     replaceEnvAnnot("net.neoforged.api.distmarker.OnlyIn", "net.neoforged.api.distmarker.Dist")
 } else if (paper) {
     replaceEnvAnnot("pl.olafcio.avoid.annotations.dist.OnlyIn", "pl.olafcio.avoid.annotations.dist.Dist")
+    reflectionizeMixinAccessors()
 }
 
 dependencies {

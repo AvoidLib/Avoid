@@ -1,0 +1,130 @@
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.util.function.BiConsumer
+import java.util.function.Consumer
+import java.util.regex.Pattern
+
+void reflectionizeMixinAccessors() {
+    tasks.compileJava.doFirst {
+        var walk = new Object[2]
+        var replacements = new HashMap<GString, String>()
+
+        walk[0] = new BiConsumer<String,String>() {
+            @Override
+            void accept(String path, String content) {
+                if (path.endsWith(".java")) {
+                    var mixin = path.substring(0, path.length() - 5) //.java
+                                            .replace("/", ".")
+                                            .split("\\.")
+                                            .drop(3)
+                                            .join(".")
+
+                    var imports = new HashMap<String, String>()
+
+                    String field
+                    String invoke
+                    String target
+
+                    replacements.put("(" + Pattern.quote("import ${mixin};") + ")", '// $1')
+
+                    for (var line : content.lines()) {
+                        var orig = line
+
+                        line = line.trim()
+
+                        if (orig.startsWith(" ") && line.endsWithAny(';', '{')) {
+                            def method = line.split("\\(")[0].trim().split(" ").last()
+                            def ref = mixin.split("\\.").last()
+
+                            def type = line.split("\\(")[0].trim().split(" ")
+                                type         = type[type.length - 2]
+
+                            var _import = type.split("<")[0]
+
+                            var _fir = _import.split("\\.")[0]
+                            var _sub = _import.contains(".") ? _import.substring(_import.indexOf(".")) : ""
+
+                            if (field != null)
+                                replacements.put(/\(\(${ref}(|<.*>)\) *(|\(.+?\) *)*([a-zA-Z][a-zA-Z0-9]+)\)\.${Pattern.quote(method)}\(\)/,
+                                                 /pl.olafcio.avoid_impl.Reflect.get(${target}.class, "${field}", ${imports.getOrDefault(_fir, _fir) + _sub}.class, $3)/)
+                            else if (invoke != null)
+                                if (_fir != 'void')
+                                    replacements.put(/\(\(${ref}(|<.*>)\) *(|\(.+?\) *)*([a-zA-Z][a-zA-Z0-9]+)\)\.${Pattern.quote(method)}\(\)/,
+                                                     /((${imports.getOrDefault(_fir, _fir) + _sub}) pl.olafcio.avoid_impl.Reflect.callx(${target}.class, "${invoke}", $3, new java.lang.Class<?>[0], new java.lang.Object[0]))/)
+                                else
+                                    replacements.put(/\(\(${ref}(|<.*>)\) *(|\(.+?\) *)*([a-zA-Z][a-zA-Z0-9]+)\)\.${Pattern.quote(method)}\(\)/,
+                                                     /pl.olafcio.avoid_impl.Reflect.callx(${target}.class, "${invoke}", $3, new java.lang.Class<?>[0], new java.lang.Object[0])/)
+                        } else if (line.startsWith("@Accessor(")) {
+                            field = line.substring(11).split('"')[0]
+                        } else if (line.startsWith("@Invoker(")) {
+                            invoke = line.substring(10).split('"')[0]
+                        } else if (line.startsWith("@Mixin(")) {
+                            target = line.substring(7).split('\\.class')[0]
+                        } else if (line.startsWith("import ")) {
+                            var nosemi = line.substring(0, line.length() - 1)
+                                                    .substring(7)
+
+                            imports[nosemi.split("\\.").last()] = nosemi
+                        }
+                    }
+                }
+            }
+        }
+
+        var paths = new String(new ProcessBuilder().command("git", "ls-tree", "--name-only", "-r", "head")
+                                                               .redirectOutput(ProcessBuilder.Redirect.PIPE)
+                                                               .directory(projectDir)
+                                                               .start()
+                                                               .in
+                                                               .readAllBytes()).readLines()
+
+        for (var src : sourceSets.main.java.srcDirs) {
+            def dir = src.toPath().resolve("pl/olafcio/avoid_impl/mixin/accessors")
+
+            if (Files.isDirectory(dir)) {
+                def dirstr = dir.toAbsolutePath().toString().substring(projectDir.toPath().toAbsolutePath().toString().length()).substring(1).replace("\\", "/")
+
+                for (var path : paths) {
+                    if (path.startsWith(dirstr)) {
+                        var content = new String(new ProcessBuilder().command("git", "cat-file", "blob", "head:" + path)
+                                                                     .redirectOutput(ProcessBuilder.Redirect.PIPE)
+                                                                     .directory(projectDir)
+                                                                     .start()
+                                                                     .in
+                                                                     .readAllBytes())
+
+                        walk[0].accept(path, content)
+                    }
+                }
+            }
+        }
+
+        walk[1] = new Consumer<java.nio.file.Path>() {
+            @Override
+            void accept(java.nio.file.Path path) {
+                try (var files = Files.list(path)) {
+                    files.forEach(sub -> {
+                        if (Files.isDirectory(sub)) {
+                            walk[1].accept(sub)
+                        } else if (sub.getFileName().toString().endsWith(".java")) {
+                            var data = Files.readString(sub, StandardCharsets.UTF_8)
+
+                            for (var entry : replacements.entrySet())
+                                data = data.replaceAll(entry.getKey(), entry.getValue());
+
+                            Files.writeString(sub, data, StandardCharsets.UTF_8)
+                        }
+                    })
+                }
+            }
+        }
+
+        for (var src : sourceSets.main.java.srcDirs) {
+            walk[1].accept(src.toPath())
+        }
+    }
+}
+
+ext {
+    reflectionizeMixinAccessors = this.&reflectionizeMixinAccessors
+}
