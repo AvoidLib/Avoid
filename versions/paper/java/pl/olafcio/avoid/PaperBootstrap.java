@@ -4,7 +4,7 @@ import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import pl.olafcio.avoid.paper.CommandSystem;
+import pl.olafcio.avoid_impl.paper.CommandSystem;
 
 public class PaperBootstrap implements PluginBootstrap {
     @Override

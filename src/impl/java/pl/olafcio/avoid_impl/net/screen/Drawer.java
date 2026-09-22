@@ -262,7 +262,7 @@ public class Drawer extends pl.olafcio.avoid.net.screen.Drawer {
                 color,
                 colorBottom != null ? colorBottom : color,
                 this.graphics.scissorStack.peek()
-        ));
+        ));//#endsubmit
     }
 
     private void drawCenteredString(Font font, FormattedCharSequence formattedCharSequence, int x, int y, int color) {
@@ -287,7 +287,7 @@ public class Drawer extends pl.olafcio.avoid.net.screen.Drawer {
                     color, 0,
                     shadow, false,
                     this.graphics.scissorStack.peek()
-            ));
+            ));//#endsubmit
         }
     }
 
@@ -307,6 +307,6 @@ public class Drawer extends pl.olafcio.avoid.net.screen.Drawer {
                 v0, v1,
                 color,
                 this.graphics.scissorStack.peek()
-        ));
+        ));//#endsubmit
     }
 }
