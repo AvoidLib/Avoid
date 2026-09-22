@@ -2,8 +2,10 @@ package pl.olafcio.avoid.net.screen;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
-import pl.olafcio.avoid.client.AvoidLibClient;
-import pl.olafcio.avoid.mixininterface.IScreen;
+import pl.olafcio.avoid_impl.client.AvoidLibClient;
+import pl.olafcio.avoid_impl.mixininterface.IScreen;
+import pl.olafcio.avoid_impl.net.screen.NativeScreen;
+import pl.olafcio.avoid_impl.net.screen.ScreenMarkerNative;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -97,12 +99,14 @@ public enum ScreenMarker {
     RECOVER_WORLD_DATA,
     PRESET_FLAT_WORLD;
 
-    boolean is(IScreen screen) {
+    @ApiStatus.Internal
+    public boolean is(IScreen screen) {
         return ScreenMarkerNative.LOOKUP.get(this).isInstance(screen);
     }
 
     @SuppressWarnings("unchecked")
-    Class<? extends IScreen> get() {
+    @ApiStatus.Internal
+    public Class<? extends IScreen> get() {
         return (Class<? extends IScreen>) ScreenMarkerNative.LOOKUP.get(this);
     }
 

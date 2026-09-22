@@ -6,6 +6,7 @@ import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid_impl.net.chat.ChatNative;
 
 /**
  * The namespace used to manage the chat on the client.

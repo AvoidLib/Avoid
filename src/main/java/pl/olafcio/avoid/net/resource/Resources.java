@@ -2,7 +2,8 @@ package pl.olafcio.avoid.net.resource;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.resource.ResourcesNative;
 
 /**
  * <span style="color: #89b03c">

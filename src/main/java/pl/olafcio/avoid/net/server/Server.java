@@ -4,7 +4,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.AvoidInternal;
+import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.RunningEnv;
@@ -42,6 +42,22 @@ public final class Server {
         return AvoidInternal.getServer().getPlayerList().getPlayers().stream()
                                                                      .map(PlayerNative::convertFrom)
                                                                      .toList();
+    }
+
+    public static Player getPlayer(String nick) {
+        var ret = AvoidInternal.getServer().getPlayerList().getPlayer(nick);
+        if (ret == null)
+            return null;
+
+        return PlayerNative.convertFrom(ret);
+    }
+
+    public static Player getPlayer(UUID uuid) {
+        var ret = AvoidInternal.getServer().getPlayerList().getPlayer(uuid);
+        if (ret == null)
+            return null;
+
+        return PlayerNative.convertFrom(ret);
     }
 
     public static List<Operator> getOperators()  {

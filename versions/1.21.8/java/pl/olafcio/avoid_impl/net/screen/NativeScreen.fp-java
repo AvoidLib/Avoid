@@ -1,0 +1,27 @@
+{
+    return realScreen.keyReleased(((pl.olafcio.avoid_impl.net.screen.KeyboardEvent) event).event);
+    return realScreen.keyReleased(((pl.olafcio.avoid_impl.net.screen.KeyboardEvent) event).getKey(), ((pl.olafcio.avoid_impl.net.screen.KeyboardEvent) event).getScancode(), ((pl.olafcio.avoid_impl.net.screen.KeyboardEvent) event).getModifiers());
+}
+
+{
+    return realScreen.keyPressed(((pl.olafcio.avoid_impl.net.screen.KeyboardEvent) event).event);
+    return realScreen.keyPressed(((pl.olafcio.avoid_impl.net.screen.KeyboardEvent) event).getKey(), ((pl.olafcio.avoid_impl.net.screen.KeyboardEvent) event).getScancode(), ((pl.olafcio.avoid_impl.net.screen.KeyboardEvent) event).getModifiers());
+}
+
+{
+    return realScreen.mouseDragged(((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).event, x, y);
+    return realScreen.mouseDragged(((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getX(), ((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getY(), ((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getButton(), x, y);
+}
+
+{
+    return realScreen.mouseReleased(((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).event);
+    return realScreen.mouseReleased(((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getX(), ((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getY(), ((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getButton());
+}
+
+{
+    return realScreen.mouseClicked(((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).event, doubleClick);
+    if (doubleClick)
+        realScreen.mouseClicked(((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getX(), ((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getY(), ((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getButton());
+
+    return realScreen.mouseClicked(((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getX(), ((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getY(), ((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).getButton());
+}

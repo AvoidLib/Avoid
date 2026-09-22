@@ -2,9 +2,9 @@ package pl.olafcio.avoid.net.item.component.values;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import org.jspecify.annotations.Nullable;
-import pl.olafcio.avoid.internal.VResourceKey;
+import pl.olafcio.avoid_impl.internal.VResourceKey;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.TransformingItemComponentValue;
 
 import java.util.Optional;

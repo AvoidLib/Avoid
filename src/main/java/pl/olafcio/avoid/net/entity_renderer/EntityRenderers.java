@@ -5,6 +5,7 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.net.entity_type.EntityType;
+import pl.olafcio.avoid_impl.net.entity_renderer.EntityRenderersNative;
 
 import java.util.function.Function;
 import java.util.function.Supplier;

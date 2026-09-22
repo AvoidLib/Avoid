@@ -1,0 +1,304 @@
+package pl.olafcio.avoid_impl.mixin;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid_impl.mixinclass.EntityUtil;
+import pl.olafcio.avoid_impl.mixininterface.ICamerable;
+import pl.olafcio.avoid_impl.mixininterface.IEntity;
+import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid_impl.net.entity.EntityNative;
+import pl.olafcio.avoid.net.entity.event.ClientEntityVelocityEvent;
+import pl.olafcio.avoid.net.entity_server.event.ServerEntityInteractEvent;
+import pl.olafcio.avoid.net.entity_server.event.ServerEntityVelocityEvent;
+import pl.olafcio.avoid_impl.net.fluid.AvoidFluid;
+import pl.olafcio.avoid.net.fluid.Fluid;
+import pl.olafcio.avoid_impl.net.fluid.FluidsNative;
+import pl.olafcio.avoid.net.fluid.properties._gravity;
+import pl.olafcio.avoid.net.fluid.properties._swimmable;
+import pl.olafcio.avoid.net.fluid.properties._unbreatheable;
+import pl.olafcio.avoid.net.player.PlayerNative;
+import pl.olafcio.avoid_impl.net.world.vect3.Vect3Native;
+
+import java.util.stream.Stream;
+
+import static net.minecraft.world.level.material.FlowingFluid.FALLING;
+
+@Mixin(Entity.class)
+public abstract class EntityMixin implements ICamerable, IEntity {
+    @Shadow
+    public abstract Level level();
+
+    @SuppressWarnings("resource")
+    @Inject(at = @At("HEAD"), method = "interact", cancellable = true)
+    public void interact(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
+        if (!level().isClientSide() && player instanceof ServerPlayer) {
+            var event = new ServerEntityInteractEvent(
+                    EntityNative.convertFrom((Entity) (Object) this),
+                    PlayerNative.convertFrom((ServerPlayer) player)
+            );
+
+            EventManager.fire(event);
+
+            if (event.isCancelled())
+                cir.setReturnValue(InteractionResult.SUCCESS);
+        }
+    }
+
+    @Unique
+    @Nullable
+    private Fluid avoidFluid = null;
+
+    @Override
+    public Fluid avoidlib$inAvoidFluid() {
+        return avoidFluid;
+    }
+
+    @Override
+    public void avoidlib$inAvoidFluid(Fluid value) {
+        avoidFluid = value;
+    }
+
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"), method = "updateSwimming")
+    public boolean updateSwimming__is__fluidTags_water(FluidState instance, TagKey<net.minecraft.world.level.material.Fluid> tagKey, Operation<Boolean> original) {
+        if (original.call(instance, tagKey))
+            return true;
+
+        for (var entry : FluidsNative.classes.entrySet()) {
+            if (instance.getType().isSame(entry.getValue())) {
+                if (entry.getKey().isAnnotationPresent(_gravity.class)) {
+                    //noinspection resource
+                    return (this.level().getFluidState(blockPosition.above(1)).getType().isSame(entry.getValue())) ||
+                           instance.getValue(FALLING);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Unique
+    private net.minecraft.world.level.material.Fluid fluidOnEye = null;
+
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"), method = "updateFluidOnEyes")
+    private boolean updateFluidOnEyes__isEyeInFluid(Entity instance, TagKey<net.minecraft.world.level.material.Fluid> tagKey, Operation<Boolean> original) {
+        if (original.call(instance, tagKey))
+            return true;
+
+        for (var entry : FluidsNative.classes.entrySet())
+            if (entry.getKey().isAnnotationPresent(_gravity.class))
+                if (entry.getValue().isSame(this.fluidOnEye))
+                    return true;
+
+        return false;
+    }
+
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getTags()Ljava/util/stream/Stream;"), method = "updateFluidOnEyes")
+    private Stream<TagKey<net.minecraft.world.level.material.Fluid>> updateFluidOnEyes__setCurrent(FluidState instance, Operation<Stream<TagKey<net.minecraft.world.level.material.Fluid>>> original) {
+        this.fluidOnEye = instance.getType();
+        return original.call(instance);
+    }
+
+    @Inject(at = @At(value = "INVOKE", target = "Ljava/util/Set;clear()V", shift = At.Shift.AFTER), method = "updateFluidOnEyes")
+    private void updateFluidOnEyes__clear(CallbackInfo ci) {
+        this.fluidOnEye = null;
+    }
+
+    @Inject(at = @At("HEAD"), method = "updateInWaterStateAndDoWaterCurrentPushing")
+    void updateInWaterStateAndDoWaterCurrentPushing__updateFluidHeightAndDoFluidPushing(CallbackInfo ci) {
+        this.currentFluidHeight = 0;
+        this.currentFluidSwimmable = false;
+        this.currentFluidUnbreathable = false;
+    }
+
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"), method = "updateInWaterStateAndDoWaterCurrentPushing")
+    boolean updateInWaterStateAndDoWaterCurrentPushing__updateFluidHeightAndDoFluidPushing(Entity instance, TagKey<net.minecraft.world.level.material.Fluid> tagKey, double d, Operation<Boolean> original) {
+        if (original.call(instance, tagKey, d))
+            return true;
+
+        for (var entry : FluidsNative.classes.entrySet()) {
+            if (this.updateFluidHeightAndDoFluidPushing(entry.getValue(), 0.014)) {
+                this.currentFluidSwimmable = entry.getKey().isAnnotationPresent(_swimmable.class);
+                this.currentFluidUnbreathable = entry.getKey().isAnnotationPresent(_unbreatheable.class);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Shadow public abstract boolean touchingUnloadedChunk();
+    @Shadow public abstract AABB getBoundingBox();
+    @Shadow public abstract boolean isPushedByFluid();
+    @Shadow public abstract Vec3 getDeltaMovement();
+    @Shadow public abstract void setDeltaMovement(Vec3 vec3);
+
+    @Shadow
+    private BlockPos blockPosition;
+
+    @Unique
+    private boolean updateFluidHeightAndDoFluidPushing(AvoidFluid fluid, double d) {
+        if (this.touchingUnloadedChunk()) {
+            return false;
+        } else {
+            AABB aABB = this.getBoundingBox().deflate(0.001);
+            int i = Mth.floor(aABB.minX);
+            int j = Mth.ceil(aABB.maxX);
+            int k = Mth.floor(aABB.minY);
+            int l = Mth.ceil(aABB.maxY);
+            int m = Mth.floor(aABB.minZ);
+            int n = Mth.ceil(aABB.maxZ);
+            double e = 0.0;
+            boolean bl = this.isPushedByFluid();
+            boolean bl2 = false;
+            Vec3 vec3 = Vec3.ZERO;
+            int o = 0;
+            BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+
+            for (int p = i; p < j; p++) {
+                for (int q = k; q < l; q++) {
+                    for (int r = m; r < n; r++) {
+                        mutableBlockPos.set(p, q, r);
+                        FluidState fluidState = this.level().getFluidState(mutableBlockPos);
+
+                        if (fluid.isSame(fluidState.getType())) {
+                            double f = q + fluidState.getHeight(this.level(), mutableBlockPos);
+                            if (f >= aABB.minY) {
+                                bl2 = true;
+                                e = Math.max(f - aABB.minY, e);
+                                if (bl) {
+                                    Vec3 vec32 = fluidState.getFlow(this.level(), mutableBlockPos);
+                                    if (e < 0.4) {
+                                        vec32 = vec32.scale(e);
+                                    }
+
+                                    vec3 = vec3.add(vec32);
+                                    o++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (vec3.length() > 0.0) {
+                if (o > 0) {
+                    vec3 = vec3.scale(1.0 / o);
+                }
+
+                if (!((Entity)(Object)this instanceof Player)) {
+                    vec3 = vec3.normalize();
+                }
+
+                Vec3 vec33 = this.getDeltaMovement();
+                vec3 = vec3.scale(d);
+                double g = 0.003;
+                if (Math.abs(vec33.x) < g && Math.abs(vec33.z) < g && vec3.length() < 0.0045000000000000005) {
+                    vec3 = vec3.normalize().scale(0.0045000000000000005);
+                }
+
+                this.setDeltaMovement(this.getDeltaMovement().add(vec3));
+            }
+
+            this.currentFluidHeight = e;
+
+            return bl2;
+        }
+    }
+
+    @Unique private double currentFluidHeight = 0;
+    @Unique private boolean currentFluidSwimmable = false;
+    @Unique private boolean currentFluidUnbreathable = false;
+
+    @Override
+    public double avoidlib$currentFluidHeight() {
+        return currentFluidHeight;
+    }
+
+    @Override
+    public boolean avoidlib$currentFluidSwimmable() {
+        return currentFluidSwimmable;
+    }
+
+    @Override
+    public boolean avoidlib$currentFluidUnbreathable() {
+        return currentFluidUnbreathable;
+    }
+
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z", ordinal = 0), method = "getBlockSpeedFactor")
+    protected boolean getBlockSpeedFactor__is__water(BlockState blockState, Block block, Operation<Boolean> original) {
+        if (original.call(blockState, block))
+            return true;
+
+        for (var fluid : FluidsNative.instances.keySet()) {
+            if (!fluid.getClass().isAnnotationPresent(_swimmable.class))
+                continue;
+
+            var id = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
+            var id2 = fluid.getBlockType();
+
+            if (id.getNamespace().equals(id2.namespace()) && id.getPath().equals(id2.path()))
+                return true;
+        }
+
+        return false;
+    }
+
+    @WrapOperation(at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;deltaMovement:Lnet/minecraft/world/phys/Vec3;", opcode = Opcodes.PUTFIELD), method = "setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V")
+    public void setDeltaMovement(Entity instance, Vec3 value, Operation<Void> original) {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT) {
+            var event = new ClientEntityVelocityEvent(
+                    EntityNative.convertFromTry(instance),
+                    Vect3Native.convert(value),
+                    EntityUtil.isLocal(instance)
+            );
+
+            EventManager.fire(event);
+
+            if (event.isCancelled())
+                return;
+            else if (event.isVelocityChanged())
+                value = Vect3Native.convertFrom(event.getVelocity());
+        } else if (!instance.level().isClientSide()) {
+            var event = new ServerEntityVelocityEvent(
+                    EntityNative.convertFromTry(instance),
+                    Vect3Native.convert(value)
+            );
+
+            EventManager.fire(event);
+
+            if (event.isCancelled())
+                return;
+            else if (event.isVelocityChanged())
+                value = Vect3Native.convertFrom(event.getVelocity());
+        }
+
+        original.call(instance, value);
+    }
+}

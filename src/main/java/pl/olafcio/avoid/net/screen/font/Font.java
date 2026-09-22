@@ -2,7 +2,7 @@ package pl.olafcio.avoid.net.screen.font;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
-import pl.olafcio.avoid.net.chat.converter.COToNative;
+import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
 
 public final class Font {
     net.minecraft.client.gui.Font font;

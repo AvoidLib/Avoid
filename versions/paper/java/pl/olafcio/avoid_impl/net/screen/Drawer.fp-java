@@ -1,0 +1,19 @@
+{
+    return this.graphics.scissorStack
+    return false; //this.graphics.scissorStack
+}
+
+{
+    this.graphics.scissorStack
+    //this.graphics.scissorStack
+}
+
+{
+    this.graphics.guiRenderState.submit
+    /*this.graphics.guiRenderState.submit
+}
+
+{
+    //#endsubmit
+    */
+}

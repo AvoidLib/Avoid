@@ -4,7 +4,7 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.net.screen.ScreenMarker;
-import pl.olafcio.avoid.net.screen.ScreenMarkerNative;
+import pl.olafcio.avoid_impl.net.screen.ScreenMarkerNative;
 
 import java.util.function.Supplier;
 

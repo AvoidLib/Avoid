@@ -1,0 +1,299 @@
+package pl.olafcio.avoid_impl.net.block;
+
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid_impl.mixin.accessors.IBlocks;
+import pl.olafcio.avoid_impl.mods.loader.AvoidPackageOnly;
+import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid.net.block.properties.*;
+import pl.olafcio.avoid.net.block.properties.preset.*;
+import pl.olafcio.avoid.net.block.values.MapColorNative;
+import pl.olafcio.avoid.net.block.values.NoteBlockInstrumentNative;
+import pl.olafcio.avoid.net.block.values.OffsetTypeNative;
+import pl.olafcio.avoid.net.block.values.PushReactionNative;
+import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
+import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid_impl.net.id.IdentificationNative;
+import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid.net.world.block_data.BlockData;
+import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
+import pl.olafcio.avoid_impl.client.AvoidLibClient;
+
+import java.lang.annotation.Annotation;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static net.minecraft.world.level.block.state.BlockBehaviour.simpleCodec;
+
+@ApiStatus.Experimental
+public final class Blocks {
+    @ApiStatus.Internal
+    private Blocks() {}
+
+    /**
+     * Creates a default instance of the given block ID.
+     */
+    public static BlockData create(Identification id) {
+        return BlockDataNative.convertFrom(BuiltInRegistries.BLOCK.getValue(IdentificationNative.convert(id)).defaultBlockState());
+    }
+
+    public static void register(Identification blockID, Supplier<? extends pl.olafcio.avoid.net.block.Block> constructor) {
+        var id = IdentificationNative.convert(blockID);
+
+        Function<Properties, Block> callback = properties -> BlockNative.make(
+                constructor.get(),
+                properties
+        );
+
+        var inst = constructor.get();
+        var block = net.minecraft.world.level.block.Blocks.register(
+                ResourceKey.create(Registries.BLOCK, id),
+                callback,
+                getProperties(inst, inst.getClass())
+        );  //at:register
+
+        Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
+
+        for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
+            Block.BLOCK_STATE_REGISTRY.add(blockState);
+            blockState.initCache();
+        }
+    }
+
+    @ApiStatus.Internal
+    public static void register(Identification blockID, Supplier<? extends pl.olafcio.avoid.net.block.Block> constructor, AvoidPackageOnly<Block> interceptor) {
+        var id = IdentificationNative.convert(blockID);
+
+        Function<Properties, Block> callback = properties -> BlockNative.make(
+                constructor.get(),
+                properties
+        );
+
+        var inst = constructor.get();
+        var block = net.minecraft.world.level.block.Blocks.register(
+                ResourceKey.create(Registries.BLOCK, id),
+                callback,
+                getProperties(inst, inst.getClass())
+        );  //at:register
+
+        Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
+
+        for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
+            Block.BLOCK_STATE_REGISTRY.add(blockState);
+            blockState.initCache();
+        }
+
+        interceptor.value = block;
+    }
+
+    private record ChosenPreset(Properties properties, String preset) {}
+
+    private static <T extends pl.olafcio.avoid.net.block.Block> Properties getProperties(T instance, Class<? extends T> block) {
+        var ret = presetProperties(block);
+
+        var properties = ret.properties();
+        var preset = ret.preset();
+
+        if (block.isAnnotationPresent(_randomlyTicking.class))
+            properties = properties.randomTicks();
+
+        if (block.isAnnotationPresent(_instabreak.class)) {
+            properties = properties.instabreak();
+
+            if (block.isAnnotationPresent(_strength.class) || block.isAnnotationPresent(_destroyTime.class) || block.isAnnotationPresent(_explosionResistance.class)) {
+                Avoid.LOGGER.warn("Block has @_instabreak, other strength-related attributes are ignored (@_strength &/ @_destroyTime &/ @_explosionResistance)");
+            }
+        } else {
+            if (block.isAnnotationPresent(_strength.class))
+                properties = properties.strength(block.getAnnotation(_strength.class)
+                                       .value());
+
+            if (block.isAnnotationPresent(_destroyTime.class))
+                properties = properties.destroyTime(block.getAnnotation(_destroyTime.class)
+                                       .value());
+
+            if (block.isAnnotationPresent(_explosionResistance.class))
+                properties = properties.destroyTime(block.getAnnotation(_explosionResistance.class)
+                                       .value());
+
+            if (block.isAnnotationPresent(_destroyTime.class) && block.isAnnotationPresent(_explosionResistance.class) && block.isAnnotationPresent(_strength.class))
+                Avoid.LOGGER.warn("Block has @_strength, @_destroyTime and @_explosionResistance at the same time; strength definition is unnecessary");
+        }
+
+        if (block.isAnnotationPresent(_friction.class))
+            properties = properties.friction(block.getAnnotation(_friction.class)
+                                                  .value());
+
+        if (block.isAnnotationPresent(_speedFactor.class))
+            properties = properties.speedFactor(block.getAnnotation(_speedFactor.class)
+                                                     .value());
+
+        if (block.isAnnotationPresent(_jumpFactor.class))
+            properties = properties.jumpFactor(block.getAnnotation(_jumpFactor.class)
+                                                    .value());
+
+        if (block.isAnnotationPresent(_noCollision.class))
+            properties = properties.noCollision();
+
+        if (block.isAnnotationPresent(_noOcclusion.class))
+            properties = properties.noOcclusion();
+
+        if (block.isAnnotationPresent(_liquid.class))
+            properties = properties.liquid();
+
+        if (block.isAnnotationPresent(_ignitedByLava.class))
+            properties = properties.ignitedByLava();
+
+        if (block.isAnnotationPresent(_noTerrainParticles.class))
+            properties = properties.noTerrainParticles();
+
+        if (block.isAnnotationPresent(_replaceable.class))
+            properties = properties.replaceable();
+
+        if (block.isAnnotationPresent(_requiresCorrectToolForDrops.class))
+            properties = properties.requiresCorrectToolForDrops();
+
+        if (block.isAnnotationPresent(_forceSolid.class))
+            properties = properties.forceSolidOn();
+
+        if (block.isAnnotationPresent(_noDrops.class))
+            properties = properties.noLootTable();
+
+        if (block.isAnnotationPresent(_requiresCorrectToolForDrops.class) && block.isAnnotationPresent(_noDrops.class))
+            Avoid.LOGGER.warn("@_requiresCorrectToolForDrops and @_noDrops present; only-tool drop declaration is unnecessary");
+
+        if (block.isAnnotationPresent(_instrument.class))
+            properties = properties.instrument(NoteBlockInstrumentNative.convert(
+                    block.getAnnotation(_instrument.class)
+                         .value()
+            ));
+
+        if (block.isAnnotationPresent(_pushReaction.class))
+            properties = properties.pushReaction(PushReactionNative.convert(
+                    block.getAnnotation(_pushReaction.class)
+                         .value()
+            ));
+
+        if (block.isAnnotationPresent(_offsetType.class))
+            properties = properties.offsetType(OffsetTypeNative.convert(
+                    block.getAnnotation(_offsetType.class)
+                         .value()
+            ));
+
+        if (block.isAnnotationPresent(_sound.class)) {
+            var soundType = block.getDeclaredAnnotation(_sound.class);
+
+            properties = properties.sound(new SoundType(
+                    soundType.volume(),
+                    soundType.pitch(),
+
+                    createSoundEvent(soundType.breakSound()),
+                    createSoundEvent(soundType.stepSound()),
+                    createSoundEvent(soundType.placeSound()),
+                    createSoundEvent(soundType.hitSound()),
+                    createSoundEvent(soundType.fallSound())
+            ));
+        }
+
+        properties = properties.lightLevel(blockState -> {
+            return instance.emitLight(BlockDataNative.convertFrom(blockState));
+        });
+
+        properties = properties.isSuffocating((blockState, blockGetter, blockPos) -> {
+            return instance.isSuffocating(BlockDataNative.convertFrom(blockState), WorldNative.make(AvoidLibClient.mc.level), BlockPosNative.convert(blockPos));
+        });
+
+        properties = properties.isViewBlocking((blockState, blockGetter, blockPos) -> {
+            return instance.isViewBlocking(BlockDataNative.convertFrom(blockState), WorldNative.make(AvoidLibClient.mc.level), BlockPosNative.convert(blockPos));
+        });
+
+        properties = properties.isValidSpawn((blockState, blockGetter, blockPos, entityType) -> {
+            return instance.isValidSpawn(BlockDataNative.convertFrom(blockState), WorldNative.make((Level) blockGetter), BlockPosNative.convert(blockPos), EntityTypeNative.convertFrom(entityType));
+        });
+
+        if (block.isAnnotationPresent(_air.class))
+            properties = properties.air();
+
+        var mapColor = instance.getMapColor();
+        if (mapColor == null && preset == null)
+            Avoid.LOGGER.warn("Overriding the 'getMapColor()' method to return a specific value is heavily recommended");
+
+        //noinspection DataFlowIssue
+        return properties.mapColor(mapColor == null
+                                        ? properties.mapColor.apply(null)
+                                        : MapColor.byId(mapColor.id()))
+                         .sound(SoundType.GRASS);
+    }
+
+    @NotNull
+    private static SoundEvent createSoundEvent(pl.olafcio.avoid.net.block.properties.sound.SoundEvent event) {
+        var loc = event.location();
+
+        return new SoundEvent(
+                Identifier.fromNamespaceAndPath(loc.namespace(), loc.path()),
+                event.fixedRange() == Float.MIN_VALUE
+                        ? Optional.empty()
+                        : Optional.of(event.fixedRange())
+        );
+    }
+
+    @NotNull
+    private static MapColor createMapColor(String colorName, int colorRGB) {
+        if (!colorName.isEmpty() && MapColorNative.NAME_TO_MAP.containsKey(colorName))
+            return MapColorNative.NAME_TO_MAP.get(colorName);
+
+        return new MapColor(colorRGB, colorRGB);
+    }
+
+    @NotNull
+    private static ChosenPreset presetProperties(Class<? extends pl.olafcio.avoid.net.block.Block> block) {
+        var presets = Map.<Class<? extends Annotation>, Function<? extends Annotation, Properties>>
+                //at:presets
+                          of(_presetNetherStem.class, (_presetNetherStem preset) -> IBlocks.netherStemProperties(
+                                    createMapColor(preset.mapColor(), preset.mapColorRGB())
+                             ),
+                             _presetShulkerBox.class, (_presetShulkerBox preset) -> IBlocks.shulkerBoxProperties(
+                                    createMapColor(preset.mapColor(), preset.mapColorRGB())
+                             ),
+                             _presetCandle.class, (_presetCandle preset) -> IBlocks.candleProperties(
+                                     createMapColor(preset.mapColor(), preset.mapColorRGB())
+                             ),
+                             _presetPiston.class, (_presetPiston preset) -> IBlocks.pistonProperties(),
+                             _presetButton.class, (_presetButton preset) -> IBlocks.buttonProperties(),
+                             _presetFlowerPot.class, (_presetFlowerPot preset) -> IBlocks.flowerPotProperties());
+        //at:presetend
+
+        var picks = presets.keySet().stream().filter(block::isAnnotationPresent).toList();
+        if (picks.size() > 1)
+            Avoid.LOGGER.error("A block cannot have multiple presets; picking {}", picks.getFirst().getName());
+
+        if (!picks.isEmpty()) {
+            var pick = picks.getFirst();
+            var props = presets.get(pick).apply(getUnsafe(block, pick));
+
+            return new ChosenPreset(props, pick.getName());
+        }
+
+        return new ChosenPreset(Properties.of(), null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Annotation> T getUnsafe(Class<?> clazz, Class<?> annotation) {
+        return clazz.getDeclaredAnnotation((Class<T>) annotation);
+    }
+}

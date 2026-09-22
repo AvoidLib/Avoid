@@ -20,8 +20,4 @@ public final class ItemNative {
     public static net.minecraft.world.item.Item convert(Item item) {
         return item.item;
     }
-
-    public static net.minecraft.world.item.Item make(pl.olafcio.avoid.net.item.Item item, net.minecraft.world.item.Item.Properties properties) {
-        return new AvoidItem(properties, item);
-    }
 }

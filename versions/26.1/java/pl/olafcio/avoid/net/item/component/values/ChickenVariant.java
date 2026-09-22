@@ -4,10 +4,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Holder;
-import pl.olafcio.avoid.AvoidInternal;
-import pl.olafcio.avoid.internal.VResourceKey;
+import pl.olafcio.avoid_impl.AvoidInternal;
+import pl.olafcio.avoid_impl.internal.VResourceKey;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.TransformingItemComponentValue;
 
 public record ChickenVariant(Identification id) {

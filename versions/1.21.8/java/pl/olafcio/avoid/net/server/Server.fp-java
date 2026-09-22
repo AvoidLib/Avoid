@@ -24,3 +24,8 @@ import com.mojang.authlib.GameProfile;
     services().nameToIdCache()
     getProfileCache()
 }
+
+{
+    getPlayer(nick)
+    getPlayerByName(nick)
+}

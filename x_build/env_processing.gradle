@@ -4,8 +4,6 @@ import java.util.function.Consumer
 
 void replaceEnvAnnot(String onlyIn, String dist) {
     tasks.compileJava.doFirst {
-        var src = rootProject.file("src/main/java").toPath()
-
         var walk = new Consumer<java.nio.file.Path>[2]
 
         walk[0] = new Consumer<java.nio.file.Path>() {
@@ -26,7 +24,9 @@ void replaceEnvAnnot(String onlyIn, String dist) {
             }
         }
 
-        walk[0].accept(src)
+        for (var src : sourceSets.main.java.srcDirs) {
+            walk[0].accept(src.toPath())
+        }
     }
 }
 

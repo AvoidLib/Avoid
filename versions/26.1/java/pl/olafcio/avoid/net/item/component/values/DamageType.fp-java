@@ -1,4 +1,4 @@
-import pl.olafcio.avoid.AvoidInternal;
+import pl.olafcio.avoid_impl.AvoidInternal;
 
 {
     import net.minecraft.world.item.EitherHolder;

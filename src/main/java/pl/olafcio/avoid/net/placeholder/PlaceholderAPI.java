@@ -5,14 +5,14 @@ import eu.pb4.placeholders.api.Placeholders;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import pl.olafcio.avoid.AvoidInternal;
+import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
-import pl.olafcio.avoid.net.chat.converter.COFromNative;
-import pl.olafcio.avoid.net.chat.converter.COToNative;
-import pl.olafcio.avoid.net.entity.EntityNative;
+import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
+import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
+import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.player.Player;
 
 @ApiStatus.Experimental

@@ -7,9 +7,9 @@ import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
-import pl.olafcio.avoid.net.chat.converter.COFromNative;
+import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.map.ItemComponentMap;
 import pl.olafcio.avoid.net.item.custom.AbstractItem;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
@@ -17,6 +17,7 @@ import pl.olafcio.avoid.net.item.values.UseStatus;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player_server.values.HandType;
 import pl.olafcio.avoid.net.world.World;
+import pl.olafcio.avoid_impl.net.item.AvoidItem;
 
 @NeverRemoval
 public abstract class Item extends AbstractItem {

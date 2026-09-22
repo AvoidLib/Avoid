@@ -6,7 +6,7 @@ import net.minecraft.client.KeyMapping;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 
 public final class Category {
     @Environment(EnvType.CLIENT)

@@ -2,7 +2,7 @@ package pl.olafcio.avoid.net.item.component.values;
 
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.TransformingItemComponentValue;
 
 import java.util.Optional;

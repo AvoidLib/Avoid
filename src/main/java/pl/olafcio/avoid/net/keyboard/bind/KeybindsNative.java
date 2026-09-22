@@ -7,8 +7,6 @@ import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.annotations.Native;
-import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.keyboard.Keyboard;
 
 import java.util.ArrayList;

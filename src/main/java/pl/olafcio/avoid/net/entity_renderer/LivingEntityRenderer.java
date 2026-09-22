@@ -5,9 +5,10 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.PlayerSkinRenderCache;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid_impl.net.entity_renderer.LOCustomHead;
+import pl.olafcio.avoid_impl.net.entity_renderer.LivingOp;
 
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ public abstract class LivingEntityRenderer<T extends Entity, S>
 
     @Environment(EnvType.CLIENT)
     private void __addCustomHead() {
-        operations.add(new MyLivingOp());
+        operations.add(new LOCustomHead());
     }
 
     @Environment(EnvType.CLIENT)
@@ -47,13 +48,5 @@ public abstract class LivingEntityRenderer<T extends Entity, S>
             op.execute(renderer, context, entityModelSet, playerSkinRenderCache);
 
         operations = null;
-    }
-
-    @Environment(EnvType.CLIENT)
-    private static class MyLivingOp implements LivingOp {
-        @Override
-        public void execute(net.minecraft.client.renderer.entity.LivingEntityRenderer<?, ?, ?> obj, EntityRendererProvider.Context context, EntityModelSet entityModelSet, PlayerSkinRenderCache playerSkinRenderCache) {
-            obj.addLayer(new CustomHeadLayer(obj, context.getModelSet(), context.getPlayerSkinRenderCache()));
-        }
     }
 }

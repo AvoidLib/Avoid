@@ -1,0 +1,21 @@
+{
+    import net.minecraft.client.input.MouseButtonEvent;
+    // import net.minecraft.client.input.MouseButtonEvent;
+}
+
+{
+    public static void set(MouseEvent event, MouseButtonEvent minecraft) {
+    public static void set(MouseEvent event, double a, double b, int c) {
+}
+
+{
+    ((pl.olafcio.avoid_impl.net.screen.MouseEvent) event).event = minecraft;  //at:mouse
+
+    //at:mouse
+    var cast = ((pl.olafcio.avoid_impl.net.screen.MouseEvent) event);
+
+    cast.x = a;
+    cast.y = b;
+    cast.button = c;
+    //atend:mouse
+}

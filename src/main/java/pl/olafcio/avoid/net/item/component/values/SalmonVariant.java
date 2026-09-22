@@ -2,7 +2,7 @@ package pl.olafcio.avoid.net.item.component.values;
 
 import net.minecraft.world.entity.animal.fish.Salmon.Variant;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
-import pl.olafcio.avoid.mixin.accessors.ISalmon$Variant;
+import pl.olafcio.avoid_impl.mixin.accessors.ISalmon$Variant;
 import pl.olafcio.avoid.net.item.component.TransformingItemComponentValue;
 
 import java.util.HashMap;

@@ -1,12 +1,12 @@
 package pl.olafcio.avoid.net.client.session;
 
-import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
 import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid_impl.net.client.session.ClientSessionNative;
 
 import java.util.UUID;
 
@@ -43,7 +43,7 @@ import java.util.UUID;
  * <br/>
  * Congrats! You've read the whole class doc.
  * <br/><br/>
- * <b>NOTE:</b> This may be a little bit wrong; I've never done XBOX flow myself.<br/>
+ * <b>NOTE:</b> This may be a little bit wrong; I've never done a production XBOX flow myself.<br/>
  * &emsp;&emsp;&ensp;&ensp;&nbsp;However, I know how some of this stuff works.
  */
 @NullMarked
