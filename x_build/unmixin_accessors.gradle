@@ -47,13 +47,20 @@ void reflectionizeMixinAccessors() {
                             if (field != null)
                                 replacements.put(/\(\(${ref}(|<.*>)\) *(|\(.+?\) *)*([a-zA-Z][a-zA-Z0-9]+)\)\.${Pattern.quote(method)}\(\)/,
                                                  /pl.olafcio.avoid_impl.Reflect.get(${target}.class, "${field}", ${imports.getOrDefault(_fir, _fir) + _sub}.class, $3)/)
-                            else if (invoke != null)
+                            else if (invoke != null) {
+                                var args = line.split("\\(")[1].split("\\)")[0].trim().split(",")
+                                                      .findAll { !it.isEmpty() }
+                                                      .collect { it.substring(0, it.lastIndexOf(" ")) }
+                                                      .collect { it.split("<")[0].trim() + ".class" }
+                                                      .join(", ")
+
                                 if (_fir != 'void')
-                                    replacements.put(/\(\(${ref}(|<.*>)\) *(|\(.+?\) *)*([a-zA-Z][a-zA-Z0-9]+)\)\.${Pattern.quote(method)}\(\)/,
-                                                     /((${imports.getOrDefault(_fir, _fir) + _sub}) pl.olafcio.avoid_impl.Reflect.callx(${target}.class, "${invoke}", $3, new java.lang.Class<?>[0], new java.lang.Object[0]))/)
+                                    replacements.put(/\(\(${ref}(|<.*>)\) *(|\(.+?\) *)*([a-zA-Z][a-zA-Z0-9]+)\)\.${Pattern.quote(method)}\(/,
+                                                     /((${imports.getOrDefault(_fir, _fir) + _sub}) pl.olafcio.avoid_impl.Reflect.callx(${target}.class, "${invoke}", $3, new java.lang.Class<?>[]{$args}${args.isEmpty() ? '' : ', '}/)
                                 else
-                                    replacements.put(/\(\(${ref}(|<.*>)\) *(|\(.+?\) *)*([a-zA-Z][a-zA-Z0-9]+)\)\.${Pattern.quote(method)}\(\)/,
-                                                     /pl.olafcio.avoid_impl.Reflect.callx(${target}.class, "${invoke}", $3, new java.lang.Class<?>[0], new java.lang.Object[0])/)
+                                    replacements.put(/\(\(${ref}(|<.*>)\) *(|\(.+?\) *)*([a-zA-Z][a-zA-Z0-9]+)\)\.${Pattern.quote(method)}\(/,
+                                                     /pl.olafcio.avoid_impl.Reflect.callx(${target}.class, "${invoke}", $3, new java.lang.Class<?>[]{$args}${args.isEmpty() ? '' : ', '}/)
+                            }
                         } else if (line.startsWith("@Accessor(")) {
                             field = line.substring(11).split('"')[0]
                         } else if (line.startsWith("@Invoker(")) {
