@@ -1,4 +1,4 @@
-package pl.olafcio.avoid;
+package pl.olafcio.avoid_impl;
 
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.lifecycle.LoadedGameEvent;
