@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid_impl.mixininterface.IMinecraft;
 import pl.olafcio.avoid_impl.mixininterface.IScreen;
 import pl.olafcio.avoid.mods.event.EventManager;
-import pl.olafcio.avoid.net.fog.delta.TickTrackerNative;
+import pl.olafcio.avoid_impl.net.fog.delta.TickTrackerNative;
 import pl.olafcio.avoid.net.gui.event.RenderHudEvent;
 import pl.olafcio.avoid.net.screen.event.ScreenOpenEvent;
 import pl.olafcio.avoid.net.screen.event.ScreenOpenEventNative;

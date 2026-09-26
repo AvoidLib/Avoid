@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
-import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
+import pl.olafcio.avoid_impl.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid_impl.net.world.vect3.Vect3Native;
 
 import java.util.HashMap;
