@@ -37,6 +37,15 @@ publish=1
 dev_mappings=OBFUSCATED
 alpha=1
 
+$ velocity
+: mixinless
+velocity=1
+publish=1
+omit_mappings=1
+dev_mappings=REMOVED
+impl_name=impl_velocity
+alpha=1
+
 $ quilt
 : {@name}
 quilt=1
@@ -45,6 +54,13 @@ publish=1
 ////////////////
 /// VERSIONS ///
 ////////////////
+
+# velocity-26.3
+; velocity
+velocity_version=4.2.1-SNAPSHOT
+minecraft_version=26.3
+minecraft_version_range=26.3
+minecraft_version_list=["26.3"]
 
 # 1.21.10
 minecraft_version=1.21.10

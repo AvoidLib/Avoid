@@ -13,6 +13,8 @@ List<String> getLoaders() {
         return ["paper"];
     else if (ext.quilt)
         return ["quilt"];
+    else if (ext.velocity)
+        return ["velocity"];
     else
         return [];
 }
