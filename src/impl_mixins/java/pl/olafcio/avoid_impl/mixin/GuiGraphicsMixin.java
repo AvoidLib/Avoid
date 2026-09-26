@@ -18,7 +18,7 @@ import pl.olafcio.avoid.net.gui.event.RenderOutlineEvent;
 import pl.olafcio.avoid.net.gui.event.RenderTextEvent;
 import pl.olafcio.avoid_impl.net.resource.ResourcesNative;
 import pl.olafcio.avoid_impl.net.screen.DrawerNative;
-import pl.olafcio.avoid.net.screen.font.FontNative;
+import pl.olafcio.avoid_impl.net.font.FontNative;
 
 // FIXME: Includes component-style hacks
 

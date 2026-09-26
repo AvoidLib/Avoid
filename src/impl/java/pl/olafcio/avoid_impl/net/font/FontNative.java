@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.screen.font;
+package pl.olafcio.avoid_impl.net.font;
 
 import net.minecraft.client.gui.Font;
 import org.jetbrains.annotations.ApiStatus;
@@ -11,10 +11,10 @@ public final class FontNative {
     private FontNative() {}
 
     public static Font convert(pl.olafcio.avoid.net.screen.font.Font font) {
-        return font.font;
+        return ((pl.olafcio.avoid_impl.net.font.Font) font).font;
     }
 
     public static pl.olafcio.avoid.net.screen.font.Font convertFrom(Font font) {
-        return new pl.olafcio.avoid.net.screen.font.Font(font);
+        return new pl.olafcio.avoid_impl.net.font.Font(font);
     }
 }

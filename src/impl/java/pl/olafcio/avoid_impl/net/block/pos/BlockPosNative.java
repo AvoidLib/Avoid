@@ -1,7 +1,8 @@
-package pl.olafcio.avoid.net.block.pos;
+package pl.olafcio.avoid_impl.net.block.pos;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.net.block.pos.BlockPos;
 
 @Native
 @ApiStatus.Internal

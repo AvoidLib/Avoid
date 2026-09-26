@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
-import pl.olafcio.avoid.net.entity.values.EnderDragonPhaseNative;
+import pl.olafcio.avoid_impl.net.entity.values.EnderDragonPhaseNative;
 import pl.olafcio.avoid.net.entity_server.event.ender_dragon.ServerEnderDragonPhaseEvent;
 
 @Mixin(EnderDragonPhaseManager.class)

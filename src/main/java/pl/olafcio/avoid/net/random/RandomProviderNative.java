@@ -11,10 +11,10 @@ public final class RandomProviderNative {
     private RandomProviderNative() {}
 
     public static RandomProvider create(RandomSource source) {
-        return new RandomProvider(source);
+        return new pl.olafcio.avoid_impl.net.random.RandomProvider(source);
     }
 
     public static RandomSource convert(pl.olafcio.avoid.net.block.random.RandomProvider provider) {
-        return provider.source;
+        return ((pl.olafcio.avoid_impl.net.random.RandomProvider) provider).source;
     }
 }

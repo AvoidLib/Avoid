@@ -14,21 +14,21 @@ import pl.olafcio.avoid_impl.mixin.accessors.IFlowingFluid;
 import pl.olafcio.avoid_impl.mixin.accessors.IFluid;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
-import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.random.RandomProvider;
 import pl.olafcio.avoid.net.random.RandomProviderNative;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.fluid.inside_block.InsideBlock;
-import pl.olafcio.avoid.net.fluid.inside_block.InsideBlockActionNative;
+import pl.olafcio.avoid_impl.net.fluid.inside_block.InsideBlockActionNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.Item;
 import pl.olafcio.avoid.net.item.ItemNative;
 import pl.olafcio.avoid.net.world.World;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
-import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
+import pl.olafcio.avoid_impl.net.world.block_data.BlockDataNative;
 
 import java.util.function.Consumer;
 

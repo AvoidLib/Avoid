@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.entity_type;
+package pl.olafcio.avoid_impl.net.entity_type;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

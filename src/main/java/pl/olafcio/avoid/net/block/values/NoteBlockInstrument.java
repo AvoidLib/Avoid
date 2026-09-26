@@ -1,11 +1,5 @@
 package pl.olafcio.avoid.net.block.values;
 
-import net.minecraft.core.Holder;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-
-import java.util.HashMap;
-
 public enum NoteBlockInstrument {
     HARP("harp", "NOTE_BLOCK_HARP"),
     BASEDRUM("basedrum", "NOTE_BLOCK_BASEDRUM"),
@@ -31,31 +25,9 @@ public enum NoteBlockInstrument {
     PIGLIN("piglin", "NOTE_BLOCK_IMITATE_PIGLIN"),
     CUSTOM_HEAD("custom_head", "UI_BUTTON_CLICK");
 
-    private static final HashMap<NoteBlockInstrument, net.minecraft.world.level.block.state.properties.NoteBlockInstrument> MAP
-                   = new HashMap<>();
-
     public final String chime;
 
     NoteBlockInstrument(String chime, String soundEvent) {
         this.chime = chime;
-    }
-
-    public static void clinit() {
-        var avoids = values();
-        var crafts = net.minecraft.world.level.block.state.properties.NoteBlockInstrument.values();
-
-        for (var avoid : avoids) {
-            for (var craft : crafts)
-                if (craft.getSerializedName().equals(avoid.chime))
-                    MAP.put(avoid, craft);
-
-            for (var craft : crafts)
-                if (craft.ordinal() == avoid.ordinal())
-                    MAP.put(avoid, craft);
-        }
-    }
-
-    static net.minecraft.world.level.block.state.properties.NoteBlockInstrument getObject(NoteBlockInstrument avoid) {
-        return MAP.get(avoid);
     }
 }

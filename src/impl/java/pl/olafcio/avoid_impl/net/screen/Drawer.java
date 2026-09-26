@@ -23,7 +23,7 @@ import org.jspecify.annotations.Nullable;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.screen.font.Font;
-import pl.olafcio.avoid.net.screen.font.FontNative;
+import pl.olafcio.avoid_impl.net.font.FontNative;
 import pl.olafcio.avoid.net.screen.renderlayer.RenderLayer;
 import pl.olafcio.avoid.net.screen.renderlayer.RenderLayerNative;
 import pl.olafcio.avoid.net.screen.renderlayer.RenderLayers;

@@ -18,7 +18,7 @@ import pl.olafcio.avoid_impl.net.entity.custom_internal.IAvoidEntity;
 import pl.olafcio.avoid.net.entity.type.base.NativeEntityConstructor;
 import pl.olafcio.avoid.net.entity.type.base.annotations.AutoEntityAttach;
 import pl.olafcio.avoid.net.entity_type.EntityType;
-import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
+import pl.olafcio.avoid_impl.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 import pl.olafcio.avoid_impl.net.world.vect3.Vect3Native;

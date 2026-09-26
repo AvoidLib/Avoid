@@ -25,7 +25,7 @@ import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid_impl.net.entity.values.DamageNative;
 import pl.olafcio.avoid.net.server.event.ServerExplodeEvent;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 import pl.olafcio.avoid_impl.net.world.vect3.Vect3Native;
 
 @Mixin(ServerLevel.class)
