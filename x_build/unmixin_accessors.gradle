@@ -85,24 +85,16 @@ void reflectionizeMixinAccessors() {
                                                                .in
                                                                .readAllBytes()).readLines()
 
-        for (var src : sourceSets.main.java.srcDirs) {
-            def dir = src.toPath().resolve("pl/olafcio/avoid_impl/mixin/accessors")
+        for (var path : paths) {
+            if (path.contains("mixin/accessors/")) {
+                var content = new String(new ProcessBuilder().command("git", "cat-file", "blob", "head:" + path)
+                                                             .redirectOutput(ProcessBuilder.Redirect.PIPE)
+                                                             .directory(projectDir)
+                                                             .start()
+                                                             .in
+                                                             .readAllBytes())
 
-            if (Files.isDirectory(dir)) {
-                def dirstr = dir.toAbsolutePath().toString().substring(projectDir.toPath().toAbsolutePath().toString().length()).substring(1).replace("\\", "/")
-
-                for (var path : paths) {
-                    if (path.startsWith(dirstr)) {
-                        var content = new String(new ProcessBuilder().command("git", "cat-file", "blob", "head:" + path)
-                                                                     .redirectOutput(ProcessBuilder.Redirect.PIPE)
-                                                                     .directory(projectDir)
-                                                                     .start()
-                                                                     .in
-                                                                     .readAllBytes())
-
-                        walk[0].accept(path, content)
-                    }
-                }
+                walk[0].accept(path, content)
             }
         }
 
