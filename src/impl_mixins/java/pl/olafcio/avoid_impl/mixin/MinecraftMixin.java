@@ -10,7 +10,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
+import pl.olafcio.avoid.net.client.event.ClientWindowTitleUpdateEvent;
 import pl.olafcio.avoid_impl.client.AvoidLibClient;
 import pl.olafcio.avoid_impl.mixininterface.IMinecraft;
 import pl.olafcio.avoid_impl.mixininterface.IScreen;
@@ -68,5 +70,14 @@ public class MinecraftMixin implements IMinecraft {
     @Inject(at = @At("HEAD"), method = "tick")
     public void tick(CallbackInfo ci) {
         EventManager.fire(ClientTickEvent.INSTANCE);
+    }
+
+    @Inject(at = @At("RETURN"), method = "createTitle", cancellable = true)
+    private void createTitle(CallbackInfoReturnable<String> cir) {
+        var event = new ClientWindowTitleUpdateEvent(cir.getReturnValue());
+
+        EventManager.fire(event);
+
+        cir.setReturnValue(event.getTitle());
     }
 }
