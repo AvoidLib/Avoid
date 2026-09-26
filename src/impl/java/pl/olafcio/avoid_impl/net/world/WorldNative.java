@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.world;
+package pl.olafcio.avoid_impl.net.world;
 
 import net.minecraft.client.renderer.state.BlockOutlineRenderState;
 import net.minecraft.world.level.Level;
@@ -20,7 +20,7 @@ public final class WorldNative {
         return new World(level);
     }
 
-    public static Level convert(World level) {
-        return level.level;
+    public static Level convert(pl.olafcio.avoid.net.world.World level) {
+        return ((World) level).level;
     }
 }

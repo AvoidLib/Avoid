@@ -13,7 +13,7 @@ import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.World;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 import java.util.ArrayList;
 import java.util.List;

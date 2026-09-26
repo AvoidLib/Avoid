@@ -14,10 +14,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import pl.olafcio.avoid.mods.event.EventManager;
-import pl.olafcio.avoid.net.item.stack.ItemStackNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.player_server.event.block.ServerPlayerCraftSlotEvent;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 @Mixin(CraftingMenu.class)
 public class CraftingMenuMixin {

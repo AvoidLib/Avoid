@@ -2,7 +2,7 @@ package pl.olafcio.avoid.net.item.component.values;
 
 import pl.olafcio.avoid.net.item.component.TransformingItemComponentValue;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
-import pl.olafcio.avoid.net.item.stack.ItemStackNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
 
 import java.util.List;
 

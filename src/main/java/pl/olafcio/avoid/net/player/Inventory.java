@@ -1,10 +1,9 @@
 package pl.olafcio.avoid.net.player;
 
-import net.minecraft.world.SimpleContainer;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.Discouraged;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
-import pl.olafcio.avoid.net.item.stack.ItemStackNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
 
 /**
  * A player's inventory.

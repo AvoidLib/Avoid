@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import pl.olafcio.avoid.net.entity_type.EntityTypesNative;
+import pl.olafcio.avoid_impl.net.entity_type.EntityTypesNative;
 
 @Mixin(DefaultAttributes.class)
 public class DefaultAttributesMixin {

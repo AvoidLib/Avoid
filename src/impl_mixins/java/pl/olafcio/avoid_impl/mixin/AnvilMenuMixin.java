@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid_impl.internal.VResourceKey;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
-import pl.olafcio.avoid.net.item.stack.ItemStackNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.player_server.event.block.anvil.ServerPlayerAnvilEnchantmentCompatibilityCheckEvent;
 import pl.olafcio.avoid.net.player_server.event.block.anvil.ServerPlayerAnvilFailEvent;

@@ -17,9 +17,9 @@ import pl.olafcio.avoid.net.fog.FogState;
 import pl.olafcio.avoid_impl.mixin.accessors.IFogRenderer;
 import pl.olafcio.avoid_impl.mixininterface.ICamerable;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
-import pl.olafcio.avoid.net.fog.delta.TickTrackerNative;
+import pl.olafcio.avoid_impl.net.fog.delta.TickTrackerNative;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 @Native
 @Environment(EnvType.CLIENT)

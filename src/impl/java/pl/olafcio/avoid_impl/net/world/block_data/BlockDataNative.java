@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.world.block_data;
+package pl.olafcio.avoid_impl.net.world.block_data;
 
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.ApiStatus;
@@ -10,11 +10,11 @@ public final class BlockDataNative {
     @ApiStatus.Internal
     private BlockDataNative() {}
 
-    public static BlockState convert(BlockData data) {
-        return data.state;
+    public static BlockState convert(pl.olafcio.avoid.net.world.block_data.BlockData data) {
+        return ((BlockData) data).state;
     }
 
-    public static BlockData convertFrom(BlockState state) {
+    public static pl.olafcio.avoid.net.world.block_data.BlockData convertFrom(BlockState state) {
         return new BlockData(state);
     }
 }

@@ -7,17 +7,17 @@ import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
-import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
-import pl.olafcio.avoid.net.item.stack.ItemStackNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
 import pl.olafcio.avoid.net.item.values.UseStatus;
-import pl.olafcio.avoid.net.item.values.UseStatusNative;
+import pl.olafcio.avoid_impl.net.item.values.UseStatusNative;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player_server.values.HandType;
-import pl.olafcio.avoid.net.player_server.values.HandTypeNative;
+import pl.olafcio.avoid_impl.net.player_server.values.HandTypeNative;
 import pl.olafcio.avoid.net.world.World;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 @NeverRemoval
 public final class NativeItem extends Item {

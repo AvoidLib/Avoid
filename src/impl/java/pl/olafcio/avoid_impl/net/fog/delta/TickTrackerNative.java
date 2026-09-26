@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.fog.delta;
+package pl.olafcio.avoid_impl.net.fog.delta;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

@@ -1,27 +1,17 @@
 package pl.olafcio.avoid.net.world.block_data;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
-import pl.olafcio.avoid.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.random.RandomProvider;
-import pl.olafcio.avoid.net.random.RandomProviderNative;
 import pl.olafcio.avoid.net.block.values.MapColor;
 import pl.olafcio.avoid.net.world.World;
-import pl.olafcio.avoid.net.world.WorldNative;
 
 @NeverRemoval
-public final class BlockData extends Block {
-    final BlockState state;
-
-    BlockData(BlockState state) {
-        this.state = state;
-    }
-
+@ApiStatus.NonExtendable
+public abstract class BlockData extends Block {
     @Override
     @ApiStatus.Experimental
     public MapColor getMapColor() {
@@ -30,66 +20,34 @@ public final class BlockData extends Block {
 
     @Override
     @NeverRemoval
-    public void tick(World world, BlockPos blockPos, RandomProvider randomProvider) {
-        state.tick(
-                (ServerLevel) WorldNative.convert(world),
-                BlockPosNative.convertFrom(blockPos),
-                RandomProviderNative.convert(randomProvider)
-        );
-    }
+    public abstract void tick(World world, BlockPos blockPos, RandomProvider randomProvider);
 
     @Override
     @NeverRemoval
-    public void randomlyTick(World world, BlockPos blockPos, RandomProvider randomProvider) {
-        state.randomTick(
-                (ServerLevel) WorldNative.convert(world),
-                BlockPosNative.convertFrom(blockPos),
-                RandomProviderNative.convert(randomProvider)
-        );
-    }
+    public abstract void randomlyTick(World world, BlockPos blockPos, RandomProvider randomProvider);
 
     @Override
     @Deprecated(forRemoval = true, since = "v1.23")
-    public void tick(World world, BlockPos blockPos, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {
-        state.tick(
-                (ServerLevel) WorldNative.convert(world),
-                BlockPosNative.convertFrom(blockPos),
-                RandomProviderNative.convert(randomProvider)
-        );
-    }
+    public abstract void tick(World world, BlockPos blockPos, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider);
 
     @Override
     @Deprecated(forRemoval = true, since = "v1.23")
-    public void randomlyTick(World world, BlockPos blockPos, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider) {
-        state.randomTick(
-                (ServerLevel) WorldNative.convert(world),
-                BlockPosNative.convertFrom(blockPos),
-                RandomProviderNative.convert(randomProvider)
-        );
-    }
+    public abstract void randomlyTick(World world, BlockPos blockPos, pl.olafcio.avoid.net.block.random.RandomProvider randomProvider);
 
     /**
      * Returns whether a block with this data causes the player to suffocate, and thus block his vision (typically rendering
      *         the causing block texture).
      */
     @ApiStatus.Experimental
-    public boolean blocksMotion() {
-        return state.blocksMotion();
-    }
+    public abstract boolean blocksMotion();
 
     @ApiStatus.Experimental
-    public int getLightEmission() {
-        return state.getLightEmission();
-    }
+    public abstract int getLightEmission();
 
     /**
      * Returns whether the block collision expands to a whole block hitbox.
      */
-    public boolean isFullSolid(World world, BlockPos blockPos) {
-        return state.isCollisionShapeFullBlock(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos));
-    }
+    public abstract boolean isFullSolid(World world, BlockPos blockPos);
 
-    public boolean isFaceSturdy(World world, BlockPos blockPos, Direction direction) {
-        return state.isFaceSturdy(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), net.minecraft.core.Direction.valueOf(direction.name()));
-    }
+    public abstract boolean isFaceSturdy(World world, BlockPos blockPos, Direction direction);
 }

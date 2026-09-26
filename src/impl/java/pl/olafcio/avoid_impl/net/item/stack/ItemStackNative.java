@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.item.stack;
+package pl.olafcio.avoid_impl.net.item.stack;
 
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;

@@ -13,7 +13,7 @@ import pl.olafcio.avoid.net.effect.properties._category;
 import pl.olafcio.avoid.net.effect.properties._color;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid_impl.net.effect.internal.IAvoidEffect;
 import pl.olafcio.avoid_impl.net.effect.internal.NativeEffect;

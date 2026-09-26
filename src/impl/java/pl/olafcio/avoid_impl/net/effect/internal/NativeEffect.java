@@ -16,7 +16,7 @@ import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity.values.Damage;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.world.World;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 import pl.olafcio.avoid_impl.net.world.vect3.Vect3Native;
 
 @ApiStatus.Internal

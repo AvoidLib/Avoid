@@ -8,13 +8,13 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.net._3d.Direction;
-import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.item.Item;
-import pl.olafcio.avoid.net.item.stack.ItemStackNative;
-import pl.olafcio.avoid.net.item.values.UseStatusNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
+import pl.olafcio.avoid_impl.net.item.values.UseStatusNative;
 import pl.olafcio.avoid.net.player.PlayerNative;
-import pl.olafcio.avoid.net.player_server.values.HandTypeNative;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.player_server.values.HandTypeNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 public class AvoidItem extends net.minecraft.world.item.Item {
     public Item item;

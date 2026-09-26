@@ -16,7 +16,7 @@ import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.item.component.values.Rarity;
 import pl.olafcio.avoid.net.item.properties.*;
 import pl.olafcio.avoid.net.item.properties.spawnegg.ID;
-import pl.olafcio.avoid.net.item.values.SlotDescriptionNative;
+import pl.olafcio.avoid_impl.net.item.values.SlotDescriptionNative;
 
 import java.util.function.Function;
 import java.util.function.Supplier;

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.net.world.block_location.BlockLocation;
 import pl.olafcio.avoid_impl.internal.VResourceKey;
-import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 
 @Native

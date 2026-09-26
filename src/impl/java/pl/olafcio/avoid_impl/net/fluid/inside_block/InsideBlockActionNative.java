@@ -1,8 +1,9 @@
-package pl.olafcio.avoid.net.fluid.inside_block;
+package pl.olafcio.avoid_impl.net.fluid.inside_block;
 
 import net.minecraft.world.entity.InsideBlockEffectType;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.net.fluid.inside_block.InsideBlockAction;
 
 @Native
 @ApiStatus.Internal
@@ -11,7 +12,18 @@ public final class InsideBlockActionNative {
     private InsideBlockActionNative() {}
 
     public static InsideBlockEffectType convert(InsideBlockAction action) {
-        return action.insideBlockEffectType;
+        if (action == InsideBlockAction.FREEZE)
+            return InsideBlockEffectType.FREEZE;
+        else if (action == InsideBlockAction.CLEAR_FREEZE)
+            return InsideBlockEffectType.CLEAR_FREEZE;
+        else if (action == InsideBlockAction.FIRE_IGNITE)
+            return InsideBlockEffectType.FIRE_IGNITE;
+        else if (action == InsideBlockAction.LAVA_IGNITE)
+            return InsideBlockEffectType.LAVA_IGNITE;
+        else if (action == InsideBlockAction.EXTINGUISH)
+            return InsideBlockEffectType.EXTINGUISH;
+
+        return null;
     }
 
     public static InsideBlockAction convertFrom(InsideBlockEffectType action) {

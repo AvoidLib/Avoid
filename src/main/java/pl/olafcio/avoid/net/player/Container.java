@@ -3,7 +3,7 @@ package pl.olafcio.avoid.net.player;
 import net.minecraft.world.SimpleContainer;
 import pl.olafcio.avoid.annotations.refactor.Discouraged;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
-import pl.olafcio.avoid.net.item.stack.ItemStackNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
 
 public class Container {
     protected final Object inventory;

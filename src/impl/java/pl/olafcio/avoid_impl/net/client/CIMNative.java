@@ -10,11 +10,11 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
-import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.player_server.values.HandType;
-import pl.olafcio.avoid.net.player_server.values.HandTypeNative;
+import pl.olafcio.avoid_impl.net.player_server.values.HandTypeNative;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 import pl.olafcio.avoid_impl.net.world.vect3.Vect3Native;
 

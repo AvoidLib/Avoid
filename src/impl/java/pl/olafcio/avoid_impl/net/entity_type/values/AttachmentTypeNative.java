@@ -1,8 +1,9 @@
-package pl.olafcio.avoid.net.entity_type.values;
+package pl.olafcio.avoid_impl.net.entity_type.values;
 
 import net.minecraft.world.entity.EntityAttachment;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.net.entity_type.values.AttachmentType;
 
 @ApiStatus.Internal
 @Native

@@ -20,17 +20,16 @@ import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.UnknownNullability;
 import org.jspecify.annotations.NullMarked;
-import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.fluid.FluidStateAccessor;
-import pl.olafcio.avoid.net.fluid.FluidStateNative;
 import pl.olafcio.avoid.net.random.RandomProviderNative;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.fluid.inside_block.InsideBlock;
 import pl.olafcio.avoid.net.fluid.inside_block.InsideBlockAction;
-import pl.olafcio.avoid.net.fluid.inside_block.InsideBlockActionNative;
+import pl.olafcio.avoid_impl.net.fluid.inside_block.InsideBlockActionNative;
 import pl.olafcio.avoid.net.item.ItemNative;
-import pl.olafcio.avoid.net.world.WorldNative;
-import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.block_data.BlockDataNative;
 
 import java.util.function.Consumer;
 
