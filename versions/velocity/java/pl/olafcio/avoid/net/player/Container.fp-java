@@ -1,0 +1,28 @@
+{
+    import net.minecraft.world.SimpleContainer;
+    // import net.minecraft.world.SimpleContainer;
+}
+
+{
+    import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
+    // import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
+}
+
+{
+    ) {
+    ) {
+        throw new UnsupportedOperationException("[Inventory] This method cannot be used on Velocity");
+        /*
+}
+
+{
+    public void give(ItemStack itemStack) throws UnsupportedOperationException {
+    public void give(ItemStack itemStack) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("[Inventory] This method cannot be used on Velocity");
+        /*
+}
+
+{
+        }
+    */}
+}

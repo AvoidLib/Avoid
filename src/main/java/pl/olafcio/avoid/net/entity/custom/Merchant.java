@@ -33,7 +33,7 @@ public abstract class Merchant extends pl.olafcio.avoid.net.entity.type.Merchant
                 (IVect3) args[2],
                 (UUID) args[3],
                 (BaseComponent<?>) args[4],
-                (net.minecraft.world.entity.Entity) args[5]
+                args[5]
         );
     }
 

@@ -1,0 +1,14 @@
+{
+    import com.mojang.logging.LogUtils;
+    // import com.mojang.logging.LogUtils;
+}
+
+{
+    public static final Logger LOGGER
+    public static Logger LOGGER;
+}
+
+{
+    = LogUtils.getLogger()
+    //
+}

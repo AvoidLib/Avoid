@@ -1,0 +1,4 @@
+{
+    server.getPlayerList().broadcastSystemMessage(COToNative.from(data), false);
+    server.forEachAudience(aud -> aud.sendMessage(COToNative.from(data)));
+}

@@ -1,0 +1,11 @@
+import net.kyori.adventure.sound.Sound;
+
+{
+    net.minecraft.world.entity.Entity
+    Sound.Emitter
+}
+
+{
+    import net.minecraft
+    // import net.minecraft
+}

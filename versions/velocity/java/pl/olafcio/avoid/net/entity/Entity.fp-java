@@ -1,0 +1,61 @@
+import net.kyori.adventure.sound.Sound;
+import com.velocitypowered.api.proxy.player.PlayerSettings;
+import pl.olafcio.avoid.net.chat.component.Components;
+
+{
+    net.minecraft.world.entity.Entity
+    Sound.Emitter
+}
+
+{
+    import net.minecraft
+    // import net.minecraft
+}
+
+{
+    return COFromNative.from(underlyingEntity.getName());
+    return Components.literal(__cast(com.velocitypowered.api.proxy.Player.class).getUsername());
+}
+
+{
+    //#region showParticle
+    throw new UnsupportedOperationException("[Entity#showParticle] This method is currently not supported on Velocity");
+    /*
+}
+
+{
+    //#region playSound
+    var vp = __cast(com.velocitypowered.api.proxy.Player.class);
+    vp.playSound(Sound.sound(IdentificationNative.convert(soundID), Sound.Source.MASTER, volume, pitch), vp);
+    /*
+}
+
+{
+    //#region mainhand
+
+    var hand = __cast(com.velocitypowered.api.proxy.Player.class).getPlayerSettings().getMainHand();
+    if (hand == PlayerSettings.MainHand.LEFT)
+        return Hand.LEFT;
+    else
+        return Hand.RIGHT;
+
+    /*
+}
+
+{
+    //#regionend velocity:
+    *///
+}
+
+{
+    ) {
+    ) {
+        throw new UnsupportedOperationException("[Entity] This method is currently not supported on Velocity");
+        /*
+}
+
+{
+    //#regionend func
+    //*/
+    }
+}

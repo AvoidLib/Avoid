@@ -1,6 +1,6 @@
 package pl.olafcio.avoid.mods;
 
-import net.minecraft.SharedConstants;
+import com.velocitypowered.api.network.ProtocolVersion;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Date;
@@ -11,21 +11,18 @@ public final class MinecraftVersion {
     private MinecraftVersion() {}
 
     public static String get() {
-        return SharedConstants.getCurrentVersion().name();
+        return ProtocolVersion.MAXIMUM_VERSION.getMostRecentSupportedVersion();
     }
 
     public static boolean isRelease() {
-        return SharedConstants.getCurrentVersion().stable();
+        return ProtocolVersion.MAXIMUM_VERSION.isSupported();
     }
 
     public static int getProtocolVersion() {
-        return SharedConstants.getCurrentVersion().protocolVersion();
+        return ProtocolVersion.MAXIMUM_VERSION.getProtocol();
     }
 
-    /**
-     * <b>NOTE:</b> Returns {@code null} on Velocity.
-     */
     public static Date getBuildTime() {
-        return SharedConstants.getCurrentVersion().buildTime();
+        return null;
     }
 }

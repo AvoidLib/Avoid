@@ -1,0 +1,22 @@
+{
+    import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
+    //import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
+}
+
+{
+    ) {
+    ) {
+        throw new UnsupportedOperationException("[Inventory] This method cannot be used on Velocity");
+        /*
+}
+
+{
+    Inventory(Object inventory) {
+    Inventory(Object inventory) {
+        super(inventory);
+}
+
+{
+        }
+    */}
+}

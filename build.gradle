@@ -55,7 +55,7 @@ ext {
     it.quilt = quilt
 }
 
-if (sponge) {
+if (sponge || velocity) {
     apply plugin: 'com.gradleup.shadow'
 }
 
@@ -149,6 +149,11 @@ if (sponge) {
         relocate("com.llamalad7.mixinextras", "pl.olafcio.avoid.__shadow__.mixinextras")
         mergeServiceFiles() // Very important!
     }
+} else if (velocity) {
+    shadowJar {
+        configurations = [project.configurations.shadow]
+        relocate("org.joml", "pl.olafcio.avoid.__shadow__.joml")
+    }
 }
 
 apply from: project.file('x_build/env_processing.gradle')
@@ -159,6 +164,8 @@ if (neoforge) {
 } else if (paper) {
     replaceEnvAnnot("pl.olafcio.avoid.annotations.dist.OnlyIn", "pl.olafcio.avoid.annotations.dist.Dist")
     reflectionizeMixinAccessors()
+} else if (velocity) {
+    replaceEnvAnnot("pl.olafcio.avoid.annotations.dist.OnlyIn", "pl.olafcio.avoid.annotations.dist.Dist")
 }
 
 dependencies {
@@ -196,6 +203,8 @@ dependencies {
     } else if (paper) {
         implementation ("omit_mappings" in project.getProperties() ? "io.papermc.paper:paper-api:${project.minecraft_version}.build.+" : "io.papermc.paper:paper-api:${project.minecraft_version}-R0.1-SNAPSHOT")
     } else if (velocity) {
+        implementation(append('org.joml:joml:1.10.9'))
+
         compileOnly         "com.velocitypowered:velocity-api:${project.velocity_version}"
         annotationProcessor "com.velocitypowered:velocity-api:${project.velocity_version}"
     } else if (quilt) {

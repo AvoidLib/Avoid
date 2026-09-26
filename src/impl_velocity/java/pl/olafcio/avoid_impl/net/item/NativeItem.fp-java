@@ -1,0 +1,6 @@
+import net.kyori.adventure.key.Key;
+
+{
+    net.minecraft.world.item.Item
+    Key
+}

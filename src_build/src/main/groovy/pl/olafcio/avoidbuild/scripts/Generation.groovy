@@ -96,7 +96,7 @@ import java.util.UUID;
 @ApiStatus.Experimental
 
 public class ${simpleName} extends Entity {
-    public ${simpleName}(int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) {
+    public ${simpleName}(int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, Object underlyingEntity) {
         super(id, type, position, velocity, uuid, name, underlyingEntity);
     }
 """.trim()

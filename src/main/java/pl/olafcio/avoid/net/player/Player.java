@@ -79,6 +79,7 @@ public class Player extends Entity implements Executor {
      */
     @NeverRemoval
     public void sendMessage(BaseComponent<?> component) {
+        //#region sendMsg
         if (underlyingEntity instanceof ServerPlayer)
             ((ServerGamePacketListenerImpl) connection).send(new ClientboundSystemChatPacket(COToNative.from(component), false));
 
@@ -90,6 +91,7 @@ public class Player extends Entity implements Executor {
 
         else
             throw new UncontrollablePlayerException("[Player#sendMessage] Remote players can't be controlled from the client");
+        //#regionend velocity:sendMsg
     }
 
     /**
@@ -100,6 +102,7 @@ public class Player extends Entity implements Executor {
      */
     @NeverRemoval
     public void sendActionbar(BaseComponent<?> component) {
+        //#region sendActionbar
         if (underlyingEntity instanceof ServerPlayer)
             ((ServerGamePacketListenerImpl) connection).send(new ClientboundSystemChatPacket(COToNative.from(component), true));
 
@@ -111,6 +114,7 @@ public class Player extends Entity implements Executor {
 
         else
             throw new UncontrollablePlayerException("[Player#sendActionbar] Remote players can't be controlled from the client");
+        //#regionend velocity:sendActionbar
     }
 
     /**
@@ -121,6 +125,7 @@ public class Player extends Entity implements Executor {
      */
     @NeverRemoval
     public void sendTitle(BaseComponent<?> component) {
+        //#region sendTitle
         if (underlyingEntity instanceof ServerPlayer)
             ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetTitleTextPacket(COToNative.from(component)));
 
@@ -132,6 +137,7 @@ public class Player extends Entity implements Executor {
 
         else
             throw new UncontrollablePlayerException("[Player#sendTitle] Remote players can't be controlled from the client");
+        //#regionend velocity:sendActionbar
     }
 
     /**
@@ -142,6 +148,7 @@ public class Player extends Entity implements Executor {
      */
     @NeverRemoval
     public void sendSubtitle(BaseComponent<?> component) {
+        //#region sendSubtitle
         if (underlyingEntity instanceof ServerPlayer)
             ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetSubtitleTextPacket(COToNative.from(component)));
 
@@ -153,6 +160,7 @@ public class Player extends Entity implements Executor {
 
         else
             throw new UncontrollablePlayerException("[Player#sendSubtitle] Remote players can't be controlled from the client");
+        //#regionend velocity:sendSubtitle
     }
 
     /**
@@ -163,6 +171,7 @@ public class Player extends Entity implements Executor {
      */
     @NeverRemoval
     public void setTitleAnimations(int fadeIn, int stay, int fadeOut) {
+        //#region setTitleAnimations
         if (underlyingEntity instanceof ServerPlayer)
             ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetTitlesAnimationPacket(fadeIn, stay, fadeOut));
 
@@ -174,6 +183,7 @@ public class Player extends Entity implements Executor {
 
         else
             throw new UncontrollablePlayerException("[Player#setTitleAnimations] Remote players can't be controlled from the client");
+        //#regionend velocity:setTitleAnimations
     }
 
     /**
@@ -184,6 +194,7 @@ public class Player extends Entity implements Executor {
      */
     @NeverRemoval
     public void clearTitles(boolean resetAnimations) {
+        //#region clearTitles
         if (underlyingEntity instanceof ServerPlayer)
             ((ServerGamePacketListenerImpl) connection).send(new ClientboundClearTitlesPacket(resetAnimations));
 
@@ -200,6 +211,7 @@ public class Player extends Entity implements Executor {
 
         else
             throw new UncontrollablePlayerException("[Player#clearTitles] Remote players can't be controlled from the client");
+        //#regionend velocity:clearTitles
     }
 
     /**
@@ -219,10 +231,12 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void updateHealthAndFood() {
+        //#region no-velocity
         var cast = __castEnv(ServerPlayer.class, "[Player#updateHealthAndFood] This method can only be ran on server players!");
         var food = cast.getFoodData();
 
         ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetHealthPacket(getHealth(), food.getFoodLevel(), food.getSaturationLevel()));
+        //#regionend velocity:-
     }
 
     /**
@@ -235,7 +249,9 @@ public class Player extends Entity implements Executor {
      */
     @ClientUnsafe
     public void setFoodLevel(@Range(from = 0, to = 20) int food) {
+        //#region no-velocity
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().setFoodLevel(food);
+        //#regionend velocity:-
     }
 
     /**
@@ -248,7 +264,9 @@ public class Player extends Entity implements Executor {
      */
     @ClientUnsafe
     public void setFoodSaturation(float saturation) {
+        //#region no-velocity
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().setSaturation(saturation);
+        //#regionend velocity:-
     }
 
     /**
@@ -261,10 +279,12 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void updateFoodLevel(@Range(from = 0, to = 20) int food) {
+        //#region no-velocity
         __castEnv(ServerPlayer.class, "[Player#updateFoodLevel] This method can only be ran on server players!");
 
         setFoodLevel(food);
         updateHealthAndFood();
+        //#regionend velocity:-
     }
 
     /**
@@ -277,10 +297,12 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void updateFoodSaturation(float saturation) {
+        //#region no-velocity
         __castEnv(ServerPlayer.class, "[Player#updateFoodSaturation] This method can only be ran on server players!");
 
         setFoodSaturation(saturation);
         updateHealthAndFood();
+        //#regionend velocity:-
     }
 
     /**
@@ -291,7 +313,9 @@ public class Player extends Entity implements Executor {
      */
     @Range(from = 0, to = 20)
     public int getFoodLevel() {
+        //#region no-velocity
         return __cast(net.minecraft.world.entity.player.Player.class).getFoodData().getFoodLevel();
+        //#regionend velocity:-
     }
 
     /**
@@ -301,7 +325,9 @@ public class Player extends Entity implements Executor {
      * but I think it's also 0-20, like the food level.
      */
     public float getFoodSaturation() {
+        //#region no-velocity
         return __cast(net.minecraft.world.entity.player.Player.class).getFoodData().getSaturationLevel();
+        //#regionend velocity:-
     }
 
     /**
@@ -313,7 +339,9 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void tickHunger() {
+        //#region no-velocity
         __cast(net.minecraft.world.entity.player.Player.class).getFoodData().tick(__cast(ServerPlayer.class));
+        //#regionend velocity:-
     }
 
     /**
@@ -324,11 +352,13 @@ public class Player extends Entity implements Executor {
      */
     @UnknownNullability
     public GameMode getGameMode() {
+        //#region no-velocity
         var gm = __cast(net.minecraft.world.entity.player.Player.class).gameMode();
         if (gm == null)
             return null;
 
         return GameModeNative.convertFrom(gm);
+        //#regionend velocity:-
     }
 
     /**
@@ -340,8 +370,10 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void setGameMode(@NotNull GameMode gamemode) {
+        //#region no-velocity
         __castEnv(ServerPlayer.class, "[Player#setGameMode] This method can only be ran on server players!")
                 .setGameMode(GameModeNative.convert(gamemode));
+        //#regionend velocity:-
     }
 
     /**
@@ -351,8 +383,10 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public String getIP() {
+        //#region velocity:ip
         return __castEnv(ServerPlayer.class, "[Player#getIP] This method can only be ran on server players!")
                        .getIpAddress();
+        //#regionend velocity:ip
     }
 
     /**
@@ -362,8 +396,10 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public boolean allowsListing() {
+        //#region velocity:al
         return __castEnv(ServerPlayer.class, "[Player#allowsListing] This method can only be ran on server players!")
                        .allowsListing();
+        //#regionend velocity:al
     }
 
     /**
@@ -373,8 +409,10 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public int requestedViewDistance() {
+        //#region velocity:rvd
         return __castEnv(ServerPlayer.class, "[Player#requestedViewDistance] This method can only be ran on server players!")
                        .requestedViewDistance();
+        //#regionend velocity:rvd
     }
 
     /**
@@ -384,10 +422,12 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public ChatVisibility chatVisibility() {
+        //#region velocity:cv
         return ChatVisibility.from(
                 __castEnv(ServerPlayer.class, "[Player#chatVisibility] This method can only be ran on server players!")
                         .getChatVisibility()
         );
+        //#regionend velocity:cv
     }
 
     /**
@@ -401,7 +441,9 @@ public class Player extends Entity implements Executor {
      * </ol>
      */
     public Abilities getAbilities() {
+        //#region no-velocity:abil
         return new Abilities(__cast(net.minecraft.world.entity.player.Player.class).getAbilities());
+        //#regionend velocity:abil
     }
 
     /**
@@ -411,8 +453,10 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void grantAdvancement(Identification id) {
+        //#region no-velocity:advancement
         __castEnv(ServerPlayer.class, "[Player#grantAdvancement] This method can only be ran on server players!")
                     .getAdvancements().award(AvoidInternal.getServer().getAdvancements().get(IdentificationNative.convert(id)), "");
+        //#regionend velocity:advancement
     }
 
     /**
@@ -422,8 +466,10 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void revokeAdvancement(Identification id) {
+        //#region no-velocity:rvkadvancement
         __castEnv(ServerPlayer.class, "[Player#revokeAdvancement] This method can only be ran on server players!")
                 .getAdvancements().revoke(AvoidInternal.getServer().getAdvancements().get(IdentificationNative.convert(id)), "");
+        //#regionend velocity:rvkadvancement
     }
 
     /**
@@ -433,8 +479,10 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public int getTablistOrder() {
+        //#region velocity:tblord
         return __castEnv(ServerPlayer.class, "[Player#getTablistOrder] This method can only be ran on server players!")
                 .getTabListOrder();
+        //#regionend velocity:tblord
     }
 
     /**
@@ -444,8 +492,10 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void setTablistOrder(int value) {
+        //#region velocity:settblord
         __castEnv(IServerPlayer.class, "[Player#setTablistOrder] This method can only be ran on server players!")
                 .avoid$setTablistOrder(value);
+        //#regionend velocity:settblord
     }
 
     /**
@@ -457,8 +507,10 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void resetTablistOrder() {
+        //#region velocity:rstblord
         __castEnv(IServerPlayer.class, "[Player#resetTablistOrder] This method can only be ran on server players!")
                 .avoid$setTablistOrder(null);
+        //#regionend velocity:rstblord
     }
 
     /**
@@ -468,6 +520,7 @@ public class Player extends Entity implements Executor {
     @ServerOnly
     @Nullable
     public RespawnPoint getRespawnPoint() {
+        //#region no-velocity:grp
         var config = __castEnv(ServerPlayer.class, "[Player#getRespawnPoint] This method can only be ran on server players!")
                           .getRespawnConfig();
 
@@ -478,6 +531,7 @@ public class Player extends Entity implements Executor {
                 RespawnDataNative.convertFrom(config.respawnData()),
                 config.forced()
         );
+        //#regionend velocity:grp
     }
 
     /**
@@ -486,11 +540,13 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void setRespawnPoint(@Nullable RespawnPoint value) {
+        //#region no-velocity:srp
         __castEnv(ServerPlayer.class, "[Player#setRespawnPoint] This method can only be ran on server players!")
                     .setRespawnPosition(value == null ? null : new ServerPlayer.RespawnConfig(
                             RespawnDataNative.convert(value.location()),
                             value.force()
                     ), false);
+        //#regionend velocity:srp
     }
 
     /**
@@ -500,43 +556,55 @@ public class Player extends Entity implements Executor {
      */
     @ServerOnly
     public void setRespawnPoint(@Nullable RespawnPoint value, boolean notify) {
+        //#region no-velocity:srp2
         __castEnv(ServerPlayer.class, "[Player#setRespawnPoint] This method can only be ran on server players!")
                 .setRespawnPosition(value == null ? null : new ServerPlayer.RespawnConfig(
                         RespawnDataNative.convert(value.location()),
                         value.force()
                 ), notify);
+        //#regionend velocity:srp2
     }
 
     @ServerOnly
     public void setSpawnExtraParticlesOnFall(boolean value) {
+        //#region no-velocity:ssepof
         __castEnv(ServerPlayer.class, "[Player#setSpawnExtraParticlesOnFall] This method can only be ran on server players!")
                 .setSpawnExtraParticlesOnFall(value);
+        //#regionend velocity:ssepof
     }
 
     @ServerOnly
     public void setRaidOmenPosition(@Nullable BlockPos blockPos) {
+        //#region no-velocity:srop
         __castEnv(ServerPlayer.class, "[Player#setRaidOmenPosition] This method can only be ran on server players!")
                 .setRaidOmenPosition(blockPos == null ? null : BlockPosNative.convertFrom(blockPos));
+        //#regionend velocity:srop
     }
 
     @ServerOnly
     public void clearRaidOmenPosition() {
+        //#region no-velocity:crop
         __castEnv(ServerPlayer.class, "[Player#clearRaidOmenPosition] This method can only be ran on server players!")
                 .clearRaidOmenPosition();
+        //#regionend velocity:crop
     }
 
     @ServerOnly
     public @Nullable BlockPos getRaidOmenPosition() {
+        //#region no-velocity:grop
         var pos = __castEnv(ServerPlayer.class, "[Player#getRaidOmenPosition] This method can only be ran on server players!")
                          .getRaidOmenPosition();
 
         return pos == null
                 ? null
                 : BlockPosNative.convert(pos);
+        //#regionend velocity:grop
     }
 
+    //#region del-velocity:inventory
     private final Inventory inventory
             = new Inventory(__cast(net.minecraft.world.entity.player.Player.class).getInventory());
+    //#regionend velocity:inventory
 
     /**
      * Returns the player's inventory.
@@ -548,8 +616,10 @@ public class Player extends Entity implements Executor {
         return inventory;
     }
 
+    //#region del-velocity:enderchest
     private final Container enderchest
             = new Container(__cast(net.minecraft.world.entity.player.Player.class).getEnderChestInventory());
+    //#regionend velocity:enderchest
 
     /**
      * Returns the player's enderchest inventory.
@@ -565,11 +635,14 @@ public class Player extends Entity implements Executor {
      * Returns whether the player can use operator blocks, such as command blocks.
      */
     public boolean canUseOPBlocks() {
+        //#region no-velocity:cuob
         return __cast(net.minecraft.world.entity.player.Player.class).canUseGameMasterBlocks();
+        //#regionend velocity:cuob
     }
 
     @ClientOnly
     public Raycast raycast(float distance) {
+        //#region no-velocity:rc
         if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("[Player#raycast] This can be called only on local players");
         else if (!(underlyingEntity instanceof LocalPlayer))
@@ -591,5 +664,6 @@ public class Player extends Entity implements Executor {
                          ? EntityNative.convertFrom(e)
                          : null
         );  //at:raycast
+        //#regionend velocity:rc
     }
 }

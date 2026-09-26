@@ -1,0 +1,9 @@
+{
+    LogUtils.getLogger()
+    LoggerFactory.getLogger(EventManager.class)
+}
+
+{
+    import com.mojang.logging.LogUtils;
+    import org.slf4j.LoggerFactory;
+}

@@ -1,0 +1,9 @@
+{
+    import pl.olafcio.avoid_impl.net.entity.custom_internal.IAvoidEntity;
+    // import pl.olafcio.avoid_impl.net.entity.custom_internal.IAvoidEntity;
+}
+
+{
+    __cast(IAvoidEntity.class).parentTick();
+    throw new UnsupportedOperationException("[custom\\Entity#tick] This method cannot be used on Velocity");
+}

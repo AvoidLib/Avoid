@@ -1,4 +1,9 @@
 {
+    import org.apache.commons.lang3.CharUtils;
+    // import org.apache.commons.lang3.CharUtils;
+}
+
+{
     CharUtils.isHex
     isHex
 }

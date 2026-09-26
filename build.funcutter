@@ -38,6 +38,7 @@ dev_mappings=OBFUSCATED
 alpha=1
 
 $ velocity
+! no-commons
 : mixinless
 velocity=1
 publish=1
@@ -63,6 +64,7 @@ minecraft_version_range=26.3
 minecraft_version_list=["26.3"]
 
 # 1.21.10
+! no-commons
 minecraft_version=1.21.10
 quilt_loader=0.31.0-beta.1
 loader_version=0.19.1

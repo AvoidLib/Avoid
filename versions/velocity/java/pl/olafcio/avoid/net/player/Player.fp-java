@@ -1,0 +1,142 @@
+import java.time.Duration;
+
+{
+    net.minecraft.world.entity.player.Player
+    com.velocitypowered.api.proxy.Player
+}
+
+{
+    ServerPlayer.class
+    com.velocitypowered.api.proxy.Player.class
+}
+
+{
+    if (underlyingEntity instanceof ServerPlayer)
+    if (true)
+}
+
+{
+    //#region sendMsg
+    __cast(com.velocitypowered.api.proxy.Player.class).sendMessage(COToNative.from(component));
+    /*
+}
+
+{
+    //#region sendActionbar
+    __cast(com.velocitypowered.api.proxy.Player.class).sendActionBar(COToNative.from(component));
+    /*
+}
+
+{
+    //#region sendTitle
+    __cast(com.velocitypowered.api.proxy.Player.class).sendTitlePart(TitlePart.TITLE, COToNative.from(component));
+    /*
+}
+
+{
+    //#region sendSubtitle
+    __cast(com.velocitypowered.api.proxy.Player.class).sendTitlePart(TitlePart.SUBTITLE, COToNative.from(component));
+    /*
+}
+
+{
+    //#region setTitleAnimations
+    var times = net.kyori.adventure.title.Title.Times.times(Duration.ofMillis(fadeIn), Duration.ofMillis(stay), Duration.ofMillis(fadeOut));
+    __cast(com.velocitypowered.api.proxy.Player.class).sendTitlePart(TitlePart.TIMES, times);
+    /*
+}
+
+{
+    //#region clearTitles
+    if (resetAnimations)
+        __cast(com.velocitypowered.api.proxy.Player.class).resetTitle();
+    else
+        __cast(com.velocitypowered.api.proxy.Player.class).clearTitle();
+    /*
+}
+
+{
+    //#region velocity:ip
+    return __cast(com.velocitypowered.api.proxy.Player.class).getRemoteAddress().getHostString();
+    /*
+}
+
+{
+    //#region velocity:tblord
+    var vp = __cast(com.velocitypowered.api.proxy.Player.class);
+    return vp.getTabList().getEntry(vp.getUniqueId()).orElseThrow().getListOrder();
+    /*
+}
+
+{
+    //#region velocity:settblord
+    var vp = __cast(com.velocitypowered.api.proxy.Player.class);
+    vp.getTabList().getEntry(vp.getUniqueId()).orElseThrow().setListOrder(value);
+    /*
+}
+
+{
+    //#region velocity:rstblord
+    throw new UnsupportedOperationException("[Player#resetTablistOrder] This method is not yet implemented on Velocity");
+    //var vp = __cast(com.velocitypowered.api.proxy.Player.class);
+    //vp.getTabList().getEntry(vp.getUniqueId()).orElseThrow().resetListOrder();
+    /*
+}
+
+{
+    //#region velocity:al
+    return __cast(com.velocitypowered.api.proxy.Player.class).getPlayerSettings().isClientListingAllowed();
+    /*
+}
+
+{
+    //#region velocity:rvd
+    return __cast(com.velocitypowered.api.proxy.Player.class).getPlayerSettings().getViewDistance();
+    /*
+}
+
+{
+    //#region velocity:cv
+    return ChatVisibility.from(__cast(com.velocitypowered.api.proxy.Player.class).getPlayerSettings().getChatMode());
+    /*
+}
+
+{
+    //#region no-velocity
+    //
+    throw new UnsupportedOperationException("[Player] This method cannot be run on Velocity");
+    /*
+}
+
+{
+    //#region del-velocity
+    /*
+}
+
+{
+    return inventory;
+    throw new UnsupportedOperationException("[Player#getInventory] This method cannot be run on Velocity");
+}
+
+{
+    return enderchest;
+    throw new UnsupportedOperationException("[Player#getEnderchest] This method cannot be run on Velocity");
+}
+
+{
+    //#regionend velocity:
+    *///
+}
+
+{
+    import net.minecraft
+    // import net.minecraft
+}
+
+{
+    import pl.olafcio.avoid_impl
+    // import pl.olafcio.avoid_impl
+}
+
+import net.kyori.adventure.title.TitlePart;
+import pl.olafcio.avoid_impl.net.chat.converter.COToNative;

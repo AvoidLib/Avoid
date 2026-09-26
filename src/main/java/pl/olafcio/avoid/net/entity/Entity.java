@@ -75,22 +75,22 @@ public abstract class Entity {
     private final BaseComponent<?> name;
 
     protected final net.minecraft.world.entity.Entity underlyingEntity;
-    protected final <T> T __cast(Class<T> cls) {
+    protected final <T> T __cast(Class<T> cls)  {
         return cls.cast(underlyingEntity);
     }
 
-    protected final <T> T __castEnv(Class<T> cls, String errorMessage) {
+    protected final <T> T __castEnv(Class<T> cls, String errorMessage)  {
         try {
             return cls.cast(underlyingEntity);
-        } catch (ClassCastException e) {
+        } catch (ClassCastException e)  {
             throw new ImproperEnvironment(errorMessage);
         }
     }
 
     public Entity(
             int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name,
-            net.minecraft.world.entity.Entity underlyingEntity
-    ) {
+            Object underlyingEntity
+    )  {
         this.id = id;
         this.type = type;
         this.position = position;
@@ -98,19 +98,19 @@ public abstract class Entity {
         this.uuid = uuid;
         this.uuidString = uuid.toString();
         this.name = name;
-        this.underlyingEntity = underlyingEntity;
+        this.underlyingEntity = (net.minecraft.world.entity.Entity) underlyingEntity;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj)  {
         return obj.getClass() == this.getClass() && ((Entity) obj).underlyingEntity == this.underlyingEntity;
     }
 
     public int id() {
         return id;
-    }
+    }//#regionend func
 
-    public EntityType type() {
+    public EntityType type()  {
         return type;
     }
 
@@ -120,7 +120,7 @@ public abstract class Entity {
     @ApiStatus.Experimental
     public IVect3 position() {
         return Vect3Native.convert(underlyingEntity.position());
-    }
+    }//#regionend func
 
     /**
      * Gets the initial entity velocity (from the constructor time).
@@ -128,22 +128,22 @@ public abstract class Entity {
     @Deprecated(since = "v1.15", forRemoval = true)
     public IVect3 getInitialVelocity() {
         return velocity;
-    }
+    }//#regionend func
 
-    public UUID uuid() {
+    public UUID uuid()  {
         return uuid;
     }
-    public String uuidString() {
+    public String uuidString()  {
         return uuidString;
     }
 
     @Nullable
-    public BaseComponent<?> getDisplayName() {
+    public BaseComponent<?> getDisplayName()  {
         return name;
     }
 
     @NotNull
-    public BaseComponent<?> getNameComponent() {
+    public BaseComponent<?> getNameComponent()  {
         return COFromNative.from(underlyingEntity.getName());
     }
 
@@ -153,214 +153,214 @@ public abstract class Entity {
     @Deprecated(since = "v1.15", forRemoval = true)
     public IVect3 initialPosition() {
         return position;
-    }
+    }//#regionend func
 
     public boolean isAlive() {
         return underlyingEntity.isAlive();
-    }
+    }//#regionend func
 
     public float getHealth() {
         if (underlyingEntity instanceof LivingEntity le)
             return le.getHealth();
 
         return 0;
-    }
+    }//#regionend func
 
     public float getMaxHealth() {
         if (underlyingEntity instanceof LivingEntity le)
             return le.getMaxHealth();
 
         return 0;
-    }
+    }//#regionend func
 
     public void setHealth(float health) {
         if (underlyingEntity instanceof LivingEntity le)
             le.setHealth(health);
-    }
+    }//#regionend func
 
     public void setSpeed(float speed) {
         if (underlyingEntity instanceof LivingEntity le)
             le.setSpeed(speed);
-    }
+    }//#regionend func
 
     public float getAbsorptionAmount() {
         if (underlyingEntity instanceof LivingEntity le)
             return le.getAbsorptionAmount();
 
         return 0;
-    }
+    }//#regionend func
 
     public float getMaxAbsorption() {
         if (underlyingEntity instanceof LivingEntity le)
             return le.getMaxAbsorption();
 
         return 0;
-    }
+    }//#regionend func
 
     public void getAbsorptionAmount(float amount) {
         if (underlyingEntity instanceof LivingEntity le)
             le.setAbsorptionAmount(amount);
-    }
+    }//#regionend func
 
     public void setArrowCount(int amount) {
         if (underlyingEntity instanceof LivingEntity le)
             le.setArrowCount(amount);
-    }
+    }//#regionend func
 
     public float getJumpBoostPower() {
         if (underlyingEntity instanceof LivingEntity le)
             return le.getJumpBoostPower();
 
         return 0;
-    }
+    }//#regionend func
 
     /**
      * Adds a scoreboard tag to the entity.
      */
     public void addTag(String tag) {
         underlyingEntity.addTag(tag);
-    }
+    }//#regionend func
 
     /**
      * Returns all scoreboard tags used on the entity.
      */
     public Set<String> getTags() {
         return underlyingEntity.getTags();
-    }
+    }//#regionend func
 
     /**
      * Removes a scoreboard tag from the entity.
      */
     public void removeTag(String tag) {
         underlyingEntity.removeTag(tag);
-    }
+    }//#regionend func
 
     public void setGlowingTag(boolean value) {
         underlyingEntity.setGlowingTag(value);
-    }
+    }//#regionend func
 
     public boolean getGlowingTag() {
         return underlyingEntity.hasGlowingTag();
-    }
+    }//#regionend func
 
     @IncompatibleChange(reason = "This method had inverted behaviour.",
                         change = "return value",
                         since = "v1.9")
     public boolean hasPhysics() {
         return !underlyingEntity.noPhysics;
-    }
+    }//#regionend func
 
     public boolean isInWall() {
         return underlyingEntity.isInWall();
-    }
+    }//#regionend func
 
     public boolean isInWater() {
         return underlyingEntity.isInWater();
-    }
+    }//#regionend func
 
     public boolean isInWaterOrRain() {
         return underlyingEntity.isInWaterOrRain();
-    }
+    }//#regionend func
 
     public boolean isInLava() {
         return underlyingEntity.isInLava();
-    }
+    }//#regionend func
 
     public boolean isInLiquid() {
         return underlyingEntity.isInLiquid();
-    }
+    }//#regionend func
 
     public boolean isInvulnerable() {
         return underlyingEntity.isInvulnerable();
-    }
+    }//#regionend func
 
     public boolean isNoGravity() {
         return underlyingEntity.isNoGravity();
-    }
+    }//#regionend func
 
     public boolean isSilent() {
         return underlyingEntity.isSilent();
-    }
+    }//#regionend func
 
     public void tick() {
         underlyingEntity.tick();
-    }
+    }//#regionend func
 
     public void baseTick() {
         underlyingEntity.baseTick();
-    }
+    }//#regionend func
 
     public boolean canSprint() {
         return underlyingEntity.canSprint();
-    }
+    }//#regionend func
 
     public boolean canFreeze() {
         return underlyingEntity.canFreeze();
-    }
+    }//#regionend func
 
     public boolean canBeHitByProjectile() {
         return underlyingEntity.canBeHitByProjectile();
-    }
+    }//#regionend func
 
     public boolean canSpawnSprintParticle() {
         return underlyingEntity.canSpawnSprintParticle();
-    }
+    }//#regionend func
 
     public boolean isSneaking() {
         return underlyingEntity.isCrouching();
-    }
+    }//#regionend func
 
     public boolean isCrouching() {
         return underlyingEntity.isCrouching();
-    }
+    }//#regionend func
 
     public boolean isSprinting() {
         return underlyingEntity.isSprinting();
-    }
+    }//#regionend func
 
     public boolean isAttackable() {
         return underlyingEntity.isAttackable();
-    }
+    }//#regionend func
 
     public boolean isSwimming() {
         return underlyingEntity.isSwimming();
-    }
+    }//#regionend func
 
     public boolean isSpectator() {
         return underlyingEntity.isSpectator();
-    }
+    }//#regionend func
 
     public boolean isUnderwater() {
         return underlyingEntity.isUnderWater();
-    }
+    }//#regionend func
 
     public boolean isInterpolating() {
         return underlyingEntity.isInterpolating();
-    }
+    }//#regionend func
 
     public boolean isCustomNameVisible() {
         return underlyingEntity.isCustomNameVisible();
-    }
+    }//#regionend func
 
     public boolean isInClouds() {
         return underlyingEntity.isInClouds();
-    }
+    }//#regionend func
 
     public boolean isOnFire() {
         return underlyingEntity.isOnFire();
-    }
+    }//#regionend func
 
     public boolean isOnRails() {
         return underlyingEntity.isOnRails();
-    }
+    }//#regionend func
 
     public boolean isOnPortalCooldown() {
         return underlyingEntity.isOnPortalCooldown();
-    }
+    }//#regionend func
 
     public boolean isCurrentlyGlowing() {
         return underlyingEntity.isCurrentlyGlowing();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity is crawling.<br/>
@@ -369,7 +369,7 @@ public abstract class Entity {
     // I have to admit it is quite funny
     public boolean isVisuallyCrawling() {
         return underlyingEntity.isVisuallyCrawling();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity is crawling or swimming.<br/>
@@ -377,50 +377,50 @@ public abstract class Entity {
      */
     public boolean isVisuallySwimming() {
         return underlyingEntity.isVisuallySwimming();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity has velocity on.
      */
     public boolean isPushable() {
         return underlyingEntity.isPushable();
-    }
+    }//#regionend func
 
     public boolean isPushedByFluid() {
         return underlyingEntity.isPushedByFluid();
-    }
+    }//#regionend func
 
     /**
      * Returns whether any passengers are on this entity.
      */
     public boolean isVehicle() {
         return underlyingEntity.isVehicle();
-    }
+    }//#regionend func
 
     /**
      * Returns whether this entity is naturally capable of being a vehicle <i>(entity with passengers)</i> that a controlling passenger can fly with.
      */
     public boolean isFlyingVehicle() {
         return underlyingEntity.isFlyingVehicle();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity is riding any other entity.
      */
     public boolean isPassenger() {
         return underlyingEntity.isPassenger();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity can be picked up as an item (usually by a player).
      */
     public boolean isPickable() {
         return underlyingEntity.isPickable();
-    }
+    }//#regionend func
 
     public boolean isFreezing() {
         return underlyingEntity.isFreezing();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity has a safe-walk mode on.<br/>
@@ -428,7 +428,7 @@ public abstract class Entity {
      */
     public boolean isSteppingCarefully() {
         return underlyingEntity.isSteppingCarefully();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity has a no-Y-bounce mode on.<br/>
@@ -436,28 +436,28 @@ public abstract class Entity {
      */
     public boolean isSuppressingBounce() {
         return underlyingEntity.isSuppressingBounce();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity is rideable in water.
      */
     public boolean dismountsUnderwater() {
         return underlyingEntity.dismountsUnderwater();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity has a passenger that is controlling it.
      */
     public boolean canControlVehicle() {
         return underlyingEntity.canControlVehicle();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity is immune to fire.
      */
     public boolean fireImmune() {
         return underlyingEntity.fireImmune();
-    }
+    }//#regionend func
 
     /**
      * Returns whether he entity is sensitive to water.<br/>
@@ -469,14 +469,14 @@ public abstract class Entity {
             return le.isSensitiveToWater();
 
         return null;
-    }
+    }//#regionend func
 
     /**
      * Ignites the entity for 15 seconds if it's not immune to fire (dependent on {@link #fireImmune()}).
      */
     public void lavaIgnite() {
         underlyingEntity.lavaIgnite();
-    }
+    }//#regionend func
 
     /**
      * Ignites the player for the given amount of seconds.
@@ -485,7 +485,7 @@ public abstract class Entity {
      */
     public void igniteForSeconds(float seconds) {
         underlyingEntity.igniteForSeconds(seconds);
-    }
+    }//#regionend func
 
     /**
      * Ignites the player for the given amount of ticks.
@@ -494,14 +494,14 @@ public abstract class Entity {
      */
     public void igniteForTicks(int ticks) {
         underlyingEntity.igniteForTicks(ticks);
-    }
+    }//#regionend func
 
     /**
      * Extinguishes the entity off fire (which stops him from burning) and plays sound.
      */
     public void extinguishFire() {
         underlyingEntity.extinguishFire();
-    }
+    }//#regionend func
 
     /**
      * Extinguishes the entity off fire (which stops him from burning) <b>without playing a sound</b>.<br/>
@@ -509,7 +509,7 @@ public abstract class Entity {
      */
     public void clearFire() {
         underlyingEntity.clearFire();
-    }
+    }//#regionend func
 
     /**
      * Removes all the entity's effects.
@@ -526,7 +526,7 @@ public abstract class Entity {
             throw new ImproperEnvironment("[Entity#removeAllEffects] This method can only be ran on server entities!");
 
         return le.removeAllEffects();
-    }
+    }//#regionend func
 
     /**
      * Resets the entity's last action time.
@@ -534,21 +534,23 @@ public abstract class Entity {
     // TODO: What does this actually mean?
     public void resetLastActionTime() {
         __cast(LivingEntity.class).setNoActionTime(0);
-    }
+    }//#regionend func
 
     /**
      * Returns a world object representing the world the entity is currently in.
      */
     public World getWorld() {
         return WorldNative.make(__cast(LivingEntity.class).level());
-    }
+    }//#regionend func
 
     /**
      * Returns the main hand of the entity.
      */
-    public Hand getMainHand() {
+    public Hand getMainHand()  {
+        //#region mainhand
         return HandNative.convert(__cast(LivingEntity.class)
                                                      .getMainArm());
+        //#regionend velocity:mainhand
     }
 
     /**
@@ -558,7 +560,7 @@ public abstract class Entity {
      */
     public int getPortalCooldown() {
         return underlyingEntity.getPortalCooldown();
-    }
+    }//#regionend func
 
     /**
      * Sets the portal use cooldown to the default dimension value.<br/><br/>
@@ -567,7 +569,7 @@ public abstract class Entity {
      */
     public void setPortalCooldown() {
         underlyingEntity.setPortalCooldown();
-    }
+    }//#regionend func
 
     /**
      * Sets the portal use cooldown to the given value.<br/><br/>
@@ -576,7 +578,7 @@ public abstract class Entity {
      */
     public void setPortalCooldown(int value) {
         underlyingEntity.setPortalCooldown(value);
-    }
+    }//#regionend func
 
     /**
      * Returns the entity's velocity/delta movement.<br/><br/>
@@ -584,7 +586,7 @@ public abstract class Entity {
      */
     public IVect3 getVelocity() {
         return Vect3Native.convert(underlyingEntity.getDeltaMovement());
-    }
+    }//#regionend func
 
     /**
      * Sets the entity's velocity/delta movement.<br/><br/>
@@ -593,7 +595,7 @@ public abstract class Entity {
      */
     public void setVelocity(Vect3 vel) {
         underlyingEntity.setDeltaMovement(Vect3Native.convertFrom(vel));
-    }
+    }//#regionend func
 
     /**
      * Sets whether the entity has its gravity disabled.
@@ -603,7 +605,7 @@ public abstract class Entity {
     @ClientUnsafe
     public void setNoGravity(boolean value) {
         underlyingEntity.setNoGravity(value);
-    }
+    }//#regionend func
 
     /**
      * Returns the standard gravity for the entity.
@@ -612,21 +614,21 @@ public abstract class Entity {
      */
     public double getDefaultGravity() {
         return underlyingEntity.getDefaultGravity();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity object is client-sided.
      */
     public boolean isClient() {
         return underlyingEntity.level().isClientSide();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity object is server-sided.
      */
     public boolean isServer() {
         return !underlyingEntity.level().isClientSide();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity object is client-sided and represents the local client player.
@@ -636,35 +638,35 @@ public abstract class Entity {
             return false;
 
         return EntityUtil.isLocal(underlyingEntity);
-    }
+    }//#regionend func
 
     /**
      * Pushes the specified entity.
      */
     public void push(Entity entity) {
         underlyingEntity.push(EntityNative.convert(entity));
-    }
+    }//#regionend func
 
     /**
      * Invoked when a player's hitbox collides with the hitbox of this entity.
      */
     public void playerTouch(Player player) {
         underlyingEntity.playerTouch((net.minecraft.world.entity.player.Player) EntityNative.convert(player));
-    }
+    }//#regionend func
 
     /**
      * Marks the entity as needing sync.
      */
     public void sync() {
         underlyingEntity.needsSync = true;
-    }
+    }//#regionend func
 
     /**
      * Unleashes the entity from every leash.
      */
     public boolean removeAllLeashes(Player causedBy) {
         return underlyingEntity.dropAllLeashConnections((net.minecraft.world.entity.player.Player) EntityNative.convert(causedBy));
-    }
+    }//#regionend func
 
     /**
      * Returns whether this entity is colliding with the given position if it contained the given block.
@@ -674,7 +676,7 @@ public abstract class Entity {
                 BlockPosNative.convertFrom(blockPos),
                 BlockDataNative.convert(blockData)
         );
-    }
+    }//#regionend func
 
     /**
      * Causes damage to the entity. Note that this may cause desync on the client.
@@ -704,7 +706,7 @@ public abstract class Entity {
                     amount
             );
         //at:dmgend
-    }
+    }//#regionend func
 
     private static final Damage DEFAULT_DAMAGE
                    = new Damage(Identification.of("minecraft:generic_kill"));
@@ -717,7 +719,7 @@ public abstract class Entity {
     @ClientUnsafe
     public void damage(float amount) {
         damage(amount, DEFAULT_DAMAGE);
-    }
+    }//#regionend func
 
     /**
      * Kills the entity. Note that this may cause desync on the client.<br/><br/>
@@ -726,7 +728,7 @@ public abstract class Entity {
     @ClientUnsafe
     public void kill() {
         damage(Integer.MAX_VALUE);
-    }
+    }//#regionend func
 
     /**
      * Removes the entity from the world.<br/>
@@ -735,7 +737,7 @@ public abstract class Entity {
     @ClientUnsafe
     public void detach() {
         underlyingEntity.remove(net.minecraft.world.entity.Entity.RemovalReason.DISCARDED);
-    }
+    }//#regionend func
 
     /**
      * Makes the entity jump as if it was on the ground.
@@ -745,7 +747,7 @@ public abstract class Entity {
      */
     public void jumpFromGround() {
         __cast(LivingEntity.class).jumpFromGround();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity has despawning disabled.
@@ -754,14 +756,14 @@ public abstract class Entity {
      */
     public boolean isPersistenceRequired() {
         return __cast(Mob.class).isPersistenceRequired();
-    }
+    }//#regionend func
 
     /**
      * Returns whether the entity can pick up loot.
      */
     public boolean canPickUpLoot() {
         return __cast(LivingEntity.class).canPickUpLoot();
-    }
+    }//#regionend func
 
     /**
      * Sets whether the entity can pick up loot.
@@ -770,14 +772,14 @@ public abstract class Entity {
      */
     public void setCanPickUpLoot(boolean value) {
         __cast(Mob.class).setCanPickUpLoot(value);
-    }
+    }//#regionend func
 
     /**
      * Sets whether the entity is invulnerable.
      */
     public void setInvulnerable(boolean value) {
         underlyingEntity.setInvulnerable(value);
-    }
+    }//#regionend func
 
     /**
      * Sets whether the entity is invisible.
@@ -787,21 +789,21 @@ public abstract class Entity {
      */
     public void setInvisible(boolean value) {
         underlyingEntity.setInvisible(value);
-    }
+    }//#regionend func
 
     /**
      * Makes the entity sleep at the bed at the specified position.
      */
     public void startSleeping(BlockPos blockPos) {
         __cast(LivingEntity.class).startSleeping(BlockPosNative.convertFrom(blockPos));
-    }
+    }//#regionend func
 
     /**
      * Makes the entity stop sleeping.
      */
     public void stopSleeping() {
         __cast(LivingEntity.class).stopSleeping();
-    }
+    }//#regionend func
 
     /**
      * Returns the active effects of this entity.
@@ -810,7 +812,7 @@ public abstract class Entity {
         return __cast(LivingEntity.class).getActiveEffects().stream()
                                                             .map(EffectInstanceNative::convert)
                                                             .toList();
-    }
+    }//#regionend func
 
     /**
      * Returns the active effects of this entity within an <i>ID->EffectInstance</i> map.
@@ -819,7 +821,7 @@ public abstract class Entity {
         var map = __cast(LivingEntity.class).getActiveEffectsMap();
         var output = new HashMap<Identification, EffectInstance>();
 
-        for (var effect : map.entrySet()) {
+        for (var effect : map.entrySet())  {
             var id = IdentificationNative.convertFrom(VResourceKey.identifier(effect.getKey().unwrapKey().orElseThrow()));
 
             output.put(id, new EffectInstance(
@@ -830,7 +832,7 @@ public abstract class Entity {
         }
 
         return output;
-    }
+    }//#regionend func
 
     /**
      * Returns whether this entity has the given effect.
@@ -838,7 +840,7 @@ public abstract class Entity {
      */
     public boolean hasEffect(Identification effectID) {
         return __cast(LivingEntity.class).hasEffect(BuiltInRegistries.MOB_EFFECT.get(IdentificationNative.convert(effectID)).orElseThrow());
-    }
+    }//#regionend func
 
     /**
      * Adds an effect to an entity.
@@ -850,7 +852,7 @@ public abstract class Entity {
      */
     public boolean addEffect(EffectInstance effectInstance) {
         return __cast(LivingEntity.class).addEffect(EffectInstanceNative.convertFrom(effectInstance));
-    }
+    }//#regionend func
 
     /**
      * Removes the effect from the entity.
@@ -860,17 +862,17 @@ public abstract class Entity {
      */
     public boolean removeEffect(Identification effectID) {
         return __cast(LivingEntity.class).removeEffect(BuiltInRegistries.MOB_EFFECT.get(IdentificationNative.convert(effectID)).orElseThrow());
-    }
+    }//#regionend func
 
     /**
      * Removes all effects from the entity.
      */
     public boolean clearEffects() {
         return __cast(LivingEntity.class).removeAllEffects();
-    }
+    }//#regionend func
 
     @Override
-    public String toString() {
+    public String toString()  {
         return "Entity[" +
                 "id=" + id + ", " +
                 "type=" + type + ", " +
@@ -882,44 +884,46 @@ public abstract class Entity {
 
     public boolean is(Entity entity) {
         return underlyingEntity.is(EntityNative.convert(entity));
-    }
+    }//#regionend func
 
     public static double getViewScale() {
         return net.minecraft.world.entity.Entity.getViewScale();
-    }
+    }//#regionend func
 
     public static void setViewScale(double value) {
         net.minecraft.world.entity.Entity.setViewScale(value);
-    }
+    }//#regionend func
 
     /**
      * @param volume May be wrong!
      * @param pitch May be wrong!
      */
     @ApiStatus.Experimental
-    public void playSound(Identification soundID, float volume, float pitch) {
+    public void playSound(Identification soundID, float volume, float pitch)   {
+        //#region playSound
         var value = BuiltInRegistries.SOUND_EVENT.getValue(IdentificationNative.convert(soundID));
         if (value == null)
             throw new NullPointerException("[Entity#playSound] Non-existent sound '%s'".formatted(soundID.toString()));
 
         underlyingEntity.playSound(value, volume, pitch);
+        //#regionend velocity:playSound
     }
 
-    public void playSound(Identification soundID) {
+    public void playSound(Identification soundID)  {
         playSound(soundID, 1f, 1f);
     }
 
     public double x() {
         return position().x();
-    }
+    }//#regionend func
 
     public double y() {
         return position().y();
-    }
+    }//#regionend func
 
     public double z() {
         return position().z();
-    }
+    }//#regionend func
 
     @ServerOnly
     public void showParticle(
@@ -930,7 +934,8 @@ public abstract class Entity {
             int count,
             boolean canUpgradeFromMinimal,
             boolean force
-    ) {
+    )  {
+        //#region showParticle
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
             throw new ImproperEnvironment("[Entity#showParticle] This method can only be ran on server entities!");
 
@@ -943,5 +948,6 @@ public abstract class Entity {
                 offsetX, offsetY, offsetZ,
                 maxSpeed
         );
+        //#regionend velocity:showParticle
     }
 }
