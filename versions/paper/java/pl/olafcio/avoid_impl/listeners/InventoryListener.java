@@ -15,12 +15,12 @@ import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity_server.event.ServerEntityInteractEvent;
 import pl.olafcio.avoid.net.item.Item;
-import pl.olafcio.avoid.net.item.stack.ItemStackNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.player_server.event.block.ServerPlayerCraftSlotEvent;
 import pl.olafcio.avoid.net.player_server.event.block.ServerPlayerSmithingSlotEvent;
 import pl.olafcio.avoid.net.player_server.event.block.anvil.ServerPlayerAnvilSuccessResultEvent;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 public final class InventoryListener implements Listener {
     @EventHandler
