@@ -1,4 +1,9 @@
 {
+    pl.olafcio.avoid_impl.net.item.stack.ItemStackNative
+    pl.olafcio.avoid.net.item.stack.ItemStackTemplateNative
+}
+
+{
     ItemStackNative
     ItemStackTemplateNative
 }
