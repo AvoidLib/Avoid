@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.world;
+package pl.olafcio.avoid_impl.net.world;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,7 +18,7 @@ import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid_impl.internal.VResourceKey;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
-import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.id.Identification;
@@ -26,8 +26,9 @@ import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.sound.category.SoundCategory;
 import pl.olafcio.avoid_impl.net.sound.category.SoundCategoryNative;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
-import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
+import pl.olafcio.avoid_impl.net.world.block_data.BlockDataNative;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
+import pl.olafcio.avoid.net.world.Highlight;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -37,7 +38,7 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("ClassCanBeRecord")
 @NeverRemoval
-public final class World {
+public final class World extends pl.olafcio.avoid.net.world.World {
     final Level level;
 
     World(Level level) {
