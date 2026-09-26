@@ -37,6 +37,16 @@ publish=1
 dev_mappings=OBFUSCATED
 alpha=1
 
+$ velocity
+: {@name}
+: mixinless
+velocity=1
+velocity_version={}
+publish=1
+dev_mappings=REMOVED
+impl_name=impl_velocity
+alpha=1
+
 $ quilt
 : {@name}
 quilt=1
@@ -108,6 +118,7 @@ text_papi_version=3.1.0-beta.1+26.2
 ; 26.2
 ! renderpearl
 <- neoforge (26.3.0.3-beta)
+<- velocity (4.2.1-SNAPSHOT)
 minecraft_version=26.3
 minecraft_version_range=26.3
 minecraft_version_list=["26.3"]

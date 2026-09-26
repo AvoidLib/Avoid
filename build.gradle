@@ -42,6 +42,7 @@ boolean contains(String value) {
 var final boolean neoforge = contains("neoforge")
 var final boolean sponge   = contains("sponge")
 var final boolean paper    = contains("paper")
+var final boolean velocity = contains("velocity")
 var final boolean quilt    = contains("quilt")
 var final boolean fabric   = !neoforge && !sponge && !paper && !quilt
 
@@ -157,7 +158,9 @@ if (neoforge) {
 
 dependencies {
     // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
+    if ("dev_mappings" !in project.getProperties() || project.getProperties().dev_mappings != "REMOVED")
+        minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
     final var append = obj -> (fabric) ? include(obj) : shadow(obj)
     final var mod = obj -> ("omit_mappings" !in project.getProperties()) ? modImplementation(obj) : implementation(obj)
@@ -187,6 +190,9 @@ dependencies {
         compileOnly "io.github.llamalad7:mixinextras-fabric:0.5.4"
     } else if (paper) {
         implementation ("omit_mappings" in project.getProperties() ? "io.papermc.paper:paper-api:${project.minecraft_version}.build.+" : "io.papermc.paper:paper-api:${project.minecraft_version}-R0.1-SNAPSHOT")
+    } else if (velocity) {
+        compileOnly         "com.velocitypowered:velocity-api:${project.velocity_version}"
+        annotationProcessor "com.velocitypowered:velocity-api:${project.velocity_version}"
     } else if (quilt) {
         implementation "net.fabricmc:sponge-mixin:0.17.3+mixin.0.8.7"
         implementation "io.github.llamalad7:mixinextras-fabric:0.5.4"
@@ -262,9 +268,11 @@ processResources {
 sourceSets {
     main {
         java { srcDir 'src/main/generated'   }
-        java { srcDir 'src/impl/java'        }
 
-        resources { srcDir 'src/impl/resources' }
+        var implName = "impl_name" in project.properties ? project.impl_name : "impl"
+
+        java      { srcDir "src/${implName}/java"      }
+        resources { srcDir "src/${implName}/resources" }
 
         if ('mixinless' !in project.properties) {
             java      { srcDir 'src/impl_mixins/java'      }
