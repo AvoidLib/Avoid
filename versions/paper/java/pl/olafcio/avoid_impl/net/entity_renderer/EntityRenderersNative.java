@@ -10,7 +10,6 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.net._3d.model.ModelPartNative;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
-import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.entity_renderer.Baker;
 import pl.olafcio.avoid.net.entity_renderer.LivingEntityRenderer;

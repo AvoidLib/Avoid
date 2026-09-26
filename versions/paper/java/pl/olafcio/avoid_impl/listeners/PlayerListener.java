@@ -24,7 +24,7 @@ import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.Util;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
-import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid_impl.net.chat.converter_kyori.COFromNative;
 import pl.olafcio.avoid_impl.net.chat.converter_kyori.COToNative;
 import pl.olafcio.avoid.net.chat_server.event.ServerChatReceivedEvent;
@@ -34,15 +34,15 @@ import pl.olafcio.avoid.net.entity_server.event.ServerEntityStruckByBoltEvent;
 import pl.olafcio.avoid.net.entity_server.event.llama.ServerLlamaSpitEvent;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
-import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
+import pl.olafcio.avoid_impl.net.player.gamemode.GameModeNative;
 import pl.olafcio.avoid.net.player_server.PlayerInput;
 import pl.olafcio.avoid.net.player_server.event.*;
 import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepFailEvent;
 import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepStopEvent;
 import pl.olafcio.avoid.net.player_server.event.block.bed.ServerPlayerBedSleepSuccessEvent;
 import pl.olafcio.avoid.net.player_server.values.HandType;
-import pl.olafcio.avoid.net.player_server.values.HandTypeNative;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.player_server.values.HandTypeNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 public final class PlayerListener implements Listener {
     @EventHandler
