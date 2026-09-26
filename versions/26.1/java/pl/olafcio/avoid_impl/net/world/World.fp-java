@@ -1,6 +1,6 @@
 {
-    getDayTime()
-    getDefaultClockTime()
+    .getDayTime()
+    .getDefaultClockTime()
 }
 
 {
