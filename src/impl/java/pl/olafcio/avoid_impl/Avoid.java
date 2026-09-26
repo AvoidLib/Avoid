@@ -6,8 +6,7 @@ import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.mods.events_loader.AllModsEnabledEvent;
 import pl.olafcio.avoid.mods.events_loader.AllModsLoadedEvent;
 import pl.olafcio.avoid.mods.events_loader.AllModsLoadingEvent;
-import pl.olafcio.avoid.net.block.values.NoteBlockInstrument;
-import pl.olafcio.avoid_common.LateInitializer;
+import pl.olafcio.avoid_impl.net.block.values.NoteBlockInstrumentNative;
 import pl.olafcio.avoid_impl.mods.loader.ModLoad;
 
 import java.io.IOException;
@@ -32,7 +31,7 @@ public class Avoid {
         } catch (ClassNotFoundException ignored) {
         }
 
-        NoteBlockInstrument.clinit();
+        NoteBlockInstrumentNative.clinit();
         EventManager.fire(new AllModsLoadedEvent());
 
         pl.olafcio.avoid.Avoid.INSTANCE.Realize();

@@ -51,4 +51,5 @@ public final class Fluids {
         for (FluidState fluidState : flowing.getStateDefinition().getPossibleStates()) {
             net.minecraft.world.level.material.Fluid.FLUID_STATE_REGISTRY.add(fluidState);
         }
-    }}
+    }
+}

@@ -1,8 +1,9 @@
-package pl.olafcio.avoid.net.item.values;
+package pl.olafcio.avoid_impl.net.item.values;
 
 import net.minecraft.world.InteractionResult;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.net.item.values.UseStatus;
 
 @ApiStatus.Internal
 @Native

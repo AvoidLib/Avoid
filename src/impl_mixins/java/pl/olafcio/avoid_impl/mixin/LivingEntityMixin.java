@@ -32,8 +32,8 @@ import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity.event.ClientEntityCreateEvent;
 import pl.olafcio.avoid_impl.net.entity.values.DamageNative;
 import pl.olafcio.avoid.net.entity_server.event.*;
-import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
-import pl.olafcio.avoid.net.item.stack.ItemStackNative;
+import pl.olafcio.avoid_impl.net.entity_type.EntityTypeNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
 
 import java.util.Map;
 

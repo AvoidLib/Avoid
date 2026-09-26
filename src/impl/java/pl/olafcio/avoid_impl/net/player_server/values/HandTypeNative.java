@@ -1,8 +1,9 @@
-package pl.olafcio.avoid.net.player_server.values;
+package pl.olafcio.avoid_impl.net.player_server.values;
 
 import net.minecraft.world.InteractionHand;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.net.player_server.values.HandType;
 
 @Native
 @ApiStatus.Internal

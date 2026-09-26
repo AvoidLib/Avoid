@@ -16,7 +16,7 @@ import pl.olafcio.avoid.net.entity_renderer.EntityRenderer;
 import pl.olafcio.avoid.net.entity_renderer.LivingEntityRenderer;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
-import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
+import pl.olafcio.avoid_impl.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 
 import java.util.function.Function;

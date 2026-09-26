@@ -18,9 +18,9 @@ import pl.olafcio.avoid_impl.net.screen.AvoidScreen;
 import pl.olafcio.avoid_impl.net.screen.NativeScreenNative;
 import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.screen.font.Font;
-import pl.olafcio.avoid.net.screen.font.FontNative;
+import pl.olafcio.avoid_impl.net.font.FontNative;
 import pl.olafcio.avoid.net.world.World;
-import pl.olafcio.avoid.net.world.WorldNative;
+import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 @Native
 @Environment(EnvType.CLIENT)

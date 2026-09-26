@@ -21,9 +21,9 @@ import pl.olafcio.avoid.net.chat.component.event.Click;
 import pl.olafcio.avoid.net.chat.component.event.Hover;
 import pl.olafcio.avoid.net.chat.component.type.*;
 import pl.olafcio.avoid.net.chat.component.type.TextComponent;
-import pl.olafcio.avoid.net.entity_type.EntityTypeNative;
+import pl.olafcio.avoid_impl.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
-import pl.olafcio.avoid.net.item.stack.ItemStackNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
 import pl.olafcio.avoid.net.nbt.NbtNative;
 
 import java.awt.*;

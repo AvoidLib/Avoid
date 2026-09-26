@@ -10,10 +10,6 @@ public final class FluidStateAccessor {
     @ApiStatus.Internal
     private FluidStateAccessor() {}
 
-    public static net.minecraft.world.level.material.FluidState convert(FluidState state) {
-        return state.state;
-    }
-
     public static void setFluid(Fluid fluid, net.minecraft.world.level.material.Fluid value) {
         fluid.fluid = value;
     }

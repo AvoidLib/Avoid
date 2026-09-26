@@ -5,7 +5,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
-import pl.olafcio.avoid.net.player.gamemode.GameModeNative;
+import pl.olafcio.avoid_impl.net.player.gamemode.GameModeNative;
 
 // TODO Implement setters for final properties
 @ApiStatus.Experimental

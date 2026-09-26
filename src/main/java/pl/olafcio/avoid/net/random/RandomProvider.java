@@ -3,74 +3,43 @@ package pl.olafcio.avoid.net.random;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.NonExtendable
-public final class RandomProvider extends pl.olafcio.avoid.net.block.random.RandomProvider {
-    @ApiStatus.Internal
-    public RandomProvider(Object source) {
-        super(source);
-    }
+public abstract class RandomProvider extends pl.olafcio.avoid.net.block.random.RandomProvider {
+    @Override
+    public abstract void setSeed(long l);
 
     @Override
-    public void setSeed(long l) {
-        super.setSeed(l);
-    }
+    public abstract int nextInt();
 
     @Override
-    public int nextInt() {
-        return super.nextInt();
-    }
+    public abstract int nextInt(int i);
 
     @Override
-    public int nextInt(int i) {
-        return super.nextInt(i);
-    }
+    public abstract int nextIntBetweenInclusive(int i, int j);
 
     @Override
-    public int nextIntBetweenInclusive(int i, int j) {
-        return super.nextIntBetweenInclusive(i, j);
-    }
+    public abstract long nextLong();
 
     @Override
-    public long nextLong() {
-        return super.nextLong();
-    }
+    public abstract boolean nextBoolean();
 
     @Override
-    public boolean nextBoolean() {
-        return super.nextBoolean();
-    }
+    public abstract float nextFloat();
 
     @Override
-    public float nextFloat() {
-        return super.nextFloat();
-    }
+    public abstract double nextDouble();
 
     @Override
-    public double nextDouble() {
-        return super.nextDouble();
-    }
+    public abstract double nextGaussian();
 
     @Override
-    public double nextGaussian() {
-        return super.nextGaussian();
-    }
+    public abstract double triangle(double d, double e);
 
     @Override
-    public double triangle(double d, double e) {
-        return super.triangle(d, e);
-    }
+    public abstract float triangle(float f, float g);
 
     @Override
-    public float triangle(float f, float g) {
-        return super.triangle(f, g);
-    }
+    public abstract void consumeCount(int i);
 
     @Override
-    public void consumeCount(int i) {
-        super.consumeCount(i);
-    }
-
-    @Override
-    public int nextInt(int i, int j) {
-        return super.nextInt(i, j);
-    }
+    public abstract int nextInt(int i, int j);
 }

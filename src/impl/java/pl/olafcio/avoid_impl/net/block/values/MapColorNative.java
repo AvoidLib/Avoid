@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.block.values;
+package pl.olafcio.avoid_impl.net.block.values;
 
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.ApiStatus;

@@ -6,7 +6,7 @@ import pl.olafcio.avoid.net.entity.type.base.annotations.AutoEntityAttach;
 import pl.olafcio.avoid.net.entity.type.base.annotations.id.Namespace;
 import pl.olafcio.avoid.net.entity.type.base.annotations.id.Value;
 import pl.olafcio.avoid.net.entity.values.EnderDragonPhase;
-import pl.olafcio.avoid.net.entity.values.EnderDragonPhaseNative;
+import pl.olafcio.avoid_impl.net.entity.values.EnderDragonPhaseNative;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 

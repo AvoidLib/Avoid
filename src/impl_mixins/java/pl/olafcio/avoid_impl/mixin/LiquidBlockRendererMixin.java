@@ -19,12 +19,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid_impl.mixinclass.FluidModels;
-import pl.olafcio.avoid.net.block.pos.BlockPosNative;
+import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.fluid.*;
 import pl.olafcio.avoid.net.fluid.properties._model;
-import pl.olafcio.avoid.net.world.block_data.BlockDataNative;
+import pl.olafcio.avoid_impl.net.world.block_data.BlockDataNative;
 import pl.olafcio.avoid_impl.net.fluid.AvoidFluid;
 import pl.olafcio.avoid_impl.net.fluid.FluidNative;
+import pl.olafcio.avoid_impl.net.fluid.FluidStateNative;
 import pl.olafcio.avoid_impl.net.fluid.FluidsNative;
 
 import java.util.HashMap;

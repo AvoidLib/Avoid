@@ -1,5 +1,6 @@
 package pl.olafcio.avoid.net.player.gamemode;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 
@@ -10,8 +11,8 @@ public enum GameMode {
     ADVENTURE(2, "adventure"),
     SPECTATOR(3, "spectator");
 
-    final int index;
-    final String name;
+    private final int index;
+    private final String name;
 
     GameMode(int index, String name) {
         this.index = index;
@@ -30,5 +31,15 @@ public enum GameMode {
             return GameMode.SPECTATOR;
         else
             return null;
+    }
+
+    @ApiStatus.Experimental
+    public int getIndex() {
+        return index;
+    }
+
+    @ApiStatus.Experimental
+    public String getName() {
+        return name;
     }
 }
