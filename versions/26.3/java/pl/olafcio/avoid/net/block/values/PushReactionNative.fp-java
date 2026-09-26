@@ -1,0 +1,24 @@
+{
+    net.minecraft.world.level.material.PushReaction.NORMAL
+    net.minecraft.world.level.material.PushReaction.PUSH_PULL
+}
+
+{
+    net.minecraft.world.level.material.PushReaction.DESTROY
+    net.minecraft.world.level.material.PushReaction.POPPED
+}
+
+{
+    net.minecraft.world.level.material.PushReaction.BLOCK
+    net.minecraft.world.level.material.PushReaction.IMMOVEABLE
+}
+
+{
+    net.minecraft.world.level.material.PushReaction.IGNORE
+    net.minecraft.world.level.material.PushReaction.IGNORE_ENTITY
+}
+
+{
+    net.minecraft.world.level.material.PushReaction.PUSH_ONLY
+    net.minecraft.world.level.material.PushReaction.PUSH
+}
