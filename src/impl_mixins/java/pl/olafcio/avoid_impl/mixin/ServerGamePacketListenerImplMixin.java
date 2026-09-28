@@ -6,6 +6,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import net.minecraft.network.Connection;
 import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ServerboundCommandSuggestionPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +18,8 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
 import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
@@ -26,11 +29,12 @@ import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.player_server.event.ServerPlayerKickEvent;
 import pl.olafcio.avoid.net.player_server.event.ServerPlayerUpdateAbilitiesEvent;
 import pl.olafcio.avoid_common.Either;
+import pl.olafcio.avoid_impl.net.payload.AvoidPayload;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-@Mixin(ServerGamePacketListenerImpl.class)
+@Mixin(value = ServerGamePacketListenerImpl.class, priority = 900)
 public abstract class ServerGamePacketListenerImplMixin extends ServerCommonPacketListenerImpl {
     @Shadow
     public abstract ServerPlayer getPlayer();
@@ -101,5 +105,13 @@ public abstract class ServerGamePacketListenerImplMixin extends ServerCommonPack
 
             consumer.accept(x);
         }));
+    }
+
+    @Inject(at = @At("HEAD"), method = "handleCustomPayload", cancellable = true)
+    public void handleCustomPayload(ServerboundCustomPayloadPacket serverboundCustomPayloadPacket, CallbackInfo ci) {
+        if (serverboundCustomPayloadPacket.payload() instanceof AvoidPayload.Payload payload) {
+            ci.cancel();  // Cancelling so that Fabric doesn't kick for invalid packet
+            payload.payload.acceptServer();
+        }
     }
 }
