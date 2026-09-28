@@ -1,0 +1,44 @@
+package pl.olafcio.avoid.platform;
+
+import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.Discouraged;
+
+@ApiStatus.Experimental
+@Discouraged(reason = "This might be changed to be an interface or abstract class")
+public record PlatformDependency(String modId, PlatformDependency.Type type) {
+    private sealed interface Type {}
+
+    public enum Hard implements Type {
+        /**
+         * Indicates the mod is incompatible with this dependency.
+         */
+        INCOMPATIBLE,
+
+        /**
+         * Indicates the mod requires this dependency.
+         */
+        REQUIRES,
+
+        /**
+         * Indicates the mod recommends installing this dependency.
+         */
+        RECOMMENDS
+    }
+
+    public enum Soft implements Type {
+        /**
+         * Indicates the mod doesn't recommend being used with this dependency.
+         */
+        INCOMPATIBLE,
+
+        /**
+         * Indicates the mod recommends being used with this dependency.
+         */
+        RECOMMENDS,
+
+        /**
+         * Indicates the mod provides functionality and API of another mod.
+         */
+        PROVIDES
+    }
+}
