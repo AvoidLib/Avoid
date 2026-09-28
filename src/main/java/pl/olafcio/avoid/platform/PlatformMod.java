@@ -3,6 +3,7 @@ package pl.olafcio.avoid.platform;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.annotations.refactor.Discouraged;
+import pl.olafcio.avoid.mods.ModEnvironment;
 
 import java.util.List;
 import java.util.Set;
@@ -18,7 +19,7 @@ public record PlatformMod(
         PlatformContact contact,
         Set<String> licenses,
         String version,
-        RunningEnv environment,
+        ModEnvironment environment,
         List<PlatformDependency> dependencies,
         PlatformMod.Type type
 ) {
