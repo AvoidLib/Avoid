@@ -7,7 +7,6 @@ import net.fabricmc.loader.api.metadata.ModDependency;
 import net.fabricmc.loader.api.metadata.ModEnvironment;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.RunningEnv;
-import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 import pl.olafcio.avoid.platform.PlatformContributor;
 import pl.olafcio.avoid.platform.PlatformContact;
 import pl.olafcio.avoid.platform.PlatformDependency;
@@ -67,13 +66,15 @@ public final class AvoidWrappedLoader {
                         dependency.getKind() == ModDependency.Kind.DEPENDS    ? PlatformDependency.Hard.REQUIRES     :
                         dependency.getKind() == ModDependency.Kind.RECOMMENDS ? PlatformDependency.Hard.RECOMMENDS   :
                         dependency.getKind() == ModDependency.Kind.SUGGESTS   ? PlatformDependency.Soft.RECOMMENDS   :
-                                                                                null
+                                                                                null,
+                        PlatformDependency.LoadOrder.BEFORE_MOD
                 ));
 
             for (var id : meta.getProvides())
                 dependencies.add(new PlatformDependency(
                         id,
-                        PlatformDependency.Soft.PROVIDES
+                        PlatformDependency.Soft.PROVIDES,
+                        PlatformDependency.LoadOrder.BEFORE_MOD
                 ));
 
             return new PlatformMod(

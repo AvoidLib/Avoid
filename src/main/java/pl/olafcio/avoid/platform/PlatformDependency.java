@@ -5,7 +5,13 @@ import pl.olafcio.avoid.annotations.refactor.Discouraged;
 
 @ApiStatus.Experimental
 @Discouraged(reason = "This might be changed to be an interface or abstract class")
-public record PlatformDependency(String modId, PlatformDependency.Type type) {
+public record PlatformDependency(String modId, PlatformDependency.Type type, LoadOrder loadOrder) {
+    public enum LoadOrder {
+        BEFORE_MOD,
+        AFTER_MOD,
+        UNDEFINED
+    }
+
     private sealed interface Type {}
 
     public enum Hard implements Type {
