@@ -5,7 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import org.intellij.lang.annotations.MagicConstant;
 import pl.olafcio.avoid.net._3d.model.ModelPart;
-import pl.olafcio.avoid.net._3d.model.ModelPartNative;
+import pl.olafcio.avoid_impl.net._3d.model.ModelPartNative;
 import pl.olafcio.avoid.net.entity_layer.Element;
 import pl.olafcio.avoid.net.entity_layer.LayerSupplier;
 import pl.olafcio.avoid.net.entity_renderer.Baker;

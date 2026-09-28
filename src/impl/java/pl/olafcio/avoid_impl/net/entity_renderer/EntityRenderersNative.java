@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
-import pl.olafcio.avoid.net._3d.model.ModelPartNative;
+import pl.olafcio.avoid_impl.net._3d.model.ModelPartNative;
 import pl.olafcio.avoid.net.entity_renderer.Baker;
 import pl.olafcio.avoid.net.entity_renderer.EntityModelAccessor;
 import pl.olafcio.avoid.net.entity_renderer.EntityRenderer;

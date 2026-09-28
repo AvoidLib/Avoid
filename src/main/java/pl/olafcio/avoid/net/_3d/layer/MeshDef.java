@@ -1,25 +1,16 @@
 package pl.olafcio.avoid.net._3d.layer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.IncompatibleChange;
 
-@Environment(EnvType.CLIENT)
+@IncompatibleChange(since = "v1.27", change = "Changed to an interface",
+                    reason = "Implementation separation + eliminating potential environmental issues")
+@ApiStatus.NonExtendable
 @ApiStatus.Experimental
-public class MeshDef extends PartDef {
-    private final MeshDefinition mesh;
+public interface MeshDef extends PartDef {
+    @Override
+    public abstract PartDef addChild(String name, CubeList child, PartTransform transform);
 
-    public MeshDef() {
-        this(new MeshDefinition());
-    }
-
-    private MeshDef(MeshDefinition mesh) {
-        super(mesh.getRoot());
-        this.mesh = mesh;
-    }
-
-    MeshDefinition getMinecraft() {
-        return this.mesh;
-    }
+    @Override
+    public abstract PartDef clearChild(String name);
 }

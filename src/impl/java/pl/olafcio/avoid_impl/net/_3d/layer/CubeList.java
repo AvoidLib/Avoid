@@ -1,0 +1,100 @@
+package pl.olafcio.avoid_impl.net._3d.layer;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.model.geom.builders.CubeDefinition;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.core.Direction;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
+@Environment(EnvType.CLIENT)
+public class CubeList implements pl.olafcio.avoid.net._3d.layer.CubeList {
+    private static final Set<Direction> ALL_VISIBLE = EnumSet.allOf(Direction.class);
+    private final List<CubeDefinition> cubes = Lists.newArrayList();
+    private int xTexOffs;
+    private int yTexOffs;
+    private boolean mirror;
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList texOffs(int i, int j) {
+        this.xTexOffs = i;
+        this.yTexOffs = j;
+        return this;
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList mirror() {
+        return this.mirror(true);
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList mirror(boolean bl) {
+        this.mirror = bl;
+        return this;
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList addBox(String string, float f, float g, float h, int i, int j, int k, CubeDeformation cubeDeformation, int l, int m) {
+        this.texOffs(l, m);
+        this.cubes.add(new CubeDefinition(string, this.xTexOffs, this.yTexOffs, f, g, h, i, j, k, cubeDeformation, this.mirror, 1.0f, 1.0f, ALL_VISIBLE));
+        return this;
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList addBox(String string, float f, float g, float h, int i, int j, int k, int l, int m) {
+        this.texOffs(l, m);
+        this.cubes.add(new CubeDefinition(string, this.xTexOffs, this.yTexOffs, f, g, h, i, j, k, CubeDeformation.NONE, this.mirror, 1.0f, 1.0f, ALL_VISIBLE));
+        return this;
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList addBox(float f, float g, float h, float i, float j, float k) {
+        this.cubes.add(new CubeDefinition(null, this.xTexOffs, this.yTexOffs, f, g, h, i, j, k, CubeDeformation.NONE, this.mirror, 1.0f, 1.0f, ALL_VISIBLE));
+        return this;
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList addBox(float f, float g, float h, float i, float j, float k, Set<Direction> set) {
+        this.cubes.add(new CubeDefinition(null, this.xTexOffs, this.yTexOffs, f, g, h, i, j, k, CubeDeformation.NONE, this.mirror, 1.0f, 1.0f, set));
+        return this;
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList addBox(String string, float f, float g, float h, float i, float j, float k) {
+        this.cubes.add(new CubeDefinition(string, this.xTexOffs, this.yTexOffs, f, g, h, i, j, k, CubeDeformation.NONE, this.mirror, 1.0f, 1.0f, ALL_VISIBLE));
+        return this;
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList addBox(String string, float f, float g, float h, float i, float j, float k, CubeDeformation cubeDeformation) {
+        this.cubes.add(new CubeDefinition(string, this.xTexOffs, this.yTexOffs, f, g, h, i, j, k, cubeDeformation, this.mirror, 1.0f, 1.0f, ALL_VISIBLE));
+        return this;
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList addBox(float f, float g, float h, float i, float j, float k, boolean bl) {
+        this.cubes.add(new CubeDefinition(null, this.xTexOffs, this.yTexOffs, f, g, h, i, j, k, CubeDeformation.NONE, bl, 1.0f, 1.0f, ALL_VISIBLE));
+        return this;
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList addBox(float f, float g, float h, float i, float j, float k, CubeDeformation cubeDeformation, float l, float m) {
+        this.cubes.add(new CubeDefinition(null, this.xTexOffs, this.yTexOffs, f, g, h, i, j, k, cubeDeformation, this.mirror, l, m, ALL_VISIBLE));
+        return this;
+    }
+
+    @Override
+    public pl.olafcio.avoid.net._3d.layer.CubeList addBox(float f, float g, float h, float i, float j, float k, CubeDeformation cubeDeformation) {
+        this.cubes.add(new CubeDefinition(null, this.xTexOffs, this.yTexOffs, f, g, h, i, j, k, cubeDeformation, this.mirror, 1.0f, 1.0f, ALL_VISIBLE));
+        return this;
+    }
+
+    List<CubeDefinition> build() {
+        return ImmutableList.copyOf(this.cubes);
+    }
+}

@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net._3d.layer._native;
+package pl.olafcio.avoid_impl.net._3d.layer._native;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

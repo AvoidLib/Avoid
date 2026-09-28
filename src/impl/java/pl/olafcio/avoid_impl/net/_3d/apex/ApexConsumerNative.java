@@ -1,10 +1,11 @@
-package pl.olafcio.avoid.net._3d.apex;
+package pl.olafcio.avoid_impl.net._3d.apex;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.net._3d.apex.ApexConsumer;
 
 @Native
 @Environment(EnvType.CLIENT)

@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import pl.olafcio.avoid.net.entity_layer.EntityLayersNative;
+import pl.olafcio.avoid_impl.net._3d.layer.LayerDef;
 import pl.olafcio.avoid_impl.net.entity_renderer.BakerNative;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 
@@ -40,7 +41,7 @@ public class LayerDefinitionsMixin {
             BakerNative.LOCATIONS.put(layer.supplier().getClass(), loc);
             BakerNative.LOCATIONS.put(layer.id() + "#" + layer.element(), loc);
 
-            instance.put(loc, layer.supplier().make().getMinecraft());
+            instance.put(loc, ((LayerDef) layer.supplier().make()).getMinecraft());
         }
 
         return original.call(instance);
