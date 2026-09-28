@@ -89,7 +89,7 @@ public abstract class Entity {
 
     public Entity(
             int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name,
-            net.minecraft.world.entity.Entity underlyingEntity
+            Object underlyingEntity
     ) {
         this.id = id;
         this.type = type;
@@ -98,7 +98,14 @@ public abstract class Entity {
         this.uuid = uuid;
         this.uuidString = uuid.toString();
         this.name = name;
-        this.underlyingEntity = underlyingEntity;
+        this.underlyingEntity = (net.minecraft.world.entity.Entity) underlyingEntity;
+    }
+
+    public Entity(
+            int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name,
+            net.minecraft.world.entity.Entity underlyingEntity
+    ) {
+        this(id, type, position, velocity, uuid, name, (Object)underlyingEntity);
     }
 
     @Override
