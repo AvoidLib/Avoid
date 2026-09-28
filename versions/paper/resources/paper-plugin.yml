@@ -2,13 +2,13 @@ name: AvoidLib
 description: "Yet another library for everything Minecraft. Kinda like Bukkit."
 version: "${version}"
 
-main: pl.olafcio.avoid.A4Paper
+main: pl.olafcio.avoid_impl.A4Paper
 api-version: '${minecraft_version}'
 load: STARTUP
 
 authors: [ Olafcio ]
 website: https://github.com/AvoidLib/Avoid/wiki/
-bootstrapper: pl.olafcio.avoid.PaperBootstrap
+bootstrapper: pl.olafcio.avoid_impl.PaperBootstrap
 
 dependencies:
   server:

@@ -28,6 +28,7 @@ public record PlatformMod(
         FABRIC,
         SPONGE,
         NEOFORGE,
+        PAPER,
         CUSTOM
     }
 }
