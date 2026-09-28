@@ -77,15 +77,15 @@ public final class AvoidWrappedLoader {
                     meta.id(),
                     meta.name().orElseThrow(),
                     meta.description().orElseThrow(),
-                    null,
+                    new PlatformContributor[0],
                     meta.contributors().stream()
                             .map(person -> new PlatformContributor(
                                                                 person.name(),
-                                                                null
+                                                                new PlatformContact(Map.of())
                                                            )
                             )
                             .toArray(PlatformContributor[]::new),
-                    null,
+                    new PlatformContact(Map.of()),
                     meta.license().isPresent() ? Set.of(meta.license().orElseThrow()) : Set.of(),
                     meta.version().getQualifier(),
                     ModEnvironment.ALL,
