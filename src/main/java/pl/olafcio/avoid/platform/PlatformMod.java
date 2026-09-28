@@ -27,6 +27,7 @@ public record PlatformMod(
         BUILTIN,
         FABRIC,
         SPONGE,
+        NEOFORGE,
         CUSTOM
     }
 }
