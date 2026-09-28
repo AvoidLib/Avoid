@@ -52,7 +52,7 @@ import java.util.jar.JarFile;
 @ApiStatus.Internal
 public final class ModLoad
              implements LXItem, LXScreenOverwrite, LXScreenModifier, LXCommand, LXSelector, LXEntity, LXFluid, LXFog, LXEffect,
-                        LXKeyHandler
+                        LXKeyHandler, LXCustomPayload
 {
     @ApiStatus.Internal
     private static final Gson GSON
@@ -303,6 +303,9 @@ public final class ModLoad
                 continue;
 
             if (registerAutoEntity(id, klass, className, usedAutoID))
+                continue;
+
+            if (registerAutoCustomPayload(id, klass, className, usedAutoID))
                 continue;
 
             if (registerAutoEffect(id, klass, className, usedAutoID))
