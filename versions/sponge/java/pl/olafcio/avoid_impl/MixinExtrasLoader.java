@@ -1,4 +1,4 @@
-package pl.olafcio.avoid;
+package pl.olafcio.avoid_impl;
 
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 

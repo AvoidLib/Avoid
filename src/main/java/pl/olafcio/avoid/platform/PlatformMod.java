@@ -26,6 +26,7 @@ public record PlatformMod(
     public enum Type {
         BUILTIN,
         FABRIC,
+        SPONGE,
         CUSTOM
     }
 }

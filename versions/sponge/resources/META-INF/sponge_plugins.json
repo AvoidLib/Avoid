@@ -9,7 +9,7 @@
       "id": "avoidlib",
       "name": "Avoid",
       "version": "${version}",
-      "entrypoint": "pl.olafcio.avoid.A4Sponge",
+      "entrypoint": "pl.olafcio.avoid_impl.A4Sponge",
       "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
       "links": {
         "homepage": "https://github.com/AvoidLib/Avoid/wiki",
