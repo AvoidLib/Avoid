@@ -153,6 +153,8 @@ if (neoforge) {
 } else if (paper) {
     replaceEnvAnnot("pl.olafcio.avoid.annotations.dist.OnlyIn", "pl.olafcio.avoid.annotations.dist.Dist")
     reflectionizeMixinAccessors()
+} else if (sponge) {
+    replaceEnvAnnot("pl.olafcio.avoid.annotations.dist.OnlyIn", "pl.olafcio.avoid.annotations.dist.Dist")
 }
 
 dependencies {
