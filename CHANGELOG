@@ -15,10 +15,14 @@
 - Paper
 
 **🪵 Changelog:**
-- Fix entity type generator file disabling
-- Fix JarManager for external invocations
-- Implementation separation
-- MC 26.4 compatibility
+- AvoidWrappedLoader#getMods()
+- Custom Payload API
+- [ModLoader] @AutoCustomPayload annotation
+- [3D] Refactor
+- Animation utilities (Maths)
+- Coloring parameter renames
+- [ModLoader] Signature checking
+- [Client] Window Title Update Event
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
