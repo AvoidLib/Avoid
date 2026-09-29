@@ -9,6 +9,7 @@ import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.random.RandomProvider;
 import pl.olafcio.avoid.net.random.RandomProviderNative;
 import pl.olafcio.avoid.net.world.World;
+import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net.world.WorldNative;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 
@@ -78,6 +79,6 @@ public final class BlockData extends pl.olafcio.avoid.net.world.block_data.Block
 
     @Override
     public boolean isFaceSturdy(World world, BlockPos blockPos, Direction direction) {
-        return state.isFaceSturdy(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), net.minecraft.core.Direction.valueOf(direction.name()));
+        return state.isFaceSturdy(WorldNative.convert(world), BlockPosNative.convertFrom(blockPos), DirectionNative.convertFrom(direction));
     }
 }

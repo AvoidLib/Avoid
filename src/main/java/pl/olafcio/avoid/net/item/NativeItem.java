@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
+import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.item.stack.ItemStack;
@@ -49,7 +50,7 @@ public final class NativeItem extends Item {
                         plr,
                         HandTypeNative.convertFrom(handType),
                         ItemStackNative.convert(itemStack),
-                        new BlockHitResult(plr.position(), net.minecraft.core.Direction.valueOf(direction.name()), BlockPosNative.convertFrom(blockPos), true)
+                        new BlockHitResult(plr.position(), DirectionNative.convertFrom(direction), BlockPosNative.convertFrom(blockPos), true)
                     )
             );
         }

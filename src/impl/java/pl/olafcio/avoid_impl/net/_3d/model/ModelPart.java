@@ -9,6 +9,7 @@ import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net._3d.apex.ApexConsumer;
 import pl.olafcio.avoid.net._3d.layer.PartTransform;
 import pl.olafcio.avoid.net._3d.stack.MatrixStack;
+import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net._3d.stack.MatrixStackNative;
 import pl.olafcio.avoid.net.random.RandomProvider;
 import pl.olafcio.avoid.net.random.RandomProviderNative;
@@ -167,7 +168,7 @@ public class ModelPart implements pl.olafcio.avoid.net._3d.model.ModelPart {
                     revpadX, revpadY, revpadZ,
                     swapX,
                     q, r,
-                    set.stream().map(d -> net.minecraft.core.Direction.valueOf(d.name())).collect(Collectors.toSet())
+                    set.stream().map(d -> DirectionNative.convertFrom(d)).collect(Collectors.toSet())
             );
         }
 
@@ -187,7 +188,7 @@ public class ModelPart implements pl.olafcio.avoid.net._3d.model.ModelPart {
                             apex.u(), apex.v()
                     )).toArray(net.minecraft.client.model.geom.ModelPart.Vertex[]::new),
                     f, g, h, i, j, k, bl,
-                    net.minecraft.core.Direction.valueOf(direction.name())
+                    DirectionNative.convertFrom(direction)
             );
         }
     }

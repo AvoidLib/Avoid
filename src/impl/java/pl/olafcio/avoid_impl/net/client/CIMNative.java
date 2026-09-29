@@ -10,6 +10,7 @@ import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
+import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
@@ -64,14 +65,14 @@ public final class CIMNative {
     public static void startDestroyBlock(BlockPos blockPos, Direction direction) {
         Minecraft.getInstance().gameMode.startDestroyBlock(
                 BlockPosNative.convertFrom(blockPos),
-                net.minecraft.core.Direction.valueOf(direction.name())
+                DirectionNative.convertFrom(direction)
         );
     }
 
     public static void continueDestroyBlock(BlockPos blockPos, Direction direction) {
         Minecraft.getInstance().gameMode.continueDestroyBlock(
                 BlockPosNative.convertFrom(blockPos),
-                net.minecraft.core.Direction.valueOf(direction.name())
+                DirectionNative.convertFrom(direction)
         );
     }
 
@@ -96,7 +97,7 @@ public final class CIMNative {
         Minecraft.getInstance().gameMode.useItemOn(
                 Minecraft.getInstance().player,
                 HandTypeNative.convertFrom(hand),
-                new BlockHitResult(isMiss, Vec3.atBottomCenterOf(pos), net.minecraft.core.Direction.valueOf(direction.name()), pos, isInside, isWorldBorder)
+                new BlockHitResult(isMiss, Vec3.atBottomCenterOf(pos), DirectionNative.convertFrom(direction), pos, isInside, isWorldBorder)
         );
     }
 }

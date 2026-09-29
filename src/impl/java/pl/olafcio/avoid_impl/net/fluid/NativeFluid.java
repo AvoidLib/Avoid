@@ -14,6 +14,7 @@ import pl.olafcio.avoid_impl.mixin.accessors.IFlowingFluid;
 import pl.olafcio.avoid_impl.mixin.accessors.IFluid;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
+import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.random.RandomProvider;
 import pl.olafcio.avoid.net.random.RandomProviderNative;
@@ -154,7 +155,7 @@ public final class NativeFluid extends Fluid {
                 WorldNative.convert(world),
                 BlockPosNative.convertFrom(blockPos),
                 getFluid(fluid),
-                net.minecraft.core.Direction.valueOf(direction.name())
+                DirectionNative.convertFrom(direction)
         );
     }
 

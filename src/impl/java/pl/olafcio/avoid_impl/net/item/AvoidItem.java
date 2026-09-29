@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import pl.olafcio.avoid.net._3d.Direction;
+import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.item.Item;
 import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
@@ -64,7 +64,7 @@ public class AvoidItem extends net.minecraft.world.item.Item {
                 HandTypeNative.convert(useOnContext.getHand()),
                 ItemStackNative.convertFrom(useOnContext.getItemInHand()),
                 BlockPosNative.convert(useOnContext.getClickedPos()),
-                Direction.valueOf(useOnContext.getHorizontalDirection().name())
+                DirectionNative.convert(useOnContext.getHorizontalDirection())
         );
 
         if (ret == null)

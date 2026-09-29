@@ -20,6 +20,7 @@ import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.UnknownNullability;
 import org.jspecify.annotations.NullMarked;
+import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.fluid.FluidStateAccessor;
 import pl.olafcio.avoid.net.random.RandomProviderNative;
@@ -146,7 +147,7 @@ public abstract sealed class AvoidFluid extends FlowingFluid {
                 WorldNative.make((Level) blockGetter),
                 BlockPosNative.convert(blockPos),
                 new NativeFluid(fluid),
-                pl.olafcio.avoid.net._3d.Direction.valueOf(direction.name())
+                DirectionNative.convert(direction)
         );
     }
 
