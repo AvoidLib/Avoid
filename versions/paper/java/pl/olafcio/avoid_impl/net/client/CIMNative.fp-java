@@ -1,4 +1,4 @@
 {
-    new BlockHitResult(isMiss, Vec3.atBottomCenterOf(pos), net.minecraft.core.Direction.valueOf(direction.name()), pos, isInside, isWorldBorder)
+    new BlockHitResult(isMiss, Vec3.atBottomCenterOf(pos), DirectionNative.convertFrom(direction), pos, isInside, isWorldBorder)
     null
 }

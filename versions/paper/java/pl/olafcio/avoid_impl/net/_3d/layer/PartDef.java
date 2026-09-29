@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net._3d.layer;
+package pl.olafcio.avoid_impl.net._3d.layer;
 
 import pl.olafcio.avoid.annotations.dist.Dist;
 import pl.olafcio.avoid.annotations.dist.OnlyIn;
@@ -14,7 +14,7 @@ import java.util.List;
 @OnlyIn(Dist.CLIENT)
 @ApiStatus.Experimental
 public class PartDef implements pl.olafcio.avoid.net._3d.layer.PartDef {
-    private final PartDefinition def;
+    final PartDefinition def;
 
     PartDef(PartDefinition def) {
         this.def = def;
