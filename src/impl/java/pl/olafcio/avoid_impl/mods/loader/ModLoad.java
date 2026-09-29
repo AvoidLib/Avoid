@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.Items;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import pl.olafcio.avoid.Avoid;
@@ -40,6 +41,7 @@ import java.net.URLClassLoader;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -73,6 +75,56 @@ public final class ModLoad
             var manifestFile = jar.getEntry("avoid.mod.json");
             if (manifestFile == null)
                 return;
+
+            var signaturesFile = jar.getEntry("avoid.signatures");
+            if (signaturesFile != null) {
+                final var signatures = new HashMap<String, String>();
+
+                try (var stream = jar.getInputStream(signaturesFile)) {
+                    var lines = new String(stream.readAllBytes(), StandardCharsets.UTF_8)
+                                                 .split("\n");
+
+                    for (var line : lines) {
+                        int slash = line.lastIndexOf('/');
+
+                        signatures.put(line.substring(0, slash), line.substring(slash + 1));
+                    }
+                }
+
+                var entries = jar.entries();
+
+                while (entries.hasMoreElements()) {
+                    var entry = entries.nextElement();
+                    var signature = signatures.get(entry.getName());
+
+                    if (signature != null) {
+                        String sha1;
+
+                        try (var stream = jar.getInputStream(entry)) {
+                            sha1 = DigestUtils.sha1Hex(stream);
+                        }
+
+                        if (!sha1.equals(signature)) {
+                            Avoid.LOGGER.error("""
+                                    
+                                    
+                                    
+                                    Mod '{}' has been tampered with!
+                                    Did you download from the original website (e.g. Modrinth)?
+                                    
+                                    [[ Fail Description ]]
+
+                                    > File: '{}'
+                                    > Signature: '{}' (expected '{}')
+                                    
+                                    
+                                    """, mod.toAbsolutePath(), entry.getName(), sha1, signature);
+
+                            throw new RuntimeException("Failed to verify Avoid mod signatures: %s".formatted(mod.toAbsolutePath()));
+                        }
+                    }
+                }
+            }
 
             byte[] manifestData = jar.getInputStream(manifestFile)
                     .readAllBytes();
