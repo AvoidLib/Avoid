@@ -319,7 +319,7 @@ jar {
 
     if (sponge) {
         manifest {
-            from 'src/impl/resources/META-INF/MANIFEST.MF'
+            from 'src/main/resources/META-INF/MANIFEST.MF'
         }
     }
 }

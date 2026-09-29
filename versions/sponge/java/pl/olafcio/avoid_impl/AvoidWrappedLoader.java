@@ -6,15 +6,11 @@ import org.spongepowered.plugin.PluginContainer;
 import org.spongepowered.plugin.metadata.model.PluginDependency;
 import pl.olafcio.avoid.mods.ModEnvironment;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
-import pl.olafcio.avoid.platform.PlatformContributor;
-import pl.olafcio.avoid.platform.PlatformDependency;
-import pl.olafcio.avoid.platform.PlatformMod;
+import pl.olafcio.avoid.platform.*;
+import pl.olafcio.avoid.RunningEnv;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -70,7 +66,7 @@ public final class AvoidWrappedLoader {
                         dependency.fatal()
                                 ? PlatformDependency.Hard.INCOMPATIBLE
                                 : PlatformDependency.Soft.INCOMPATIBLE,
-                        PluginDependency.LoadOrder.BEFORE_MOD
+                        PlatformDependency.LoadOrder.BEFORE_MOD
                 ));
 
             return new PlatformMod(
