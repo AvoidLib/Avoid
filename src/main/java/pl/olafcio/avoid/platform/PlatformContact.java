@@ -8,7 +8,7 @@ import pl.olafcio.avoid.annotations.refactor.Discouraged;
 import java.util.Map;
 
 /**
- * A mod/plugin contributor's contact information on the wrapped loader (the actual platform, e.g. Fabric/NeoForge/Paper).
+ * A mod/plugin or its contributor's contact information on the wrapped loader (the actual platform, e.g. Fabric/NeoForge/Paper).
  * @param map The property map of the contact information to wrap.
  */
 @ApiStatus.Experimental
