@@ -22,6 +22,7 @@ import pl.olafcio.avoid_impl.internal.VResourceKey;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
 import pl.olafcio.avoid.net.world.vect3.Vect3;
 import pl.olafcio.avoid_impl.AvoidInternal;
+import pl.olafcio.avoid.Avoid;
 
 import java.util.Objects;
 
@@ -60,7 +61,7 @@ public final class Util {
         for (var nskey : patchBukkit.getKeys()) {
             var comp = BuiltInRegistries.DATA_COMPONENT_TYPE.getValue(Identifier.fromNamespaceAndPath(nskey.namespace(), nskey.value()));
 
-            System.out.println("COMP: " + comp + " [" + nskey + "]");
+            Avoid.LOGGER.debug("COMP: " + comp + " [" + nskey + "]");
 //            patch.set(comp, patchBukkit.get(nskey, comp));
         }
 
