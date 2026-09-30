@@ -207,7 +207,8 @@ public final class CommandManager {
         return null;
     }
 
-    private static void each(Consumer<Command> callback) {
+    @ApiStatus.Internal
+    public static void each(Consumer<Command> callback) {
         frozen.set(true);
 
         var cmds = commands.keySet();
