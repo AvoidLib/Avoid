@@ -1,0 +1,12 @@
+{
+    instance.onEnable();
+
+    //== replacement ==//
+
+    var datapack = new pl.olafcio.avoid.net.datapack.pack.Datapack(id, name, description, pl.olafcio.avoid.net.datapack.pack.DatapackCompatibility.COMPATIBLE, mod);
+
+    datapack.load();
+    datapack.enable();
+
+    instance.onEnable();
+}
