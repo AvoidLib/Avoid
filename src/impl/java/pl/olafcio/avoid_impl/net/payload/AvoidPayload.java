@@ -22,8 +22,16 @@ public class AvoidPayload {
         this.STREAM_CODEC = CustomPacketPayload.codec(Payload::write, Payload::new);
     }
 
+    public Payload make(CustomPayload payload) {
+        return new Payload(payload);
+    }
+
     public class Payload implements CustomPacketPayload {
         public final CustomPayload payload;
+
+        private Payload(CustomPayload payload) {
+            this.payload = payload;
+        }
 
         private Payload(FriendlyByteBuf friendlyByteBuf) {
             payload = SUPPLIER.get();

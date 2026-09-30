@@ -1,6 +1,8 @@
 package pl.olafcio.avoid.net.player;
 
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
+import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -10,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.UnknownNullability;
+import pl.olafcio.avoid.net.payload.CustomPayload;
 import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.ImproperEnvironment;
@@ -32,6 +35,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.player.exception.UncontrollablePlayerException;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
+import pl.olafcio.avoid_impl.net.payload.Networking;
 import pl.olafcio.avoid_impl.net.player.gamemode.GameModeNative;
 import pl.olafcio.avoid.net.player.values.RespawnPoint;
 import pl.olafcio.avoid.net.player_server.ChatVisibility;
@@ -591,5 +595,14 @@ public class Player extends Entity implements Executor {
                          ? EntityNative.convertFrom(e)
                          : null
         );  //at:raycast
+    }
+
+    public void sendPacket(CustomPayload payload) {
+        if (underlyingEntity instanceof ServerPlayer)
+            __cast(ServerPlayer.class).connection.send(new ClientboundCustomPayloadPacket(Networking.map.get(payload.getClass()).make(payload)));
+        else if (underlyingEntity instanceof LocalPlayer)
+            __cast(ServerPlayer.class).connection.send(new ServerboundCustomPayloadPacket(Networking.map.get(payload.getClass()).make(payload)));
+        else
+            throw new UncontrollablePlayerException("[Player#sendPacket] Remote players can't be controlled from the client");
     }
 }

@@ -23,6 +23,9 @@ public final class Networking {
     public static ArrayList<CustomPacketPayload.TypeAndCodec<?, ?>> s2c
             = new ArrayList<>();
 
+    public static final HashMap<Class<? extends CustomPayload>, AvoidPayload> map
+                  = new HashMap<>();
+
     public static <T extends CustomPayload> void register(Identification id, Supplier<T> payload, Class<T> clazz) {
         if (
                 c2s == null ||
@@ -51,5 +54,7 @@ public final class Networking {
         } else /*if (side == PacketSide.S2C)*/ {
             s2c.add(registration);
         }
+
+        map.put(clazz, avoidpayload);
     }
 }
