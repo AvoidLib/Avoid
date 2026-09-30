@@ -33,7 +33,8 @@ public final class Properties {
     }
 
     public void setAllowFlight(boolean value) {
-        throw new RuntimeException("[Properties#setAllowFlight] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).allowFlight = value;
+        ((DedicatedServerProperties) object).getMutable("allow-flight", false).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public String getMOTD() {
@@ -41,7 +42,8 @@ public final class Properties {
     }
 
     public void setMOTD(String value) {
-        throw new RuntimeException("[Properties#setMOTD] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).motd = value;
+        ((DedicatedServerProperties) object).getMutable("motd", x -> x, "A Minecraft Server").update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public boolean getCodeOfConduct() {
@@ -57,7 +59,8 @@ public final class Properties {
     }
 
     public void setForceGameMode(boolean value) {
-        throw new RuntimeException("[Properties#setForceGameMode] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).forceGameMode = value;
+        ((DedicatedServerProperties) object).getMutable("force-gamemode", false).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public boolean getEnforceWhitelist() {
@@ -65,7 +68,8 @@ public final class Properties {
     }
 
     public void setEnforceWhitelist(boolean value) {
-        throw new RuntimeException("[Properties#setEnforceWhitelist] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).enforceWhitelist = value;
+        ((DedicatedServerProperties) object).getMutable("enforce-whitelist", false).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public GameMode getGameMode() {
@@ -154,7 +158,8 @@ public final class Properties {
     }
 
     public void setSpawnProtection(int value) {
-        throw new RuntimeException("[Properties#setSpawnProtection] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).spawnProtection = value;
+        ((DedicatedServerProperties) object).getMutable("spawn-protection", 16).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     // TODO opPermissions
@@ -177,7 +182,8 @@ public final class Properties {
     }
 
     public void setViewDistance(int value) {
-        throw new RuntimeException("[Properties#setViewDistance] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).viewDistance = value;
+        ((DedicatedServerProperties) object).getMutable("view-distance", 10).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public int getSimulationDistance() {
@@ -185,7 +191,8 @@ public final class Properties {
     }
 
     public void setSimulationDistance(int value) {
-        throw new RuntimeException("[Properties#setSimulationDistance] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).simulationDistance = value;
+        ((DedicatedServerProperties) object).getMutable("simulation-distance", 10).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public int getMaxPlayers() {
@@ -193,7 +200,8 @@ public final class Properties {
     }
 
     public void setMaxPlayers(int value) {
-        throw new RuntimeException("[Properties#setMaxPlayers] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).maxPlayers = value;
+        ((DedicatedServerProperties) object).getMutable("max-players", 20).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public int getNetworkCompressionThreshold() {
@@ -229,7 +237,8 @@ public final class Properties {
     }
 
     public void setEnableStatus(boolean value) {
-        throw new RuntimeException("[Properties#setEnableStatus] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).enableStatus = value;
+        ((DedicatedServerProperties) object).getMutable("enable-status", true).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public boolean getHideOnlinePlayers() {
@@ -237,7 +246,8 @@ public final class Properties {
     }
 
     public void setHideOnlinePlayers(boolean value) {
-        throw new RuntimeException("[Properties#setHideOnlinePlayers] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).hideOnlinePlayers = value;
+        ((DedicatedServerProperties) object).getMutable("hide-online-players", false).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public int getEntityBroadcastRangePercentage() {
@@ -245,7 +255,8 @@ public final class Properties {
     }
 
     public void setEntityBroadcastRangePercentage(int value) {
-        throw new RuntimeException("[Properties#setEntityBroadcastRangePercentage] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).entityBroadcastRangePercentage = value;
+        ((DedicatedServerProperties) object).getMutable("entity-broadcast-range-percentage", false).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public String getTextFilteringConfig() {
@@ -296,7 +307,8 @@ public final class Properties {
     }
 
     public void setPauseWhenEmptySeconds(int value) {
-        throw new RuntimeException("[Properties#setPauseWhenEmptySeconds] Not possible on MC 1.21.10");
+        ((DedicatedServerProperties) object).pauseWhenEmptySeconds = value;
+        ((DedicatedServerProperties) object).getMutable("pause-when-empty-seconds", 60).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     // TODO worldDimensionData
