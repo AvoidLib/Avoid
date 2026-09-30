@@ -1,0 +1,7 @@
+pluginManagement {
+    repositories {
+        flatDir {
+            dir "src_build/libs"
+        }
+    }
+}

@@ -1,10 +1,11 @@
-import java.nio.file.Files
-import java.util.zip.ZipFile
-import java.util.zip.ZipOutputStream
-
 plugins {
     id 'groovy'
     id 'groovy-gradle-plugin'
+    id 'github' version '1.0'
+}
+
+github_plugins {
+    github 'Olafcio1/gradle-shade-plugin' version '1.1'
 }
 
 group = 'pl.olafcio'
@@ -32,51 +33,9 @@ test {
 }
 
 jar {
-    from {
-        configurations.runtimeClasspath.findAll { f -> ['asm-'].stream().anyMatch { f.name.startsWith(it) } }
-                                       .collect {
-                                            // exclude does not work. hurray!
-                                            var file = (File) it
-                                            var path = file.toPath()
-
-                                            def filename = path.getFileName().toString()
-                                            def nometainf = gradle.gradleUserHomeDir.toPath().resolve("caches/Avoid/libraries-build/")
-
-                                            Files.createDirectories(nometainf)
-
-                                            var nmi = nometainf.resolve(filename.substring(0, filename.length() - 4) + "-nometainf.jar")
-                                            var nmiFile = nmi.toFile()
-
-                                            if (!nmiFile.exists()) {
-                                                var bos = new ByteArrayOutputStream();
-                                                var zos = new ZipOutputStream(bos);
-
-                                                try (var zip = new ZipFile(file)) {
-                                                    var entries = zip.entries()
-                                                    for (var e : entries) {
-                                                        var name = e.getName()
-                                                        if (!name.startsWith("META-INF") && name.lastIndexOf("/") > 2) {
-                                                            zos.putNextEntry(e)
-
-                                                            try (var stream = zip.getInputStream(e)) {
-                                                                zos.write(stream.readAllBytes())
-                                                            }
-                                                        }
-                                                    }
-                                                }
-
-                                                zos.close()
-
-                                                try (var fileStream = new FileOutputStream(nmiFile)) {
-                                                    fileStream.write(bos.toByteArray())
-                                                }
-                                            }
-
-                                            zipTree(nmiFile)
-                                       }
+    shade {
+        runtimeClasspath("asm-(.*)")
     }
-
-    // omg what is this code
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
