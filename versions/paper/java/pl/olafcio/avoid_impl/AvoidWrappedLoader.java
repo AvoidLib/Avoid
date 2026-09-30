@@ -46,7 +46,7 @@ public final class AvoidWrappedLoader {
             for (var id : meta.getPluginSoftDependencies())
                 dependencies.add(new PlatformDependency(
                         id,
-                        PlatformDependency.Soft.RECOMMENDS,
+                        PlatformDependency.Hard.RECOMMENDS,
                         PlatformDependency.LoadOrder.BEFORE_MOD
                 ));
 
