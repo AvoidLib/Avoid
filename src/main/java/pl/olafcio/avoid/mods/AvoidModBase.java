@@ -1,6 +1,8 @@
 package pl.olafcio.avoid.mods;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.olafcio.avoid.AvoidWrappedLoader;
 import pl.olafcio.avoid.mods.resource.InvalidResourceException;
 import pl.olafcio.avoid.mods.resource.UserResourceException;
@@ -74,5 +76,12 @@ public abstract sealed class AvoidModBase
         }
 
         return getResource(path);
+    }
+
+    /**
+     * Returns a SLF4J logger.
+     */
+    public final Logger getLogger() {
+        return LoggerFactory.getLogger(meta.name());
     }
 }
