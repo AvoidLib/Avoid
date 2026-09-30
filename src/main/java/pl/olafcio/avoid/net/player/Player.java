@@ -566,6 +566,14 @@ public class Player extends Entity implements Executor {
     }
 
     /**
+     * Closes the player's current inventory.
+     */
+    @ServerOnly
+    public void closeInventory() {
+        __castEnv(ServerPlayer.class, "[Player#closeInventory] This method can only be ran on server players!").closeContainer();
+    }
+
+    /**
      * Returns whether the player can use operator blocks, such as command blocks.
      */
     public boolean canUseOPBlocks() {
