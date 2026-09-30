@@ -120,10 +120,9 @@ public abstract class BrigadierSupport<Src> {
         final Overload<Src> callback = new Overload<>();
 
         callback.load = (ctx, repeat) -> {
-            var ictx = (ICommandContext<Src>) ctx;
-            var argsraw = ictx.avoid$arguments();
+            var argsraw = getArguments(ctx);
 
-            HashMap<?, Object> args = new HashMap<>(argsraw);
+            HashMap<String, Object> args = new HashMap<>(argsraw);
             List<String> warn;
 
             if (overloads.size() > 1) {
@@ -166,7 +165,7 @@ public abstract class BrigadierSupport<Src> {
                                 for (var val : orig.sequencedValues())
                                     rekeyed.put(keys.get(i++), val);
 
-                                ictx.avoid$arguments(rekeyed);
+                                setArguments(ctx, rekeyed);
 
                                 if (ov.load.apply(ctx, true) == 2)
                                     return SINGLE_SUCCESS;
@@ -198,6 +197,9 @@ public abstract class BrigadierSupport<Src> {
 
         return callback.execute;
     }
+
+    protected abstract void setArguments(CommandContext<Src> ctx, LinkedHashMap<String, ParsedArgument<Src, ?>> rekeyed);
+    protected abstract Map<String, ParsedArgument<Src, ?>> getArguments(CommandContext<Src> ctx);
 
     protected abstract Executor getExecutor(CommandContext<Src> ctx);
 }

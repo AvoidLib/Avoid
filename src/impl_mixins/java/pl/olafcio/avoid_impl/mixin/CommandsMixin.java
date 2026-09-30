@@ -3,6 +3,7 @@ package pl.olafcio.avoid_impl.mixin;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.context.ParsedArgument;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid_impl.brigadier.BrigadierSupport;
+import pl.olafcio.avoid_impl.mixin.accessors.ICommandContext;
 import pl.olafcio.avoid_impl.mixinclass.MyUnknownExecutor;
 import org.spongepowered.asm.mixin.injection.Coerce;
 import pl.olafcio.avoid.mods.event.EventManager;
@@ -23,6 +25,9 @@ import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.command.SyntaxTree;
 import pl.olafcio.avoid.net.player.PlayerNative;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Mixin(Commands.class)
 public class CommandsMixin {
@@ -75,6 +80,18 @@ public class CommandsMixin {
                 }
 
                 return node;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            protected Map<String, ParsedArgument<CommandSourceStack, ?>> getArguments(CommandContext<CommandSourceStack> ctx) {
+                return ((ICommandContext<CommandSourceStack>) ctx).avoid$arguments();
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            protected void setArguments(CommandContext<CommandSourceStack> ctx, LinkedHashMap<String, ParsedArgument<CommandSourceStack, ?>> rekeyed) {
+                ((ICommandContext<CommandSourceStack>) ctx).avoid$arguments(rekeyed);
             }
 
             @Override
