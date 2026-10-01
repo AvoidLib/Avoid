@@ -29,6 +29,13 @@ accessible method net/minecraft/world/entity/Entity getDefaultGravity ()D
 accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/blaze3d/pipeline/RenderPipeline;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
 accessible method net/minecraft/world/item/context/UseOnContext <init> (Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/phys/BlockHitResult;)V
 
+# Packs
+accessible field net/minecraft/server/packs/repository/Pack resources Lnet/minecraft/server/packs/repository/Pack$ResourcesSupplier;
+accessible field net/minecraft/server/packs/FilePackResources$FileResourcesSupplier content Ljava/io/File;
+accessible field net/minecraft/server/packs/PathPackResources$PathResourcesSupplier content Ljava/nio/file/Path;
+accessible field net/minecraft/server/packs/repository/PackRepository available Ljava/util/Map;
+accessible class net/minecraft/server/packs/FilePackResources
+
 # Screens
 accessible method net/minecraft/client/gui/screens/Screen addRenderableWidget (Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;
 accessible method net/minecraft/client/gui/screens/Screen addRenderableOnly (Lnet/minecraft/client/gui/components/Renderable;)Lnet/minecraft/client/gui/components/Renderable;
