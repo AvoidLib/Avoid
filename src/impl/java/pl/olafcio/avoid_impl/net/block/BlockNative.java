@@ -17,7 +17,7 @@ import pl.olafcio.avoid.net.block.properties._liquid;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.fluid.Fluid;
 import pl.olafcio.avoid_impl.net.fluid.FluidsNative;
-import pl.olafcio.avoid.net.random.RandomProviderNative;
+import pl.olafcio.avoid_impl.net.random.RandomProviderNative;
 import pl.olafcio.avoid_impl.net.world.WorldNative;
 import pl.olafcio.avoid_impl.net.world.block_data.BlockDataNative;
 import pl.olafcio.avoid_impl.net.world.vect3.Vect3Native;

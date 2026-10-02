@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.random;
+package pl.olafcio.avoid_impl.net.random;
 
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.ApiStatus;
@@ -10,7 +10,7 @@ public final class RandomProviderNative {
     @ApiStatus.Internal
     private RandomProviderNative() {}
 
-    public static RandomProvider create(RandomSource source) {
+    public static pl.olafcio.avoid.net.random.RandomProvider create(RandomSource source) {
         return new pl.olafcio.avoid_impl.net.random.RandomProvider(source);
     }
 

@@ -1,15 +1,9 @@
 package pl.olafcio.avoid.net.datapack;
 
-import net.minecraft.server.packs.FilePackResources;
-import net.minecraft.server.packs.PathPackResources;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.datapack.pack.Datapack;
-import pl.olafcio.avoid_impl.AvoidInternal;
-import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
-import pl.olafcio.avoid_impl.net.datapack.PackCompatibilityNative;
 
-import java.nio.file.Path;
 import java.util.stream.Stream;
 
 /**
@@ -25,7 +19,7 @@ public final class DatapackManager {
      */
     @ServerOnly
     public static void refresh() {
-        AvoidInternal.getServer().getPackRepository().reload();
+        pl.olafcio.avoid_impl.net.datapack.DatapackManager.refresh();
     }
 
     /**
@@ -33,13 +27,7 @@ public final class DatapackManager {
      */
     @ServerOnly
     public static Stream<Datapack> getPacks() {
-        return AvoidInternal.getServer().getPackRepository().getSelectedPacks().stream().map(pack -> new Datapack(
-                pack.getId(),
-                COFromNative.from(pack.getTitle()),
-                COFromNative.from(pack.getDescription()),
-                PackCompatibilityNative.convert(pack.getCompatibility()),
-                getPath(pack)
-        ));
+        return pl.olafcio.avoid_impl.net.datapack.DatapackManager.getPacks();
     }
 
     /**
@@ -47,21 +35,6 @@ public final class DatapackManager {
      */
     @ServerOnly
     public static Stream<Datapack> getAllPacks() {
-        return AvoidInternal.getServer().getPackRepository().getAvailablePacks().stream().map(pack -> new Datapack(
-                pack.getId(),
-                COFromNative.from(pack.getTitle()),
-                COFromNative.from(pack.getDescription()),
-                PackCompatibilityNative.convert(pack.getCompatibility()),
-                getPath(pack)
-        ));
-    }
-
-    private static Path getPath(net.minecraft.server.packs.repository.Pack pack) {
-        if (pack.resources instanceof FilePackResources.FileResourcesSupplier fileSupplier)
-            return fileSupplier.content.toPath();
-        else if (pack.resources instanceof PathPackResources.PathResourcesSupplier pathSupplier)
-            return pathSupplier.content;
-        else
-            return null;
+        return pl.olafcio.avoid_impl.net.datapack.DatapackManager.getAllPacks();
     }
 }

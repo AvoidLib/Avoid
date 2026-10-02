@@ -1,5 +1,6 @@
-package pl.olafcio.avoid.mods;
+package pl.olafcio.avoid_impl.mods;
 
+import net.minecraft.SharedConstants;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Date;
@@ -10,18 +11,18 @@ public final class MinecraftVersion {
     private MinecraftVersion() {}
 
     public static String get() {
-        return pl.olafcio.avoid_impl.mods.MinecraftVersion.get();
+        return SharedConstants.getCurrentVersion().name();
     }
 
     public static boolean isRelease() {
-        return pl.olafcio.avoid_impl.mods.MinecraftVersion.isRelease();
+        return SharedConstants.getCurrentVersion().stable();
     }
 
     public static int getProtocolVersion() {
-        return pl.olafcio.avoid_impl.mods.MinecraftVersion.getProtocolVersion();
+        return SharedConstants.getCurrentVersion().protocolVersion();
     }
 
     public static Date getBuildTime() {
-        return pl.olafcio.avoid_impl.mods.MinecraftVersion.getBuildTime();
+        return SharedConstants.getCurrentVersion().buildTime();
     }
 }

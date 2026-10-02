@@ -1,24 +1,25 @@
-package pl.olafcio.avoid.net.datapack.pack;
+package pl.olafcio.avoid_impl.net.datapack.pack;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.*;
+import net.minecraft.server.packs.repository.Pack.ResourcesSupplier;
+import net.minecraft.server.packs.repository.PackSource;
 import pl.olafcio.avoid.annotations.refactor.Discouraged;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.datapack.pack.DatapackCompatibility;
 import pl.olafcio.avoid.net.datapack.pack.errors.DatapackAlreadyLoaded;
 import pl.olafcio.avoid.net.datapack.pack.errors.DatapackFailedToToggle;
+import pl.olafcio.avoid_impl.AvoidInternal;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Optional;
 
 @WillRefactor(aspect = "package")
 @Discouraged(reason = "This may be refactored away, and have the type changed (e.g. to an interface)")
-public abstract class Datapack {
-    protected final String id;
-    protected final BaseComponent<?> name;
-    protected final BaseComponent<?> description;
-    protected final DatapackCompatibility compatibility;
-    protected final Path path;
-
+public final class Datapack extends pl.olafcio.avoid.net.datapack.pack.Datapack {
     public Datapack(
             String id,
             BaseComponent<?> name,
@@ -26,11 +27,7 @@ public abstract class Datapack {
             DatapackCompatibility compatibility,
             Path location
     ) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.compatibility = compatibility;
-        this.path = location;
+        super(id, name, description, compatibility, location);
     }
 
     /**
@@ -38,29 +35,59 @@ public abstract class Datapack {
      * <br/><br/>
      * Note that if the datapack is {@linkplain #isAvailable already loaded}, this will throw an exception.
      */
-    public abstract void load() throws DatapackAlreadyLoaded;
+    public void load() throws DatapackAlreadyLoaded {
+        if (isAvailable())
+            throw new DatapackAlreadyLoaded("[Datapack#load] Datapack '%s' is already loaded".formatted(id));
+
+        var source = PackSource.create(x -> x, false);
+
+        var name = path.getFileName().toString();
+        var info = new PackLocationInfo("avoid/" + name, Component.literal(name), source, Optional.empty());
+
+        ResourcesSupplier resourcesSupplier;
+
+        if (Files.isDirectory(path))
+            resourcesSupplier = new PathPackResources.PathResourcesSupplier(path);
+        else
+            resourcesSupplier = new FilePackResources.FileResourcesSupplier(path);
+
+        var config = new PackSelectionConfig(false, net.minecraft.server.packs.repository.Pack.Position.TOP, false);
+        var meta = net.minecraft.server.packs.repository.Pack.readMetaAndCreate(info, resourcesSupplier, PackType.SERVER_DATA, config);
+
+        AvoidInternal.getServer().getPackRepository().available.put(id, meta);
+    }
 
     /**
      * Enables the datapack.<br/><br/>
      * Note that if the datapack is {@linkplain #isEnabled already enabled} or is {@linkplain #isAvailable not available} anymore, this will throw an exception.
      */
-    public abstract void enable() throws DatapackFailedToToggle;
+    public void enable() throws DatapackFailedToToggle {
+        if (!AvoidInternal.getServer().getPackRepository().addPack(id))
+            throw new DatapackFailedToToggle("[Datapack#enable] Datapack '%s' could not be enabled");
+    }
 
     /**
      * Disables the datapack.<br/><br/>
      * Note that if the datapack is {@linkplain #isEnabled not enabled} or is {@linkplain #isAvailable not available} anymore, this will throw an exception.
      */
-    public abstract void disable() throws DatapackFailedToToggle;
+    public void disable() throws DatapackFailedToToggle {
+        if (!AvoidInternal.getServer().getPackRepository().removePack(id))
+            throw new DatapackFailedToToggle("[Datapack#disable] Datapack '%s' could not be disabled");
+    }
 
     /**
      * Returns whether the datapack is still loaded.
      */
-    public abstract boolean isAvailable();
+    public boolean isAvailable() {
+        return AvoidInternal.getServer().getPackRepository().isAvailable(id);
+    }
 
     /**
      * Returns whether the datapack is enabled.
      */
-    public abstract boolean isEnabled();
+    public boolean isEnabled() {
+        return AvoidInternal.getServer().getPackRepository().getSelectedIds().contains(id);
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -70,9 +97,9 @@ public abstract class Datapack {
         var that = (Datapack) obj;
 
         return Objects.equals(this.id, that.id) &&
-               Objects.equals(this.name, that.name) &&
-               Objects.equals(this.description, that.description) &&
-               Objects.equals(this.compatibility, that.compatibility);
+                Objects.equals(this.name, that.name) &&
+                Objects.equals(this.description, that.description) &&
+                Objects.equals(this.compatibility, that.compatibility);
     }
 
     @Override

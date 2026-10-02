@@ -6,7 +6,7 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Internal
 public final class RandomProvider extends pl.olafcio.avoid.net.random.RandomProvider {
     @ApiStatus.Internal
-    public final RandomSource source;
+    final RandomSource source;
 
     @ApiStatus.Internal
     public RandomProvider(Object source) {

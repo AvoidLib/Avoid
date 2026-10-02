@@ -12,7 +12,7 @@ import pl.olafcio.avoid.net._3d.stack.MatrixStack;
 import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net._3d.stack.MatrixStackNative;
 import pl.olafcio.avoid.net.random.RandomProvider;
-import pl.olafcio.avoid.net.random.RandomProviderNative;
+import pl.olafcio.avoid_impl.net.random.RandomProviderNative;
 import pl.olafcio.avoid_impl.net._3d.apex.ApexConsumerNative;
 import pl.olafcio.avoid_impl.net._3d.layer._native.PartTransformNative;
 

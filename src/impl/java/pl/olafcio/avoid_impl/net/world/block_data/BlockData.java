@@ -7,7 +7,7 @@ import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.random.RandomProvider;
-import pl.olafcio.avoid.net.random.RandomProviderNative;
+import pl.olafcio.avoid_impl.net.random.RandomProviderNative;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net.world.WorldNative;

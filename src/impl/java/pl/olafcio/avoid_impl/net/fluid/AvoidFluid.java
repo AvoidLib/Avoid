@@ -23,7 +23,7 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
 import pl.olafcio.avoid.net.fluid.FluidStateAccessor;
-import pl.olafcio.avoid.net.random.RandomProviderNative;
+import pl.olafcio.avoid_impl.net.random.RandomProviderNative;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.fluid.inside_block.InsideBlock;
 import pl.olafcio.avoid.net.fluid.inside_block.InsideBlockAction;
