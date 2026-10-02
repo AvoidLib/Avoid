@@ -1,0 +1,4 @@
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;getFluidInCamera()Lnet/minecraft/world/level/material/FogType;"), method = "extractCamera")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;getFogType()Lnet/minecraft/world/level/material/FogType;"), method = "extractCamera")
+}
