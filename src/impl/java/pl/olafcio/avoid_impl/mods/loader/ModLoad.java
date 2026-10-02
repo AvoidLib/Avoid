@@ -3,10 +3,8 @@ package pl.olafcio.avoid_impl.mods.loader;
 import com.google.common.base.CaseFormat;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.Items;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import pl.olafcio.avoid.Avoid;
@@ -30,6 +28,7 @@ import pl.olafcio.avoid_impl.mods.loader.mod_method.LXKeyHandler;
 import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.Blocks;
 import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid_loader.PreModContainer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,7 +40,6 @@ import java.net.URLClassLoader;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -61,79 +59,18 @@ public final class ModLoad
                    = new Gson();
 
     private final Path mod;
-    private final Set<Path> loadedMods;
-    private final ArrayList<String> avoidMods;
+    private final Set<String> loadedMods;
+    private final PreModContainer container;
 
-    public ModLoad(Path mod, Set<Path> loadedMods, ArrayList<String> avoidMods) {
-        this.mod = mod;
+    public ModLoad(PreModContainer container, Set<String> loadedMods) {
+        this.mod = container.path();
         this.loadedMods = loadedMods;
-        this.avoidMods = avoidMods;
+        this.container = container;
     }
 
     public void load() {
         try (var jar = new JarFile(mod.toFile())) {
-            var manifestFile = jar.getEntry("avoid.mod.json");
-            if (manifestFile == null)
-                return;
-
-            var signaturesFile = jar.getEntry("avoid.signatures");
-            if (signaturesFile != null) {
-                final var signatures = new HashMap<String, String>();
-
-                try (var stream = jar.getInputStream(signaturesFile)) {
-                    var lines = new String(stream.readAllBytes(), StandardCharsets.UTF_8)
-                                                 .split("\n");
-
-                    for (var line : lines) {
-                        int slash = line.lastIndexOf('/');
-
-                        signatures.put(line.substring(0, slash), line.substring(slash + 1));
-                    }
-                }
-
-                var entries = jar.entries();
-
-                while (entries.hasMoreElements()) {
-                    var entry = entries.nextElement();
-                    var signature = signatures.get(entry.getName());
-
-                    if (signature != null) {
-                        String sha1;
-
-                        try (var stream = jar.getInputStream(entry)) {
-                            sha1 = DigestUtils.sha1Hex(stream);
-                        }
-
-                        if (!sha1.equals(signature)) {
-                            Avoid.LOGGER.error("""
-                                    
-                                    
-                                    
-                                    Mod '{}' has been tampered with!
-                                    Did you download from the original website (e.g. Modrinth)?
-                                    
-                                    [[ Fail Description ]]
-
-                                    > File: '{}'
-                                    > Signature: '{}' (expected '{}')
-                                    
-                                    
-                                    """, mod.toAbsolutePath(), entry.getName(), sha1, signature);
-
-                            throw new RuntimeException("Failed to verify Avoid mod signatures: %s".formatted(mod.toAbsolutePath()));
-                        }
-                    }
-                }
-            }
-
-            byte[] manifestData = jar.getInputStream(manifestFile)
-                    .readAllBytes();
-
-            var manifest = GSON.fromJson(new String(manifestData), JsonObject.class);
-            if (manifest == null) {
-                Avoid.LOGGER.error("Failed to read Avoid mod manifest: {}", mod.toAbsolutePath());
-                return;
-            }
+            var manifest = container.manifest();
 
             int schema = manifest.get("__schema").getAsInt();
             if (schema != 1) {
@@ -266,8 +203,6 @@ public final class ModLoad
                 instance.onEnable();
             });
 
-            avoidMods.add(meta.name() + " " + meta.version());
-
             EventManager.fire(new ModLoadedEvent(meta));
         } catch (FileNotFoundException e) {
             Avoid.LOGGER.warn("Failed to resolve mod .jar file symbolic link target: {}", mod.toAbsolutePath());
@@ -304,7 +239,8 @@ public final class ModLoad
         do {
             var el = entries.nextElement();
             var fn = el.getRealName();
-            if (!el.isDirectory() && fn.endsWith(".class")) {
+
+            if (!el.isDirectory() && fn.endsWith(".class") && container.packages.stream().noneMatch(fn::startsWith)) {
                 var className = fn.substring(0, fn.length() - 6)
                                   .replace("/", ".");
 
