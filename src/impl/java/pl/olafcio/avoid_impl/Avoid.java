@@ -24,6 +24,11 @@ public class Avoid {
     public static final Avoid INSTANCE
                   = new Avoid();
 
+    public static final String BRAND;
+    static {
+        BRAND = "MineAvoid";
+    }
+
     private Avoid() {}
 
     public void onInitialize() {

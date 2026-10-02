@@ -19,6 +19,9 @@ public class Avoid extends LateInitializer {
 
     private static final String VERSION;
 
+    public static String getBrand() {
+        return pl.olafcio.avoid_impl.Avoid.BRAND;
+    }
     public static String getVersion() {
         return VERSION;
     }
