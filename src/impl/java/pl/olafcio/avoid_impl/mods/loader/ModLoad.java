@@ -69,6 +69,8 @@ public final class ModLoad
     }
 
     public void load() {
+        container.classLoader().startup = false;
+
         try (var jar = new JarFile(mod.toFile())) {
             var manifest = container.manifest();
 
@@ -110,8 +112,6 @@ public final class ModLoad
                 }
             }
 
-            var URLs = new ArrayList<URL>();
-
             final var mirror = "https://maven-central-eu.storage-download.googleapis.com/maven2/";
             final var http = HttpClient.newHttpClient();
 
@@ -125,7 +125,7 @@ public final class ModLoad
 
                     var libpath = Path.of("libraries/" + slash);
 
-                    URLs.add(libpath.toUri().toURL());
+                    container.classLoader().addURL(libpath.toUri().toURL());
 
                     if (!Files.isRegularFile(libpath)) {
                         Files.createDirectories(libpath.getParent());
@@ -151,12 +151,7 @@ public final class ModLoad
                     .toList()
                     : List.of();
 
-            URLs.add(mod.toUri().toURL());
-
-            var classLoader = URLClassLoader.newInstance(
-                    URLs.toArray(URL[]::new),
-                    Avoid.class.getClassLoader()
-            );
+            var classLoader = container.classLoader();
 
             EventManager.fire(new ModBeforeLoadEvent(id, manifest, jar));
 
@@ -174,11 +169,11 @@ public final class ModLoad
 
             //noinspection unchecked
             var klass = (Class<? extends AvoidMod>)
-                    klassUnc;
+                        klassUnc;
 
             var meta = new AvoidModMeta(id, version, versionSystem,
-                    name, author, description,
-                    env, libraries, klass);
+                                        name, author, description,
+                                        env, libraries, klass);
 
             scanAllClasses(jar, classLoader, id, skipClasses, meta);
 

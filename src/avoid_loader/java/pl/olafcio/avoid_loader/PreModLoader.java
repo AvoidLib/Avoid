@@ -53,19 +53,9 @@ public final class PreModLoader {
             if (mod.manifest().has("loaders")) {
                 var subloaders = mod.manifest().get("loaders").getAsJsonArray();
 
-                try (var classLoader = new URLClassLoader(new URL[]{ mod.path().toUri().toURL() }, PreModLoader.class.getClassLoader()) {
-                    @Override
-                    protected Class<?> loadClass(String name, boolean resolve)
-                       throws ClassNotFoundException
-                    {
-                        if (name.startsWith("net.minecraft."))
-                            throw new ClassNotFoundException("Cannot load Minecraft classes during subloading!");
-
-                        return super.loadClass(name, resolve);
-                    }
-                }) {
+                try {
                     for (var cn : subloaders) {
-                        var pluginClass = classLoader.loadClass(cn.getAsString());
+                        var pluginClass = mod.classLoader().loadClass(cn.getAsString());
                         var plugin = (ILoader) pluginClass.getDeclaredConstructor().newInstance();
 
                         plugin.load();
@@ -73,8 +63,6 @@ public final class PreModLoader {
                         for (var mod2 : MODS)
                             plugin.processAvoidMod(mod2);
                     }
-                } catch (IOException e) {
-                    throw new RuntimeException("Failed to load subloader of Avoid mod: '%s'  /IOException".formatted(mod.path().toAbsolutePath()), e);
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException("Failed to load subloader of Avoid mod: '%s'  /ClassNotFoundException".formatted(mod.path().toAbsolutePath()), e);
                 } catch (InvocationTargetException e) {

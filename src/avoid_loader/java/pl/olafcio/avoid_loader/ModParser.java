@@ -8,6 +8,7 @@ import pl.olafcio.avoid.RunningEnv;
 import pl.olafcio.avoid.mods.ModEnvironment;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -82,7 +83,7 @@ class ModParser {
                 }
             }
 
-            avoidMods.add(new PreModContainer(mod, json));
+            avoidMods.add(new PreModContainer(mod, json, new ModClassLoader(new URL[]{ mod.toUri().toURL() }, this.getClass().getClassLoader())));
         } catch (IOException e) {
             throw new RuntimeException("Error while parsing JAR file '%s'".formatted(mod.toAbsolutePath()), e);
         }

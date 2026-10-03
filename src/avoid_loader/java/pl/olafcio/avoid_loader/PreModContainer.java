@@ -9,18 +9,22 @@ import java.util.List;
 public final class PreModContainer {
     private final Path path;
     private final JsonObject manifest;
+    private final ModClassLoader classLoader;
 
-    public PreModContainer(Path path, JsonObject manifest) {
+    PreModContainer(Path path, JsonObject manifest, ModClassLoader classLoader) {
         this.path = path;
         this.manifest = manifest;
+        this.classLoader = classLoader;
     }
 
     public Path path() {
         return path;
     }
-
     public JsonObject manifest() {
         return manifest;
+    }
+    public ModClassLoader classLoader() {
+        return classLoader;
     }
 
     public List<String> packages
