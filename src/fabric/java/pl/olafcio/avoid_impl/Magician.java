@@ -48,7 +48,7 @@ public class Magician implements PreLaunchEntrypoint {
     public void onPreLaunch() {
         PreModLoader.preload();
 
-        var cache = AvoidWrappedLoader.getGameDir().resolve(".cache/avoid_loader");
+        var cache = AvoidWrappedLoader.getGameDir().resolve(".cache/avoid_loader/exported_jars");
 
         try                   { Files.createDirectories(cache);                                                          }
         catch (IOException e) { throw new RuntimeException("Failed to create Avoid transformed mod cache directory", e); }

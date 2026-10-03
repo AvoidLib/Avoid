@@ -10,11 +10,13 @@ public final class PreModContainer {
     private final Path path;
     private final JsonObject manifest;
     private final ModClassLoader classLoader;
+    private final PreModContainer parent;
 
-    PreModContainer(Path path, JsonObject manifest, ModClassLoader classLoader) {
+    PreModContainer(Path path, JsonObject manifest, ModClassLoader classLoader, PreModContainer parent) {
         this.path = path;
         this.manifest = manifest;
         this.classLoader = classLoader;
+        this.parent = parent;
     }
 
     public Path path() {
@@ -25,6 +27,9 @@ public final class PreModContainer {
     }
     public ModClassLoader classLoader() {
         return classLoader;
+    }
+    public PreModContainer parent() {
+        return parent;
     }
 
     public List<String> packages

@@ -1,5 +1,6 @@
 package pl.olafcio.avoid_loader;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +36,14 @@ class AvoidManifest {
                 return element.getAsString();
             } catch (Exception e) {
                 throw new RuntimeException("'avoid.mod.json' has invalid field: '%s' (unparsable value)[expected string]".formatted(name), e);
+            }
+        }
+
+        public JsonArray getAsJsonArray() {
+            try {
+                return element.getAsJsonArray();
+            } catch (Exception e) {
+                throw new RuntimeException("'avoid.mod.json' has invalid field: '%s' (unparsable value)[expected array]".formatted(name), e);
             }
         }
     }
