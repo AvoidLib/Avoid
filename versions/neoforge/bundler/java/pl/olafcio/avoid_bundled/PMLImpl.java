@@ -1,7 +1,7 @@
 package pl.olafcio.avoid_bundled;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.mods.loader.subloader.ITransformer;
+import pl.olafcio.avoid_loader.subloaders.ITransformer;
 import pl.olafcio.avoid_impl.Reflect;
 
 import java.net.MalformedURLException;

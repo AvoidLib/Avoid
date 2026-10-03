@@ -7,7 +7,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item.Properties;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.net.item.Item;
 import pl.olafcio.avoid_impl.mods.loader.AvoidPackageOnly;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;

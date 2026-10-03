@@ -2,8 +2,8 @@ package pl.olafcio.avoid.net.entity_renderer;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.util.RunningEnv;
 import pl.olafcio.avoid.net.entity_type.EntityType;
 import pl.olafcio.avoid_impl.net.entity_renderer.EntityRenderersNative;
 

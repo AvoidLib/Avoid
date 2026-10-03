@@ -9,7 +9,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.Mixins;
-import pl.olafcio.avoid_impl.AvoidWrappedLoader;
+import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 import pl.olafcio.avoid_impl.Reflect;
 import pl.olafcio.avoid_loader.PreModContainer;
 import pl.olafcio.avoid_loader.PreModLoader;

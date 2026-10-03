@@ -1,4 +1,4 @@
-package pl.olafcio.avoid;
+package pl.olafcio.avoid.api;
 
 import com.mojang.logging.LogUtils;
 import org.jetbrains.annotations.ApiStatus;

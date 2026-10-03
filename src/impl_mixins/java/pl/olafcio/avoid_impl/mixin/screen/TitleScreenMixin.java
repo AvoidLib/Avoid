@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid_impl.mixininterface.IScreen;
 import pl.olafcio.avoid.net.screen.WidgetMarker;
 

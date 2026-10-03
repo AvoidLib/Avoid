@@ -2,15 +2,13 @@ package pl.olafcio.avoid_loader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.mods.loader.subloader.ILoader;
-import pl.olafcio.avoid.mods.loader.subloader.ITransformer;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid_loader.subloaders.ILoader;
+import pl.olafcio.avoid_loader.subloaders.ITransformer;
 import pl.olafcio.avoid_impl.PMLImpl;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;

@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.util.RunningEnv;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 
 import java.net.Proxy;

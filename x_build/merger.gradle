@@ -49,36 +49,40 @@ void scheduleMerging() {
         for (var file : merge) {
             var data = Files.readAllBytes(file.toPath())
 
-            var bis = new ByteArrayInputStream(data)
-            var zis = new ZipInputStream(bis)
-            // what are these variable names bro
+            if (i==1) {
+                var bis = new ByteArrayInputStream(data)
+                var zis = new ZipInputStream(bis)
+                // what are these variable names bro
 
-            var bos2 = new ByteArrayOutputStream()
-            var zos2 = new ZipOutputStream(bos2)
+                var bos2 = new ByteArrayOutputStream()
+                var zos2 = new ZipOutputStream(bos2)
 
-            while (true) {
-                var entry = zis.getNextEntry()
-                if (entry == null)
-                    break
+                while (true) {
+                    var entry = zis.getNextEntry()
+                    if (entry == null)
+                        break
 
-                if (entry.name.startsWithAny("pl/olafcio/avoid_bundled/", "pl/olafcio/avoid/mods/loader/subloader/", "pl/olafcio/avoid/AvoidWrappedLoader", "pl/olafcio/avoid_impl/AvoidWrappedLoader", "META-INF/services/")) {
-                    zos3.putNextEntry(entry)
-                    zis.transferTo(zos3)
-                } else {
-                    zos2.putNextEntry(entry)
-                    zis.transferTo(zos2)
+                    if (entry.name.startsWithAny("pl/olafcio/avoid_loader/", "pl/olafcio/avoid_bundled/", "pl/olafcio/avoid/platform/", "pl/olafcio/avoid/util/", "pl/olafcio/avoid/annotations/", "pl/olafcio/avoid_platform", "META-INF/services/")) {
+                        zos.putNextEntry(entry)
+                        zis.transferTo(zos)
+                    } else {
+                        zos2.putNextEntry(entry)
+                        zis.transferTo(zos2)
+                    }
                 }
+
+                zis.close()
+                bis.close()
+
+                zos2.close()
+
+                data = bos2.toByteArray()
+
+                bos2.close()
             }
 
-            zis.close()
-            bis.close()
-
-            zos2.close()
-
             zos.putNextEntry(new ZipEntry("jars/avoid-" + loaders[i++] + ".jar"))
-            zos.write(bos2.toByteArray())
-
-            bos2.close()
+            zos.write(data)
         }
 
         zos3.close()

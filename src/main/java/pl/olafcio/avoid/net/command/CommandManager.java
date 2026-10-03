@@ -3,7 +3,7 @@ package pl.olafcio.avoid.net.command;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.command.annotation.*;
 import pl.olafcio.avoid.net.command.exception.*;
@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicLongArray;
 import java.util.function.Consumer;
 
 /**

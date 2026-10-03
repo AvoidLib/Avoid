@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mods.loader.subloader;
+package pl.olafcio.avoid_loader.subloaders;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid_loader.PreModContainer;

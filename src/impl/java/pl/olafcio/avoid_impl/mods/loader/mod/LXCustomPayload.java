@@ -3,7 +3,7 @@ package pl.olafcio.avoid_impl.mods.loader.mod;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Supplier;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.mods.annotation_processor.AutoCustomPayload;
 import pl.olafcio.avoid.mods.annotation_processor.AutoID;
 import pl.olafcio.avoid.net.id.Identification;

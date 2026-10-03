@@ -12,6 +12,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.Mixins;
 import pl.olafcio.avoid_loader.PreModContainer;
 import pl.olafcio.avoid_loader.PreModLoader;
+import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

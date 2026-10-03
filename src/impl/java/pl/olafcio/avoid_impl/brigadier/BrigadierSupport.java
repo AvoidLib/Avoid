@@ -9,7 +9,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.net.command.CommandManager;
 import pl.olafcio.avoid.net.command.SyntaxTree;
 import pl.olafcio.avoid.net.command.exception.use.CommandSyntaxException;

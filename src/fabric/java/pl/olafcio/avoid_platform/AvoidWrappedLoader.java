@@ -1,4 +1,4 @@
-package pl.olafcio.avoid_impl;
+package pl.olafcio.avoid_platform;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -6,11 +6,11 @@ import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModDependency;
 import net.fabricmc.loader.api.metadata.ModEnvironment;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.RunningEnv;
-import pl.olafcio.avoid.platform.PlatformContributor;
-import pl.olafcio.avoid.platform.PlatformContact;
-import pl.olafcio.avoid.platform.PlatformDependency;
-import pl.olafcio.avoid.platform.PlatformMod;
+import pl.olafcio.avoid.util.RunningEnv;
+import pl.olafcio.avoid.platform.mod.PlatformContributor;
+import pl.olafcio.avoid.platform.mod.PlatformContact;
+import pl.olafcio.avoid.platform.mod.PlatformDependency;
+import pl.olafcio.avoid.platform.mod.PlatformMod;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

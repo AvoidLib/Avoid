@@ -9,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Range;
 import pl.olafcio.avoid_impl.AvoidInternal;
-import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.util.ImproperEnvironment;
 import pl.olafcio.avoid.net.effect.Effect;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;

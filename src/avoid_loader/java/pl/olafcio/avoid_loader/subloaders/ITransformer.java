@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mods.loader.subloader;
+package pl.olafcio.avoid_loader.subloaders;
 
 import org.objectweb.asm.tree.ClassNode;
 

@@ -2,7 +2,7 @@ package pl.olafcio.avoid.net.command.parameter;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.net.command.parameter.impl.*;
 import pl.olafcio.avoid.net.command.parameter.pattern.PatternSyntaxError;

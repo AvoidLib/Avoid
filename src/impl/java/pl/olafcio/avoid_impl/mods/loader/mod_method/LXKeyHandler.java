@@ -2,7 +2,7 @@ package pl.olafcio.avoid_impl.mods.loader.mod_method;
 
 import com.google.common.base.Function;
 import org.jetbrains.annotations.NotNull;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.mods.annotation_processor.KeyHandler;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.net.client.Client;

@@ -2,8 +2,8 @@ package pl.olafcio.avoid.net.entity_layer;
 
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.util.RunningEnv;
 
 import java.util.ArrayList;
 import java.util.List;

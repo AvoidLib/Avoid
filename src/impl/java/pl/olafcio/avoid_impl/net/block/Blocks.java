@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid_impl.mixin.accessors.IBlocks;
 import pl.olafcio.avoid_impl.mods.loader.AvoidPackageOnly;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;

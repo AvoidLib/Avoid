@@ -1,7 +1,7 @@
 package pl.olafcio.avoid_impl.mods.loader.mod;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.mods.annotation_processor.AutoCommand;
 import pl.olafcio.avoid.net.command.Command;
 import pl.olafcio.avoid.net.command.CommandManager;

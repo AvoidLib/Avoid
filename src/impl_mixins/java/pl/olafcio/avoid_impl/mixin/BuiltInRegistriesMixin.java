@@ -5,9 +5,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pl.olafcio.avoid.Avoid;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.api.Avoid;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.util.RunningEnv;
 
 @Mixin(BuiltInRegistries.class)
 public class BuiltInRegistriesMixin {

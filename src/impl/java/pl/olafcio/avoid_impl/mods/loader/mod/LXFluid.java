@@ -2,12 +2,9 @@ package pl.olafcio.avoid_impl.mods.loader.mod;
 
 import com.google.common.base.CaseFormat;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
-import pl.olafcio.avoid.mods.annotation_processor.AutoEntity;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.mods.annotation_processor.AutoFluid;
 import pl.olafcio.avoid.mods.annotation_processor.AutoID;
-import pl.olafcio.avoid.net.entity.custom.Entity;
-import pl.olafcio.avoid.net.entity_type.EntityTypes;
 import pl.olafcio.avoid.net.fluid.Fluid;
 import pl.olafcio.avoid.net.fluid.Fluids;
 import pl.olafcio.avoid.net.id.Identification;

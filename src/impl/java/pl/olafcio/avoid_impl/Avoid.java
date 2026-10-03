@@ -5,19 +5,15 @@ import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.mods.events_loader.AllModsEnabledEvent;
 import pl.olafcio.avoid.mods.events_loader.AllModsLoadedEvent;
 import pl.olafcio.avoid.mods.events_loader.AllModsLoadingEvent;
-import pl.olafcio.avoid.platform.PlatformMod;
+import pl.olafcio.avoid.platform.mod.PlatformMod;
 import pl.olafcio.avoid_impl.net.block.values.NoteBlockInstrumentNative;
 import pl.olafcio.avoid_impl.mods.loader.ModLoad;
 import pl.olafcio.avoid_loader.PreModContainer;
 import pl.olafcio.avoid_loader.PreModLoader;
+import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Avoid {
     @ApiStatus.Internal
@@ -42,7 +38,7 @@ public class Avoid {
         NoteBlockInstrumentNative.clinit();
         EventManager.fire(new AllModsLoadedEvent());
 
-        pl.olafcio.avoid.Avoid.INSTANCE.Realize();
+        pl.olafcio.avoid.api.Avoid.INSTANCE.Realize();
         EventManager.fire(new AllModsEnabledEvent());
     }
 

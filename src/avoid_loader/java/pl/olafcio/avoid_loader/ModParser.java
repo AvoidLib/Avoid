@@ -3,8 +3,8 @@ package pl.olafcio.avoid_loader;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.commons.codec.digest.DigestUtils;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.util.RunningEnv;
 import pl.olafcio.avoid.mods.ModEnvironment;
 
 import java.io.FileOutputStream;
@@ -17,7 +17,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
@@ -105,7 +104,7 @@ class ModParser {
 
             if (manifest.has("jars")) {
                 var jars = manifest.get("jars").getAsJsonArray();
-                var folder = pl.olafcio.avoid_impl.AvoidWrappedLoader.getGameDir().resolve(".cache/avoid_loader/embedded_jars");
+                var folder = pl.olafcio.avoid_platform.AvoidWrappedLoader.getGameDir().resolve(".cache/avoid_loader/embedded_jars");
 
                 try                   { Files.createDirectories(folder);                                                      }
                 catch (IOException e) { throw new RuntimeException("Failed to create Avoid embedded jar cache directory", e); }

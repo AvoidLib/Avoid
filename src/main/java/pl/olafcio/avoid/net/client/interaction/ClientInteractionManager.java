@@ -1,9 +1,9 @@
 package pl.olafcio.avoid.net.client.interaction;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.ImproperEnvironment;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.util.ImproperEnvironment;
+import pl.olafcio.avoid.util.RunningEnv;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.entity.Entity;

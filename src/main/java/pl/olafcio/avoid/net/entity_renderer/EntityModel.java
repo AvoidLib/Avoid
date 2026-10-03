@@ -3,8 +3,8 @@ package pl.olafcio.avoid.net.entity_renderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.util.RunningEnv;
 import pl.olafcio.avoid.net._3d.model.ModelPart;
 
 public abstract class EntityModel<S> {

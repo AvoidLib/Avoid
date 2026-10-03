@@ -1,9 +1,9 @@
 package pl.olafcio.avoid_impl.mods.loader.mod;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.api.Avoid;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.util.RunningEnv;
 import pl.olafcio.avoid.mods.annotation_processor.ModifyScreen;
 import pl.olafcio.avoid.net.screen_modifier.ScreenModifier;
 import pl.olafcio.avoid.net.screen_modifier.ScreenModifiers;

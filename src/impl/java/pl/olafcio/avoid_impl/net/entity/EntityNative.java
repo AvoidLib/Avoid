@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.EntityAccessor;

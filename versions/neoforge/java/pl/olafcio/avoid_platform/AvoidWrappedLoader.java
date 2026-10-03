@@ -1,4 +1,4 @@
-package pl.olafcio.avoid_impl;
+package pl.olafcio.avoid_platform;
 
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
@@ -6,12 +6,12 @@ import net.neoforged.fml.loading.moddiscovery.ModFile;
 import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
 import net.neoforged.neoforgespi.language.IModInfo;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.util.RunningEnv;
 import pl.olafcio.avoid.mods.ModEnvironment;
-import pl.olafcio.avoid.platform.PlatformContact;
-import pl.olafcio.avoid.platform.PlatformContributor;
-import pl.olafcio.avoid.platform.PlatformDependency;
-import pl.olafcio.avoid.platform.PlatformMod;
+import pl.olafcio.avoid.platform.mod.PlatformContact;
+import pl.olafcio.avoid.platform.mod.PlatformContributor;
+import pl.olafcio.avoid.platform.mod.PlatformDependency;
+import pl.olafcio.avoid.platform.mod.PlatformMod;
 
 import java.nio.file.Path;
 import java.util.*;

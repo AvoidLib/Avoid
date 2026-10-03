@@ -4,7 +4,7 @@ import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.entity.npc.villager.Villager;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.util.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
