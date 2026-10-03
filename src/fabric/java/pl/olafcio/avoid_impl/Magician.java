@@ -7,6 +7,8 @@ import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.fabricmc.loader.impl.launch.FabricLauncherBase;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.ApiStatus;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.Mixins;
 import pl.olafcio.avoid_loader.PreModContainer;
 import pl.olafcio.avoid_loader.PreModLoader;
@@ -85,7 +87,19 @@ public class Magician implements PreLaunchEntrypoint {
                                 try (var stream = zip.getInputStream(entry)) {
                                     stream.transferTo(zos);
                                 }
-                            } else if (name.endsWith(".class") && packages.stream().anyMatch(name::startsWith)) {
+                            } else if (name.endsWith(".class")) {
+                                if (packages.stream().anyMatch(name::startsWith));
+                                else {
+                                    var node = new ClassNode();
+
+                                    try (var stream = zip.getInputStream(entry)) {
+                                        new ClassReader(stream).accept(node, 0);
+                                    }
+
+                                    if (node.invisibleAnnotations == null || node.invisibleAnnotations.stream().noneMatch(annotation -> annotation.desc.equals("Lpl/olafcio/avoid_loader/Expose;")))
+                                        continue;
+                                }
+
                                 zos.putNextEntry(entry);
 
                                 try (var stream = zip.getInputStream(entry)) {
