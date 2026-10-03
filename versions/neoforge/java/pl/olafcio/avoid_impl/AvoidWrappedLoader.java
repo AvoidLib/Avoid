@@ -56,14 +56,15 @@ public final class AvoidWrappedLoader {
                     meta.getModId(),
                     meta.getDisplayName(),
                     meta.getDescription(),
-                    Arrays.stream(((String) meta.getModProperties().get("authors"))
-                            .replace("&", ",")
-                            .replace(";", ",")
-                            .replaceAll("( -)|--", ",")
-                            .replaceAll("[, ]a*n+'*d*[: ]", ",")
-                            .split(","))  //TODO what am i chatgpt? it's impossible to do this right
-                            .map(str -> new PlatformContributor(str, new PlatformContact(Map.of())))
-                            .toArray(PlatformContributor[]::new),
+                    meta.getConfig().<String>getConfigElement("authors")
+                                    .map(authors -> Arrays.stream(authors.replace("&", ",")
+                                                                               .replace(";", ",")
+                                                                               .replaceAll("( -)|--", ",")
+                                                                               .replaceAll("[, ]a*n+'*d*[: ]", ",")
+                                                                               .split(","))  //TODO what am i chatgpt? it's impossible to do this right
+                                                                .map(str -> new PlatformContributor(str, new PlatformContact(Map.of())))
+                                                                .toArray(PlatformContributor[]::new))
+                                    .orElseGet(() -> new PlatformContributor[0]),
                     null,
                     new PlatformContact(new HashMap<>() {{
                         if (mod.getIssueURL() != null)

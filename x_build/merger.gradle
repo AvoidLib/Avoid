@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
+import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
 apply from: project.file('x_build/loaders.gradle')
@@ -41,13 +42,51 @@ void scheduleMerging() {
             zos.write(data)
         }
 
+        var bos3 = new ByteArrayOutputStream()
+        var zos3 = new ZipOutputStream(bos3)
+
         int i = 0
         for (var file : merge) {
-            zos.putNextEntry(new ZipEntry("jars/avoid-" + loaders[i++] + ".jar"))
-
             var data = Files.readAllBytes(file.toPath())
-            zos.write(data)
+
+            var bis = new ByteArrayInputStream(data)
+            var zis = new ZipInputStream(bis)
+            // what are these variable names bro
+
+            var bos2 = new ByteArrayOutputStream()
+            var zos2 = new ZipOutputStream(bos2)
+
+            while (true) {
+                var entry = zis.getNextEntry()
+                if (entry == null)
+                    break
+
+                if (entry.name.startsWithAny("pl/olafcio/avoid_bundled/", "META-INF/services/")) {
+                    zos3.putNextEntry(entry)
+                    zis.transferTo(zos3)
+                } else {
+                    zos2.putNextEntry(entry)
+                    zis.transferTo(zos2)
+                }
+            }
+
+            zis.close()
+            bis.close()
+
+            zos2.close()
+
+            zos.putNextEntry(new ZipEntry("jars/avoid-" + loaders[i++] + ".jar"))
+            zos.write(bos2.toByteArray())
+
+            bos2.close()
         }
+
+        zos3.close()
+
+        zos.putNextEntry(new ZipEntry("jars/services.jar"))
+        zos.write(bos3.toByteArray())
+
+        bos3.close()
 
         if ("fabric" in loaders) {
             zos.putNextEntry(new ZipEntry("fabric.mod.json"))
@@ -126,6 +165,18 @@ Yet another library for everything Minecraft. Kinda like Bukkit.
             zos.putNextEntry(new ZipEntry("META-INF/jarjar/metadata.json"))
             zos.write(JsonOutput.toJson([
                     "jars": [
+                            [
+                                    "identifier": [
+                                            "group": "pl.olafcio",
+                                            "artifact": "avoid-services"
+                                    ],
+                                    "version": [
+                                            "range": "[${project.version},)",
+                                            "artifactVersion": "${project.version}"
+                                    ],
+                                    "path": "jars/services.jar",
+                                    "isObfuscated": false
+                            ],
                             [
                                     "identifier": [
                                             "group": "pl.olafcio",
