@@ -344,15 +344,13 @@ if (neoforge) {
     tasks.register('loader_jar', Jar) {
         archiveClassifier = 'serviced'
 
-        from("omit_mappings" !in project.getProperties() ? remapJar : jar) {
-            rename { "avoid.jar" }
-        }
-
         from(sourceSets.avoid_loader.output)
     }
 
-    artifacts {
-        archives loader_jar
+    jar {
+        from(loader_jar) {
+            rename { "services.jar" }
+        }
     }
 }
 

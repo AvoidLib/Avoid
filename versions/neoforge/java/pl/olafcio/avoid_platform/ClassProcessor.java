@@ -1,4 +1,4 @@
-package pl.olafcio.avoid_platform;
+package pl.olafcio.avoid_service;
 
 import com.google.gson.Gson;
 import net.neoforged.fml.loading.FMLLoader;
@@ -6,6 +6,7 @@ import net.neoforged.neoforgespi.transformation.ProcessorName;
 import net.neoforged.neoforgespi.transformation.SimpleClassProcessor;
 import net.neoforged.neoforgespi.transformation.SimpleTransformationContext;
 import org.objectweb.asm.tree.ClassNode;
+import pl.olafcio.avoid_platform.*;
 
 import java.io.IOException;
 import java.util.HashSet;
