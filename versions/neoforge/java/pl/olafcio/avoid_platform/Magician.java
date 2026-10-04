@@ -159,90 +159,93 @@ public class Magician {
                         }
                     }
 
-                    for (var config : configs.entrySet()) {
-                        try (var stream = zip.getInputStream(zip.getEntry(config.getKey()))) {
-                            var service = (FMLMixinService) MixinService.getService();
-                            var mixinservice = Reflect.get(MixinService.class, "instance", MixinService.class);
+                    if (!configs.isEmpty()) {
+                        var service = (FMLMixinService) MixinService.getService();
+                        var mixinservice = Reflect.get(MixinService.class, "instance", MixinService.class);
 
-                            Reflect.set(MixinService.class, "service", mixinservice, new FMLMixinService() {
-                                @Override
-                                public void prepare() {
-                                    service.prepare();
-                                }
+                        Reflect.set(MixinService.class, "service", mixinservice, new FMLMixinService() {
+                            @Override
+                            public void prepare() {
+                                service.prepare();
+                            }
 
-                                @Override
-                                public MixinEnvironment.Phase getInitialPhase() {
-                                    return service.getInitialPhase();
-                                }
+                            @Override
+                            public MixinEnvironment.Phase getInitialPhase() {
+                                return service.getInitialPhase();
+                            }
 
-                                @Override
-                                public void init() {
-                                    service.init();
-                                }
+                            @Override
+                            public void init() {
+                                service.init();
+                            }
 
-                                @Override
-                                public void beginPhase() {
-                                    service.beginPhase();
-                                }
+                            @Override
+                            public void beginPhase() {
+                                service.beginPhase();
+                            }
 
-                                @Override
-                                public void checkEnv(Object bootSource) {
-                                    service.checkEnv(bootSource);
-                                }
+                            @Override
+                            public void checkEnv(Object bootSource) {
+                                service.checkEnv(bootSource);
+                            }
 
-                                @Override
-                                public ReEntranceLock getReEntranceLock() {
-                                    return service.getReEntranceLock();
-                                }
+                            @Override
+                            public ReEntranceLock getReEntranceLock() {
+                                return service.getReEntranceLock();
+                            }
 
-                                @Override
-                                public String getSideName() {
-                                    return service.getSideName();
-                                }
+                            @Override
+                            public String getSideName() {
+                                return service.getSideName();
+                            }
 
-                                @Override
-                                public void setBytecodeProvider(@Nullable IClassBytecodeProvider bytecodeProvider) {
-                                    service.setBytecodeProvider(bytecodeProvider);
-                                }
+                            @Override
+                            public void setBytecodeProvider(@Nullable IClassBytecodeProvider bytecodeProvider) {
+                                service.setBytecodeProvider(bytecodeProvider);
+                            }
 
-                                @Override
-                                public void offer(IMixinInternal internal) {
-                                    service.offer(internal);
-                                }
+                            @Override
+                            public void offer(IMixinInternal internal) {
+                                service.offer(internal);
+                            }
 
-                                @Override
-                                public String getName() {
-                                    return service.getName();
-                                }
+                            @Override
+                            public String getName() {
+                                return service.getName();
+                            }
 
-                                @Override
-                                public MixinEnvironment.CompatibilityLevel getMinCompatibilityLevel() {
-                                    return service.getMinCompatibilityLevel();
-                                }
+                            @Override
+                            public MixinEnvironment.CompatibilityLevel getMinCompatibilityLevel() {
+                                return service.getMinCompatibilityLevel();
+                            }
 
-                                @Override
-                                public MixinEnvironment.CompatibilityLevel getMaxCompatibilityLevel() {
-                                    return service.getMaxCompatibilityLevel();
-                                }
+                            @Override
+                            public MixinEnvironment.CompatibilityLevel getMaxCompatibilityLevel() {
+                                return service.getMaxCompatibilityLevel();
+                            }
 
-                                @Override
-                                public ILogger getLogger(String name) {
-                                    return service.getLogger(name);
-                                }
+                            @Override
+                            public ILogger getLogger(String name) {
+                                return service.getLogger(name);
+                            }
 
-                                @Override
-                                public boolean isValid() {
-                                    return service.isValid();
-                                }
+                            @Override
+                            public boolean isValid() {
+                                return service.isValid();
+                            }
 
-                                @Override
-                                public IClassProvider getClassProvider() {
-                                    return service.getClassProvider();
-                                }
+                            @Override
+                            public IClassProvider getClassProvider() {
+                                return service.getClassProvider();
+                            }
 
-                                @Override
-                                public IClassBytecodeProvider getBytecodeProvider() {
-                                    var value = service.getBytecodeProvider();
+                            @Override
+                            public IClassBytecodeProvider getBytecodeProvider() {
+                                var value = service.getBytecodeProvider();
+
+                                if (!injected) {
+                                    injected = true;
+
                                     var delegate = Reflect.get(value.getClass(), "bytecodeProvider", BytecodeProvider.class, value);
 
                                     Reflect.set(value.getClass(), "bytecodeProvider", value, new BytecodeProvider() {
@@ -255,128 +258,86 @@ public class Magician {
                                             return delegate.getByteCode(className);
                                         }
                                     });
-
-                                    return new IClassBytecodeProvider() {
-                                        @Override
-                                        public ClassNode getClassNode(String name) throws ClassNotFoundException, IOException {
-                                            return value.getClassNode(name);
-                                        }
-
-                                        @Override
-                                        public ClassNode getClassNode(String name, boolean runTransformers) throws ClassNotFoundException, IOException {
-                                            return value.getClassNode(name, runTransformers);
-                                        }
-
-                                        @Override
-                                        public ClassNode getClassNode(String name, boolean runTransformers, int readerFlags) throws ClassNotFoundException, IOException {
-                                            return value.getClassNode(name, runTransformers, readerFlags);
-                                        }
-                                    };
                                 }
 
-                                @Override
-                                public ITransformerProvider getTransformerProvider() {
-                                    return service.getTransformerProvider();
-                                }
+                                return value;
+                            }
 
-                                @Override
-                                public IClassTracker getClassTracker() {
-                                    return service.getClassTracker();
-                                }
+                            @Override
+                            public ITransformerProvider getTransformerProvider() {
+                                return service.getTransformerProvider();
+                            }
 
-                                @Override
-                                public IMixinAuditTrail getAuditTrail() {
-                                    return service.getAuditTrail();
-                                }
+                            @Override
+                            public IClassTracker getClassTracker() {
+                                return service.getClassTracker();
+                            }
 
-                                @Override
-                                public IFeatureValidator getFeatureValidator() {
-                                    return service.getFeatureValidator();
-                                }
+                            @Override
+                            public IMixinAuditTrail getAuditTrail() {
+                                return service.getAuditTrail();
+                            }
 
-                                @Override
-                                public IAdviceProvider getAdviceProvider() {
-                                    return service.getAdviceProvider();
-                                }
+                            @Override
+                            public IFeatureValidator getFeatureValidator() {
+                                return service.getFeatureValidator();
+                            }
 
-                                @Override
-                                public IMixinTransformer getMixinTransformer() {
-                                    return service.getMixinTransformer();
-                                }
+                            @Override
+                            public IAdviceProvider getAdviceProvider() {
+                                return service.getAdviceProvider();
+                            }
 
-                                @Override
-                                public Collection<String> getPlatformAgents() {
-                                    return service.getPlatformAgents();
-                                }
+                            @Override
+                            public IMixinTransformer getMixinTransformer() {
+                                return service.getMixinTransformer();
+                            }
 
-                                @Override
-                                public IContainerHandle getPrimaryContainer() {
-                                    return service.getPrimaryContainer();
-                                }
+                            @Override
+                            public Collection<String> getPlatformAgents() {
+                                return service.getPlatformAgents();
+                            }
 
-                                @Override
-                                public Collection<IContainerHandle> getMixinContainers() {
-                                    return service.getMixinContainers();
-                                }
+                            @Override
+                            public IContainerHandle getPrimaryContainer() {
+                                return service.getPrimaryContainer();
+                            }
 
-                                @Override
-                                public InputStream getResourceAsStream(String name) {
-//                                    // HERE!
-//                                    if (!injected) {
-//                                        injection:
-//                                        {
-//                                            ModuleLayer parent;
-//
-//                                            try {
-//                                                parent = FMLLoader.getCurrent().getGameLayer();
-//                                            } catch (Throwable e) {
-//                                                break injection;
-//                                            }
-//
-//                                            injected = true;
-//
-//                                            try (var classLoader = new URLClassLoader(new URL[]{out.toURI().toURL()})) {
-//                                                // FMLLoader.getCurrent().ownedResources
-//
-//                                                var content = new JarContentsModule(new JarFileContents(out.toPath()));
-//
-//                                                ModuleLayer.defineModules(Configuration.resolveAndBind(
-//                                                        new JarContentsModuleFinder(List.of(content)),
-//                                                        List.of(parent.configuration()),
-//                                                        ModuleFinder.of(),
-//                                                        List.of(content.moduleName())
-//                                                ), List.of(parent), f -> classLoader);
-//                                            } catch (IOException e) {
-//                                                throw new RuntimeException(e);
-//                                            }
-//                                        }
-//                                    }
+                            @Override
+                            public Collection<IContainerHandle> getMixinContainers() {
+                                return service.getMixinContainers();
+                            }
 
-                                    return service.getResourceAsStream(name);
-                                }
+                            @Override
+                            public InputStream getResourceAsStream(String name) {
+                                return service.getResourceAsStream(name);
+                            }
 
-                                @Override
-                                public void addMixinConfigContent(String config, byte[] resource) {
-                                    service.addMixinConfigContent(config, resource);
-                                }
+                            @Override
+                            public void addMixinConfigContent(String config, byte[] resource) {
+                                service.addMixinConfigContent(config, resource);
+                            }
 
-                                @Override
-                                public void addMixinContainer(IContainerHandle handle) {
-                                    service.addMixinContainer(handle);
-                                }
+                            @Override
+                            public void addMixinContainer(IContainerHandle handle) {
+                                service.addMixinContainer(handle);
+                            }
 
-                                @Override
-                                public void clearMixinContainers() {
-                                    service.clearMixinContainers();
-                                }
+                            @Override
+                            public void clearMixinContainers() {
+                                service.clearMixinContainers();
+                            }
 
-//                                boolean injected = false;
-                            });
+                            boolean injected = false;
+                        });
 
-                            service.addMixinConfigContent(config.getValue().runtimeName, stream.readAllBytes());
+                        for (var config : configs.entrySet()) {
+                            try (var stream = zip.getInputStream(zip.getEntry(config.getKey()))) {
+                                service.addMixinConfigContent(config.getValue().runtimeName, stream.readAllBytes());
+                            }
+
+                            Mixins.addConfiguration(config.getValue().runtimeName);
                         }
-
-                        Mixins.addConfiguration(config.getValue().runtimeName);
                     }
                 } catch (IOException e) {
                     throw new RuntimeException("Failed to process Avoid mod: '%s'".formatted(mod.manifest().get("id").getAsString()), e);
