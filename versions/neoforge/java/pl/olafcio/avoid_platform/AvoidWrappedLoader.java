@@ -6,12 +6,12 @@ import net.neoforged.fml.loading.moddiscovery.ModFile;
 import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
 import net.neoforged.neoforgespi.language.IModInfo;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.RunningEnv;
-import pl.olafcio.avoid.mods.ModEnvironment;
-import pl.olafcio.avoid.platform.PlatformContact;
-import pl.olafcio.avoid.platform.PlatformContributor;
-import pl.olafcio.avoid.platform.PlatformDependency;
-import pl.olafcio.avoid.platform.PlatformMod;
+import pl.olafcio.avoid.platform.RunningEnv;
+import pl.olafcio.avoid.util.ModEnvironment;
+import pl.olafcio.avoid.platform.mod.PlatformContact;
+import pl.olafcio.avoid.platform.mod.PlatformContributor;
+import pl.olafcio.avoid.platform.mod.PlatformDependency;
+import pl.olafcio.avoid.platform.mod.PlatformMod;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -56,14 +56,15 @@ public final class AvoidWrappedLoader {
                     meta.getModId(),
                     meta.getDisplayName(),
                     meta.getDescription(),
-                    Arrays.stream(((String) meta.getModProperties().get("authors"))
-                            .replace("&", ",")
-                            .replace(";", ",")
-                            .replaceAll("( -)|--", ",")
-                            .replaceAll("[, ]a*n+'*d*[: ]", ",")
-                            .split(","))  //TODO what am i chatgpt? it's impossible to do this right
-                            .map(str -> new PlatformContributor(str, new PlatformContact(Map.of())))
-                            .toArray(PlatformContributor[]::new),
+                    meta.getConfig().<String>getConfigElement("authors")
+                                    .map(authors -> Arrays.stream(authors.replace("&", ",")
+                                                                               .replace(";", ",")
+                                                                               .replaceAll("( -)|--", ",")
+                                                                               .replaceAll("[, ]a*n+'*d*[: ]", ",")
+                                                                               .split(","))  //TODO what am i chatgpt? it's impossible to do this right
+                                                                .map(str -> new PlatformContributor(str, new PlatformContact(Map.of())))
+                                                                .toArray(PlatformContributor[]::new))
+                                    .orElseGet(() -> new PlatformContributor[0]),
                     null,
                     new PlatformContact(new HashMap<>() {{
                         if (mod.getIssueURL() != null)

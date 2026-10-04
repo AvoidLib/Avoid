@@ -10,11 +10,13 @@ import java.nio.file.Path
 class EnvProcessing implements ITransformer {
     private Project project
     private String onlyIn, dist
+    private String server
 
-    EnvProcessing(Project project, String onlyIn, String dist) {
+    EnvProcessing(Project project, String onlyIn, String dist, String server = "SERVER") {
         this.project = project
         this.onlyIn = onlyIn
         this.dist = dist
+        this.server = server
     }
 
     @Override
@@ -22,6 +24,7 @@ class EnvProcessing implements ITransformer {
         Files.writeString(sub, Files.readString(sub, StandardCharsets.UTF_8) \
                                     .replace("net.fabricmc.api.Environment", onlyIn) \
                                     .replace("net.fabricmc.api.EnvType", dist) \
+                                    .replace("@Environment(EnvType.SERVER", "@Environment(EnvType." + server) \
                                     .replace("@Environment(EnvType.", "@${onlyIn.split("\\.").toList().getLast()}(${dist.split("\\.").toList().getLast()}."), StandardCharsets.UTF_8)
     }
 }

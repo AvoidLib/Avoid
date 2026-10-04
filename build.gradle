@@ -156,7 +156,7 @@ code {
     entityTypes()
 
     if (neoforge) {
-        replaceEnvAnnot("net.neoforged.api.distmarker.OnlyIn", "net.neoforged.api.distmarker.Dist")
+        replaceEnvAnnot("net.neoforged.api.distmarker.OnlyIn", "net.neoforged.api.distmarker.Dist", "DEDICATED_SERVER")
     } else if (paper) {
         replaceEnvAnnot("pl.olafcio.avoid.annotations.dist.OnlyIn", "pl.olafcio.avoid.annotations.dist.Dist")
         reflectionizeMixinAccessors()
