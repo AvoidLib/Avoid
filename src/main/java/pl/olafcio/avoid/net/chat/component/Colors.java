@@ -4,7 +4,6 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 import org.jspecify.annotations.NullMarked;
-import pl.olafcio.avoid.annotations.Untested;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 
 import java.awt.*;

@@ -4,8 +4,6 @@ import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.id.Identification;
 
-import java.util.UUID;
-
 @WillRefactor(aspect = "name, fields, methods, superclass")
 public class AtlasComponent extends BaseComponent<AtlasComponent> {
     private final Identification atlas;

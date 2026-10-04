@@ -3,9 +3,9 @@ package pl.olafcio.avoid_loader;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.commons.codec.digest.DigestUtils;
-import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid.platform.RunningEnv;
-import pl.olafcio.avoid.mods.ModEnvironment;
+import pl.olafcio.avoid.util.ModEnvironment;
+import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

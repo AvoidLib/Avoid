@@ -1,7 +1,6 @@
 package pl.olafcio.avoid.platform;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 import pl.olafcio.avoid.platform.mod.PlatformMod;
 
 import java.nio.file.Path;
@@ -10,7 +9,7 @@ import java.util.Set;
 
 /**
  * A wrapper over some of the parent running modloader's API.<br/><br/>
- * <b>NOTE:</b> If you want the Avoid addon loader API, take a look at {@link AvoidModLoader}.
+ * <b>NOTE:</b> If you want the Avoid addon loader API, take a look at {@link pl.olafcio.avoid.mods.loader.AvoidModLoader AvoidModLoader}.
  */
 @ApiStatus.Experimental
 public final class AvoidWrappedLoader {

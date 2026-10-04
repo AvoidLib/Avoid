@@ -4,13 +4,11 @@ import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.command.annotation.Permission;
 import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.handling.CommandHandler;
-import pl.olafcio.avoid.net.command.handling.Usage;
 import pl.olafcio.avoid.net.command.parameter.CommandParameter;
 
 import java.lang.annotation.Annotation;
 import java.util.LinkedHashMap;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * The syntax tree of a command.

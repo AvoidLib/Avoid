@@ -2,7 +2,7 @@ package pl.olafcio.avoid.platform.mod;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.Discouraged;
-import pl.olafcio.avoid.mods.ModEnvironment;
+import pl.olafcio.avoid.util.ModEnvironment;
 
 import java.util.List;
 import java.util.Set;

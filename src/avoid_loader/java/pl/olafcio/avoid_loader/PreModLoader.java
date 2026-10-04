@@ -2,9 +2,9 @@ package pl.olafcio.avoid_loader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid_loader.subloaders.ILoader;
 import pl.olafcio.avoid_loader.subloaders.ITransformer;
+import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 import pl.olafcio.avoid_platform.PMLImpl;
 
 import java.io.IOException;

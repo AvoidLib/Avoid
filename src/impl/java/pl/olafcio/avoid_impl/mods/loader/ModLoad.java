@@ -13,7 +13,7 @@ import pl.olafcio.avoid.platform.RunningEnv;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModBase;
 import pl.olafcio.avoid.mods.AvoidModMeta;
-import pl.olafcio.avoid.mods.ModEnvironment;
+import pl.olafcio.avoid.util.ModEnvironment;
 import pl.olafcio.avoid.mods.annotation_processor.*;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid.mods.events_loader.ModBeforeLoadEvent;

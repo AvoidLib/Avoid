@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.mods;
+package pl.olafcio.avoid.util;
 
 import org.jetbrains.annotations.ApiStatus;
 

@@ -2,9 +2,7 @@ package pl.olafcio.avoid.net.player_server.event;
 
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.mods.event.Cancellable;
-import pl.olafcio.avoid.mods.event_group.EntityEvent;
 import pl.olafcio.avoid.mods.event_group.PlayerEvent;
-import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
 import pl.olafcio.avoid.net.player.Player;
 

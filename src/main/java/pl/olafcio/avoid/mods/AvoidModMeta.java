@@ -2,6 +2,7 @@ package pl.olafcio.avoid.mods;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
+import pl.olafcio.avoid.util.ModEnvironment;
 
 import java.util.List;
 

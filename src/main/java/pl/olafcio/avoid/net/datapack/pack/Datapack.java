@@ -1,6 +1,5 @@
 package pl.olafcio.avoid.net.datapack.pack;
 
-import net.minecraft.server.packs.*;
 import pl.olafcio.avoid.annotations.refactor.Discouraged;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;

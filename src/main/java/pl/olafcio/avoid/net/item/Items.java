@@ -5,7 +5,6 @@ import pl.olafcio.avoid_impl.mods.loader.AvoidPackageOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid.net.item.properties.*;
 
 import java.util.function.Function;
 import java.util.function.Supplier;

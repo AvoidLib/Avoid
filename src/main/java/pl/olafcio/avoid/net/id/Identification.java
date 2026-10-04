@@ -1,7 +1,6 @@
 package pl.olafcio.avoid.net.id;
 
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;

@@ -97,9 +97,9 @@ public final class AvoidWrappedLoader {
                                           .toArray(PlatformContributor[]::new), new PlatformContact(meta.getContact().asMap()),
                     meta.getLicense().stream().collect(Collectors.toUnmodifiableSet()),
                     meta.getVersion().getFriendlyString(),
-                    meta.getEnvironment() == ModEnvironment.CLIENT    ? pl.olafcio.avoid.mods.ModEnvironment.CLIENT :
-                    meta.getEnvironment() == ModEnvironment.UNIVERSAL ? pl.olafcio.avoid.mods.ModEnvironment.ALL    :
-                                                                        pl.olafcio.avoid.mods.ModEnvironment.SERVER,
+                    meta.getEnvironment() == ModEnvironment.CLIENT    ? pl.olafcio.avoid.util.ModEnvironment.CLIENT :
+                    meta.getEnvironment() == ModEnvironment.UNIVERSAL ? pl.olafcio.avoid.util.ModEnvironment.ALL    :
+                                                                        pl.olafcio.avoid.util.ModEnvironment.SERVER,
                     dependencies,
                     meta.getType().equals("builtin") ? PlatformMod.Type.BUILTIN :
                     meta.getType().equals("fabric")  ? PlatformMod.Type.FABRIC  :

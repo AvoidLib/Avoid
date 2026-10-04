@@ -272,13 +272,22 @@ processResources {
 //apply from: project.file('x_build/generation.gradle')
 
 sourceSets {
+    avoid_loader {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+
+        if (fabric)
+            java { srcDir 'src/avoid_loader/fabric' }
+    }
+
     main {
+        compileClasspath += avoid_loader.output
+        runtimeClasspath += avoid_loader.output
+
         java { srcDir 'src/main/generated'   }
         java { srcDir 'src/impl/java'        }
 
         resources { srcDir 'src/impl/resources' }
-
-        java { srcDir 'src/avoid_loader/java' }
 
         if (fabric) {
             java      { srcDir 'src/fabric/java'      }
@@ -329,9 +338,29 @@ java {
         withSourcesJar()
 }
 
+if (neoforge) {
+    tasks.register('loader_jar', Jar) {
+        archiveClassifier = 'serviced'
+
+        from("omit_mappings" !in project.getProperties() ? remapJar : jar) {
+            rename { "avoid.jar" }
+        }
+
+        from(sourceSets.avoid_loader.output)
+    }
+
+    artifacts {
+        archives loader_jar
+    }
+}
+
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
+    }
+
+    if (!neoforge) {
+        from sourceSets.main.output, sourceSets.avoid_loader.output
     }
 
     if (sponge) {
@@ -363,6 +392,8 @@ publishing {
 import pl.olafcio.limepublish.enums.Environment
 import pl.olafcio.limepublish.enums.VersionType
 import pl.olafcio.limepublish.enums.Platform
+
+import java.util.zip.ZipFile
 
 release {
     name           "Avoid v${project.version} [${minecraft_version}]"

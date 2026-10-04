@@ -5,7 +5,6 @@ import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.mods.event_group.PlayerEvent;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.player.Player;
-import pl.olafcio.avoid.net.player.gamemode.GameMode;
 
 @NeverRemoval
 public final class ServerPlayerKickEvent extends Cancellable implements PlayerEvent {

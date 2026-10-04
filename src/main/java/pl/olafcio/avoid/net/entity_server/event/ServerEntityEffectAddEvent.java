@@ -1,7 +1,6 @@
 package pl.olafcio.avoid.net.entity_server.event;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.mods.event_group.EntityEvent;
 import pl.olafcio.avoid.net.effect.instance.EffectInstance;

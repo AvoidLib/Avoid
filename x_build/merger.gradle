@@ -19,7 +19,7 @@ void scheduleMerging() {
     tasks.build.doLast {
         var paths = [
                 "fabric":   rootProject.file("build/libs/avoidlib+" +     "${project.minecraft_version}-${project.version}.jar"),
-                "neoforge": rootProject.file("build/libs/avoidlib+neoforge-${project.minecraft_version}-${project.version}.jar"),
+                "neoforge": rootProject.file("build/libs/avoidlib+neoforge-${project.minecraft_version}-${project.version}-serviced.jar"),
                 "quilt":    rootProject.file("build/libs/avoidlib+quilt-${project.minecraft_version}-${project.version}.jar")
         ]
 

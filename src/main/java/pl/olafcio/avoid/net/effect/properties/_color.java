@@ -1,7 +1,6 @@
 package pl.olafcio.avoid.net.effect.properties;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 
 import java.lang.annotation.*;
 

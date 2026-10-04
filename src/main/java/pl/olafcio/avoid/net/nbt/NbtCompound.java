@@ -1,6 +1,5 @@
 package pl.olafcio.avoid.net.nbt;
 
-import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
 import pl.olafcio.avoid.annotations.describe.CanIgnoreReturnValue;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
