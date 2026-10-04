@@ -8,6 +8,8 @@ import java.lang.annotation.Target;
 /**
  * Exposes the type onto the game classpath.<br/>
  * Note that this is automatically done for mixins.
+ * <br/><br/>
+ * <b>WARNING: This doesn't work on NeoForge.</b>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.CLASS)

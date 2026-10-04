@@ -18,15 +18,18 @@ public final class PMLImpl {
                   = new ArrayList<>();
 
     public static void addToClasspath(Path path) {
-        var ucl = (URLClassLoader) PMLImpl.class.getClassLoader();
+        throw new RuntimeException("[PreModLoader#addToClasspath] This is not implemented on NeoForge!\n  > tried adding: '%s'".formatted(path));
 
-        try {
-            Reflect.call(URLClassLoader.class, "addURL", ucl, new Class<?>[]{ URL.class }, new Object[]{
-                    path.toUri().toURL()
-            });
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("[PreModLoader#addToClasspath] Failed adding '%s'  /MalformedURLException".formatted(path), e);
-        }
+        // v  Doesn't work because java modules
+//        var ucl = (URLClassLoader) PMLImpl.class.getClassLoader();
+//
+//        try {
+//            Reflect.call(URLClassLoader.class, "addURL", ucl, new Class<?>[]{ URL.class }, new Object[]{
+//                    path.toUri().toURL()
+//            });
+//        } catch (MalformedURLException e) {
+//            throw new RuntimeException("[PreModLoader#addToClasspath] Failed adding '%s'  /MalformedURLException".formatted(path), e);
+//        }
     }
 
     public static void addTransformer(ITransformer transformer) {

@@ -83,8 +83,10 @@ public final class Reflect {
         try {
             var f = klass.getDeclaredField(name);
             f.setAccessible(true);
-            f.set(parent, value);
-        } catch (IllegalAccessException | NoSuchFieldException e) {
+            MethodHandles.privateLookupIn(klass, MethodHandles.lookup())
+                         .unreflectSetter(f)
+                         .invoke(parent, value);
+        } catch (Throwable e) {
             throw new RuntimeException("AvoidLib failed to reflectively set '%s'".formatted(klass.getName()), e);
         }
     }
