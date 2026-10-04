@@ -103,17 +103,17 @@ repositories {
         url 'https://jitpack.io/'
     }
 
-    if (neoforge) {
-        maven {
-            name 'neoforged'
-            url 'https://maven.neoforged.net/releases/'
-        }
-    }
-
     if (sponge) {
         maven {
             name 'spongepowered'
             url 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+    }
+
+    if (neoforge || sponge) {
+        maven {
+            name 'neoforged'
+            url 'https://maven.neoforged.net/releases/'
         }
     }
 
@@ -181,7 +181,8 @@ dependencies {
     }
 
     if (sponge) {
-        compileOnly fileTree(rootProject.file("libs/sponge"))
+        compileOnly "org.spongepowered:spongeapi:19.0.0-SNAPSHOT"
+        compileOnly "cpw.mods:modlauncher:10.0.9"
 
         compileOnly "org.spongepowered:mixin:0.8.7"
         compileOnly "io.github.llamalad7:mixinextras-common:0.5.4"

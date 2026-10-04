@@ -1,4 +1,4 @@
-package pl.olafcio.avoid_impl;
+package pl.olafcio.avoid_platform;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.api.Sponge;
@@ -6,8 +6,8 @@ import org.spongepowered.plugin.PluginContainer;
 import org.spongepowered.plugin.metadata.model.PluginDependency;
 import pl.olafcio.avoid.mods.ModEnvironment;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
-import pl.olafcio.avoid.platform.*;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.platform.mod.*;
+import pl.olafcio.avoid.util.RunningEnv;
 
 import java.nio.file.Path;
 import java.util.*;
