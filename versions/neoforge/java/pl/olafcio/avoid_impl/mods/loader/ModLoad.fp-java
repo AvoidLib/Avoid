@@ -1,0 +1,19 @@
+import pl.olafcio.avoid_loader.ModClassLoader;
+
+{
+    var classLoader = container.classLoader();
+
+    //=== neoforge ===//
+
+    // Extending ModClassLoader because it genuinely makes manipulating classloading easier.
+    var pluginCL = container.classLoader();
+    var classLoader = new ModClassLoader(pluginCL.getURLs(), this.getClass().getClassLoader()) {
+        @Override
+        protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+            if (pluginCL.isClassLoaded(name))
+                return pluginCL.loadClass(name);
+
+            return super.loadClass(name, resolve);
+        }
+    };
+}
