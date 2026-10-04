@@ -8,7 +8,7 @@ import pl.olafcio.avoid.net.screen.*;
 import pl.olafcio.avoid.net.screen.KeyboardEvent;
 import pl.olafcio.avoid.net.screen.MouseEvent;
 import pl.olafcio.avoid_impl.A4;
-import pl.olafcio.avoid.AvoidWrappedLoader;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid_impl.mixininterface.IScreen;
 import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.id.Identification;

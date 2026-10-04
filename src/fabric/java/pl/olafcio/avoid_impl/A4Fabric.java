@@ -1,7 +1,7 @@
 package pl.olafcio.avoid_impl;
 
 import net.fabricmc.api.ModInitializer;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 
 public final class A4Fabric implements ModInitializer {
     @Override

@@ -21,7 +21,7 @@
       "pl.olafcio.avoid_impl.A4Fabric"
     ],
     "preLaunch": [
-      "pl.olafcio.avoid_impl.Magician"
+      "pl.olafcio.avoid_platform.Magician"
     ]
   },
   "mixins": [

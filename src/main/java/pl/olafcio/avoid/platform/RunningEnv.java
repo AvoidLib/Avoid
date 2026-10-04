@@ -1,4 +1,4 @@
-package pl.olafcio.avoid;
+package pl.olafcio.avoid.platform;
 
 import org.jetbrains.annotations.ApiStatus;
 

@@ -1,6 +1,5 @@
-package pl.olafcio.avoid_impl;
+package pl.olafcio.avoid_platform;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.fabricmc.loader.impl.game.GameProvider;
 import net.fabricmc.loader.impl.launch.FabricLauncherBase;
@@ -14,7 +13,7 @@ import org.spongepowered.asm.mixin.transformer.IMixinTransformer;
 import org.spongepowered.asm.mixin.transformer.ext.IExtensionRegistry;
 import org.spongepowered.asm.transformers.MixinClassReader;
 import org.spongepowered.asm.transformers.MixinClassWriter;
-import pl.olafcio.avoid.mods.loader.subloader.ITransformer;
+import pl.olafcio.avoid_loader.subloaders.ITransformer;
 
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;

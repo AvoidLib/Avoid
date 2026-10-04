@@ -1,7 +1,7 @@
 package pl.olafcio.avoid.net.payload;
 
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.NotImplementedException;
+import pl.olafcio.avoid.errors.NotImplementedException;
 
 @ApiStatus.Experimental
 public abstract class CustomPayload {

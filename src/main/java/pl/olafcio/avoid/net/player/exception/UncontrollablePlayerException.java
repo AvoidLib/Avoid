@@ -1,6 +1,6 @@
 package pl.olafcio.avoid.net.player.exception;
 
-import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.errors.ImproperEnvironment;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 
 @NeverRemoval

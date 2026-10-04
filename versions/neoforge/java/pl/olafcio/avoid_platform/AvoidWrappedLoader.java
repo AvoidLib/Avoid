@@ -1,4 +1,4 @@
-package pl.olafcio.avoid_impl;
+package pl.olafcio.avoid_platform;
 
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;

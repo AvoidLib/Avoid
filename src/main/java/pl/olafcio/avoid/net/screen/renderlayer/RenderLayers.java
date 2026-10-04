@@ -3,10 +3,10 @@ package pl.olafcio.avoid.net.screen.renderlayer;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.renderer.RenderPipelines;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.ImproperEnvironment;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.api.Avoid;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.errors.ImproperEnvironment;
+import pl.olafcio.avoid.platform.RunningEnv;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;

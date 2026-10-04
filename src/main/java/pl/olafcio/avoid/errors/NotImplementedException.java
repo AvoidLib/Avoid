@@ -1,4 +1,4 @@
-package pl.olafcio.avoid;
+package pl.olafcio.avoid.errors;
 
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 

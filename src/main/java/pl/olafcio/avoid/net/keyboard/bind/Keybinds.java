@@ -3,8 +3,8 @@ package pl.olafcio.avoid.net.keyboard.bind;
 import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.platform.RunningEnv;
 import pl.olafcio.avoid.net.keyboard.Keyboard;
 
 import java.util.function.Supplier;

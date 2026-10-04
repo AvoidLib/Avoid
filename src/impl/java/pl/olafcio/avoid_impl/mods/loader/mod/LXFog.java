@@ -2,18 +2,12 @@ package pl.olafcio.avoid_impl.mods.loader.mod;
 
 import com.google.common.base.CaseFormat;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.Avoid;
-import pl.olafcio.avoid.mods.annotation_processor.AutoFluid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.mods.annotation_processor.AutoFog;
-import pl.olafcio.avoid.mods.annotation_processor.AutoID;
-import pl.olafcio.avoid.net.fluid.Fluid;
-import pl.olafcio.avoid.net.fluid.Fluids;
 import pl.olafcio.avoid.net.fog.Fog;
 import pl.olafcio.avoid.net.fog.Fogs;
-import pl.olafcio.avoid.net.id.Identification;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
 public interface LXFog {

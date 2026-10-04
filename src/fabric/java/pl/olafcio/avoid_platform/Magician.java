@@ -1,4 +1,4 @@
-package pl.olafcio.avoid_impl;
+package pl.olafcio.avoid_platform;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

@@ -3,9 +3,9 @@ package pl.olafcio.avoid.net.client.session;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
-import pl.olafcio.avoid.AvoidWrappedLoader;
-import pl.olafcio.avoid.ImproperEnvironment;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.errors.ImproperEnvironment;
+import pl.olafcio.avoid.platform.RunningEnv;
 import pl.olafcio.avoid_impl.net.client.session.ClientSessionNative;
 
 import java.util.UUID;
