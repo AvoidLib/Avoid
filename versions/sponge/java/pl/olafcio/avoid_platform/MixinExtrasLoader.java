@@ -1,4 +1,4 @@
-package pl.olafcio.avoid_impl;
+package pl.olafcio.avoid_platform;
 
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 
@@ -9,10 +9,13 @@ import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
+import pl.olafcio.avoid_loader.PreModLoader;
+
 public final class MixinExtrasLoader implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         MixinExtrasBootstrap.init();
+        PreModLoader.preload();
     }
 
     @Override

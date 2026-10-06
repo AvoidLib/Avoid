@@ -1,13 +1,13 @@
-package pl.olafcio.avoid_impl;
+package pl.olafcio.avoid_platform;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.plugin.PluginContainer;
 import org.spongepowered.plugin.metadata.model.PluginDependency;
-import pl.olafcio.avoid.mods.ModEnvironment;
-import pl.olafcio.avoid.mods.loader.AvoidModLoader;
-import pl.olafcio.avoid.platform.*;
-import pl.olafcio.avoid.RunningEnv;
+import pl.olafcio.avoid.util.ModEnvironment;
+import pl.olafcio.avoid.platform.mod.*;
+import pl.olafcio.avoid.platform.RunningEnv;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 /**
  * A wrapper over some of the parent running modloader's API.<br/><br/>
- * <b>NOTE:</b> If you want the Avoid addon loader API, take a look at {@link AvoidModLoader}.
+ * <b>NOTE:</b> If you want the Avoid addon loader API, take a look at {@link pl.olafcio.avoid.mods.loader.AvoidModLoader AvoidModLoader}.
  */
 @ApiStatus.Experimental
 public final class AvoidWrappedLoader {
@@ -115,8 +115,15 @@ public final class AvoidWrappedLoader {
      * Returns the type of the running environment.
      */
     public static RunningEnv getRunningEnvironment() {
-        return Sponge.game().platform().type().isClient()
-                ? RunningEnv.CLIENT
-                : RunningEnv.SERVER;
+        try {
+            return Sponge.game().platform().type().isClient()
+                    ? RunningEnv.CLIENT
+                    : RunningEnv.SERVER;
+        } catch (Exception e) {
+            // Sponge API-s uninitialized
+            return MixinEnvironment.getCurrentEnvironment().getSide() == MixinEnvironment.Side.CLIENT
+                    ? RunningEnv.CLIENT
+                    : RunningEnv.SERVER;
+        }
     }
 }

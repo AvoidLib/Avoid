@@ -1,0 +1,4 @@
+{
+    loadedMods.addAll(AvoidWrappedLoader.getMods().stream().map(PlatformMod::id).toList());
+    // loadedMods.addAll(AvoidWrappedLoader.getMods().stream().map(PlatformMod::id).toList());
+}
