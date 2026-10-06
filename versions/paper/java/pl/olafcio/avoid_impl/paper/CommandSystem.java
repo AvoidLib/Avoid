@@ -65,7 +65,7 @@ public class CommandSystem {
                 if (source.getSender() instanceof Player player) {
                     return PlayerNative.convertFrom(Util.convert(player));
                 } else {
-                    return new UnknownExecutor(source);
+                    return new MyUnknownExecutor(source);
                 }
             }
 

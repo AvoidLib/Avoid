@@ -1,6 +1,6 @@
 {
-    AvoidWrappedLoader.getModsPaths()
-    Set.<Path>of()
+    loadedMods.addAll(AvoidWrappedLoader.getMods().stream().map(PlatformMod::id).toList());
+    //loadedMods.addAll(AvoidWrappedLoader.getMods().stream().map(PlatformMod::id).toList());
 }
 
 {

@@ -1,0 +1,25 @@
+import net.minecraft.server.packs.repository.Pack;
+import pl.olafcio.avoid_impl.Reflect;
+import java.io.File;
+
+{
+    private static Path getPath(net.minecraft.server.packs.repository.Pack pack) {
+    private static Path getPath(net.minecraft.server.packs.repository.Pack pack) {
+        var resources = Reflect.get(Pack.class, "resources", Pack.ResourcesSupplier.class, pack);
+
+        if (resources instanceof FilePackResources.FileResourcesSupplier fileSupplier) {
+            var content = Reflect.get(FilePackResources.FileResourcesSupplier.class, "content", File.class, fileSupplier);
+            return content.toPath();
+        } else if (resources instanceof PathPackResources.PathResourcesSupplier pathSupplier) {
+            var content = Reflect.get(PathPackResources.PathResourcesSupplier.class, "content", Path.class, pathSupplier);
+            return content;
+        } else
+            return null;
+
+        /*
+}
+
+{
+    //at:getpathend
+    */
+}

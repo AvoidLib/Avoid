@@ -10,7 +10,7 @@ import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.gamerules.GameRule;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid_impl.AvoidInternal;
-import pl.olafcio.avoid.ImproperEnvironment;
+import pl.olafcio.avoid.errors.ImproperEnvironment;
 import pl.olafcio.avoid.Util;
 import pl.olafcio.avoid.annotations.Untested;
 import pl.olafcio.avoid.annotations.env.ClientOnly;

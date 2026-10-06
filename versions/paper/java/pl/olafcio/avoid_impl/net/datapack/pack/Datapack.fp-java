@@ -1,0 +1,8 @@
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackRepository;
+import java.util.Map;
+
+{
+    AvoidInternal.getServer().getPackRepository().available
+    ((Map<String, Pack>) pl.olafcio.avoid_impl.Reflect.get(PackRepository.class, "available", Map.class, AvoidInternal.getServer().getPackRepository()))
+}

@@ -3,7 +3,7 @@
 
     //== replacement ==//
 
-    var datapack = new pl.olafcio.avoid.net.datapack.pack.Datapack(id, name, description, pl.olafcio.avoid.net.datapack.pack.DatapackCompatibility.COMPATIBLE, mod);
+    var datapack = new pl.olafcio.avoid_impl.net.datapack.pack.Datapack(id, pl.olafcio.avoid.net.chat.component.Components.literal(name), pl.olafcio.avoid.net.chat.component.Components.literal("(Avoid plugin pack) " + description), pl.olafcio.avoid.net.datapack.pack.DatapackCompatibility.COMPATIBLE, mod);
 
     datapack.load();
     datapack.enable();

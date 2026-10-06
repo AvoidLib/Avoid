@@ -1,13 +1,13 @@
-package pl.olafcio.avoid_impl;
+package pl.olafcio.avoid_platform;
 
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid.RunningEnv;
-import pl.olafcio.avoid.mods.ModEnvironment;
-import pl.olafcio.avoid.platform.PlatformContact;
-import pl.olafcio.avoid.platform.PlatformContributor;
-import pl.olafcio.avoid.platform.PlatformDependency;
-import pl.olafcio.avoid.platform.PlatformMod;
+import pl.olafcio.avoid.platform.RunningEnv;
+import pl.olafcio.avoid.util.ModEnvironment;
+import pl.olafcio.avoid.platform.mod.PlatformContact;
+import pl.olafcio.avoid.platform.mod.PlatformContributor;
+import pl.olafcio.avoid.platform.mod.PlatformDependency;
+import pl.olafcio.avoid.platform.mod.PlatformMod;
 
 import java.nio.file.Path;
 import java.util.*;

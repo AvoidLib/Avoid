@@ -19,7 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
-import pl.olafcio.avoid.Avoid;
+import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.Util;
 import pl.olafcio.avoid.mods.event.EventManager;
