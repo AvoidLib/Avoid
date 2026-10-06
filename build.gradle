@@ -354,12 +354,18 @@ if (neoforge) {
     }
 }
 
+if (sponge) {
+    shadowJar {
+        from sourceSets.main.output, sourceSets.avoid_loader.output
+    }
+}
+
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
     }
 
-    if (!neoforge) {
+    if (!neoforge && !sponge) {
         from sourceSets.main.output, sourceSets.avoid_loader.output
     }
 
