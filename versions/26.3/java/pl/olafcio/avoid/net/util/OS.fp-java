@@ -1,0 +1,6 @@
+import com.mojang.blaze3d.Blaze3D;
+
+{
+    Util.getPlatform()
+    Blaze3D
+}
