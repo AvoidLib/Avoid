@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import pl.olafcio.avoid_impl.AvoidWrappedLoader;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid_impl.internal.PermAPI;
 import pl.olafcio.avoid_impl.brigadier.BrigadierSupport;
 import pl.olafcio.avoid_impl.mixin.accessors.ICommandContext;
