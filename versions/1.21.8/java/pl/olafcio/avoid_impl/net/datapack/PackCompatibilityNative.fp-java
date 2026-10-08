@@ -1,0 +1,4 @@
+{
+    case UNKNOWN    -> DatapackCompatibility.UNKNOWN;
+    //case UNKNOWN    -> DatapackCompatibility.UNKNOWN;
+}

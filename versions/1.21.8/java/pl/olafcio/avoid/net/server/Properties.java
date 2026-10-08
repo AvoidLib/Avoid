@@ -256,7 +256,7 @@ public final class Properties {
 
     public void setEntityBroadcastRangePercentage(int value) {
         ((DedicatedServerProperties) object).entityBroadcastRangePercentage = value;
-        ((DedicatedServerProperties) object).getMutable("entity-broadcast-range-percentage", false).update(AvoidInternal.getServer().registryAccess(), value);
+        ((DedicatedServerProperties) object).getMutable("entity-broadcast-range-percentage", 0).update(AvoidInternal.getServer().registryAccess(), value);
     }
 
     public String getTextFilteringConfig() {

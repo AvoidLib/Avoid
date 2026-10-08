@@ -8,6 +8,8 @@
     accessible method com/mojang/blaze3d/vertex/PoseStack$Pose set (Lcom/mojang/blaze3d/vertex/PoseStack$Pose;)V
     accessible method net/minecraft/server/players/StoredUserEntry getUser ()Ljava/lang/Object;
 
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties simulationDistance I
+
     accessible field net/minecraft/server/dedicated/DedicatedServerProperties allowFlight Z
     accessible field net/minecraft/server/dedicated/DedicatedServerProperties motd Ljava/lang/String;
     accessible field net/minecraft/server/dedicated/DedicatedServerProperties forceGameMode Z
@@ -19,6 +21,18 @@
     accessible field net/minecraft/server/dedicated/DedicatedServerProperties hideOnlinePlayers Z
     accessible field net/minecraft/server/dedicated/DedicatedServerProperties entityBroadcastRangePercentage I
     accessible field net/minecraft/server/dedicated/DedicatedServerProperties pauseWhenEmptySeconds I
+
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties allowFlight Z
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties motd Ljava/lang/String;
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties forceGameMode Z
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties enforceWhitelist Z
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties spawnProtection I
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties viewDistance I
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties maxPlayers I
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties enableStatus Z
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties hideOnlinePlayers Z
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties entityBroadcastRangePercentage I
+    mutable field net/minecraft/server/dedicated/DedicatedServerProperties pauseWhenEmptySeconds I
 
     accessible method net/minecraft/server/dedicated/Settings getMutable (Ljava/lang/String;Z)Lnet/minecraft/server/dedicated/Settings$MutableValue;
     accessible method net/minecraft/server/dedicated/Settings getMutable (Ljava/lang/String;I)Lnet/minecraft/server/dedicated/Settings$MutableValue;
