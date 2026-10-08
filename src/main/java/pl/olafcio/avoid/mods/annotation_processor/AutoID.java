@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * Tells the modloader to implicitly set the target identification based on the parent mod ID and the class name.<br/>
- * This may be used with {@link AutoBlock}, {@link AutoItem}, {@link AutoEntity} or {@link AutoFluid}.
+ * This may be used with {@link AutoBlock}, {@link AutoItem}, {@link AutoEntity}, {@link AutoFluid}, {@link AutoEffect} or {@link AutoCustomPayload}.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
