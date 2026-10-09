@@ -6,7 +6,7 @@
 - 26.1.1 & 26.1.2
 - 26.2
 - 26.3
-- 26.4-snapshot-1 *[TS]*
+- 26.4-snapshot-2 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
@@ -15,14 +15,21 @@
 - Paper
 
 **🪵 Changelog:**
-- AvoidWrappedLoader#getMods()
-- Custom Payload API
-- [ModLoader] @AutoCustomPayload annotation
-- [3D] Refactor
-- Animation utilities (Maths)
-- Coloring parameter renames
-- [ModLoader] Signature checking
-- [Client] Window Title Update Event
+- Fix NeoForge net.payload
+- OS#openURL([URI/String] uri)
+- Meet ModuleClassLoader requirements
+- Jar-in-Jar
+- Change license
+- `@Expose`
+- Subloaders
+- Avoid::getBrand()
+- Update to 26.4-snapshot-2
+- Mixin support *(only Fabric and NeoForge)*
+- Mod datapack loading on Paper
+- Make more [Properties] modifiable in MC 1.21.8
+- Datapack API
+- [Player API] #closeInventory()
+- [ModLoader] AvoidModBase#getLogger()
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
