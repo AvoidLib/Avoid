@@ -125,3 +125,4 @@ minecraft_version=26.4-snapshot-2
 minecraft_version_range=26.4-alpha.2
 minecraft_version_list=["26.4-snapshot-2"]
 loader_version=0.19.3
+publish=1
