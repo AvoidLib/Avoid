@@ -1,0 +1,59 @@
+import net.minecraft.core.Holder;
+import java.util.HashMap;
+
+{
+    import net.minecraft.world.level.block.SoundType;
+
+    //== replacement ==//
+
+    import net.minecraft.world.level.block.sounds.BlockSoundSet;
+    import net.minecraft.world.level.block.sounds.BlockSoundSets;
+}
+
+{
+    return soundEvent;
+    //return soundEvent;
+}
+
+{
+    Registry.register(BuiltInRegistries.SOUND_EVENT, id, soundEvent);
+    return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, id, soundEvent);
+}
+
+{
+    private static SoundEvent createSoundEvent(pl.olafcio.avoid.net.block.properties.sound.SoundEvent event, Identification blockID, String type) {
+    private static Holder<SoundEvent> createSoundEvent(pl.olafcio.avoid.net.block.properties.sound.SoundEvent event, Identification blockID, String type) {
+}
+
+{
+    SoundType.
+    BlockSoundSets.
+}
+
+{
+    SoundType
+    BlockSoundSet
+}
+
+{
+    new BlockSoundSet(
+    addSoundSet(blockID, new BlockSoundSet(
+}
+
+{
+    )); //#region endsoundtype
+    ))); //#region endsoundtype
+}
+
+{
+    public final class Blocks {
+    public final class Blocks {
+        public static final HashMap<ResourceKey<BlockSoundSet>, BlockSoundSet> SOUND_SETS
+                      = new HashMap<>();
+
+        private static ResourceKey<BlockSoundSet> addSoundSet(Identification blockID, BlockSoundSet soundset) {
+            var key = ResourceKey.create(Registries.BLOCK_SOUND_SET, IdentificationNative.convert(blockID));
+            SOUND_SETS.put(key, soundset);
+            return key;
+        }
+}

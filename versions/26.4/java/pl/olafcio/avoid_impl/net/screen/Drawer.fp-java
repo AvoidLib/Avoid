@@ -1,0 +1,14 @@
+{
+    import net.minecraft.client.renderer.texture.AbstractTexture;
+    import net.minecraft.client.renderer.texture.TextureHandle;
+}
+
+{
+    AbstractTexture
+    TextureHandle
+}
+
+{
+    this.submitBlit(renderLayer, abstractTexture.getTextureView(), abstractTexture.getSampler(), x0, y0, x1, y1, u0, u1, v0, v1, color);
+    this.submitBlit(renderLayer, abstractTexture.textureView(), abstractTexture.sampler(), x0, y0, x1, y1, u0, u1, v0, v1, color);
+}

@@ -64,7 +64,7 @@ public final class Blocks {
         var block = net.minecraft.world.level.block.Blocks.register(
                 ResourceKey.create(Registries.BLOCK, id),
                 callback,
-                getProperties(inst, inst.getClass())
+                getProperties(inst, inst.getClass(), blockID)
         );  //at:register
 
         Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
@@ -88,7 +88,7 @@ public final class Blocks {
         var block = net.minecraft.world.level.block.Blocks.register(
                 ResourceKey.create(Registries.BLOCK, id),
                 callback,
-                getProperties(inst, inst.getClass())
+                getProperties(inst, inst.getClass(), blockID)
         );  //at:register
 
         Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
@@ -103,7 +103,7 @@ public final class Blocks {
 
     private record ChosenPreset(Properties properties, String preset) {}
 
-    private static <T extends pl.olafcio.avoid.net.block.Block> Properties getProperties(T instance, Class<? extends T> block) {
+    private static <T extends pl.olafcio.avoid.net.block.Block> Properties getProperties(T instance, Class<? extends T> block, Identification blockID) {
         var ret = presetProperties(block);
 
         var properties = ret.properties();
@@ -202,12 +202,12 @@ public final class Blocks {
                     soundType.volume(),
                     soundType.pitch(),
 
-                    createSoundEvent(soundType.breakSound()),
-                    createSoundEvent(soundType.stepSound()),
-                    createSoundEvent(soundType.placeSound()),
-                    createSoundEvent(soundType.hitSound()),
-                    createSoundEvent(soundType.fallSound())
-            ));
+                    createSoundEvent(soundType.breakSound(), blockID, "break"),
+                    createSoundEvent(soundType.stepSound(), blockID, "step"),
+                    createSoundEvent(soundType.placeSound(), blockID, "place"),
+                    createSoundEvent(soundType.hitSound(), blockID, "hit"),
+                    createSoundEvent(soundType.fallSound(), blockID, "fall")
+            )); //#region endsoundtype
         } else {
             properties = properties.sound(SoundType.GRASS);
         }
@@ -242,15 +242,19 @@ public final class Blocks {
     }
 
     @NotNull
-    private static SoundEvent createSoundEvent(pl.olafcio.avoid.net.block.properties.sound.SoundEvent event) {
+    private static SoundEvent createSoundEvent(pl.olafcio.avoid.net.block.properties.sound.SoundEvent event, Identification blockID, String type) {
         var loc = event.location();
-
-        return new SoundEvent(
+        var soundEvent = new SoundEvent(
                 Identifier.fromNamespaceAndPath(loc.namespace(), loc.path()),
                 event.fixedRange() == Float.MIN_VALUE
                         ? Optional.empty()
                         : Optional.of(event.fixedRange())
         );
+
+        var id = Identifier.fromNamespaceAndPath(loc.namespace(), loc.path() + "/" + blockID.path() + "-" + type);
+        Registry.register(BuiltInRegistries.SOUND_EVENT, id, soundEvent);
+
+        return soundEvent;
     }
 
     @NotNull
