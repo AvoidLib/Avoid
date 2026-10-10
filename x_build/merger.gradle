@@ -59,7 +59,7 @@ void scheduleMerging() {
                     "description": "Yet another library for everything Minecraft. Kinda like Bukkit.",
                     "authors": [ "Olafcio" ],
                     "contact": Map.of(),
-                    "license": "Avoid-License-2.0.0",
+                    "license": "Avoid-License-3.0.0",
                     "icon": "assets/avoid-bundler/icon.png",
                     "environment": "*",
                     "entrypoints": [
@@ -92,7 +92,7 @@ void scheduleMerging() {
                             ],
                             "contact": Map.of(),
                             "icon": "assets/avoid-bundler/icon.png",
-                            "license": "Avoid-License-2.0.0"
+                            "license": "Avoid-License-3.0.0"
                         ],
                         "entrypoints": Map.of(),
                         "depends": Map.of(),
@@ -108,7 +108,7 @@ void scheduleMerging() {
         if ("neoforge" in loaders) {
             zos.putNextEntry(new ZipEntry("META-INF/neoforge.mods.toml"))
             zos.write("""
-license="Avoid-License-2.0.0"
+license="Avoid-License-3.0.0"
 issueTrackerURL="https://github.com/AvoidLib/Avoid/issues"
 
 [[mods]]

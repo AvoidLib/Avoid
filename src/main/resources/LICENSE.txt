@@ -1,4 +1,4 @@
-# Avoid License 2.0.0
+# Avoid License 3.0.0
 
 ## Acceptance
 
@@ -20,7 +20,14 @@ You must ensure that anyone who gets a copy of any part of the software from you
 
 ## Changes and New Works License
 
-The licensor grants you an additional copyright license to make changes and new works based on the software for any permitted purpose. However, if you modify the software, you must not claim it is the original; a note regarding the changes, for example an addition of the "- Fork" suffix to your project title, is required.
+The licensor grants you an additional copyright license to make changes and new works based on the software for any permitted purpose. However:
+
+1. If you modify the software, you must not claim it is the original; a note regarding the changes, for example an addition of the "- Fork" suffix to your project title, is required.
+2. If you use more than 300 characters collectively from any files from the software, unchanged or not, you must:
+   - if your project's source code is publicly available, add the following note to either these files or your project README file:
+     > `**Some of the project code has been inspired by the <a href="https://github.com/AvoidLib/Avoid">Avoid Framework</a>.**`
+   - if your project's source code is **not** publicly available or not easy to find, add the following note to a file called NOTICE, NOTICES, NOTICE.md or NOTICES.md that will be available for the users using your project (for example, if your project is distributed using .JAR files, the notice file must be available in these .JAR files):
+     > `Some of the project code has been inspired by the Avoid Framework. Find it here:  https://github.com/AvoidLib/Avoid`
 
 ## Patent License
 

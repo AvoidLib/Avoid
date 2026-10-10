@@ -30,3 +30,5 @@ This skips non-Avoid-caused loading.
 If it still doesn't work after, it's probably some of these mods' issue.
 
 Make sure to read the game and crash log.
+
+###### This file is licensed with All Rights Reserved.

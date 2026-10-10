@@ -3,7 +3,7 @@
     "name": "java_plain",
     "version": "1.0"
   },
-  "license": "Avoid-License-2.0.0",
+  "license": "Avoid-License-3.0.0",
   "plugins": [
     {
       "id": "avoidlib",
