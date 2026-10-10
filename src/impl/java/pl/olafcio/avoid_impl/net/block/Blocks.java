@@ -208,6 +208,8 @@ public final class Blocks {
                     createSoundEvent(soundType.hitSound()),
                     createSoundEvent(soundType.fallSound())
             ));
+        } else {
+            properties = properties.sound(SoundType.GRASS);
         }
 
         properties = properties.lightLevel(blockState -> {
@@ -236,8 +238,7 @@ public final class Blocks {
         //noinspection DataFlowIssue
         return properties.mapColor(mapColor == null
                                         ? properties.mapColor.apply(null)
-                                        : MapColor.byId(mapColor.id()))
-                         .sound(SoundType.GRASS);
+                                        : MapColor.byId(mapColor.id()));
     }
 
     @NotNull
