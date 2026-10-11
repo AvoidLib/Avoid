@@ -26,4 +26,20 @@ public final class SoundCategoryNative {
         else
             throw new RuntimeException("Unrecognized sound category '%s'".formatted(value.name()));
     }
+
+    public static SoundCategory convertFrom(SoundSource value) {
+             if (value == SoundSource.UI)      return SoundCategory.UI;
+        else if (value == SoundSource.MASTER)  return SoundCategory.MASTER;
+        else if (value == SoundSource.AMBIENT) return SoundCategory.AMBIENT;
+        else if (value == SoundSource.BLOCKS)  return SoundCategory.BLOCKS;
+        else if (value == SoundSource.HOSTILE) return SoundCategory.HOSTILE;
+        else if (value == SoundSource.MUSIC)   return SoundCategory.MUSIC;
+        else if (value == SoundSource.NEUTRAL) return SoundCategory.NEUTRAL;
+        else if (value == SoundSource.PLAYERS) return SoundCategory.PLAYERS;
+        else if (value == SoundSource.RECORDS) return SoundCategory.RECORDS;
+        else if (value == SoundSource.VOICE)   return SoundCategory.VOICE;
+        else if (value == SoundSource.WEATHER) return SoundCategory.WEATHER;
+        else
+            throw new RuntimeException("Unrecognized sound source '%s'".formatted(value.name()));
+    }
 }
