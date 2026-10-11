@@ -12,6 +12,22 @@ public final class ChatNative {
     @ApiStatus.Internal
     private ChatNative() {}
 
+    public static void clear(boolean clearSentHistory) {
+        AvoidLibClient.mc.gui.getChat().clearMessages(clearSentHistory);
+    }
+
+    public static void discardDraft() {
+        AvoidLibClient.mc.gui.getChat().discardDraft();
+    }
+
+    public static void scroll(int amount) {
+        AvoidLibClient.mc.gui.getChat().scrollChat(amount);
+    }
+
+    public static void resetScroll() {
+        AvoidLibClient.mc.gui.getChat().resetChatScroll();
+    }
+
     public static void sendToServer(String data) {
         AvoidLibClient.mc.player.connection.sendChat(data);
     }

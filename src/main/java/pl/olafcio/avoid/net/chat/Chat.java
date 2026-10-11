@@ -19,6 +19,34 @@ public final class Chat {
     @ApiStatus.Internal
     private Chat() {}
 
+    public static void clear(boolean clearSentHistory) {
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot Chat#clear from the server!");
+
+        ChatNative.clear(clearSentHistory);
+    }
+
+    public static void discardDraft() {
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot Chat#discardDraft from the server!");
+
+        ChatNative.discardDraft();
+    }
+
+    public static void scroll(int amount) {
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot Chat#scroll from the server!");
+
+        ChatNative.scroll(amount);
+    }
+
+    public static void resetScroll() {
+        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
+            throw new ImproperEnvironment("Cannot Chat#resetScroll from the server!");
+
+        ChatNative.resetScroll();
+    }
+
     public static void sendMessage(String data) {
         if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
             throw new ImproperEnvironment("Cannot Chat#sendMessage from the server!");
