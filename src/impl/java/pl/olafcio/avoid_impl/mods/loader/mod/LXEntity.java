@@ -9,13 +9,14 @@ import pl.olafcio.avoid.net.entity.custom.Entity;
 import pl.olafcio.avoid.net.entity.custom.Merchant;
 import pl.olafcio.avoid.net.entity_type.EntityTypes;
 import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid_impl.mods.loader.ModLoad;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
 public interface LXEntity {
-    default boolean registerAutoEntity(String id, Class<?> klass, String className, AtomicBoolean usedAutoID)
+    default boolean registerAutoEntity(String id, Class<?> klass, String className, ModLoad.ClassStatus status)
             throws NoSuchMethodException
     {
         if (klass.isAnnotationPresent(AutoEntity.class)) {
@@ -29,7 +30,7 @@ public interface LXEntity {
                 return true;
             }
 
-            usedAutoID.set(true);
+            status.autoID = true;
 
             var simpleName = klass.getSimpleName();
 

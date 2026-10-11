@@ -50,7 +50,7 @@ import java.util.jar.JarFile;
 @ApiStatus.Internal
 public final class ModLoad
              implements LXItem, LXScreenOverwrite, LXScreenModifier, LXCommand, LXSelector, LXEntity, LXFluid, LXFog, LXEffect,
-                        LXKeyHandler, LXCustomPayload
+                        LXKeyHandler, LXCustomPayload, LXAdvancement
 {
     @ApiStatus.Internal
     private static final Gson GSON
@@ -221,10 +221,16 @@ public final class ModLoad
         }
     }
 
+    public class ClassStatus {
+        public boolean autoID = false;
+        public boolean autoChar = false;
+        public boolean errored = true;
+    }
+
     private void scanAllClasses(JarFile jar, URLClassLoader classLoader, String id, List<String> skipClasses, AvoidModMeta meta)
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
-        var classes = new HashMap<Class<?>, AtomicBoolean>();
+        var classes = new HashMap<Class<?>, ClassStatus>();
         var entries = jar.entries();
 
         EventManager.fire(new ModClassCollectingEvent(meta));
@@ -251,12 +257,12 @@ public final class ModLoad
                     continue;
                 }
 
-                var usedAutoID = new AtomicBoolean(false);
+                var status = new ClassStatus();
 
-                if (registerAutoFluid(id, klass, className, usedAutoID))
+                if (registerAutoFluid(id, klass, className, status))
                     continue;
 
-                classes.put(klass, usedAutoID);
+                classes.put(klass, status);
             }
         } while (entries.hasMoreElements());
 
@@ -266,44 +272,41 @@ public final class ModLoad
             var klass = entry.getKey();
             var className = klass.getName();
 
-            if (registerScreenOverwrite(klass, className))
+            if (registerScreenOverwrite(klass, className)) continue;
+            if (registerScreenModifier(klass, className)) continue;
+            if (registerAutoCommand(klass)) continue;
+
+            var status = entry.getValue();
+
+            if (registerAutoBlock(id, klass, className, status)) continue;
+            if (registerAutoItem(id, klass, className, status)) continue;
+            if (registerAutoEntity(id, klass, className, status)) continue;
+            if (registerAutoCustomPayload(id, klass, className, status)) continue;
+            if (registerAutoEffect(id, klass, className, status)) continue;
+            if (registerAutoFog(id, klass, className)) continue;
+
+            status.errored = false;
+        }
+
+        for (var entry : classes.entrySet()) {
+            var klass = entry.getKey();
+            var className = klass.getName();
+
+            var status = entry.getValue();
+
+            if (status.errored)
                 continue;
 
-            if (registerScreenModifier(klass, className))
+            if (registerAutoAdvancement(id, klass, className, status))
                 continue;
 
-            if (registerAutoCommand(klass))
-                continue;
-
-            var usedAutoID = entry.getValue();
-
-            if (registerAutoBlock(id, klass, className, usedAutoID))
-                continue;
-
-            if (registerAutoItem(id, klass, className, usedAutoID))
-                continue;
-
-            if (registerAutoEntity(id, klass, className, usedAutoID))
-                continue;
-
-            if (registerAutoCustomPayload(id, klass, className, usedAutoID))
-                continue;
-
-            if (registerAutoEffect(id, klass, className, usedAutoID))
-                continue;
-
-            if (registerAutoFog(id, klass, className))
-                continue;
-
-            if (!usedAutoID.get() && klass.isAnnotationPresent(AutoID.class))
+            if (!status.autoID && klass.isAnnotationPresent(AutoID.class))
                 Avoid.LOGGER.warn("@AutoID not applicable ({})", className);
 
-            var usedAutoChar = new AtomicBoolean(false);
-
-            if (registerAutoSelector(id, klass, className, usedAutoChar))
+            if (registerAutoSelector(id, klass, className, status))
                 continue;
 
-            if (!usedAutoChar.get() && klass.isAnnotationPresent(AutoChar.class))
+            if (!status.autoChar && klass.isAnnotationPresent(AutoChar.class))
                 Avoid.LOGGER.warn("@AutoChar not applicable ({})", className);
 
             Method[] methods;
@@ -330,7 +333,7 @@ public final class ModLoad
     private static final Logger LOGGER
                        = LogUtils.getLogger();
 
-    private boolean registerAutoBlock(String id, Class<?> klass, String className, AtomicBoolean usedAutoID)
+    private boolean registerAutoBlock(String id, Class<?> klass, String className, ModLoad.ClassStatus status)
             throws NoSuchMethodException
     {
         if (klass.isAnnotationPresent(AutoBlock.class)) {
@@ -344,7 +347,7 @@ public final class ModLoad
                 return true;
             }
 
-            usedAutoID.set(true);
+            status.autoID = true;
 
             var simpleName = klass.getSimpleName();
 

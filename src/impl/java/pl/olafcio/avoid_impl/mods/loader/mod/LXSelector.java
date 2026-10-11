@@ -6,13 +6,14 @@ import pl.olafcio.avoid.mods.annotation_processor.AutoChar;
 import pl.olafcio.avoid.mods.annotation_processor.AutoSelector;
 import pl.olafcio.avoid.net.entity_selector.EntitySelector;
 import pl.olafcio.avoid.net.entity_selector.EntitySelectors;
+import pl.olafcio.avoid_impl.mods.loader.ModLoad;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
 public interface LXSelector {
-    default boolean registerAutoSelector(String id, Class<?> klass, String className, AtomicBoolean usedAutoChar)
+    default boolean registerAutoSelector(String id, Class<?> klass, String className, ModLoad.ClassStatus usedAutoChar)
             throws NoSuchMethodException
     {
         if (klass.isAnnotationPresent(AutoSelector.class)) {
@@ -26,7 +27,7 @@ public interface LXSelector {
                 return true;
             }
 
-            usedAutoChar.set(true);
+            usedAutoChar.autoChar = true;
 
             var simpleName = klass.getSimpleName();
             if (!simpleName.endsWith("Selector")) {

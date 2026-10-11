@@ -8,13 +8,14 @@ import pl.olafcio.avoid.mods.annotation_processor.AutoID;
 import pl.olafcio.avoid.net.fluid.Fluid;
 import pl.olafcio.avoid.net.fluid.Fluids;
 import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid_impl.mods.loader.ModLoad;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
 public interface LXFluid {
-    default boolean registerAutoFluid(String id, Class<?> klass, String className, AtomicBoolean usedAutoID)
+    default boolean registerAutoFluid(String id, Class<?> klass, String className, ModLoad.ClassStatus status)
             throws NoSuchMethodException
     {
         if (klass.isAnnotationPresent(AutoFluid.class)) {
@@ -28,7 +29,7 @@ public interface LXFluid {
                 return true;
             }
 
-            usedAutoID.set(true);
+            status.autoID = true;
 
             var simpleName = klass.getSimpleName();
 

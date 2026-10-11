@@ -7,13 +7,14 @@ import pl.olafcio.avoid.mods.annotation_processor.AutoEffect;
 import pl.olafcio.avoid.mods.annotation_processor.AutoID;
 import pl.olafcio.avoid.net.effect.Effect;
 import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid_impl.mods.loader.ModLoad;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
 public interface LXEffect {
-    default boolean registerAutoEffect(String id, Class<?> klass, String className, AtomicBoolean usedAutoID)
+    default boolean registerAutoEffect(String id, Class<?> klass, String className, ModLoad.ClassStatus status)
             throws NoSuchMethodException
     {
         if (klass.isAnnotationPresent(AutoEffect.class)) {
@@ -27,7 +28,7 @@ public interface LXEffect {
                 return true;
             }
 
-            usedAutoID.set(true);
+            status.autoID = true;
 
             var simpleName = klass.getSimpleName();
 

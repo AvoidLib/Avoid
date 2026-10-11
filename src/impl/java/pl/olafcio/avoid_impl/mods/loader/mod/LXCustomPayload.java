@@ -9,13 +9,14 @@ import pl.olafcio.avoid.mods.annotation_processor.AutoID;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.payload.CustomPayload;
 import pl.olafcio.avoid.net.payload.Networking;
+import pl.olafcio.avoid_impl.mods.loader.ModLoad;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
 public interface LXCustomPayload {
-    default boolean registerAutoCustomPayload(String id, Class<?> klass, String className, AtomicBoolean usedAutoID)
+    default boolean registerAutoCustomPayload(String id, Class<?> klass, String className, ModLoad.ClassStatus usedAutoID)
             throws NoSuchMethodException
     {
         if (klass.isAnnotationPresent(AutoCustomPayload.class)) {
@@ -29,7 +30,7 @@ public interface LXCustomPayload {
                 return true;
             }
 
-            usedAutoID.set(true);
+            usedAutoID.autoID = true;
 
             var simpleName = klass.getSimpleName();
 
