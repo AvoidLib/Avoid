@@ -74,11 +74,11 @@ public final class AvoidEntity extends Entity implements IAvoidEntity {
 
     @Override
     protected void readAdditionalSaveData(ValueInput valueInput) {
-        //
+        avoid_readAdditionalSaveData(valueInput);
     }
 
     @Override
     protected void addAdditionalSaveData(ValueOutput valueOutput) {
-        //
+        avoid_addAdditionalSaveData(valueOutput);
     }
 }

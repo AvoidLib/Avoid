@@ -79,10 +79,12 @@ public final class AvoidLivingEntity extends LivingEntity implements IAvoidEntit
     @Override
     protected void readAdditionalSaveData(ValueInput valueInput) {
         super.readAdditionalSaveData(valueInput);
+        avoid_readAdditionalSaveData(valueInput);
     }
 
     @Override
     protected void addAdditionalSaveData(ValueOutput valueOutput) {
         super.addAdditionalSaveData(valueOutput);
+        avoid_addAdditionalSaveData(valueOutput);
     }
 }

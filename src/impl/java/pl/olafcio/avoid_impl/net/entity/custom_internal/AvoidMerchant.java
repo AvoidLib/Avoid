@@ -84,11 +84,13 @@ public final class AvoidMerchant extends Villager implements IAvoidEntity {
     @Override
     protected void readAdditionalSaveData(ValueInput valueInput) {
         super.readAdditionalSaveData(valueInput);
+        avoid_readAdditionalSaveData(valueInput);
     }
 
     @Override
     protected void addAdditionalSaveData(ValueOutput valueOutput) {
         super.addAdditionalSaveData(valueOutput);
+        avoid_addAdditionalSaveData(valueOutput);
     }
 
     @Override

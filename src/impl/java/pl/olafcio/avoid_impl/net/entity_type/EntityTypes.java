@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.custom.Merchant;
 import pl.olafcio.avoid.net.entity.sync.NetworkSync;
+import pl.olafcio.avoid.net.entity.save.Saved;
 import pl.olafcio.avoid_impl.net.entity.custom_internal.AvoidEntity;
 import pl.olafcio.avoid_impl.net.entity.custom_internal.AvoidLivingEntity;
 import pl.olafcio.avoid_impl.net.entity.custom_internal.AvoidMerchant;
@@ -28,6 +29,8 @@ import pl.olafcio.avoid_impl.net.entity.custom_internal.EntityConstructor;
 import pl.olafcio.avoid.net.entity_type.properties.*;
 import pl.olafcio.avoid.net.entity_type.properties.attachment.AttachmentOperation;
 import pl.olafcio.avoid.net.entity_type.properties.attribute.AttributeBase;
+import pl.olafcio.avoid_impl.net.entity_type.save.SaveController;
+import pl.olafcio.avoid_impl.net.entity_type.save.SaveControllers;
 import pl.olafcio.avoid_impl.net.entity_type.sync.Controller;
 import pl.olafcio.avoid_impl.net.entity_type.sync.Controllers;
 import pl.olafcio.avoid_impl.net.entity_type.values.AttachmentTypeNative;
@@ -165,39 +168,16 @@ public final class EntityTypes {
             EntityAttachments.Builder attachments
     ) {
         var fields = klass.getDeclaredFields();
-        var synchs = new ArrayList<Controller<?, ?, ?>>();
 
-        // Minecraft tf is ts class shit
-        int lastID = lastIDs.computeIfAbsent(destination, SynchedEntityData.ID_REGISTRY::getLastIdFor);
-
-        for (var field : fields) {
-            if (field.isAnnotationPresent(NetworkSync.class)) {
-                var controller = Controllers.convert(field);
-                int valueID = ++lastID;
-
-                if (valueID > 254) {
-                    throw new IllegalArgumentException("Data value id is too big with " + valueID + "! (Max is 254)");
-                }
-
-                var accessor = new AvoidEntityDataAccessor<>(valueID, controller);
-                controller.accessor = accessor;
-
-                synchs.add(controller);
-            }
-        }
-
-        // FIXME Doing this 2 times because otherwise it didn't work
-        for (int i = 0; i < 2; i++)
-            SynchedEntityData.ID_REGISTRY.classToLastIdCache.put(
-                    destination,
-                    Math.max(SynchedEntityData.ID_REGISTRY.classToLastIdCache.getOrDefault(destination, -1), lastID)
-            );
+        var synchs = collect_networkSync(destination, fields);
+        var saved = collect_saved(destination, fields);
 
         EntityType<T> Type;
 
         // TODO: Should I use the builder? Guess we'll see when there are issues in cross-version compatibility ;d
         Registry.register(BuiltInRegistries.ENTITY_TYPE, id, Type = new AvoidEntityType<T>(
                 synchs,
+                saved,
                 factory,
                 CategoryNative.convertFrom(category),
                 !klass.isAnnotationPresent(_noSave.class),
@@ -233,6 +213,52 @@ public final class EntityTypes {
         ));
 
         return Type;
+    }
+
+    private static @NotNull ArrayList<Controller<?, ?, ?>> collect_networkSync(Class<?> destination, Field[] fields) {
+        var synchs = new ArrayList<Controller<?, ?, ?>>();
+
+        // Minecraft tf is ts class shit
+        int lastID = lastIDs.computeIfAbsent(destination, SynchedEntityData.ID_REGISTRY::getLastIdFor);
+
+        for (var field : fields) {
+            if (field.isAnnotationPresent(NetworkSync.class)) {
+                var controller = Controllers.convert(field);
+                int valueID = ++lastID;
+
+                if (valueID > 254) {
+                    throw new IllegalArgumentException("Data value id is too big with " + valueID + "! (Max is 254)");
+                }
+
+                var accessor = new AvoidEntityDataAccessor<>(valueID, controller);
+                controller.accessor = accessor;
+
+                synchs.add(controller);
+            }
+        }
+
+        // FIXME Doing this 2 times because otherwise it didn't work
+        for (int i = 0; i < 2; i++)
+            SynchedEntityData.ID_REGISTRY.classToLastIdCache.put(
+                    destination,
+                    Math.max(SynchedEntityData.ID_REGISTRY.classToLastIdCache.getOrDefault(destination, -1), lastID)
+            );
+
+        return synchs;
+    }
+
+    private static @NotNull ArrayList<SaveController<?, ?, ?>> collect_saved(Class<?> destination, Field[] fields) {
+        var saved = new ArrayList<SaveController<?, ?, ?>>();
+
+        for (var field : fields) {
+            if (field.isAnnotationPresent(Saved.class)) {
+                var controller = SaveControllers.convert(field);
+
+                saved.add(controller);
+            }
+        }
+
+        return saved;
     }
 
     private static AttributeSupplier createAttributes(Class<? extends Entity> klass) {
