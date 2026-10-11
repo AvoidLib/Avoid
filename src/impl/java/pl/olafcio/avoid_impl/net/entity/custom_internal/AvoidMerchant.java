@@ -1,6 +1,7 @@
 package pl.olafcio.avoid_impl.net.entity.custom_internal;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
@@ -50,11 +51,14 @@ public final class AvoidMerchant extends Villager implements IAvoidEntity {
                 name,
                 this
         );
+
+        avoid_injectSynchedData();
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
+    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+        super.onSyncedDataUpdated(entityDataAccessor);
+        avoid_onSyncedDataUpdated(entityDataAccessor);
     }
 
     @Override

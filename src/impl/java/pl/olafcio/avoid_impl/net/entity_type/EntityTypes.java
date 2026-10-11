@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Util;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.custom.Merchant;
+import pl.olafcio.avoid.net.entity.sync.NetworkSync;
 import pl.olafcio.avoid_impl.net.entity.custom_internal.AvoidEntity;
 import pl.olafcio.avoid_impl.net.entity.custom_internal.AvoidLivingEntity;
 import pl.olafcio.avoid_impl.net.entity.custom_internal.AvoidMerchant;
@@ -26,12 +28,16 @@ import pl.olafcio.avoid_impl.net.entity.custom_internal.EntityConstructor;
 import pl.olafcio.avoid.net.entity_type.properties.*;
 import pl.olafcio.avoid.net.entity_type.properties.attachment.AttachmentOperation;
 import pl.olafcio.avoid.net.entity_type.properties.attribute.AttributeBase;
+import pl.olafcio.avoid_impl.net.entity_type.sync.Controller;
+import pl.olafcio.avoid_impl.net.entity_type.sync.Controllers;
 import pl.olafcio.avoid_impl.net.entity_type.values.AttachmentTypeNative;
 import pl.olafcio.avoid.net.entity_type.values.Category;
 import pl.olafcio.avoid_impl.net.entity_type.values.CategoryNative;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
@@ -106,6 +112,7 @@ public final class EntityTypes {
             var Type = createType(
                     klass,
                     id,
+                    AvoidMerchant.class,
                     (EntityType<@NotNull Villager> type, Level level)
                             -> new AvoidMerchant(type, level, (EntityConstructor<Merchant>) constructor),
                     category,
@@ -121,6 +128,7 @@ public final class EntityTypes {
                 var Type = createType(
                         klass,
                         id,
+                        AvoidLivingEntity.class,
                         (EntityType<@NotNull LivingEntity> type, Level level)
                             -> new AvoidLivingEntity(type, level, (EntityConstructor<pl.olafcio.avoid.net.entity.custom.Entity>) constructor),
                         category,
@@ -133,6 +141,7 @@ public final class EntityTypes {
                 createType(
                         klass,
                         id,
+                        AvoidEntity.class,
                         (EntityType<net.minecraft.world.entity.@NotNull Entity> type, Level level)
                                 -> new AvoidEntity(type, level, (EntityConstructor<pl.olafcio.avoid.net.entity.custom.Entity>) constructor),
                         category,
@@ -143,18 +152,52 @@ public final class EntityTypes {
         }
     }
 
+    private static final HashMap<Class<?>, Integer> lastIDs
+                   = new HashMap<>();
+
     private static <T extends net.minecraft.world.entity.Entity> @NotNull EntityType<T> createType(
             Class<? extends pl.olafcio.avoid.net.entity.Entity> klass,
             Identifier id,
+            Class<?> destination,
             EntityType.EntityFactory<T> factory,
             Category category,
             EntityDimensions dimensions,
             EntityAttachments.Builder attachments
     ) {
+        var fields = klass.getDeclaredFields();
+        var synchs = new ArrayList<Controller<?, ?, ?>>();
+
+        // Minecraft tf is ts class shit
+        int lastID = lastIDs.computeIfAbsent(destination, SynchedEntityData.ID_REGISTRY::getLastIdFor);
+
+        for (var field : fields) {
+            if (field.isAnnotationPresent(NetworkSync.class)) {
+                var controller = Controllers.convert(field);
+                int valueID = ++lastID;
+
+                if (valueID > 254) {
+                    throw new IllegalArgumentException("Data value id is too big with " + valueID + "! (Max is 254)");
+                }
+
+                var accessor = new AvoidEntityDataAccessor<>(valueID, controller);
+                controller.accessor = accessor;
+
+                synchs.add(controller);
+            }
+        }
+
+        // FIXME Doing this 2 times because otherwise it didn't work
+        for (int i = 0; i < 2; i++)
+            SynchedEntityData.ID_REGISTRY.classToLastIdCache.put(
+                    destination,
+                    Math.max(SynchedEntityData.ID_REGISTRY.classToLastIdCache.getOrDefault(destination, -1), lastID)
+            );
+
         EntityType<T> Type;
 
         // TODO: Should I use the builder? Guess we'll see when there are issues in cross-version compatibility ;d
-        Registry.register(BuiltInRegistries.ENTITY_TYPE, id, Type = new EntityType<T>(
+        Registry.register(BuiltInRegistries.ENTITY_TYPE, id, Type = new AvoidEntityType<T>(
+                synchs,
                 factory,
                 CategoryNative.convertFrom(category),
                 !klass.isAnnotationPresent(_noSave.class),

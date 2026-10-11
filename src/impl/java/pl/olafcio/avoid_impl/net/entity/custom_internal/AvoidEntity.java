@@ -1,5 +1,6 @@
 package pl.olafcio.avoid_impl.net.entity.custom_internal;
 
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -43,11 +44,17 @@ public final class AvoidEntity extends Entity implements IAvoidEntity {
                 name,
                 this
         );
+
+        avoid_injectSynchedData();
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        //
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+        super.onSyncedDataUpdated(entityDataAccessor);
+        avoid_onSyncedDataUpdated(entityDataAccessor);
     }
 
     @Override
