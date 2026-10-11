@@ -15,7 +15,7 @@ String github(String repository, String versionName = "latest", Predicate<String
 
             allLibs.forEach {
                 def fn = it.getFileName().toString()
-                if (fn.startsWith(repoName + "-") && fn.endsWith(".jar") && System.currentTimeMillis() - Files.getLastModifiedTime(it).toMillis() < 1000*60*60*24*3)
+                if (fn.startsWith(repoName + "-") && fn.endsWith(".jar") && (System.currentTimeMillis() - Files.getLastModifiedTime(it).toMillis() < 1000*60*60*24*3 || gradle.startParameter.offline))
                     ret = ":" + repoName + ":" + fn.substring(0, fn.length() - 4).split("-", 2)[1]
             }
 
