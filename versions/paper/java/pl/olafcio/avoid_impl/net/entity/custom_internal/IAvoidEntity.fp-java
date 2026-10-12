@@ -1,0 +1,16 @@
+import pl.olafcio.avoid_impl.Reflect;
+
+{
+    self.entityData = builder.build();
+    Reflect.set(net.minecraft.world.entity.Entity.class, "entityData", self, builder.build());
+}
+
+{
+    .entityData
+    .getEntityData()
+}
+
+{
+    builder.itemsById
+    Reflect.get(SynchedEntityData.Builder.class, "itemsById", SynchedEntityData.DataItem[].class, builder)
+}

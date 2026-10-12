@@ -1,8 +1,26 @@
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackRepository;
+import java.util.HashMap;
 import java.util.Map;
+import pl.olafcio.avoid_impl.Reflect;
+import com.google.common.collect.ImmutableMap;
+
+{
+    public final class Datapack extends pl.olafcio.avoid.net.datapack.pack.Datapack {
+    public final class Datapack extends pl.olafcio.avoid.net.datapack.pack.Datapack {
+        private static Map<String, Pack> getAvailableMapModifiable() {
+            var repository = AvoidInternal.getServer().getPackRepository();
+            var map = (Map<String, Pack>) Reflect.get(PackRepository.class, "available", Map.class, repository);
+
+            if (map instanceof ImmutableMap) {
+                Reflect.set(PackRepository.class, "available", repository, map = new HashMap<>(map));
+            }
+
+            return map;
+        }
+}
 
 {
     AvoidInternal.getServer().getPackRepository().available
-    ((Map<String, Pack>) pl.olafcio.avoid_impl.Reflect.get(PackRepository.class, "available", Map.class, AvoidInternal.getServer().getPackRepository()))
+    getAvailableMapModifiable()
 }

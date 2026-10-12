@@ -1,0 +1,33 @@
+import pl.olafcio.avoid_impl.Reflect;
+import net.minecraft.util.ClassTreeIdRegistry;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import org.slf4j.LoggerFactory;
+
+{
+    SynchedEntityData.ID_REGISTRY.classToLastIdCache
+    Reflect.get(ClassTreeIdRegistry.class, "classToLastIdCache", it.unimi.dsi.fastutil.objects.Object2IntMap.class, Reflect.get(SynchedEntityData.class, "ID_REGISTRY", ClassTreeIdRegistry.class))
+}
+
+{
+    SynchedEntityData.ID_REGISTRY
+    Reflect.get(SynchedEntityData.class, "ID_REGISTRY", ClassTreeIdRegistry.class)
+}
+
+{
+    new AvoidEntityDataAccessor<>(valueID, controller);
+    new EntityDataAccessor<>(valueID, controller.serializer);
+}
+
+{
+    AvoidEntityDataAccessor
+    EntityDataAccessor
+}
+
+{
+    var id = IdentificationNative.convert(entityTypeID);
+
+    //== replacement ==//
+
+    LoggerFactory.getLogger("Avoid/Entity Types").error("Entities on Paper WILL NOT work! You are using an Avoid addon that registers the entity type '{}'. I'm about 99% sure your server will crash after this. REMOVE THE '{}' MOD IF YOU HAVE ISSUES!", entityTypeID, entityTypeID.namespace());
+    var id = IdentificationNative.convert(entityTypeID);
+}
