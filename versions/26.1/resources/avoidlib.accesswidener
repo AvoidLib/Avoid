@@ -28,6 +28,15 @@ accessible method net/minecraft/world/damagesource/DamageSource <init> (Lnet/min
 accessible method net/minecraft/world/entity/Entity getDefaultGravity ()D
 accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/blaze3d/pipeline/RenderPipeline;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
 accessible method net/minecraft/world/item/context/UseOnContext <init> (Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/phys/BlockHitResult;)V
+extendable class net/minecraft/advancements/Advancement
+
+# Entity Data
+accessible field net/minecraft/network/syncher/SynchedEntityData ID_REGISTRY Lnet/minecraft/util/ClassTreeIdRegistry;
+mutable field net/minecraft/world/entity/Entity entityData Lnet/minecraft/network/syncher/SynchedEntityData;
+accessible field net/minecraft/world/entity/Entity entityData Lnet/minecraft/network/syncher/SynchedEntityData;
+accessible field net/minecraft/util/ClassTreeIdRegistry classToLastIdCache Lit/unimi/dsi/fastutil/objects/Object2IntMap;
+extendable class net/minecraft/network/syncher/EntityDataAccessor
+accessible field net/minecraft/network/syncher/SynchedEntityData$Builder itemsById [Lnet/minecraft/network/syncher/SynchedEntityData$DataItem;
 
 # Packs
 accessible field net/minecraft/server/packs/repository/Pack resources Lnet/minecraft/server/packs/repository/Pack$ResourcesSupplier;

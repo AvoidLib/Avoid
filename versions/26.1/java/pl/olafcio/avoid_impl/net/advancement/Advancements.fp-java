@@ -1,0 +1,6 @@
+import net.minecraft.world.item.ItemStackTemplate;
+
+{
+    BuiltInRegistries.ITEM.get(IdentificationNative.convert(display.icon())).orElseThrow().value().getDefaultInstance()
+    ItemStackTemplate.fromNonEmptyStack(BuiltInRegistries.ITEM.get(IdentificationNative.convert(display.icon())).orElseThrow().value().getDefaultInstance())
+}
