@@ -1,0 +1,4 @@
+{
+    sound.getIdentifier()
+    sound.getLocation()
+}

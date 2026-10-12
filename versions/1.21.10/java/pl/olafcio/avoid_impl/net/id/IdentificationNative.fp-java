@@ -4,3 +4,13 @@ import net.minecraft.resources.ResourceLocation;
     public static Identification convertFrom(Identifier id) {
     public static Identification convertFrom(ResourceLocation id) {
 }
+
+{
+    Optional<Identifier>
+    Optional<ResourceLocation>
+}
+
+{
+    return Optional.of(Identifier.fromNamespaceAndPath(id.namespace(), id.path()));
+    return Optional.of(ResourceLocation.fromNamespaceAndPath(id.namespace(), id.path()));
+}
