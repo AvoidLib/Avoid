@@ -11,6 +11,11 @@ import java.lang.annotation.*;
 @Documented
 public @interface NetworkSync {
     /**
+     * The ordinal/ID of this synched field.
+     */
+    int order();
+
+    /**
      * If {@code true}, the initial value set at constructor time will not be synchronized.
      */
     boolean static_default() default false;

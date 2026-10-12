@@ -40,10 +40,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
 @ApiStatus.Internal
@@ -233,20 +230,23 @@ public final class EntityTypes {
         // Minecraft tf is ts class shit
         int lastID = lastIDs.computeIfAbsent(destination, SynchedEntityData.ID_REGISTRY::getLastIdFor);
 
-        for (var field : fields) {
-            if (field.isAnnotationPresent(NetworkSync.class)) {
-                var controller = Controllers.convert(field);
-                int valueID = ++lastID;
+        var filtered = Arrays.stream(fields)
+                             .filter(f -> f.isAnnotationPresent(NetworkSync.class))
+                             .sorted(Comparator.comparing(f -> f.getDeclaredAnnotation(NetworkSync.class).order()))
+                             .toList(); // Thank god I had written ProtocolExtension before so now I know I have to do this.
 
-                if (valueID > 254) {
-                    throw new IllegalArgumentException("Data value id is too big with " + valueID + "! (Max is 254)");
-                }
+        for (var field : filtered) {
+            var controller = Controllers.convert(field);
+            int valueID = ++lastID;
 
-                var accessor = new AvoidEntityDataAccessor<>(valueID, controller);
-                controller.accessor = accessor;
-
-                synchs.add(controller);
+            if (valueID > 254) {
+                throw new IllegalArgumentException("Data value id is too big with " + valueID + "! (Max is 254)");
             }
+
+            var accessor = new AvoidEntityDataAccessor<>(valueID, controller);
+            controller.accessor = accessor;
+
+            synchs.add(controller);
         }
 
         // FIXME Doing this 2 times because otherwise it didn't work
