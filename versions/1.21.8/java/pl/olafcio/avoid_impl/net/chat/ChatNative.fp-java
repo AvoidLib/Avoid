@@ -1,0 +1,5 @@
+{
+    AvoidLibClient.mc.gui.getChat().discardDraft();
+    //AvoidLibClient.mc.gui.getChat().discardDraft();
+    // I don't think this exists on MC 1.21.8
+}
