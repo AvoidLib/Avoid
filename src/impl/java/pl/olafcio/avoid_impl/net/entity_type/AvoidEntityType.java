@@ -21,11 +21,14 @@ import java.util.Optional;
 public final class AvoidEntityType<T extends @NotNull Entity> extends EntityType<T> {
     public final ArrayList<Controller<?, ?, ?>> synchs;
     public final ArrayList<SaveController<?, ?, ?>> saved;
+    public final int lastID;
 
-    AvoidEntityType(ArrayList<Controller<?, ?, ?>> synchs, ArrayList<SaveController<?, ?, ?>> saved, EntityFactory<T> entityFactory, MobCategory mobCategory, boolean bl, boolean bl2, boolean bl3, boolean bl4, ImmutableSet<Block> immutableSet, EntityDimensions entityDimensions, float f, int i, int j, String string, Optional<ResourceKey<LootTable>> optional, FeatureFlagSet featureFlagSet, boolean bl5) {
+    AvoidEntityType(ArrayList<Controller<?, ?, ?>> synchs, int lastID, ArrayList<SaveController<?, ?, ?>> saved, EntityFactory<T> entityFactory, MobCategory mobCategory, boolean bl, boolean bl2, boolean bl3, boolean bl4, ImmutableSet<Block> immutableSet, EntityDimensions entityDimensions, float f, int i, int j, String string, Optional<ResourceKey<LootTable>> optional, FeatureFlagSet featureFlagSet, boolean bl5) {
         super(entityFactory, mobCategory, bl, bl2, bl3, bl4, immutableSet, entityDimensions, f, i, j, string, optional, featureFlagSet, bl5);
 
         this.synchs = synchs;
         this.saved = saved;
+
+        this.lastID = lastID;
     }
 }

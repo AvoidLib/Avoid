@@ -169,14 +169,15 @@ public final class EntityTypes {
     ) {
         var fields = klass.getDeclaredFields();
 
-        var synchs = collect_networkSync(destination, fields);
+        var stuff = collect_networkSync(destination, fields);
         var saved = collect_saved(destination, fields);
 
         EntityType<T> Type;
 
         // TODO: Should I use the builder? Guess we'll see when there are issues in cross-version compatibility ;d
         Registry.register(BuiltInRegistries.ENTITY_TYPE, id, Type = new AvoidEntityType<T>(
-                synchs,
+                stuff.synchs,
+                stuff.lastID,
                 saved,
                 factory,
                 CategoryNative.convertFrom(category),
@@ -215,8 +216,19 @@ public final class EntityTypes {
         return Type;
     }
 
-    private static @NotNull ArrayList<Controller<?, ?, ?>> collect_networkSync(Class<?> destination, Field[] fields) {
+    private record Stuff(
+            ArrayList<Controller<?, ?, ?>> synchs,
+            int lastID
+    ) {}
+
+    private static @NotNull Stuff collect_networkSync(Class<?> destination, Field[] fields) {
         var synchs = new ArrayList<Controller<?, ?, ?>>();
+
+        try {
+            destination.getSuperclass().getDeclaredConstructor(EntityType.class, Level.class).newInstance(null, null);
+        } catch (Exception e) {
+            // Extremely stupid hack to fix non-finished last ID collection
+        }
 
         // Minecraft tf is ts class shit
         int lastID = lastIDs.computeIfAbsent(destination, SynchedEntityData.ID_REGISTRY::getLastIdFor);
@@ -244,7 +256,7 @@ public final class EntityTypes {
                     Math.max(SynchedEntityData.ID_REGISTRY.classToLastIdCache.getOrDefault(destination, -1), lastID)
             );
 
-        return synchs;
+        return new Stuff(synchs, lastID);
     }
 
     private static @NotNull ArrayList<SaveController<?, ?, ?>> collect_saved(Class<?> destination, Field[] fields) {

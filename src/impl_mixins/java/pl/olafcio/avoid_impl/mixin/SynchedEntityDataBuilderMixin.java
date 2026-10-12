@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.network.syncher.SyncedDataHolder;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.ClassTreeIdRegistry;
 import org.jspecify.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
@@ -20,6 +21,14 @@ public class SynchedEntityDataBuilderMixin {
     @Shadow
     @Final
     private SyncedDataHolder entity;
+
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ClassTreeIdRegistry;getCount(Ljava/lang/Class;)I"), method = "<init>")
+    public int init__getCount(ClassTreeIdRegistry instance, Class<?> class_, Operation<Integer> original, SyncedDataHolder syncedDataHolder) {
+        if (syncedDataHolder instanceof IAvoidEntity avoid)
+            return avoid.getAvoidType().lastID + 1;
+
+        return original.call(instance, class_);
+    }
 
     @Inject(at = @At("RETURN"), method = "build")
     public void build(CallbackInfoReturnable<SynchedEntityData> cir) {

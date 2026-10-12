@@ -46,12 +46,15 @@ public interface IAvoidEntity {
         }
     }
 
-    private ArrayList<Controller<?, ?, ?>> getSynchs() {
-        return ((AvoidEntityType<?>) getEntity().getType()).synchs;
+    default @NotNull AvoidEntityType<?> getAvoidType() {
+        return (AvoidEntityType<?>) getEntity().getType();
     }
 
+    private ArrayList<Controller<?, ?, ?>> getSynchs() {
+        return getAvoidType().synchs;
+    }
     private ArrayList<SaveController<?, ?, ?>> getSaved() {
-        return ((AvoidEntityType<?>) getEntity().getType()).saved;
+        return getAvoidType().saved;
     }
 
     private @NotNull net.minecraft.world.entity.Entity getEntity() {
