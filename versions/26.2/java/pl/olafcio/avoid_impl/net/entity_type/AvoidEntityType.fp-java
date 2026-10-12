@@ -1,0 +1,4 @@
+{
+    ImmutableSet<Block>
+    net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block>
+}

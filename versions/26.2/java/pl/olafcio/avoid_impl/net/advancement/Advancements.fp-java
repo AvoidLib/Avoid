@@ -1,0 +1,9 @@
+{
+    import net.minecraft.advancements.criterion.ImpossibleTrigger;
+
+    //== replacement ==//
+
+    import net.minecraft.advancements.triggers.Criterion;
+    import net.minecraft.advancements.triggers.CriteriaTriggers;
+    import net.minecraft.advancements.triggers.ImpossibleTrigger;
+}
