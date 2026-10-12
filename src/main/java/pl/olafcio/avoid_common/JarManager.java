@@ -3,6 +3,7 @@ package pl.olafcio.avoid_common;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -16,8 +17,16 @@ public final class JarManager {
         this.klass = klass;
     }
 
+    private URL getAnyResourceIstg(String pkg) {
+        var a = klass.getClassLoader().getResource("");
+        var b = klass.getClassLoader().getResource(pkg);
+
+        return a == null ? b : a;
+    }
+
     public String[] listFilenames(String pkg) throws IOException {
-        if (!klass.getClassLoader().getResource("").getPath().contains("!")) {
+        var anyResourceIstg = getAnyResourceIstg(pkg);
+        if (anyResourceIstg != null && !anyResourceIstg.getPath().contains("!")) {
             // IDE
             try (var stream = klass.getClassLoader().getResourceAsStream(pkg)) {
                 if (stream == null)
