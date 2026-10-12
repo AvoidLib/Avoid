@@ -109,7 +109,7 @@ public interface IAvoidEntity {
 
                 var optional = valueInput.read(sync.name, sync.codec);
                 if (optional.isEmpty()) {
-                    LOGGER.warn("Missing @Saved field: '{}' on '{}' // {}", sync.field.getName(), sync.field.getDeclaringClass().getName(), getEntity());
+                    LOGGER.debug("Missing @Saved field: '{}' on '{}' // {}", sync.field.getName(), sync.field.getDeclaringClass().getName(), getEntity());
 
 //                    if (sync.field.getType().isPrimitive())
 //                        throw new RuntimeException("Missing @Saved field, cannot assign null to %s: '%s' on '%s'".formatted(sync.field.getType().getName(), sync.field.getName(), sync.field.getDeclaringClass().getName()));
