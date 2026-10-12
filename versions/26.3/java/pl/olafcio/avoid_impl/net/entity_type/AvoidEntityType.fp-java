@@ -1,0 +1,9 @@
+{
+    super(entityFactory, mobCategory, bl, bl2, bl3, bl4, immutableSet, entityDimensions, f, i, j, string, optional, featureFlagSet, bl5);
+    super(entityFactory, mobCategory, bl, bl2, bl3, bl4, immutableSet, entityDimensions, f, i, j, string, optional, featureFlagSet, bl5, bl6);
+}
+
+{
+    AvoidEntityType(ArrayList<Controller<?, ?, ?>> synchs, int lastID, ArrayList<SaveController<?, ?, ?>> saved, EntityFactory<T> entityFactory, MobCategory mobCategory, boolean bl, boolean bl2, boolean bl3, boolean bl4, net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> immutableSet, EntityDimensions entityDimensions, float f, int i, int j, String string, Optional<ResourceKey<LootTable>> optional, FeatureFlagSet featureFlagSet, boolean bl5) {
+    AvoidEntityType(ArrayList<Controller<?, ?, ?>> synchs, int lastID, ArrayList<SaveController<?, ?, ?>> saved, EntityFactory<T> entityFactory, MobCategory mobCategory, boolean bl, boolean bl2, boolean bl3, boolean bl4, net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> immutableSet, EntityDimensions entityDimensions, float f, int i, int j, String string, Optional<ResourceKey<LootTable>> optional, FeatureFlagSet featureFlagSet, boolean bl5, boolean bl6) {
+}

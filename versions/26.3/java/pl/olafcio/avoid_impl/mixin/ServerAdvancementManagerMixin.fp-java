@@ -1,0 +1,25 @@
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+
+{
+    method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V"
+    method = "<init>"
+}
+
+{
+    target = "Ljava/util/Map;forEach(Ljava/util/function/BiConsumer;)V"
+    target = "Ljava/util/stream/Stream;forEach(Ljava/util/function/Consumer;)V"
+}
+
+{
+    private void forEach(Map<Identifier, Advancement> instance, BiConsumer<Identifier, Advancement> action, Operation<Void> original) {
+    private void forEach(Stream<Holder.Reference<Advancement>> instance, Consumer<Holder.Reference<Advancement>> action, Operation<Void> original) {
+}
+
+{
+    action.accept(entry.getKey(), entry.getValue());
+    action.accept(new Holder.Reference(null, null, ResourceKey.create(Registries.ADVANCEMENT, entry.getKey()), entry.getValue()) {});
+}
