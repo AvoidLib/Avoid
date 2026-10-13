@@ -70,6 +70,7 @@
     "LoadingOverlayMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
+    "MouseMixin",
     "OptionsMixin",
     "ScreenMixin",
     "SoundEngineMixin",
