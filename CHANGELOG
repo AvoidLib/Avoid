@@ -6,7 +6,7 @@
 - 26.1.1 & 26.1.2
 - 26.2
 - 26.3
-- 26.4-snapshot-2 *[TS]*
+- 26.4-snapshot-3 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
@@ -15,21 +15,23 @@
 - Paper
 
 **🪵 Changelog:**
-- Fix NeoForge net.payload
-- OS#openURL([URI/String] uri)
-- Meet ModuleClassLoader requirements
-- Jar-in-Jar
-- Change license
-- `@Expose`
-- Subloaders
-- Avoid::getBrand()
-- Update to 26.4-snapshot-2
-- Mixin support *(only Fabric and NeoForge)*
-- Mod datapack loading on Paper
-- Make more [Properties] modifiable in MC 1.21.8
-- Datapack API
-- [Player API] #closeInventory()
-- [ModLoader] AvoidModBase#getLogger()
+- Update license *(Avoid License 3.1.0)*
+- Fix block sound never being set
+- Update to 26.4-snapshot-3
+- Advancement Creation API
+- [Client] Play Sound Event
+- [Server] Play Sound Event
+- [Chat] #{ clear, discardDraft, scroll, resetScroll }(...)
+- [ModLoader] @AutoAdvancement annotation
+- [Entity Creation API] @NetworkSync
+- [Entity Creation API] @Saved
+- Fix JarManager
+- Automatic pack.mcmeta for mod generating
+- A wide range of Paper fixes
+- Fix ModClassLoader memory leak
+- Allow cyclic access on NeoForge between plugin and non-plugin classloaders
+- Fix NeoForge & Sponge commands
+- [Documentation] ModClassLoader
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
