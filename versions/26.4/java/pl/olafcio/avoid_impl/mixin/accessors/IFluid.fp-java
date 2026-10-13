@@ -1,0 +1,6 @@
+import net.minecraft.world.level.material.FluidState;
+
+{
+    Fluid fluid,
+    FluidState fluid,
+}

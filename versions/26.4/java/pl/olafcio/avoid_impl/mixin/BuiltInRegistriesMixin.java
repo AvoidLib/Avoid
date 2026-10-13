@@ -1,0 +1,19 @@
+package pl.olafcio.avoid_impl.mixin;
+
+import net.minecraft.core.registries.BuiltinRegistryBuilder;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import pl.olafcio.avoid.api.Avoid;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.platform.RunningEnv;
+
+@Mixin(BuiltinRegistryBuilder.class)
+public class BuiltInRegistriesMixin {
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/core/registries/BuiltinRegistryBuilder;freeze()V"), method = "bootStrap")
+    private static void bootStrap__freeze(CallbackInfo ci) {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            Avoid.INSTANCE.onEarlyInit();
+    }
+}

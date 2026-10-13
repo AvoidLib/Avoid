@@ -1,0 +1,7 @@
+import net.minecraft.client.core.registries.BuiltInClientRegistries;
+
+{
+    net.minecraft.client.renderer.entity.EntityRenderers.register(
+    net.minecraft.client.renderer.entity.EntityRenderers.register(
+        BuiltInClientRegistries.ENTITY_RENDERER,
+}

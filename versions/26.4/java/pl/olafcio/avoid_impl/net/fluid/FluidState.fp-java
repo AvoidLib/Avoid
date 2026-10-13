@@ -1,0 +1,9 @@
+{
+    import static net.minecraft.world.level.material.FlowingFluid.FALLING;
+    //import static net.minecraft.world.level.material.FlowingFluid.FALLING;
+}
+
+{
+    .getValue(FALLING)
+    .isFalling()
+}

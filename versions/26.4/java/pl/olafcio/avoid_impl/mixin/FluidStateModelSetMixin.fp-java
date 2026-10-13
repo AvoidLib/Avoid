@@ -1,0 +1,9 @@
+{
+    hashmap.put(entry.getValue().getFlowing(), baken);
+    hashmap.put(entry.getValue(), baken);
+}
+
+{
+    hashmap.put(entry.getValue().getSource(), baken);
+    //hashmap.put(entry.getValue().getSource(), baken);
+}

@@ -1,0 +1,4 @@
+{
+    getFluid(fluid)
+    getFluid(fluid).defaultFluidState()
+}
