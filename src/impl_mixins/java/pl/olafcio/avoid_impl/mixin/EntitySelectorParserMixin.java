@@ -22,6 +22,7 @@ import pl.olafcio.avoid.net.entity_selector.EntitySelectorMeta;
 import pl.olafcio.avoid.net.entity_selector.EntitySelectors;
 import pl.olafcio.avoid.net.entity_selector.properties.SelectorOrder;
 import pl.olafcio.avoid.net.entity_selector.properties.SelectorTarget;
+import pl.olafcio.avoid_impl.net.entity.EntityNative;
 
 import java.util.List;
 import java.util.Map;
@@ -122,6 +123,7 @@ public abstract class EntitySelectorParserMixin {
             this.predicates.add(Entity::isAlive);
         }
 
+        this.predicates.add(entity -> meta.selectorClass().matches(EntityNative.convertFromTry(entity)));
         this.suggestions = this::suggestOpenOptions;
 
         if (this.reader.canRead() && this.reader.peek() == '[') {
