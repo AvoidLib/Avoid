@@ -33,9 +33,6 @@ public class PrimedTNT extends Entity {
         return __cast(PrimedTnt.class).getFuse();
     }
 
-    /**
-     * <b>NOTE:</b> This may break the ender dragon.
-     */
     public void setFuse(int value) {
         __cast(PrimedTnt.class).setFuse(value);
     }
