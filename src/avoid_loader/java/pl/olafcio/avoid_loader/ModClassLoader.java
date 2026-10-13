@@ -4,7 +4,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 @ApiStatus.Internal
 public class ModClassLoader extends URLClassLoader {
@@ -18,8 +18,8 @@ public class ModClassLoader extends URLClassLoader {
     }
 
     public boolean startup = true;
-    private final ArrayList<String> loaded
-            = new ArrayList<>();
+    private final HashSet<String> loaded
+            = new HashSet<>();
 
     @Override
     protected Class<?> loadClass(String name, boolean resolve)
