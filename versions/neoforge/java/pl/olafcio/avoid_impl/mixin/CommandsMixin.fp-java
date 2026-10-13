@@ -2,42 +2,48 @@ import com.mojang.brigadier.context.CommandContext;
 import java.lang.reflect.Field;
 
 {
-    var ictx = (ICommandContext<CommandSourceStack>) ctx;
+    public class CommandsMixin {
+    public class CommandsMixin {
+        private static Field _getArgField() {
+            Field F_arguments;
 
-    // == replacement == //
+            try {
+                F_arguments = CommandContext.class.getDeclaredField("arguments");
+                F_arguments.setAccessible(true);
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException("AvoidLib failed to reflectively retrieve CommandContext#arguments", e);
+            }
 
-    Field F_arguments;
+            return F_arguments;
+        }
 
-    try {
-        F_arguments = CommandContext.class.getDeclaredField("arguments");
-        F_arguments.setAccessible(true);
-    } catch (NoSuchFieldException e) {
-        throw new RuntimeException("AvoidLib failed to reflectively retrieve CommandContext#arguments", e);
-    }
+        private static Map<String, ParsedArgument<CommandSourceStack, ?>> _getArgs(CommandContext<CommandSourceStack> ctx) {
+            Map<String, ParsedArgument<CommandSourceStack, ?>> argsraw;
+
+            try {
+                argsraw = (Map<String, ParsedArgument<CommandSourceStack, ?>>) _getArgField().get(ctx);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("AvoidLib failed to reflectively get CommandContext#arguments", e);
+            }
+
+            return argsraw;
+        }
+
+        private static void _setArgs(CommandContext<CommandSourceStack> ctx, Map<String, ParsedArgument<CommandSourceStack, ?>> rekeyed) {
+            try {
+                _getArgField().set(ctx, rekeyed);
+            } catch (IllegalAccessException ex) {
+                throw new RuntimeException("AvoidLib failed to reflectively set CommandContext#arguments", ex);
+            }
+        }
 }
 
 {
-    var argsraw = ictx.avoid$arguments();
-
-    // == replacement == //
-
-    Map<String, ParsedArgument<CommandSourceStack, ?>> argsraw;
-
-    try {
-        argsraw = (Map<String, ParsedArgument<CommandSourceStack, ?>>) F_arguments.get(ctx);
-    } catch (IllegalAccessException e) {
-        throw new RuntimeException("AvoidLib failed to reflectively get CommandContext#arguments", e);
-    }
+    ((ICommandContext<CommandSourceStack>) ctx).avoid$arguments()
+    _getArgs(ctx)
 }
 
 {
-    ictx.avoid$arguments(rekeyed);
-
-    // == replacement == //
-
-    try {
-        F_arguments.set(ctx, rekeyed);
-    } catch (IllegalAccessException ex) {
-        throw new RuntimeException("AvoidLib failed to reflectively set CommandContext#arguments", ex);
-    }
+    ((ICommandContext<CommandSourceStack>) ctx).avoid$arguments(
+    _setArgs(ctx,
 }
