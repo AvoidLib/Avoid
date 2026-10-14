@@ -252,7 +252,7 @@ public final class ModLoad
 
                 try {
                     klass = classLoader.loadClass(className);
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     Avoid.LOGGER.error("Failed to load class {} ({})", className, mod.getFileName().toString());
                     continue;
                 }
@@ -313,7 +313,7 @@ public final class ModLoad
 
             try {
                 methods = klass.getDeclaredMethods();
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 LOGGER.warn("Failed to collect methods from {}", klass.getName());
                 return;
             }
