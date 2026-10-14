@@ -13,6 +13,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import pl.olafcio.avoid_impl.Reflect;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
+import pl.olafcio.avoid.mods.event.EventManager;
+import pl.olafcio.avoid.mods.events_stage.*;
 
 public class AvoidDefer {
     private AvoidDefer() {}
@@ -26,6 +28,9 @@ public class AvoidDefer {
                 (Supplier<?>) (() -> {
                     for (var op : functions)
                         op.run();
+
+                    var event = new RegistryContentEvent();
+                    EventManager.fire(event);
 
                     return null;
                 })
@@ -53,6 +58,9 @@ public class AvoidDefer {
             public Registry<?> value() {
                 for (var op : frozen)
                     op.run();
+
+                var event = new RegistryFrozenEvent();
+                EventManager.fire(event);
 
                 return uselessRegistry;
             }
