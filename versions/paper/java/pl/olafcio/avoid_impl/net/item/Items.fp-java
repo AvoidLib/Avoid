@@ -1,0 +1,39 @@
+import pl.olafcio.avoid_impl.paper.AvoidDefer;
+
+{
+    interceptor.value = net.minecraft.world.item.Items.registerItem(
+    __registerItem(interceptor,
+}
+
+{
+    net.minecraft.world.item.Items.registerItem
+    __registerItem
+}
+
+{
+      getProperties(
+    (
+}
+
+{
+    public final class Items {
+    public final class Items {
+        private static void __registerItem(net.minecraft.resources.ResourceKey<net.minecraft.world.item.Item> resourceKey,
+                                           java.util.function.Function<net.minecraft.world.item.Item.Properties, net.minecraft.world.item.Item> function,
+                                           Class<? extends Item> properties)
+        {
+            AvoidDefer.defer(() -> {
+                net.minecraft.world.item.Items.registerItem(resourceKey, function, getProperties(properties));
+            });
+        }
+
+        private static void __registerItem(AvoidPackageOnly<net.minecraft.world.item.Item> interceptor,
+                                           net.minecraft.resources.ResourceKey<net.minecraft.world.item.Item> resourceKey,
+                                           java.util.function.Function<net.minecraft.world.item.Item.Properties, net.minecraft.world.item.Item> function,
+                                           Class<? extends Item> properties)
+        {
+            AvoidDefer.defer(() -> {
+                interceptor.value = net.minecraft.world.item.Items.registerItem(resourceKey, function, getProperties(properties));
+            });
+        }
+}

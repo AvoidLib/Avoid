@@ -30,7 +30,6 @@ import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid_impl.net.world.WorldNative;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
 import pl.olafcio.avoid_impl.net.world.block_data.BlockDataNative;
-import pl.olafcio.avoid_impl.client.AvoidLibClient;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -217,11 +216,11 @@ public final class Blocks {
         });
 
         properties = properties.isSuffocating((blockState, blockGetter, blockPos) -> {
-            return instance.isSuffocating(BlockDataNative.convertFrom(blockState), WorldNative.make(AvoidLibClient.mc.level), BlockPosNative.convert(blockPos));
+            return instance.isSuffocating(BlockDataNative.convertFrom(blockState), WorldNative.makeRestricted(blockGetter), BlockPosNative.convert(blockPos));
         });
 
         properties = properties.isViewBlocking((blockState, blockGetter, blockPos) -> {
-            return instance.isViewBlocking(BlockDataNative.convertFrom(blockState), WorldNative.make(AvoidLibClient.mc.level), BlockPosNative.convert(blockPos));
+            return instance.isViewBlocking(BlockDataNative.convertFrom(blockState), WorldNative.makeRestricted(blockGetter), BlockPosNative.convert(blockPos));
         });
 
         properties = properties.isValidSpawn((blockState, blockGetter, blockPos, entityType) -> {

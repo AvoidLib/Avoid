@@ -1,6 +1,7 @@
 package pl.olafcio.avoid_impl;
 
 import org.jetbrains.annotations.ApiStatus;
+import sun.misc.Unsafe;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationTargetException;
@@ -86,6 +87,45 @@ public final class Reflect {
             f.set(parent, value);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             throw new RuntimeException("AvoidLib failed to reflectively set '%s'".formatted(klass.getName()), e);
+        }
+    }
+
+    public static final Unsafe unsafe;
+    public static final MethodHandles.Lookup IMPL_LOOKUP;
+
+    static {
+        var unsafeCls = Unsafe.class;
+        try {
+            var field = unsafeCls.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            unsafe = (Unsafe) field.get(unsafeCls);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            var f = MethodHandles.Lookup.class.getDeclaredField("IMPL_LOOKUP");
+            var base = unsafe.staticFieldBase(f);
+            var offset = unsafe.staticFieldOffset(f);
+
+            IMPL_LOOKUP = (MethodHandles.Lookup) unsafe.getObject(base, offset);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setUnsafe(Class<?> klass, String name, Object value) {
+        try {
+            var field = klass.getDeclaredField(name);
+
+            //FIXME unsafe is very bad (it's going to get removed) but it seems to be the only runtime-only way
+            unsafe.putObject(
+                    unsafe.staticFieldBase(field),
+                    unsafe.staticFieldOffset(field),
+                    value
+            );
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException("AvoidLib failed to unsafely set '%s'".formatted(klass.getName()), e);
         }
     }
 }

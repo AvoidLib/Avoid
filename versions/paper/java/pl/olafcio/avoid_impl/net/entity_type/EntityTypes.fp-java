@@ -1,7 +1,12 @@
 import pl.olafcio.avoid_impl.Reflect;
+import pl.olafcio.avoid_impl.paper.AvoidDefer;
+
 import net.minecraft.util.ClassTreeIdRegistry;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
+
 import org.slf4j.LoggerFactory;
+import com.google.common.collect.ImmutableMap;
 
 {
     SynchedEntityData.ID_REGISTRY.classToLastIdCache
@@ -30,4 +35,27 @@ import org.slf4j.LoggerFactory;
 
     LoggerFactory.getLogger("Avoid/Entity Types").error("Entities on Paper WILL NOT work! You are using an Avoid addon that registers the entity type '{}'. I'm about 99% sure your server will crash after this. REMOVE THE '{}' MOD IF YOU HAVE ISSUES!", entityTypeID, entityTypeID.namespace());
     var id = IdentificationNative.convert(entityTypeID);
+}
+
+{
+    LIVING_ENTITIES.put
+    injectDefaultAttributes
+}
+
+{
+    public final class EntityTypes {
+    public final class EntityTypes {
+        private static void injectDefaultAttributes(EntityType<? extends LivingEntity> key, Supplier<AttributeSupplier> value) {
+            AvoidDefer.afterFreeze(() -> {
+                var suppliers = (Map<EntityType<? extends LivingEntity>, AttributeSupplier>)
+                                Reflect.get(DefaultAttributes.class, "SUPPLIERS", Map.class);
+
+                if (suppliers instanceof ImmutableMap<EntityType<? extends LivingEntity>, AttributeSupplier>)
+                    suppliers = new HashMap<>(suppliers);
+
+                suppliers.put(key, value.get());
+
+                Reflect.setUnsafe(DefaultAttributes.class, "SUPPLIERS", suppliers);
+            });
+        }
 }
