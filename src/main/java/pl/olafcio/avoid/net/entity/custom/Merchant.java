@@ -684,7 +684,7 @@ public abstract class Merchant extends pl.olafcio.avoid.net.entity.type.Merchant
     }
 
     @Override
-    public void showParticle(Identification particleID, double x, double y, double z, float offsetX, float offsetY, float offsetZ, float maxSpeed, int count, boolean canUpgradeFromMinimal, boolean force) {
+    public final void showParticle(Identification particleID, double x, double y, double z, float offsetX, float offsetY, float offsetZ, float maxSpeed, int count, boolean canUpgradeFromMinimal, boolean force) {
         super.showParticle(particleID, x, y, z, offsetX, offsetY, offsetZ, maxSpeed, count, canUpgradeFromMinimal, force);
     }
 
