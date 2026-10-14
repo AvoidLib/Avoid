@@ -10,6 +10,9 @@ import pl.olafcio.avoid.net.block.values.MapColor;
 import pl.olafcio.avoid.net.world.World;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
 
+/**
+ * A block in-game.
+ */
 public abstract class Block {
     /**
      * Returns the sort-of <i>color</i> for this block.

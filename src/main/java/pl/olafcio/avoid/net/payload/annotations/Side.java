@@ -5,6 +5,9 @@ import pl.olafcio.avoid.net.packet.PacketSide;
 
 import java.lang.annotation.*;
 
+/**
+ * The network flow which should be used by the custom payload.
+ */
 @ApiStatus.Experimental
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

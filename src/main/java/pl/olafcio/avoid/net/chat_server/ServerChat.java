@@ -17,6 +17,9 @@ public final class ServerChat {
     @ApiStatus.Internal
     private ServerChat() {}
 
+    /**
+     * Sends a message to all players.
+     */
     public static void broadcast(BaseComponent<?> data) {
         var server = AvoidInternal.getServer();
         if (server == null)
