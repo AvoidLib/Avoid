@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -210,6 +211,19 @@ class ModParser {
             } else if (env == ModEnvironment.SERVER) {
                 if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.SERVER) {
                     PreModLoader.LOGGER.warn("Skipping server-only mod: {} [{}]", name, id);
+                    return;
+                }
+            }
+
+            for (var anotherMod : avoidMods) {
+                if (Objects.equals(anotherMod.manifest().get("id").getAsString(), id)) {
+                    PreModLoader.LOGGER.error("You have 2 addons using the same ID: '{}' and '{}' ({})\nPicking '{}'",
+                            mod.toAbsolutePath(),
+                            anotherMod.path().toAbsolutePath(),
+                            id,
+                            anotherMod.path().toAbsolutePath()
+                    );
+
                     return;
                 }
             }
