@@ -67,7 +67,7 @@ public final class Reflect {
         try {
             return (T) MethodHandles.privateLookupIn(klass, MethodHandles.lookup()).findStaticVarHandle(klass, name, type).get();
         } catch (IllegalAccessException | NoSuchFieldException e) {
-            throw new RuntimeException("AvoidLib failed to reflectively get '%s'".formatted(klass.getName()), e);
+            throw new RuntimeException("AvoidLib failed to reflectively get '%s' field '%s'".formatted(klass.getName(), name), e);
         }
     }
 
@@ -76,7 +76,7 @@ public final class Reflect {
         try {
             return (T) MethodHandles.privateLookupIn(klass, MethodHandles.lookup()).findVarHandle(klass, name, type).get(instance);
         } catch (IllegalAccessException | NoSuchFieldException e) {
-            throw new RuntimeException("AvoidLib failed to reflectively get '%s'".formatted(klass.getName()), e);
+            throw new RuntimeException("AvoidLib failed to reflectively get '%s' field '%s'".formatted(klass.getName(), name), e);
         }
     }
 
@@ -86,7 +86,7 @@ public final class Reflect {
             f.setAccessible(true);
             f.set(parent, value);
         } catch (IllegalAccessException | NoSuchFieldException e) {
-            throw new RuntimeException("AvoidLib failed to reflectively set '%s'".formatted(klass.getName()), e);
+            throw new RuntimeException("AvoidLib failed to reflectively set '%s' field '%s'".formatted(klass.getName(), name), e);
         }
     }
 
@@ -125,7 +125,7 @@ public final class Reflect {
                     value
             );
         } catch (NoSuchFieldException e) {
-            throw new RuntimeException("AvoidLib failed to unsafely set '%s'".formatted(klass.getName()), e);
+            throw new RuntimeException("AvoidLib failed to unsafely set '%s' field '%s'".formatted(klass.getName(), name), e);
         }
     }
 }
