@@ -12,6 +12,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
+import pl.olafcio.avoid.net.attribute.AttributeValue;
 import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid.errors.ImproperEnvironment;
@@ -950,5 +951,33 @@ public abstract class Entity {
                 offsetX, offsetY, offsetZ,
                 maxSpeed
         );
+    }
+
+    public AttributeValue getAttribute(Identification id) {
+        var attribute = __cast(LivingEntity.class).getAttribute(BuiltInRegistries.ATTRIBUTE.get(IdentificationNative.convert(id)).orElseThrow());
+
+        return new AttributeValue() {
+            @Override
+            public double getValue() {
+                return attribute.getValue();
+            }
+
+            @Override
+            public void setValue(double value) {
+                attribute.setBaseValue(value);
+            }
+
+            @Override
+            public void clearModifiers() {
+                attribute.removeModifiers();
+            }
+        };
+    }
+
+    public void setAttribute(Identification id, double value) {
+        var attribute = getAttribute(id);
+
+        attribute.setValue(value);
+        attribute.clearModifiers();
     }
 }

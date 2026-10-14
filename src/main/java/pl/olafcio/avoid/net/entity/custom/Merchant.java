@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 import org.jspecify.annotations.NonNull;
+import pl.olafcio.avoid.net.attribute.AttributeValue;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.effect.instance.EffectInstance;
@@ -685,5 +686,15 @@ public abstract class Merchant extends pl.olafcio.avoid.net.entity.type.Merchant
     @Override
     public void showParticle(Identification particleID, double x, double y, double z, float offsetX, float offsetY, float offsetZ, float maxSpeed, int count, boolean canUpgradeFromMinimal, boolean force) {
         super.showParticle(particleID, x, y, z, offsetX, offsetY, offsetZ, maxSpeed, count, canUpgradeFromMinimal, force);
+    }
+
+    @Override
+    public final void setAttribute(Identification id, double value) {
+        super.setAttribute(id, value);
+    }
+
+    @Override
+    public final AttributeValue getAttribute(Identification id) {
+        return super.getAttribute(id);
     }
 }
