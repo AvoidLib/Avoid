@@ -74,6 +74,7 @@ class MixinToReflect implements ITransformer {
                 invoke = line.substring(10).split('"')[0]
             } else if (line.startsWith("@Mixin(")) {
                 target = line.substring(7).split('\\.class')[0]
+                target = imports.getOrDefault(target, target)
             } else if (line.startsWith("import ")) {
                 var nosemi = line.substring(0, line.length() - 1)
                                         .substring(7)
