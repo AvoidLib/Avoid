@@ -18,11 +18,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -177,7 +175,9 @@ class ModParser {
             byte[] manifestData = jar.getInputStream(manifestFile)
                                      .readAllBytes();
 
-            var json = GSON.fromJson(new String(manifestData), JsonObject.class);
+            var json = GSON.fromJson(Arrays.stream(new String(manifestData).split("\n"))
+                                                                           .filter(line -> !line.stripLeading().startsWith("//"))
+                                                                           .collect(Collectors.joining("\n")), JsonObject.class);
             if (json == null) {
                 PreModLoader.LOGGER.error("Failed to read Avoid mod manifest: {}", mod.toAbsolutePath());
                 return;
