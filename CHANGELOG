@@ -1,4 +1,5 @@
 **🧧 Supported Versions:**
+- 1.21.5
 - 1.21.8
 - 1.21.10
 - 1.21.11 *[LTS]*
@@ -15,23 +16,20 @@
 - Paper
 
 **🪵 Changelog:**
-- Update license *(Avoid License 3.1.0)*
-- Fix block sound never being set
-- Update to 26.4-snapshot-3
-- Advancement Creation API
-- [Client] Play Sound Event
-- [Server] Play Sound Event
-- [Chat] #{ clear, discardDraft, scroll, resetScroll }(...)
-- [ModLoader] @AutoAdvancement annotation
-- [Entity Creation API] @NetworkSync
-- [Entity Creation API] @Saved
-- Fix JarManager
-- Automatic pack.mcmeta for mod generating
-- A wide range of Paper fixes
-- Fix ModClassLoader memory leak
-- Allow cyclic access on NeoForge between plugin and non-plugin classloaders
-- Fix NeoForge & Sponge commands
-- [Documentation] ModClassLoader
+- Remove accidental unrelated note in PrimedTNT
+- [Entity Selector API] #matches([Entity] entity)
+- [Mouse] Down Event
+- [Mouse] Move Event
+- [Entity API] Attribute accessing
+- [Entity API] Finalize 'showParticle' for customs
+- ModLoader more catchy class loading
+- A bunch of Paper fixes for content registration
+- More helpful Reflect field method error messages
+- Actually fix RenderLayers on servers
+- [PreModLoader] Preventing multiple mods under the same ID from loading
+- RegistryContentEvent & RegistryFrozenEvent
+- Some documentation
+- 1.21.5 support
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
