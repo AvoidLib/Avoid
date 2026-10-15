@@ -1,0 +1,16 @@
+import pl.olafcio.backported.BackportedClickEvents;
+
+{
+    input.getStyle().getClickEvent() instanceof ClickEvent.ShowDialog(Holder<Dialog> dialog) ?
+    //input.getStyle().getClickEvent() instanceof ClickEvent.ShowDialog(Holder<Dialog> dialog) ?
+}
+
+{
+    input.getStyle().getClickEvent() instanceof ClickEvent.Custom(Identifier id, Optional<Tag> payload) ?
+    input.getStyle().getClickEvent() instanceof BackportedClickEvents.Custom(Identifier id, Optional<Tag> payload) ?
+}
+
+{
+    import net.minecraft.server.dialog.Dialog;
+    // import net.minecraft.server.dialog.Dialog;
+}

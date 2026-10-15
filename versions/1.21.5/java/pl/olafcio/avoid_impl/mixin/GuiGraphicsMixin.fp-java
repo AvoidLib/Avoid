@@ -1,0 +1,24 @@
+{
+    "drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)V"
+    "drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)I"
+}
+
+{
+    public void drawString(Font font, FormattedCharSequence formattedCharSequence, int i, int j, int k, boolean bl, Operation<Void> original) {
+    public int drawString(Font font, FormattedCharSequence formattedCharSequence, int i, int j, int k, boolean bl, Operation<Integer> original) {
+}
+
+{
+    original.call(FontNative.convert(event.getFont()), new MyFormattedCharSequence(array), event.x, event.y, event.color, event.shadow);
+    return original.call(FontNative.convert(event.getFont()), new MyFormattedCharSequence(array), event.x, event.y, event.color, event.shadow);
+}
+
+{
+    return;
+    return 0;
+}
+
+{
+    @ModifyVariable(at = @At("HEAD"), method = {"innerBlit", "blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIIIIII)V"}, argsOnly = true)
+    @ModifyVariable(at = @At("HEAD"), method = {"innerBlit"}, argsOnly = true)
+}

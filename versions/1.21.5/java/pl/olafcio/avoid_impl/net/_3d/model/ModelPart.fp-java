@@ -1,0 +1,14 @@
+{
+    return this.part.getAllParts().stream()
+    return this.part.getAllParts()
+}
+
+{
+    .getExtentsForGui(
+    .backported_attr$getExtentsForGui(
+}
+
+{
+    .createPartLookup(
+    .backported_attr$createPartLookup(
+}

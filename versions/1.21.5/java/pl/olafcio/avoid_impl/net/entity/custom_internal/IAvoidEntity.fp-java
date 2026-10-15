@@ -1,0 +1,16 @@
+import net.minecraft.nbt.CompoundTag;
+
+{
+    import net.minecraft.world.level.storage.
+    //import net.minecraft.world.level.storage.
+}
+
+{
+    ValueInput
+    CompoundTag
+}
+
+{
+    ValueOutput
+    CompoundTag
+}

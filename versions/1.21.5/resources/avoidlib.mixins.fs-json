@@ -1,0 +1,2 @@
+this['client'].append("FogRendererMixin")
+this['client'].append("RenderTypeMixin")

@@ -1,0 +1,11 @@
+import net.minecraft.server.level.ServerLevel;
+
+{
+    @Shadow public abstract Level level();
+    @Shadow public abstract ServerLevel serverLevel();
+}
+
+{
+    this.level()
+    this.serverLevel()
+}

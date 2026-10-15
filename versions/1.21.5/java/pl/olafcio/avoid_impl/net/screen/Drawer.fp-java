@@ -1,0 +1,154 @@
+{
+    import net.minecraft.client.gui.render.TextureSetup;
+    /*
+}
+
+{
+    import net.minecraft.client.gui.render.state.GuiTextRenderState;
+    */
+}
+
+{
+    package pl.olafcio.avoid_impl.net.screen;
+    package pl.olafcio.avoid_impl.net.screen;
+
+    import pl.olafcio.avoid_impl.mixinclass.RenderPipelineMap;
+    import net.minecraft.client.gui.Font.DisplayMode;
+}
+
+{
+    import com.mojang.blaze3d.textures.GpuTextureView;
+    import com.mojang.blaze3d.textures.GpuTexture;
+}
+
+{
+    this.graphics.guiRenderState.submitText(new GuiTextRenderState(
+    this.drawShiiTextForMe(
+}
+
+{
+    , textureSetup
+    /*, textureSetup*/
+}
+
+{
+      textureSetup
+    //textureSetup
+}
+
+{
+      TextureSetup
+    //TextureSetup
+}
+
+{
+    ));//#endsubmit
+    );//#endsubmit
+}
+
+{
+    new Matrix3x2f(this.graphics.pose())
+    this.graphics.pose().last().pose()
+}
+
+{
+    this.graphics.scissorStack.peek()
+    null
+}
+
+{
+    Drawer() {}
+    Drawer() {}
+
+    private void drawShiiTextForMe(
+        net.minecraft.client.gui.Font font, FormattedCharSequence formattedCharSequence,
+        org.joml.Matrix4f pose, int x, int y, int color, int background, boolean shadow,
+        Void useless
+    ) {
+        font.drawInBatch(formattedCharSequence, (float)x, (float)y, color, shadow, pose, this.graphics.bufferSource, DisplayMode.NORMAL, background, 15728880 /* <- was is das? */);
+    }
+
+    private void drawShiiFillFor(
+        com.mojang.blaze3d.pipeline.RenderPipeline pipeline,
+        org.joml.Matrix4f pose,
+        int x, int y, int x2, int y2, int color, int color2,
+        Void nothing
+    ) {
+        var renderType = RenderPipelineMap.MAP.get(pipeline);
+        var vertexConsumer = graphics.bufferSource.getBuffer(renderType);
+
+        vertexConsumer.addVertex(pose, (float)x, (float)y, (float)0.0F).setColor(color);
+        vertexConsumer.addVertex(pose, (float)x, (float)y2, (float)0.0F).setColor(color2);
+        vertexConsumer.addVertex(pose, (float)x2, (float)y2, (float)0.0F).setColor(color2);
+        vertexConsumer.addVertex(pose, (float)x2, (float)y, (float)0.0F).setColor(color);
+    }
+
+    private void drawShiiBlitFor(
+        com.mojang.blaze3d.pipeline.RenderPipeline renderLayer,
+        org.joml.Matrix4f matrix4f,
+        int x0, int y0, int x1, int y1, float u0, float u1, float v0, float v1, int color,
+        Void nothing
+    ) {
+        var vertexConsumer = this.graphics.bufferSource.getBuffer(RenderPipelineMap.MAP.get(renderLayer));
+
+        vertexConsumer.addVertex(matrix4f, (float)x0, (float)y0, 0.0F).setUv(u0, v0).setColor(color);
+        vertexConsumer.addVertex(matrix4f, (float)x0, (float)y1, 0.0F).setUv(u0, v1).setColor(color);
+        vertexConsumer.addVertex(matrix4f, (float)x1, (float)y1, 0.0F).setUv(u1, v1).setColor(color);
+        vertexConsumer.addVertex(matrix4f, (float)x1, (float)y0, 0.0F).setUv(u1, v0).setColor(color);
+    }
+}
+
+{
+    transformAxisAligned(this.graphics.pose());
+    transformAxisAligned(this.graphics.pose().last().pose());
+}
+
+{
+    TextureSetup textureSetup,
+    /*TextureSetup textureSetup,*/
+}
+
+{
+    getTextureView()
+    getTexture()
+}
+
+{
+    GpuTextureView
+    GpuTexture
+}
+
+{
+    return this.graphics.pose();
+
+    //== replacement ==//
+
+    var poses = this.graphics.pose().poses;
+    var stack = new Matrix3x2fStack(poses.size() + 1);
+
+    for (var pose : poses) {
+        // damn I don't have the useless Z what do i do
+        stack.scale(pose.pose.m00(), pose.pose.m11());
+        stack.translate(pose.pose.m30(), pose.pose.m31());
+    //  stack.rotate(pose.pose.); TODO okay i actually don't know what to put there rotating is messy
+
+        stack.pushMatrix();
+    }
+
+    return stack;
+}
+
+{
+    this.graphics.guiRenderState.submitGuiElement(new ColoredRectangleRenderState(
+    this.drawShiiFillFor(
+}
+
+{
+    this.graphics.guiRenderState.submitGuiElement(new BlitRenderState(
+    this.drawShiiBlitFor(
+}
+
+{
+    TextureSetup.noTexture(),
+    /*TextureSetup.noTexture(),*/
+}

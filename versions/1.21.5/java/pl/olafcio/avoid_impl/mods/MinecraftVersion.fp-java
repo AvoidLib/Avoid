@@ -1,0 +1,19 @@
+{
+    name()
+    getName()
+}
+
+{
+    stable()
+    isStable()
+}
+
+{
+    protocolVersion()
+    getProtocolVersion()
+}
+
+{
+    buildTime()
+    getBuildTime()
+}

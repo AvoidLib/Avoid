@@ -1,0 +1,9 @@
+{
+     if (value == SoundCategory.UI)      return SoundSource.UI;
+     if (value == SoundCategory.UI)      return SoundSource.MASTER;
+}
+
+{
+     if (value == SoundSource.UI)      return SoundCategory.UI;
+     if (value == null)                return SoundCategory.UI;
+}

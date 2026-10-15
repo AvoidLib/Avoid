@@ -1,0 +1,19 @@
+{
+    accessible field net/minecraft/client/renderer/ItemBlockRenderTypes LAYER_BY_FLUID Ljava/util/Map;
+    accessible field net/minecraft/client/renderer/ItemBlockRenderTypes TYPE_BY_FLUID Ljava/util/Map;
+
+    # 1.21.5
+
+    accessible class net/minecraft/client/renderer/FogRenderer$MobEffectFogFunction
+    accessible class net/minecraft/client/renderer/FogRenderer$FogData
+    accessible field com/mojang/blaze3d/vertex/PoseStack poses Ljava/util/List;
+    accessible field com/mojang/blaze3d/vertex/PoseStack$Pose pose Lorg/joml/Matrix4f;
+    accessible field net/minecraft/client/gui/GuiGraphics bufferSource Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;
+    accessible class net/minecraft/client/renderer/RenderType$CompositeState
+    accessible class net/minecraft/client/renderer/RenderType$CompositeRenderType
+}
+
+{
+    accessible field net/minecraft/client/gui/GuiGraphics guiRenderState Lnet/minecraft/client/gui/render/state/GuiRenderState;
+    #accessible field net/minecraft/client/gui/GuiGraphics guiRenderState Lnet/minecraft/client/gui/render/state/GuiRenderState;
+}

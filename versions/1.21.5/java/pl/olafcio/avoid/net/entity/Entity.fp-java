@@ -1,0 +1,32 @@
+import net.minecraft.world.entity.FlyingMob;
+import net.minecraft.world.entity.Leashable;
+import net.minecraft.client.multiplayer.ClientLevel;
+
+{
+    underlyingEntity.isFlyingVehicle()
+    underlyingEntity instanceof FlyingMob
+}
+
+{
+    return underlyingEntity.dropAllLeashConnections((net.minecraft.world.entity.player.Player) EntityNative.convert(causedBy));
+
+    //== replacement ==//
+
+    if (underlyingEntity instanceof Leashable leashable) {
+        leashable.dropLeash();
+        return true;
+    }
+
+    return false;
+}
+
+{
+    return underlyingEntity.isInClouds();
+
+    //== replacement ==//
+
+    if (!(underlyingEntity.level() instanceof ClientLevel))
+        throw new RuntimeException("[Entity#isInClouds] This is client-only on MC <=1.21.5");
+
+    return underlyingEntity.getY() >= ((ClientLevel) underlyingEntity.level()).effects().getCloudHeight();
+}

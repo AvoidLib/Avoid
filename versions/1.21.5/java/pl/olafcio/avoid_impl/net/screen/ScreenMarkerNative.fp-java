@@ -1,0 +1,9 @@
+{
+    import net.minecraft.client.gui.screens.dialog.ServerLinksDialogScreen;
+    // import net.minecraft.client.gui.screens.dialog.ServerLinksDialogScreen;
+}
+
+{
+    LOOKUP.put(SERVER_LINKS, ServerLinksDialogScreen.class);
+    // LOOKUP.put(SERVER_LINKS, ServerLinksDialogScreen.class);
+}

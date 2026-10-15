@@ -1,0 +1,4 @@
+{
+    ItemBlockRenderTypes.LAYER_BY_FLUID
+    ItemBlockRenderTypes.TYPE_BY_FLUID
+}
