@@ -5,8 +5,17 @@ import pl.olafcio.avoid.errors.NotImplementedException;
 
 @ApiStatus.Experimental
 public abstract class CustomPayload {
-    public abstract void read(byte[] data);
-    public abstract byte[] write();
+    /**
+     * <b>Note:</b> This is not called if {@linkplain pl.olafcio.avoid.net.payload.annotations.NoManual @NoManual} is used.
+     */
+    public void read(byte[] data) {}
+
+    /**
+     * <b>Note:</b> This is not called if {@linkplain pl.olafcio.avoid.net.payload.annotations.NoManual @NoManual} is used.
+     */
+    public byte[] write() {
+        return new byte[]{};
+    }
 
     /**
      * Handles the packet on the client.<br/>
