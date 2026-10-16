@@ -1,0 +1,9 @@
+{
+    public void entityInside(Level level, BlockPos blockPos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier, /*boolean bl,*/ CallbackInfo ci) {
+    public void entityInside(Level level, BlockPos blockPos, Entity entity, /*boolean bl,*/ CallbackInfo ci) {
+}
+
+{
+    import net.minecraft.world.entity.InsideBlockEffectApplier;
+    //import net.minecraft.world.entity.InsideBlockEffectApplier;
+}

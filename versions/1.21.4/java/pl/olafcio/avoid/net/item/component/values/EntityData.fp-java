@@ -1,0 +1,14 @@
+import net.minecraft.nbt.CompoundTag;
+
+{
+    var id = tag.getString("id").orElseThrow();
+    var id = tag.getString("id");
+
+    if (id.isEmpty())
+        throw new RuntimeException("'id' on entitydata not present");
+}
+
+{
+    NbtNative.convert(copy).asCompound().orElseThrow()
+    (CompoundTag) NbtNative.convert(copy)
+}

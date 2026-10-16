@@ -1,0 +1,9 @@
+{
+    @Inject(at = @At("RETURN"), method = "getLightColor(Lnet/minecraft/client/renderer/LevelRenderer$BrightnessGetter;Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", cancellable = true)
+    @Inject(at = @At("RETURN"), method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", cancellable = true)
+}
+
+{
+    private static void getLightColor(LevelRenderer.BrightnessGetter brightnessGetter, BlockAndTintGetter blockAndTintGetter, BlockState blockState, BlockPos blockPos, CallbackInfoReturnable<Integer> cir) {
+    private static void getLightColor(BlockAndTintGetter blockAndTintGetter, BlockState blockState, BlockPos blockPos, CallbackInfoReturnable<Integer> cir) {
+}

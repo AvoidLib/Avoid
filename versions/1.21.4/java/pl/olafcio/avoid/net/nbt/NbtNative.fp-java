@@ -1,0 +1,34 @@
+{
+    case IntTag cast -> new NbtInt(cast.value());
+    case IntTag cast -> new NbtInt(cast.getAsInt());
+}
+
+{
+    case ShortTag cast -> new NbtShort(cast.value());
+    case ShortTag cast -> new NbtShort(cast.getAsShort());
+}
+
+{
+    case LongTag cast -> new NbtLong(cast.value());
+    case LongTag cast -> new NbtLong(cast.getAsLong());
+}
+
+{
+    case DoubleTag cast -> new NbtDouble(cast.value());
+    case DoubleTag cast -> new NbtDouble(cast.getAsDouble());
+}
+
+{
+    case FloatTag cast -> new NbtFloat(cast.value());
+    case FloatTag cast -> new NbtFloat(cast.getAsFloat());
+}
+
+{
+    case ByteTag cast -> new NbtByte(cast.value());
+    case ByteTag cast -> new NbtByte(cast.getAsByte());
+}
+
+{
+    case StringTag cast -> new NbtString(cast.value());
+    case StringTag cast -> new NbtString(cast.getAsString());
+}

@@ -1,0 +1,4 @@
+{
+    return new net.minecraft.world.item.component.DyedItemColor(value.rgb);
+    return new net.minecraft.world.item.component.DyedItemColor(value.rgb, true);
+}

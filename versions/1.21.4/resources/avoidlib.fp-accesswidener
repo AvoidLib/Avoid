@@ -1,0 +1,17 @@
+{
+    accessWidener v2 named
+    accessWidener v2 named
+
+    # 1.21.4
+    accessible method net/minecraft/nbt/CompoundTag entrySet ()Ljava/util/Set;
+    accessible field net/minecraft/network/chat/HoverEvent$ItemStackInfo item Lnet/minecraft/core/Holder;
+    accessible field net/minecraft/network/chat/HoverEvent$ItemStackInfo count I
+    accessible field net/minecraft/network/chat/HoverEvent$ItemStackInfo components Lnet/minecraft/core/component/DataComponentPatch;
+    accessible field net/minecraft/core/component/DataComponentPatch map Lit/unimi/dsi/fastutil/objects/Reference2ObjectMap;
+    accessible method net/minecraft/core/component/PatchedDataComponentMap <init> (Lnet/minecraft/core/component/DataComponentMap;Lit/unimi/dsi/fastutil/objects/Reference2ObjectMap;Z)V
+}
+
+{
+    accessible method net/minecraft/world/item/enchantment/ItemEnchantments <init> (Lit/unimi/dsi/fastutil/objects/Object2IntOpenHashMap;)V
+    accessible method net/minecraft/world/item/enchantment/ItemEnchantments <init> (Lit/unimi/dsi/fastutil/objects/Object2IntOpenHashMap;Z)V
+}

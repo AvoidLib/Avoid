@@ -1,0 +1,4 @@
+{
+    return new net.minecraft.world.item.enchantment.ItemEnchantments(map);
+    return new net.minecraft.world.item.enchantment.ItemEnchantments(map, true);
+}

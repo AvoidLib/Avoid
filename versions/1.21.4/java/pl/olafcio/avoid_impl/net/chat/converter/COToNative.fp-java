@@ -1,0 +1,44 @@
+{
+    new ClickEvent.RunCommand(cmd)
+    new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd)
+}
+
+{
+    new ClickEvent.SuggestCommand(cmd)
+    new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmd)
+}
+
+{
+    new ClickEvent.CopyToClipboard(text)
+    new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text)
+}
+
+{
+    new ClickEvent.OpenFile(path)
+    new ClickEvent(ClickEvent.Action.OPEN_FILE, path)
+}
+
+{
+    new ClickEvent.OpenUrl(url)
+    new ClickEvent(ClickEvent.Action.OPEN_URL, url.toString())
+}
+
+{
+    new ClickEvent.ChangePage(page)
+    new ClickEvent(ClickEvent.Action.CHANGE_PAGE, String.valueOf(page))
+}
+
+{
+    new HoverEvent.ShowEntity(
+    new HoverEvent(HoverEvent.Action.SHOW_ENTITY,
+}
+
+{
+    new HoverEvent.ShowItem(
+    new HoverEvent(HoverEvent.Action.SHOW_ITEM,
+}
+
+{
+    new HoverEvent.ShowText(
+    new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+}

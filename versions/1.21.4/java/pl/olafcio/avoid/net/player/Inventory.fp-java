@@ -1,0 +1,9 @@
+{
+    .getSelectedSlot()
+    .selected
+}
+
+{
+    .getSelectedItem()
+    .getSelected()
+}

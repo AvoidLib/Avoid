@@ -1,0 +1,11 @@
+import net.minecraft.nbt.NbtOps;
+
+{
+    var optional = valueInput.read(sync.name, sync.codec);
+    var optional = sync.codec.decode(NbtOps.INSTANCE, valueInput).result();
+}
+
+{
+    valueOutput.store(sync.name, sync.codec, sync.converterTo.apply((O) sync.field.get(getAvoidEntity())));
+    valueOutput.put(sync.name, sync.codec.encodeStart(NbtOps.INSTANCE, sync.converterTo.apply((O) sync.field.get(getAvoidEntity()))).result().orElseThrow());
+}
