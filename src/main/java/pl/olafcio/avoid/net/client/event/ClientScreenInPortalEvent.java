@@ -4,6 +4,9 @@ import pl.olafcio.avoid.net.screen.Screen;
 
 import java.util.Objects;
 
+/**
+ * Fired when a screen is open and the player is inside a portal.
+ */
 public final class ClientScreenInPortalEvent {
     private final Screen screen;
     private boolean allowed;
@@ -13,14 +16,23 @@ public final class ClientScreenInPortalEvent {
         this.allowed = allowed;
     }
 
+    /**
+     * Returns the screen that the game is considering to close.
+     */
     public Screen screen() {
         return screen;
     }
 
+    /**
+     * Returns whether the game wants to close this {@link #screen()}.
+     */
     public boolean allowed() {
         return allowed;
     }
 
+    /**
+     * Sets whether the game will close this {@link #screen()}.
+     */
     public void setAllowed(boolean value) {
         this.allowed = value;
     }

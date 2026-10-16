@@ -13,11 +13,17 @@ import pl.olafcio.avoid_impl.net.client.CIMNative;
 
 import static pl.olafcio.avoid_impl.net.client.CIMNative.nah;
 
+/**
+ * A namespace for managing interactions on the client (from the local player) - touching blocks, items and players.
+ */
 @ApiStatus.Experimental
 public final class ClientInteractionManager {
     @ApiStatus.Internal
     private ClientInteractionManager() {}
 
+    /**
+     * Interacts with the specified entity using the specified handtype.
+     */
     public static void interact(Entity entity, HandType type) {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot ClientInteractionManager#interact() on the server");
@@ -26,6 +32,9 @@ public final class ClientInteractionManager {
         CIMNative.interact(entity, type);
     }
 
+    /**
+     * Interacts with the specified entity using the specified handtype assuming the entity is located at the specified location.
+     */
     public static void interactAt(Entity entity, IVect3 location, HandType type) {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot ClientInteractionManager#interactAt() on the server");
@@ -34,6 +43,9 @@ public final class ClientInteractionManager {
         CIMNative.interactAt(entity, location, type);
     }
 
+    /**
+     * Attacks the specified entity.
+     */
     public static void attack(Entity entity) {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot ClientInteractionManager#attack() on the server");
@@ -42,6 +54,9 @@ public final class ClientInteractionManager {
         CIMNative.attack(entity);
     }
 
+    /**
+     * Tries to destroy the specified block.
+     */
     public static void destroyBlock(BlockPos blockPos) {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot ClientInteractionManager#destroyBlock() on the server");
@@ -50,6 +65,9 @@ public final class ClientInteractionManager {
         CIMNative.destroyBlock(blockPos);
     }
 
+    /**
+     * Tries to start destroying the specified block.
+     */
     public static void startDestroyBlock(BlockPos blockPos, Direction direction) {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot ClientInteractionManager#startDestroyBlock() on the server");
@@ -58,6 +76,9 @@ public final class ClientInteractionManager {
         CIMNative.startDestroyBlock(blockPos, direction);
     }
 
+    /**
+     * Tries to continue destroying the specified block.
+     */
     public static void continueDestroyBlock(BlockPos blockPos, Direction direction) {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot ClientInteractionManager#continueDestroyBlock() on the server");
@@ -66,6 +87,9 @@ public final class ClientInteractionManager {
         CIMNative.continueDestroyBlock(blockPos, direction);
     }
 
+    /**
+     * Tries to stop destroying the specified block.
+     */
     public static void stopDestroyBlock() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot ClientInteractionManager#stopDestroyBlock() on the server");
@@ -74,6 +98,9 @@ public final class ClientInteractionManager {
         CIMNative.stopDestroyBlock();
     }
 
+    /**
+     * Returns whether the player is currently destroying a block.
+     */
     public static boolean isDestroying() {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot ClientInteractionManager#isDestroying() on the server");
@@ -82,6 +109,9 @@ public final class ClientInteractionManager {
         return CIMNative.isDestroying();
     }
 
+    /**
+     * Tries to use the item held in the specified hand type.
+     */
     public static void useItem(HandType hand) {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot ClientInteractionManager#useItem() on the server");
@@ -90,6 +120,10 @@ public final class ClientInteractionManager {
         CIMNative.useItem(hand);
     }
 
+    /**
+     * Tries to use the item held in the specified hand type, clicking at the specified blockpos at the specified direction,
+     * specifying whether will it be a miss, a hit, or targeted at the world border.
+     */
     public static void useItemOn(HandType hand, BlockPos blockPos, Direction direction, boolean isMiss, boolean isInside, boolean isWorldBorder) {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
             throw new ImproperEnvironment("Cannot ClientInteractionManager#useItemOn() on the server");
