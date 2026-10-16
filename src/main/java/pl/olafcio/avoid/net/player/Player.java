@@ -35,6 +35,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid.net.player.exception.UncontrollablePlayerException;
 import pl.olafcio.avoid.net.player.gamemode.GameMode;
+import pl.olafcio.avoid_impl.net.payload.AvoidPayload;
 import pl.olafcio.avoid_impl.net.payload.Networking;
 import pl.olafcio.avoid_impl.net.player.gamemode.GameModeNative;
 import pl.olafcio.avoid.net.player.values.RespawnPoint;
@@ -607,10 +608,24 @@ public class Player extends Entity implements Executor {
 
     public void sendPacket(CustomPayload payload) {
         if (underlyingEntity instanceof ServerPlayer)
-            __cast(ServerPlayer.class).connection.send(new ClientboundCustomPayloadPacket(Networking.map.get(payload.getClass()).make(payload)));
+            __cast(ServerPlayer.class).connection.send(new ClientboundCustomPayloadPacket(getAvoidPayload(payload).make(payload)));
         else if (underlyingEntity instanceof LocalPlayer)
-            __cast(ServerPlayer.class).connection.send(new ServerboundCustomPayloadPacket(Networking.map.get(payload.getClass()).make(payload)));
+            __cast(ServerPlayer.class).connection.send(new ServerboundCustomPayloadPacket(getAvoidPayload(payload).make(payload)));
         else
             throw new UncontrollablePlayerException("[Player#sendPacket] Remote players can't be controlled from the client");
+    }
+
+    private static AvoidPayload getAvoidPayload(CustomPayload avoid) {
+        Class<?> klass = avoid.getClass();
+
+        while (klass != Object.class) {
+            var payload = Networking.map.get(klass);
+            if (payload != null)
+                return payload;
+
+            klass = klass.getSuperclass();
+        }
+
+        throw new RuntimeException("[Player#sendPacket] Unregistered payload '%s'; did you forget to annotate it with @AutoCustomPayload?".formatted(avoid));
     }
 }
