@@ -1,5 +1,7 @@
 package pl.olafcio.avoid.net.payload.field;
 
+import pl.olafcio.avoid.net.payload.field.processor.FieldProcessor;
+
 import java.lang.annotation.*;
 
 /**
@@ -9,4 +11,6 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface PacketField {}
+public @interface PacketField {
+    FieldProcessor value() default FieldProcessor.__AUTO__;
+}
