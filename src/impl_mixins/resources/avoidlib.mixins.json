@@ -50,6 +50,7 @@
     "accessors.IVillager"
   ],
   "client": [
+    "AbstractClientPlayerMixin",
     "BlockOutlineRenderStateMixin",
     "BlocksMixin",
     "BuiltInPackSourceMixin",
