@@ -16,13 +16,17 @@ import net.minecraft.locale.Language;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid.net.item.stack.ItemStack;
 import pl.olafcio.avoid.net.screen.font.Font;
+import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid_impl.net.font.FontNative;
 import pl.olafcio.avoid.net.screen.renderlayer.RenderLayer;
 import pl.olafcio.avoid.net.screen.renderlayer.RenderLayerNative;
@@ -31,6 +35,7 @@ import pl.olafcio.avoid.net.util.Coloring;
 import pl.olafcio.avoid_impl.client.AvoidLibClient;
 import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.item.stack.ItemStackNative;
 
 import java.util.Objects;
 
@@ -308,5 +313,42 @@ public class Drawer extends pl.olafcio.avoid.net.screen.Drawer {
                 color,
                 this.graphics.scissorStack.peek()
         ));//#endsubmit
+    }
+
+    /**
+     * Renders an item.
+     * @param itemStack The itemstack to render.
+     * @param x The X axis to render on.
+     * @param y The Y axis to render on.
+     */
+    public void renderItem(ItemStack itemStack, int x, int y) {
+        this.graphics.renderFakeItem(ItemStackNative.convert(itemStack), x, y);
+    }
+
+    /**
+     * Renders an item with the owner set as the local player.<br/>
+     * Item Owners are used to specify active and held effects, such as a fishing rod being currently used.
+     * @param itemStack The itemstack to render.
+     * @param x The X axis to render on.
+     * @param y The Y axis to render on.
+     */
+    public void renderPlayerItem(ItemStack itemStack, int x, int y) {
+        this.graphics.renderItem(ItemStackNative.convert(itemStack), x, y);
+    }
+
+    /**
+     * Renders an item with the owner set as the entity.<br/>
+     * Item Owners are used to specify active and held effects, such as a fishing rod being currently used.
+     * @param entity The item owner.
+     * @param itemStack The itemstack to render.
+     * @param x The X axis to render on.
+     * @param y The Y axis to render on.
+     */
+    public void renderEntityItem(Entity entity, ItemStack itemStack, int x, int y) {
+        // Tf is this last parameter? Shade?
+        if (!(EntityNative.convert(entity) instanceof LivingEntity le))
+            throw new RuntimeException("[Drawer#renderEntityItem] The provided entity must be a living entity. (got: '%s')".formatted(entity));
+
+        this.graphics.renderItem(le, ItemStackNative.convert(itemStack), x, y, 0);
     }
 }
