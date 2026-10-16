@@ -16,7 +16,7 @@ public final class Networking {
     private Networking() {}
 
     /**
-     * Creates a new custom paylod type.
+     * Creates a new custom payload type.
      */
     public static <T extends CustomPayload> void register(Identification id, Supplier<T> payload, Class<T> clazz) {
         pl.olafcio.avoid_impl.net.payload.Networking.register(id, payload, clazz);
