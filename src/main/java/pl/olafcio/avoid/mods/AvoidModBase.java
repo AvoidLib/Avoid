@@ -3,11 +3,14 @@ package pl.olafcio.avoid.mods;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.Yaml;
+import pl.olafcio.avoid.mods.config.YamlConfiguration;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid.mods.resource.InvalidResourceException;
 import pl.olafcio.avoid.mods.resource.UserResourceException;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -76,6 +79,18 @@ public abstract sealed class AvoidModBase
         }
 
         return getResource(path);
+    }
+
+    private static final Yaml YAML = new Yaml();
+
+    @ApiStatus.Experimental
+    public final YamlConfiguration getYamlResource(String path) {
+        return new YamlConfiguration(YAML.load(new String(getConfigurableResource(path), StandardCharsets.UTF_8)));
+    }
+
+    @ApiStatus.Experimental
+    public final YamlConfiguration getConfig() {
+        return getYamlResource("config.yml");
     }
 
     /**
