@@ -1,4 +1,4 @@
-accessWidener v2 named
+classTweaker v2 named
 accessible method net/minecraft/world/item/ItemStack <init> (Lnet/minecraft/world/level/ItemLike;ILnet/minecraft/core/component/PatchedDataComponentMap;)V
 accessible field net/minecraft/client/gui/GuiGraphics guiRenderState Lnet/minecraft/client/gui/render/state/GuiRenderState;
 accessible field net/minecraft/client/gui/GuiGraphics scissorStack Lnet/minecraft/client/gui/GuiGraphics$ScissorStack;
@@ -24,6 +24,7 @@ accessible method net/minecraft/world/entity/Entity getDefaultGravity ()D
 accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/blaze3d/pipeline/RenderPipeline;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
 accessible method net/minecraft/world/item/context/UseOnContext <init> (Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/phys/BlockHitResult;)V
 extendable class net/minecraft/advancements/Advancement
+transitive-inject-interface net/minecraft/server/permissions/PermissionSet pl/olafcio/avoid_impl/mixininterface/IPermissionSet
 
 # Entity Data
 accessible field net/minecraft/network/syncher/SynchedEntityData ID_REGISTRY Lnet/minecraft/util/ClassTreeIdRegistry;

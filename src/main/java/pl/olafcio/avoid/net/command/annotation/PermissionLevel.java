@@ -31,6 +31,10 @@ public @interface PermissionLevel {
         private static final HashMap<Enum, net.minecraft.server.permissions.PermissionLevel> map
                        = new HashMap<>();
 
+        @ApiStatus.Internal
+        public static final HashMap<net.minecraft.server.permissions.PermissionLevel, Enum> reverse
+                      = new HashMap<>();
+
         static {
             var avoids = values();
             var crafts = net.minecraft.server.permissions.PermissionLevel.values();
@@ -41,8 +45,10 @@ public @interface PermissionLevel {
                             from.getSerializedName().equals(val.id) ||
                             from.name().equals(val.name()) ||
                             from.id() == val.index
-                    )
+                    ) {
                         map.put(val, from);
+                        reverse.put(from, val);
+                    }
                 }
             }
         }

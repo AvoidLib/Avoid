@@ -25,6 +25,8 @@
     "MapColorMixin",
     "MinecraftServerMixin",
     "MobMixin",
+    "NameAndIdMixin",
+    "PermissionSetMixin",
     "PlayerAdvancementsMixin",
     "PlayerListMixin",
     "PlayerMixin",

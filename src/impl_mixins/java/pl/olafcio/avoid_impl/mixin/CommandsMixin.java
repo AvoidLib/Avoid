@@ -72,7 +72,7 @@ public class CommandsMixin {
                                 return true;
 
                             var perms = ctx.getPlayer().permissions();
-                            return perms.hasPermission(atom) || perms.hasPermission(cmdLevel);
+                            return perms.avoid$hasPermission(atom, cmdLevel);
                         });
                     } else {
                         throw new RuntimeException("Invalid command permission");
