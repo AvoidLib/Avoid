@@ -8,4 +8,12 @@ public record Either<L, R>(L left, R right) {
     public static <L, R> Either<L, R> right(R value) {
         return new Either<>(null, value);
     }
+
+    public boolean hasLeft() {
+        return left != null;
+    }
+
+    public boolean hasRight() {
+        return right != null;
+    }
 }
