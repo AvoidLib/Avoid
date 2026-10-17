@@ -17,3 +17,13 @@
     submitText
     addText
 }
+
+{
+    this.graphics.renderFakeItem(
+    this.graphics.fakeItem(
+}
+
+{
+    this.graphics.renderItem(
+    this.graphics.item(
+}

@@ -2,13 +2,17 @@ package pl.olafcio.avoid_impl.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pl.olafcio.avoid_impl.mixininterface.IEntityFluidInteraction;
 import pl.olafcio.avoid_impl.mixininterface.IFoodData;
+import pl.olafcio.avoid_impl.mixininterface.INameAndId;
 import pl.olafcio.avoid_impl.net.fluid.FluidsNative;
 import pl.olafcio.avoid.net.fluid.properties._swimmable;
 
@@ -36,5 +40,10 @@ public class PlayerMixin {
         ((IFoodData) value).avoid$setPlayer((Player) (Object) this);
 
         return value;
+    }
+
+    @Inject(at = @At("RETURN"), method = "nameAndId")
+    public void nameAndId(CallbackInfoReturnable<NameAndId> cir) {
+        ((INameAndId) (Object) cir.getReturnValue()).avoid$player((Player) (Object) this);
     }
 }
