@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.mods.config;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public interface Configuration {
@@ -45,4 +46,36 @@ public interface Configuration {
         List<?> getList(String path);
     <T> List<T> getListOf(String path, Class<T> elementType);
     <T> List<T> getListOf(String path, Class<T> elementType, Function<Object, T> elementConverter);
+
+    Map<String, Object> put(String path, Object value);
+
+    default void putString(String path, String value) {
+        put(path, value);
+    }
+
+    default void putInteger(String path, int value) {
+        put(path, value);
+    }
+
+    default void putFloat(String path, float value) {
+        put(path, value);
+    }
+
+    default void putLong(String path, long value) {
+        put(path, value);
+    }
+
+    default void putShort(String path, short value) {
+        put(path, value);
+    }
+
+    default void putByte(String path, byte value) {
+        put(path, value);
+    }
+
+    default void putDouble(String path, double value) {
+        put(path, value);
+    }
+
+    Object remove(String path);
 }

@@ -1,15 +1,12 @@
 package pl.olafcio.avoid.mods.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 public final class YamlConfiguration implements Configuration {
-    private final Map<String, ?> yaml;
+    private final Map<String, Object> yaml;
 
-    public YamlConfiguration(Map<String, ?> yaml) {
+    public YamlConfiguration(Map<String, Object> yaml) {
         this.yaml = yaml;
     }
 
@@ -24,7 +21,7 @@ public final class YamlConfiguration implements Configuration {
                 dot = 0;
 
             if (obj.get(path.substring(0, dot)) instanceof Map<?, ?> next)
-                obj = (Map<String, ?>) next;
+                obj = (Map<String, Object>) next;
             else return null;
 
             path = path.substring(dot + 1);
@@ -40,7 +37,7 @@ public final class YamlConfiguration implements Configuration {
         int dot;
         while ((dot = path.indexOf(".")) != -1) {
             if (obj.get(path.substring(0, dot)) instanceof Map<?, ?> next)
-                obj = (Map<String, ?>) next;
+                obj = (Map<String, Object>) next;
             else return null;
 
             path = path.substring(dot + 1);
@@ -144,5 +141,46 @@ public final class YamlConfiguration implements Configuration {
                 throw new ConfigurationIssue();
             }
         });
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> getNew(String path) {
+        var obj = yaml;
+
+        int dot;
+        while ((dot = path.indexOf(".")) != -1) {
+            var key = path.substring(0, dot);
+
+            if (obj.get(key) instanceof Map<?, ?> next) {
+                obj = (Map<String, Object>) next;
+            } else {
+                var val = new HashMap<String, Object>();
+
+                obj.put(key, val);
+                obj = val;
+            }
+
+            path = path.substring(dot + 1);
+        }
+
+        return obj;
+    }
+
+    @Override
+    public Map<String, Object> put(String path, Object value) {
+        var key = path.substring(path.lastIndexOf('.') + 1);
+        var parent = getNew(path);
+
+        parent.put(key, value);
+
+        return parent;
+    }
+
+    @Override
+    public Object remove(String path) {
+        var key = path.substring(path.lastIndexOf('.') + 1);
+        var parent = getNew(path);
+
+        return parent.remove(key);
     }
 }
