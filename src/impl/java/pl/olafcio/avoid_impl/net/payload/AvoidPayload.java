@@ -74,6 +74,8 @@ public class AvoidPayload {
 
             if (hasByteArray)
                 payload.read(friendlyByteBuf.readByteArray());
+
+            payload.onRead();
         }
 
         private <A, N> void read(FriendlyByteBuf friendlyByteBuf, FieldInstance<A, N> field) {
@@ -85,6 +87,8 @@ public class AvoidPayload {
         }
 
         private void write(FriendlyByteBuf friendlyByteBuf) {
+            payload.onWrite();
+
             for (var field : packetFields)
                 store(friendlyByteBuf, field);
 

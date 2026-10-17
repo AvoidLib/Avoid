@@ -18,6 +18,18 @@ public abstract class CustomPayload {
     }
 
     /**
+     * Called after all the {@linkplain pl.olafcio.avoid.net.payload.field.PacketField packet fields} and the bytearray at the end of the packet are read.<br/>
+     * Only called when the packet is being received.
+     */
+    public void onRead() {}
+
+    /**
+     * Called before all the {@linkplain pl.olafcio.avoid.net.payload.field.PacketField packet fields} and the bytearray at the end of the packet are written.<br/>
+     * Only called when the packet is being sent.
+     */
+    public void onWrite() {}
+
+    /**
      * Handles the packet on the client.<br/>
      * Cannot be used on C2S (serverbound) packets.
      */
