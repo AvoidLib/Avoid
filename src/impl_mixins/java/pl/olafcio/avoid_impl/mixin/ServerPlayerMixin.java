@@ -210,4 +210,18 @@ public abstract class ServerPlayerMixin
     public void avoid$setTablistOrder(Integer value) {
         this.tablist_order = value;
     }
+
+    @Unique
+    private Component tablist_displayName;
+
+    @Inject(at = @At("HEAD"), method = "getTabListDisplayName", cancellable = true)
+    public void getTabListDisplayName(CallbackInfoReturnable<Component> cir) {
+        if (tablist_displayName != null)
+            cir.setReturnValue(tablist_displayName);
+    }
+
+    @Override
+    public void avoid$setTablistDisplayName(Component component) {
+        tablist_displayName = component;
+    }
 }

@@ -437,6 +437,18 @@ public class Player extends Entity implements Executor, OfflinePlayer {
                 .connection.send(new ClientboundTabListPacket(COToNative.from(header), COToNative.from(footer)));
     }
 
+    @ServerOnly
+    public void setTablistDisplayName(BaseComponent<?> displayName) {
+        var player = __castEnv(ServerPlayer.class, "[Player#setTablistDisplayName] This method can only be ran on server players!");
+
+        ((IServerPlayer) displayName).avoid$setTablistDisplayName(COToNative.from(displayName));
+
+        player.level().getServer().getPlayerList().broadcastAll(new ClientboundPlayerInfoUpdatePacket(
+                ClientboundPlayerInfoUpdatePacket.Action.UPDATE_DISPLAY_NAME,
+                player
+        ));
+    }
+
     /**
      * Returns the player's tablist order.
      * <br/><br/>
