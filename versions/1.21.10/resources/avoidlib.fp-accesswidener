@@ -15,3 +15,8 @@
 
     accessible field net/minecraft/world/level/GameRules GAME_RULE_TYPES Ljava/util/Map;
 }
+
+{
+    transitive-inject-interface net/minecraft/server/permissions/PermissionSet pl/olafcio/avoid_impl/mixininterface/IPermissionSet
+    #transitive-inject-interface net/minecraft/server/permissions/PermissionSet pl/olafcio/avoid_impl/mixininterface/IPermissionSet
+}

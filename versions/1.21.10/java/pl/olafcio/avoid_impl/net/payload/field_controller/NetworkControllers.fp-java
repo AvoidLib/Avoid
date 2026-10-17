@@ -1,0 +1,6 @@
+import net.minecraft.resources.ResourceLocation;
+
+{
+    private static final NetworkController<Identification, Identifier> IDENTIFICATION = new NetworkController<>(FriendlyByteBuf::readIdentifier, FriendlyByteBuf::writeIdentifier, IdentificationNative::convert, IdentificationNative::convertFrom);
+    private static final NetworkController<Identification, ResourceLocation> IDENTIFICATION = new NetworkController<>(FriendlyByteBuf::readResourceLocation, FriendlyByteBuf::writeResourceLocation, IdentificationNative::convert, IdentificationNative::convertFrom);
+}

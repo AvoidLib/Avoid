@@ -142,6 +142,13 @@ repositories {
             name "ExtendedClip"
         }
     }
+
+    if (fabric) {
+        maven {
+            url "https://modmaven.dev/"
+            name "ModMaven"
+        }
+    }
 }
 
 if (sponge) {
@@ -236,6 +243,7 @@ dependencies {
             compileOnly("net.fabricmc:fabric-loader:${project.loader_version}")
     } else {
         mod "net.fabricmc:fabric-loader:${project.loader_version}"
+        compileOnly "net.fabricmc.fabric-api:fabric-api-base:1.0.0+14b92d89f4"
     }
 
     var versionLibs = rootProject.file("libs/${project.minecraft_version}")
