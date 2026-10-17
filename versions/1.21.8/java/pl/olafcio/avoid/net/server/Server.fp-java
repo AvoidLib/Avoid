@@ -29,3 +29,18 @@ import com.mojang.authlib.GameProfile;
     getPlayer(nick)
     getPlayerByName(nick)
 }
+
+{
+    return new ServicesImpl(AvoidInternal.getServer().services());
+    return new ServicesImpl(AvoidInternal.getServer().services);
+}
+
+{
+    var uuid = optional.orElseThrow().id();
+    var uuid = optional.orElseThrow().getId();
+}
+
+{
+    var nick = optional.orElseThrow().name();
+    var nick = optional.orElseThrow().getName();
+}

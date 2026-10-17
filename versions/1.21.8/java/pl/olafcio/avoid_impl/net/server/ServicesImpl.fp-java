@@ -1,0 +1,39 @@
+{
+    private final UserNameToIdResolver userNameToIdResolver
+    private final GameProfileCache userNameToIdResolver
+}
+
+{
+    import net.minecraft.server.players.UserNameToIdResolver;
+    import net.minecraft.server.players.GameProfileCache;
+}
+
+{
+    services.nameToIdCache()
+    services.profileCache()
+}
+
+{
+    optional.get().id();
+    optional.get().getId();
+}
+
+{
+    optional.get().name();
+    optional.get().getName();
+}
+
+{
+    var output = ImmutableMultimap.<String, Property>builder();
+    var profile = new GameProfile(var1.id(), var1.name());
+}
+
+{
+    output.putAll(entry.getKey(), (Collection<? extends Property>) entry.getValue());
+    profile.getProperties().putAll(entry.getKey(), (Collection<? extends Property>) entry.getValue());
+}
+
+{
+    var value = sessionService.getPackedTextures(new GameProfile(var1.id(), var1.name(), new PropertyMap(output.build())));
+    var value = sessionService.getPackedTextures(profile);
+}

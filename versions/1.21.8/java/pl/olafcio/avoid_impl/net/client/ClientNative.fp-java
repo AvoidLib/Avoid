@@ -7,3 +7,14 @@
     obj.name()
     obj.getName()
 }
+
+{
+    return new ServicesImpl(Minecraft.getInstance().services());
+
+    //== replacement ==//
+
+    var mc = Minecraft.getInstance();
+    net.minecraft.server.Services services = net.minecraft.server.Services.create(mc.authenticationService, mc.gameDirectory);
+    services.profileCache().setExecutor(mc);
+    return new ServicesImpl(services);
+}

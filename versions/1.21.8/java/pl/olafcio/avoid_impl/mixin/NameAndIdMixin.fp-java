@@ -1,0 +1,9 @@
+{
+    import net.minecraft.server.players.NameAndId;
+    import com.mojang.authlib.GameProfile;
+}
+
+{
+    @Mixin(NameAndId.class)
+    @Mixin(GameProfile.class)
+}

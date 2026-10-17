@@ -1,0 +1,24 @@
+{
+    @Inject(at = @At("RETURN"), method = "nameAndId")
+    @Inject(at = @At("RETURN"), method = "getGameProfile")
+}
+
+{
+    import net.minecraft.server.players.NameAndId;
+    import com.mojang.authlib.GameProfile;
+}
+
+{
+    public void nameAndId(CallbackInfoReturnable<NameAndId> cir) {
+    public void nameAndId(CallbackInfoReturnable<GameProfile> cir) {
+}
+
+{
+    ((INameAndId) (Object) cir.getReturnValue()).avoid$player((Player) (Object) this);
+
+    //== replacement ==//
+
+    var ret = cir.getReturnValue();
+    if (ret != null)
+        ((INameAndId) (Object) ret).avoid$player((Player) (Object) this);
+}
