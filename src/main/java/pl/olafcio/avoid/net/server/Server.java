@@ -7,6 +7,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.net.player.OfflinePlayer;
+import pl.olafcio.avoid.net.services.Services;
 import pl.olafcio.avoid.net.team.Team;
 import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
@@ -17,6 +18,7 @@ import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.World;
+import pl.olafcio.avoid_impl.net.server.ServicesImpl;
 import pl.olafcio.avoid_impl.net.team.TeamNative;
 import pl.olafcio.avoid_impl.net.world.WorldNative;
 
@@ -28,6 +30,10 @@ import java.util.function.Predicate;
 public final class Server {
     @ApiStatus.Internal
     private Server() {}
+
+    public static Services getServices() {
+        return new ServicesImpl(AvoidInternal.getServer().services());
+    }
 
     public static String[] getPlayerNicks() {
         return AvoidInternal.getServer().getPlayerNames();

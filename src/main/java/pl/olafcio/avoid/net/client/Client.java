@@ -2,6 +2,7 @@ package pl.olafcio.avoid.net.client;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.net.services.Services;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid.errors.ImproperEnvironment;
 import pl.olafcio.avoid.platform.RunningEnv;
@@ -22,6 +23,16 @@ import pl.olafcio.avoid_impl.net.client.ClientNative;
 public final class Client {
     @ApiStatus.Internal
     private Client() {}
+
+    /**
+     * Returns the client's services object.
+     */
+    public static Services getServices() {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.SERVER)
+            throw new ImproperEnvironment("Cannot Client#getServices() on the server");
+
+        return ClientNative.getServices();
+    }
 
     /**
      * Gets the current launcher brand.<br/>

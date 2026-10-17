@@ -4,8 +4,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.net.services.Services;
 import pl.olafcio.avoid_impl.mixininterface.IScreen;
 import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
 import pl.olafcio.avoid.net.client.server.PlayerEntry;
@@ -20,6 +22,7 @@ import pl.olafcio.avoid.net.screen.Screen;
 import pl.olafcio.avoid.net.screen.font.Font;
 import pl.olafcio.avoid_impl.net.font.FontNative;
 import pl.olafcio.avoid.net.world.World;
+import pl.olafcio.avoid_impl.net.server.ServicesImpl;
 import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 @Native
@@ -28,6 +31,11 @@ import pl.olafcio.avoid_impl.net.world.WorldNative;
 public final class ClientNative {
     @ApiStatus.Internal
     private ClientNative() {}
+
+    @NotNull
+    public static Services getServices() {
+        return new ServicesImpl(Minecraft.getInstance().services());
+    }
 
     @Nullable
     public static String getLauncherBrand() {
