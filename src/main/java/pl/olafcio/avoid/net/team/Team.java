@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * <b>WARNING:</b> The team system is notoriously insecure. <u>Player names are stored instead of UUID-s</u>.<br/>&emsp;&emsp;&emsp;&emsp;&nbsp;&ensp;&ensp;Go complain to Mojang i'll make avoid like paper (that is fixing some minecraft bugs) and fix this someday later.
  */
-public final class Team {
+public abstract class Team {
     private final String name;
     private final Set<OfflinePlayer> players;
 
@@ -62,5 +62,13 @@ public final class Team {
 
     public boolean seeFriendlyInvisibles() {
         return seeFriendlyInvisibles;
+    }
+
+    public void setFriendlyFire(boolean allowFriendlyFire) {
+        this.allowFriendlyFire = allowFriendlyFire;
+    }
+
+    public void setSeeFriendlyInvisibles(boolean seeFriendlyInvisibles) {
+        this.seeFriendlyInvisibles = seeFriendlyInvisibles;
     }
 }
