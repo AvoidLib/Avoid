@@ -25,6 +25,18 @@ public record Identification(String namespace, String path) {
         return new Identification(namespace, path);
     }
 
+    @ApiStatus.Experimental
+    public static Identification of(String value, char separator) {
+        int sepindex = value.indexOf(separator);
+        if (sepindex == -1)
+            return new Identification(value);
+
+        String namespace = value.substring(0, sepindex);
+        String path = value.substring(sepindex + 1);
+
+        return new Identification(namespace, path);
+    }
+
     @Override
     @WillRefactor(aspect = "name")
     public String toString() {
