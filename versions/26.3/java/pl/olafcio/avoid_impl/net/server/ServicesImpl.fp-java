@@ -1,0 +1,14 @@
+{
+    import com.mojang.authlib.minecraft.MinecraftSessionService;
+    import com.mojang.authlib.minecraft.SessionService;
+}
+
+{
+    private final MinecraftSessionService sessionService
+    private final SessionService sessionService
+}
+
+{
+    import com.mojang.authlib.yggdrasil
+    import com.mojang.authlib.services
+}
