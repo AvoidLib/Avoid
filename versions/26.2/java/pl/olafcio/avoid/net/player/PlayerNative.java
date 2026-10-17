@@ -1,8 +1,10 @@
 package pl.olafcio.avoid.net.player;
 
+import com.mojang.authlib.GameProfile;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
 import pl.olafcio.avoid_impl.net.entity_type.EntityTypeNative;
@@ -42,12 +44,17 @@ public final class PlayerNative {
                 player.getUUID(),
                 player.getStringUUID(),
                 name == null ? null : COFromNative.from(name),
-                profile == null ? null : new PlayerProfile(profile.id(), profile.name(), new HashMap<>() {{
-                    var map = profile.properties().asMap();
-                    this.putAll(map);
-                }}),
+                profile == null ? null : convertProfile(profile),
                 player instanceof ServerPlayer sp ? sp.connection : null,
                 player
         );
+    }
+
+    @NotNull
+    public static PlayerProfile convertProfile(GameProfile profile) {
+        return new PlayerProfile(profile.id(), profile.name(), new HashMap<>() {{
+            var map = profile.properties().asMap();
+            this.putAll(map);
+        }});
     }
 }
