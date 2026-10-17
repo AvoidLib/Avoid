@@ -50,7 +50,7 @@ import java.util.jar.JarFile;
 @ApiStatus.Internal
 public final class ModLoad
              implements LXItem, LXScreenOverwrite, LXScreenModifier, LXCommand, LXSelector, LXEntity, LXFluid, LXFog, LXEffect,
-                        LXKeyHandler, LXCustomPayload, LXAdvancement
+                        LXKeyHandler, LXCustomPayload, LXAdvancement, LXConfig
 {
     @ApiStatus.Internal
     private static final Gson GSON
@@ -223,6 +223,7 @@ public final class ModLoad
 
     public class ClassStatus {
         public boolean autoID = false;
+        public boolean autoFilename = false;
         public boolean autoChar = false;
         public boolean errored = true;
     }
@@ -262,6 +263,9 @@ public final class ModLoad
                 if (registerAutoFluid(id, klass, className, status))
                     continue;
 
+                if (registerAutoConfig(id, klass, className, status))
+                    continue;
+
                 classes.put(klass, status);
             }
         } while (entries.hasMoreElements());
@@ -296,6 +300,9 @@ public final class ModLoad
 
             if (status.errored)
                 continue;
+
+            if (!status.autoFilename && klass.isAnnotationPresent(AutoFilename.class))
+                Avoid.LOGGER.warn("@AutoFilename not applicable ({})", className);
 
             if (registerAutoAdvancement(id, klass, className, status))
                 continue;
