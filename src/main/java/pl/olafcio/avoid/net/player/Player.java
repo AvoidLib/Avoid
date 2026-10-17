@@ -431,6 +431,12 @@ public class Player extends Entity implements Executor, OfflinePlayer {
                 .getAdvancements().revoke(AvoidInternal.getServer().getAdvancements().get(IdentificationNative.convert(id)), "");
     }
 
+    @ServerOnly
+    public void setTablistDecorations(BaseComponent<?> header, BaseComponent<?> footer) {
+        __castEnv(ServerPlayer.class, "[Player#setTablistDecorations] This method can only be ran on server players!")
+                .connection.send(new ClientboundTabListPacket(COToNative.from(header), COToNative.from(footer)));
+    }
+
     /**
      * Returns the player's tablist order.
      * <br/><br/>
