@@ -52,7 +52,7 @@ import java.util.UUID;
  * This is mixed to ease massive refactorings in Minecraft code for AvoidLib.
  */
 @NeverRemoval
-public class Player extends Entity implements Executor {
+public class Player extends Entity implements Executor, OfflinePlayer {
     private final PlayerProfile profile;
     private final Object connection;
 
@@ -69,7 +69,7 @@ public class Player extends Entity implements Executor {
 
     @Override
     public @NotNull String getName() {
-        return getNick().replace("§", "");
+        return OfflinePlayer.super.getName();
     }
 
     public String getNick() {

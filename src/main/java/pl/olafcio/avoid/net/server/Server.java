@@ -4,6 +4,10 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.net.player.OfflinePlayer;
+import pl.olafcio.avoid.net.team.Team;
 import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid.errors.ImproperEnvironment;
@@ -13,11 +17,10 @@ import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.World;
+import pl.olafcio.avoid_impl.net.team.TeamNative;
 import pl.olafcio.avoid_impl.net.world.WorldNative;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -58,6 +61,46 @@ public final class Server {
             return null;
 
         return PlayerNative.convertFrom(ret);
+    }
+
+    public static OfflinePlayer getOfflinePlayer(String nick) {
+        var optional = AvoidInternal.getServer().services().nameToIdCache().get(nick);
+        if (optional.isEmpty())
+            return null;
+
+        var uuid = optional.orElseThrow().id();
+
+        return new OfflinePlayer() {
+            @Override
+            public String getNick() {
+                return nick;
+            }
+
+            @Override
+            public UUID uuid() {
+                return uuid;
+            }
+        };
+    }
+
+    public static OfflinePlayer getOfflinePlayer(UUID uuid) {
+        var optional = AvoidInternal.getServer().services().nameToIdCache().get(uuid);
+        if (optional.isEmpty())
+            return null;
+
+        var nick = optional.orElseThrow().name();
+
+        return new OfflinePlayer() {
+            @Override
+            public String getNick() {
+                return nick;
+            }
+
+            @Override
+            public UUID uuid() {
+                return uuid;
+            }
+        };
     }
 
     public static List<Operator> getOperators()  {
@@ -167,5 +210,41 @@ public final class Server {
             throw new ImproperEnvironment("[Server#getProperties] Can only be called from the server");
 
         return new Properties(((DedicatedServer) AvoidInternal.getServer()).getProperties());
+    }
+
+    @Nullable
+    public static Team getTeam(String name) {
+        var team = AvoidInternal.getServer().getScoreboard().getPlayerTeam(name);
+        if (team == null)
+            return null;
+
+        return TeamNative.convert(team);
+    }
+
+    @NotNull
+    public static Team createTeam(String name) {
+        return TeamNative.convert(AvoidInternal.getServer().getScoreboard().addPlayerTeam(name));
+    }
+
+    public static boolean deleteTeam(String name) {
+        var scoreboard = AvoidInternal.getServer().getScoreboard();
+        var team = scoreboard.getPlayerTeam(name);
+
+        if (team == null)
+            return false;
+
+        scoreboard.removePlayerTeam(team);
+        return true;
+    }
+
+    public static List<Team> getTeams() {
+        return AvoidInternal.getServer().getScoreboard().getPlayerTeams()
+                                                        .stream()
+                                                        .map(TeamNative::convert)
+                                                        .toList();
+    }
+
+    public static Collection<String> getTeamNames() {
+        return AvoidInternal.getServer().getScoreboard().getTeamNames();
     }
 }
