@@ -1,5 +1,6 @@
 import com.mojang.brigadier.context.CommandContext;
 import java.lang.reflect.Field;
+import pl.olafcio.avoid_impl.mixininterface.IPermissionSet;
 
 {
     @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;setConsumer(Lcom/mojang/brigadier/ResultConsumer;)V"), method = "<init>")
@@ -51,4 +52,9 @@ import java.lang.reflect.Field;
 {
     ((ICommandContext<CommandSourceStack>) ctx).avoid$arguments(
     _setArgs(ctx,
+}
+
+{
+    perms.avoid$hasPermission
+    ((IPermissionSet) perms).avoid$hasPermission
 }

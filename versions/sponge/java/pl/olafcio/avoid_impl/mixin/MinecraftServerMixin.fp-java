@@ -1,4 +1,23 @@
+import pl.olafcio.avoid_impl.mixininterface.IPermissionSet;
+
 {
     @At("CTOR_HEAD")
     @At(value = "CTOR_HEAD", unsafe = true)
+}
+
+{
+    new LevelBasedPermissionSet(
+    new PermissionSetImpl(
+}
+
+{
+    public class MinecraftServerMixin {
+    public class MinecraftServerMixin {
+        private interface PermissionSetImpl
+                extends LevelBasedPermissionSet, IPermissionSet {}
+}
+
+{
+    return delegate.avoid$hasPermission(atom, level);
+    return ((IPermissionSet) delegate).avoid$hasPermission(atom, level);
 }

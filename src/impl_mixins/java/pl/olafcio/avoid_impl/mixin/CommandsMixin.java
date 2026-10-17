@@ -27,7 +27,7 @@ import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.command.SyntaxTree;
 import pl.olafcio.avoid.net.player.PlayerNative;
-import pl.olafcio.avoid_impl.net.permission.IUnassignedAtom;
+import pl.olafcio.avoid_impl.mixinclass.UnassignedAtom;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -46,15 +46,6 @@ public class CommandsMixin {
 
         if (event.isCancelled()) {
             ci.cancel();
-        }
-    }
-
-    private static final class UnassignedAtom
-                         extends Permission.Atom
-                         implements IUnassignedAtom
-    {
-        public UnassignedAtom(Identifier id) {
-            super(id);
         }
     }
 

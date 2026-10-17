@@ -1,0 +1,14 @@
+{
+    classTweaker v2 named
+    accessWidener v2 named
+}
+
+{
+    transitive-inject-interface
+    #transitive-inject-interface
+}
+
+{
+    inject-interface
+    #inject-interface
+}
