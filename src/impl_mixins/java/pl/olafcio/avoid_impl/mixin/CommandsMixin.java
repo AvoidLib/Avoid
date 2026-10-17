@@ -7,8 +7,10 @@ import com.mojang.brigadier.context.ParsedArgument;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.permissions.Permission;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,6 +27,7 @@ import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.command.SyntaxTree;
 import pl.olafcio.avoid.net.player.PlayerNative;
+import pl.olafcio.avoid_impl.net.permission.IUnassignedAtom;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -46,6 +49,15 @@ public class CommandsMixin {
         }
     }
 
+    private static final class UnassignedAtom
+                         extends Permission.Atom
+                         implements IUnassignedAtom
+    {
+        public UnassignedAtom(Identifier id) {
+            super(id);
+        }
+    }
+
     @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;setConsumer(Lcom/mojang/brigadier/ResultConsumer;)V"), method = "<init>")
     public void finishCommands(Commands.CommandSelection commandSelection, CommandBuildContext commandBuildContext, CallbackInfo ci) {
         new BrigadierSupport<CommandSourceStack>() {
@@ -54,7 +66,7 @@ public class CommandsMixin {
                 var perm = entry.getPermission();
                 if (perm != null) {
                     if (perm instanceof pl.olafcio.avoid.net.command.annotation.Permission cast) {
-                        var atom = Permission.Atom.create(cast.value());
+                        var atom = createAtom(cast.value());
 
                         node = node.requires(ctx -> {
                             if (!ctx.isPlayer())
@@ -64,7 +76,7 @@ public class CommandsMixin {
                             return perms.hasPermission(atom);
                         });
                     } else if (perm instanceof PermissionLevel cast) {
-                        var atom = Permission.Atom.create(cast.value());
+                        var atom = createAtom(cast.value());
                         var cmdLevel = new Permission.HasCommandLevel(cast.level().__get());
 
                         node = node.requires(ctx -> {
@@ -80,6 +92,14 @@ public class CommandsMixin {
                 }
 
                 return node;
+            }
+
+            @NotNull
+            private static Permission.Atom createAtom(String cast) {
+                if (cast.indexOf(':') == -1)
+                    return new UnassignedAtom(Identifier.withDefaultNamespace(cast));
+
+                return Permission.Atom.create(cast);
             }
 
             @Override

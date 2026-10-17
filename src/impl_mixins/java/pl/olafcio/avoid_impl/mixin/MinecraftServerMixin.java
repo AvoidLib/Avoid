@@ -28,6 +28,7 @@ import pl.olafcio.avoid.platform.RunningEnv;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 import pl.olafcio.avoid_impl.mixininterface.INameAndId;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
+import pl.olafcio.avoid_impl.net.permission.IUnassignedAtom;
 import pl.olafcio.avoid_impl.net.permission.PermissionHandlers;
 
 import java.net.Proxy;
@@ -94,14 +95,15 @@ public class MinecraftServerMixin {
 
                     if (!votes.isEmpty())
                         return votes.getFirst().has();
-                } else if (permission instanceof Permission.Atom(Identifier id)) {
+                } else if (permission instanceof Permission.Atom atom) {
                     var handlers = PermissionHandlers.PERMISSION_HANDLERS;
                     var votes = new ArrayList<PermissionStatus>();
 
                     for (var handler : handlers) {
+                        var id = atom.id();
                         var vote = handler.hasPermission(
                                 player,
-                                IdentificationNative.convertFrom(id).toString()
+                                atom instanceof IUnassignedAtom ? id.getPath() : IdentificationNative.convertFrom(id).toString()
                         );
 
                         if (vote.has() != null)
