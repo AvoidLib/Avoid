@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.olafcio.avoid_impl.listeners.*;
+import pl.olafcio.avoid_impl.net.permission.PermissionHandlers;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 
@@ -21,6 +22,8 @@ public class A4Paper extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
         Bukkit.getPluginManager().registerEvents(new FoodListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
+
+        PermissionHandlers.init();
     }
 
     @Override

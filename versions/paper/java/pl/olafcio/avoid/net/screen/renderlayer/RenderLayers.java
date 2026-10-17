@@ -139,7 +139,22 @@ public final class RenderLayers {
         if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
             return registerClient(name);
 
-        throw new ImproperEnvironment("[RenderLayers#register] Cannot be run in server environment!");
+        return new RenderLayer() {
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public boolean isPresent() {
+                return false;
+            }
+
+            @Override
+            Object get() {
+                return null;
+            }
+        };
     }
 
     private static RenderLayer registerClient(String name) {
