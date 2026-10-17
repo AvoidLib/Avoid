@@ -616,7 +616,7 @@ public class Player extends Entity implements Executor, OfflinePlayer {
         if (underlyingEntity instanceof ServerPlayer)
             __cast(ServerPlayer.class).connection.send(new ClientboundCustomPayloadPacket(getAvoidPayload(payload).make(payload)));
         else if (underlyingEntity instanceof LocalPlayer)
-            __cast(ServerPlayer.class).connection.send(new ServerboundCustomPayloadPacket(getAvoidPayload(payload).make(payload)));
+            __cast(LocalPlayer.class).connection.send(new ServerboundCustomPayloadPacket(getAvoidPayload(payload).make(payload)));
         else
             throw new UncontrollablePlayerException("[Player#sendPacket] Remote players can't be controlled from the client");
     }
