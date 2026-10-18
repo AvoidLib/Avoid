@@ -51,11 +51,11 @@ accessible field net/minecraft/client/gui/screens/Screen children Ljava/util/Lis
 accessible method net/minecraft/client/gui/screens/Screen removeWidget (Lnet/minecraft/client/gui/components/events/GuiEventListener;)V
 
 # Session
-accessible field net/minecraft/client/User accessToken Ljava/lang/String;
-mutable field net/minecraft/client/User accessToken Ljava/lang/String;
+transitive-accessible field net/minecraft/client/User accessToken Ljava/lang/String;
+transitive-mutable field net/minecraft/client/User accessToken Ljava/lang/String;
 
-accessible field net/minecraft/client/User name Ljava/lang/String;
-mutable field net/minecraft/client/User name Ljava/lang/String;
+transitive-accessible field net/minecraft/client/User name Ljava/lang/String;
+transitive-mutable field net/minecraft/client/User name Ljava/lang/String;
 
-accessible field net/minecraft/client/User uuid Ljava/util/UUID;
-mutable field net/minecraft/client/User uuid Ljava/util/UUID;
+transitive-accessible field net/minecraft/client/User uuid Ljava/util/UUID;
+transitive-mutable field net/minecraft/client/User uuid Ljava/util/UUID;
