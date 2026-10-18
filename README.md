@@ -17,7 +17,7 @@ Minecraft complete wrapper framework.
 
 <br/>
 
-## <img style="height: 30px" src="https://latex.codecogs.com/svg.latex?\color{white}{\text{Solve%20}}\color{%23d061ca}{\text{a}}\color{%23cc5fca}{\text{l}}\color{%23c75dcb}{\text{l%20}}\color{%23bf58cc}{\text{y}}\color{%23ba56cc}{\text{o}}\color{%23b553cc}{\text{u}}\color{%23b151cd}{\text{r%20}}\color{%23a84ccd}{\text{i}}\color{%23a44ace}{\text{s}}\color{%23a047ce}{\text{s}}\color{%239b45cf}{\text{u}}\color{%239743cf}{\text{e}}\color{%239340cf}{\text{s}}">
+## <img style="height: 30px" src="https://latex.codecogs.com/svg.latex?\color{white}{\text{Solve%20}}\color{%23d061ca}{\text{a}}\color{%23cc5fca}{\text{l}}\color{%23c75dcb}{\text{l%20}}\color{%23bf58cc}{\text{y}}\color{%23ba56cc}{\text{o}}\color{%23b553cc}{\text{u}}\color{%23b151cd}{\text{r%20}}\color{%23a84ccd}{\text{i}}\color{%23a44ace}{\text{s}}\color{%23a047ce}{\text{s}}\color{%239b45cf}{\text{u}}\color{%239743cf}{\text{e}}\color{%239340cf}{\text{s}}" alt="Solve all your issues">
 
 AvoidLib is a wrapper around Minecraft's API (+ additional features), that resolves:
 - 🔃 Environmental classloading issues
@@ -27,7 +27,7 @@ AvoidLib is a wrapper around Minecraft's API (+ additional features), that resol
 
 **🏳️‍🌈 AvoidLib stands for the LGBTQIA+ community.**<br/><br/>
 
-## <img style="height: 30px" src="https://latex.codecogs.com/svg.latex?\color{white}{\text{Developing}}">
+## <img style="height: 30px" src="https://latex.codecogs.com/svg.latex?\color{white}{\text{Developing}}" alt="Developing">
 
 Of course, you can do the standard mod with library way,
 but that approach isn't recommended.<br/>
@@ -36,7 +36,7 @@ What you should use instead is the custom AvoidLib mod format
 
 **Take a look at [the quickstart](https://github.com/AvoidLib/Avoid/wiki/Creating-your-mod).**<br/><br/>
 
-## <img style="height: 30px" src="https://latex.codecogs.com/svg.latex?\color{white}{\text{My%20Minecraft%20is%20crashing}}">
+## <img style="height: 30px" src="https://latex.codecogs.com/svg.latex?\color{white}{\text{My%20Minecraft%20is%20crashing}}" alt="My Minecraft is crashing">
 
 Try moving them onto a new directory called `avoidmods` in your game folder.<br/>
 This skips non-Avoid-caused loading.
