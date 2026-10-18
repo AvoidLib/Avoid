@@ -35,18 +35,28 @@ jobs:
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
     - name: Build with Gradle Wrapper
-      run: "chmod u+x .actions/bin/removeLime; .actions/bin/removeLime; chmod u+x gradlew; ./gradlew build"
+      run: "chmod u+x .actions/bin/removeLime; .actions/bin/removeLime; chmod u+x gradlew; ./gradlew build -Dgen_sources=1"
 
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-    #   with:
-    #     gradle-version: '8.9'
-    #
-    # - name: Build with Gradle 8.9
-    #   run: gradle build
+    - name: Define uploads
+      run: |
+        chmod u+x .actions/bin/getjar
+        echo "jarPath=$(.actions/bin/getjar)" >> $GITHUB_ENV
+
+    - name: Upload the runtime artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.jarPath }}.jar
+        path: build/libs/${{ env.jarPath }}.jar
+        if-no-files-found: error
+        retention-days: 5
+
+    - name: Upload the sources artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.jarPath }}-sources.jar
+        path: build/libs/${{ env.jarPath }}-sources.jar
+        if-no-files-found: error
+        retention-days: 5
 
   dependency-submission:
 
