@@ -12,3 +12,8 @@
     @Inject(at = @At("HEAD"), method = "updateInWaterStateAndDoWaterCurrentPushing")
     @Inject(at = @At("HEAD"), method = "updateInWaterStateAndDoWaterCurrentPushing", require = 0)
 }
+
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"), method = "baseTick")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"), method = "baseTick", require = 0)
+}

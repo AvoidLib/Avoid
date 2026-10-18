@@ -53,7 +53,7 @@ ext {
     it.quilt = quilt
 }
 
-if (sponge || paper) {
+if (sponge || paper || neoforge) {
     apply plugin: 'com.gradleup.shadow'
 }
 
@@ -374,6 +374,12 @@ if (neoforge) {
     }
 
     jar {
+        from(loader_jar) {
+            rename { "services.jar" }
+        }
+    }
+
+    shadowJar {
         from(loader_jar) {
             rename { "services.jar" }
         }
