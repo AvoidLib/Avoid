@@ -291,7 +291,8 @@ class ModParser {
             throw new RuntimeException("Error while parsing JAR file '%s'".formatted(mod.toAbsolutePath()), e);
         }
 
-        new MCMetaAppender();
+        if (!Files.isSymbolicLink(mod))
+            new MCMetaAppender();
     }
 
     private void verifySignatures(JarFile jar, ZipEntry signaturesFile)
