@@ -5,7 +5,9 @@ import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.id.Identification;
+import pl.olafcio.avoid.net.item.stack.ItemStack;
 import pl.olafcio.avoid.net.screen.font.Font;
 import pl.olafcio.avoid.net.screen.renderlayer.RenderLayer;
 
@@ -215,4 +217,31 @@ public abstract class Drawer {
      */
     @ApiStatus.Experimental
     public abstract Matrix3x2fStack matrixStack();
+
+    /**
+     * Renders an item.
+     * @param itemStack The itemstack to render.
+     * @param x The X axis to render on.
+     * @param y The Y axis to render on.
+     */
+    public abstract void renderItem(ItemStack itemStack, int x, int y);
+
+    /**
+     * Renders an item with the owner set as the local player.<br/>
+     * Item Owners are used to specify active and held effects, such as a fishing rod being currently used.
+     * @param itemStack The itemstack to render.
+     * @param x The X axis to render on.
+     * @param y The Y axis to render on.
+     */
+    public abstract void renderPlayerItem(ItemStack itemStack, int x, int y);
+
+    /**
+     * Renders an item with the owner set as the entity.<br/>
+     * Item Owners are used to specify active and held effects, such as a fishing rod being currently used.
+     * @param entity The item owner.
+     * @param itemStack The itemstack to render.
+     * @param x The X axis to render on.
+     * @param y The Y axis to render on.
+     */
+    public abstract void renderEntityItem(Entity entity, ItemStack itemStack, int x, int y);
 }

@@ -315,40 +315,22 @@ public class Drawer extends pl.olafcio.avoid.net.screen.Drawer {
         ));//#endsubmit
     }
 
-    /**
-     * Renders an item.
-     * @param itemStack The itemstack to render.
-     * @param x The X axis to render on.
-     * @param y The Y axis to render on.
-     */
+    @Override
     public void renderItem(ItemStack itemStack, int x, int y) {
         this.graphics.renderFakeItem(ItemStackNative.convert(itemStack), x, y);
     }
 
-    /**
-     * Renders an item with the owner set as the local player.<br/>
-     * Item Owners are used to specify active and held effects, such as a fishing rod being currently used.
-     * @param itemStack The itemstack to render.
-     * @param x The X axis to render on.
-     * @param y The Y axis to render on.
-     */
+    @Override
     public void renderPlayerItem(ItemStack itemStack, int x, int y) {
         this.graphics.renderItem(ItemStackNative.convert(itemStack), x, y);
     }
 
-    /**
-     * Renders an item with the owner set as the entity.<br/>
-     * Item Owners are used to specify active and held effects, such as a fishing rod being currently used.
-     * @param entity The item owner.
-     * @param itemStack The itemstack to render.
-     * @param x The X axis to render on.
-     * @param y The Y axis to render on.
-     */
+    @Override
     public void renderEntityItem(Entity entity, ItemStack itemStack, int x, int y) {
-        // Tf is this last parameter? Shade?
         if (!(EntityNative.convert(entity) instanceof LivingEntity le))
             throw new RuntimeException("[Drawer#renderEntityItem] The provided entity must be a living entity. (got: '%s')".formatted(entity));
 
+        // Tf is this last parameter? Shade?
         this.graphics.renderItem(le, ItemStackNative.convert(itemStack), x, y, 0);
     }
 }
