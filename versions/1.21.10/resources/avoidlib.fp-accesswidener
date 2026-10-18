@@ -20,3 +20,8 @@
     transitive-inject-interface net/minecraft/server/permissions/PermissionSet pl/olafcio/avoid_impl/mixininterface/IPermissionSet
     #transitive-inject-interface net/minecraft/server/permissions/PermissionSet pl/olafcio/avoid_impl/mixininterface/IPermissionSet
 }
+
+{
+    extendable class net/minecraft/server/permissions/Permission$Atom
+    #extendable class net/minecraft/server/permissions/Permission$Atom
+}
