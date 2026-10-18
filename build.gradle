@@ -450,11 +450,11 @@ release {
 
     files {
         main = (
-                "shadow" in project.getProperties()
-                        ? shadowJar.archiveFile.get().asFile
-                        :
                 "merge" in project.getProperties()
                         ? getMergeJAR()
+                        :
+                "shadow" in project.getProperties()
+                        ? shadowJar.archiveFile.get().asFile
                         :
                 "omit_mappings" !in project.getProperties()
                         ? remapJar.archiveFile.get().asFile
