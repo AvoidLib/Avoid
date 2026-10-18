@@ -41,9 +41,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarFile;
 
@@ -222,16 +220,21 @@ public final class ModLoad
     }
 
     public class ClassStatus {
+        public Class<?> klass;
         public boolean autoID = false;
         public boolean autoFilename = false;
         public boolean autoChar = false;
         public boolean errored = true;
+
+        public ClassStatus(Class<?> klass) {
+            this.klass = klass;
+        }
     }
 
     private void scanAllClasses(JarFile jar, URLClassLoader classLoader, String id, List<String> skipClasses, AvoidModMeta meta)
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
-        var classes = new HashMap<Class<?>, ClassStatus>();
+        var classes = new TreeMap<String, ClassStatus>();
         var entries = jar.entries();
 
         EventManager.fire(new ModClassCollectingEvent(meta));
@@ -258,29 +261,37 @@ public final class ModLoad
                     continue;
                 }
 
-                var status = new ClassStatus();
+                var status = new ClassStatus(klass);
 
-                if (registerAutoFluid(id, klass, className, status))
-                    continue;
-
-                if (registerAutoConfig(id, klass, className, status))
-                    continue;
-
-                classes.put(klass, status);
+                classes.put(klass.getName(), status);
             }
         } while (entries.hasMoreElements());
 
         EventManager.fire(new ModClassAnalyzingEvent(meta));
 
         for (var entry : classes.entrySet()) {
-            var klass = entry.getKey();
+            var klass = entry.getValue().klass;
+            var className = klass.getName();
+
+            var status = entry.getValue();
+
+            if (registerAutoFluid(id, klass, className, status)) continue;
+            if (registerAutoConfig(id, klass, className, status)) continue;
+
+            status.errored = false;
+        }
+
+        for (var entry : classes.entrySet()) {
+            var status = entry.getValue();
+            if (status.errored)
+                continue;
+
+            var klass = entry.getValue().klass;
             var className = klass.getName();
 
             if (registerScreenOverwrite(klass, className)) continue;
             if (registerScreenModifier(klass, className)) continue;
             if (registerAutoCommand(klass)) continue;
-
-            var status = entry.getValue();
 
             if (registerAutoBlock(id, klass, className, status)) continue;
             if (registerAutoItem(id, klass, className, status)) continue;
@@ -293,7 +304,7 @@ public final class ModLoad
         }
 
         for (var entry : classes.entrySet()) {
-            var klass = entry.getKey();
+            var klass = entry.getValue().klass;
             var className = klass.getName();
 
             var status = entry.getValue();
