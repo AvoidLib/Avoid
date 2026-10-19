@@ -5,10 +5,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
+import pl.olafcio.avoid.mods.annotation_processor.AutoCommand;
 import pl.olafcio.avoid.net.command.annotation.*;
 import pl.olafcio.avoid.net.command.exception.*;
 import pl.olafcio.avoid.net.command.exception.late.TooLateException;
 import pl.olafcio.avoid.net.command.exception.use.CannotCallException;
+import pl.olafcio.avoid.net.command.external.ExternalCommand;
+import pl.olafcio.avoid.net.command.external.PlayerNotInWorldException;
 import pl.olafcio.avoid.net.command.handling.CommandHandler;
 
 import java.io.PrintWriter;
@@ -22,11 +25,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 /**
- * A namespace for managing commands.
+ * A namespace for managing server commands.
  * <br/><br/>
  * To register a command, use {@link #add(Command)}.<br/>
- * To get metadata of a command instance, use {@link #get(Command)}.<br/>
- * To get a command instance from its name, use {@link #getByName(String)}.
+ * To get a command by its name, use {@link #getByName(String)}.
  */
 @WillRefactor(aspect = "name")
 public final class CommandManager {
@@ -164,7 +166,15 @@ public final class CommandManager {
             }
         }
 
-        commands.put(cmd, new CommandMetadata(lastNameRecorded.substring(1), syntaxes, unknownhandler));
+        var annotation = cmd.getClass().getDeclaredAnnotation(AutoCommand.class);
+
+        commands.put(cmd, new CommandMetadata(
+                lastNameRecorded.substring(1),
+                annotation.usage(),
+                annotation.examples(),
+                syntaxes,
+                unknownhandler
+        ));
     }
 
     private static @NotNull String extractCommandLine(String paramraw) {
@@ -196,14 +206,39 @@ public final class CommandManager {
         return commands.get(cmd);
     }
 
+    /**
+     * Returns a command instance for the given name.
+     */
     @Nullable
-    static Command getByName(String name) {
-        var keys = commands.keySet();
-        for (Command key : keys)
-            if (key.getName().equalsIgnoreCase(name))
-                return key;
+    public static ExternalCommand getByName(String name)
+           throws PlayerNotInWorldException
+    {
+//        var keys = commands.keySet();
+//        for (Command key : keys)
+//            if (key.getName().equalsIgnoreCase(name))
+//                return new ExternalCommand() {
+//                    @Override
+//                    public String getName() {
+//                        return key.getName();
+//                    }
+//
+//                    @Override
+//                    public String getUsage() {
+//                        return key.getUsage();
+//                    }
+//
+//                    @Override
+//                    public String[] getExamples() {
+//                        return key.getExamples();
+//                    }
+//
+//                    @Override
+//                    public Predicate<Executor> getRequirement() {
+//                        return source -> false;
+//                    }
+//                };
 
-        return null;
+        return pl.olafcio.avoid_impl.net.command.CommandLookup.queryServer(name);
     }
 
     @ApiStatus.Internal

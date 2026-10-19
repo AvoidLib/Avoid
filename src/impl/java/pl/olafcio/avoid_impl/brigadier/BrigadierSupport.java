@@ -8,6 +8,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
+import com.mojang.brigadier.tree.CommandNode;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.net.command.CommandManager;
@@ -52,7 +54,22 @@ public abstract class BrigadierSupport<Src> {
                                 put("input", new StringParameter("input"));
                            }}, name)));
 
-            dispatcher.register(root);
+            final var result = new LiteralCommandNode<>(root.getLiteral(), root.getCommand(), root.getRequirement(), root.getRedirect(), root.getRedirectModifier(), root.isFork()) {
+                @Override
+                public String getUsageText() {
+                    return cmd.getUsage();
+                }
+
+                @Override
+                public Collection<String> getExamples() {
+                    return Arrays.stream(cmd.getExamples()).toList();
+                }
+            };
+
+            for (CommandNode<Src> argument : root.getArguments())
+                result.addChild(argument);
+
+            dispatcher.getRoot().addChild(result);
         });
     }
 

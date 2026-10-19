@@ -6,7 +6,7 @@ import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.command.executor.UnknownExecutor;
 
 public final class MyUnknownExecutor extends UnknownExecutor {
-    private final CommandSourceStack source;
+    public final CommandSourceStack source;
 
     public MyUnknownExecutor(CommandSourceStack source) {
         this.source = source;

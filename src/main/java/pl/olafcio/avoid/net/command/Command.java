@@ -53,6 +53,7 @@ public abstract class Command {
      * <b>Note:</b> This method works only after registering the class.
      */
     @NeverRemoval
+    @NotNull
     public final String getName() {
         return CommandManager.get(this).name();
     }
@@ -61,6 +62,24 @@ public abstract class Command {
      * <b>Note:</b> This method works only after registering the class.
      */
     @NeverRemoval
+    @NotNull
+    public final String getUsage() {
+        return CommandManager.get(this).usage();
+    }
+
+    /**
+     * <b>Note:</b> This method works only after registering the class.
+     */
+    @NeverRemoval
+    public final String @NotNull[] getExamples() {
+        return CommandManager.get(this).examples();
+    }
+
+    /**
+     * <b>Note:</b> This method works only after registering the class.
+     */
+    @NeverRemoval
+    @NotNull
     public final SyntaxTree getSyntaxTree() {
         return CommandManager.get(this).syntaxes();
     }
@@ -69,6 +88,7 @@ public abstract class Command {
      * <b>Note:</b> This method works only after registering the class.
      */
     @NeverRemoval
+    @Nullable
     public final CommandHandler getUnknownHandler() {
         return CommandManager.get(this).unknownhandler();
     }

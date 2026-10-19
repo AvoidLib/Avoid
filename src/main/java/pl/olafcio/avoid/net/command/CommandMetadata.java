@@ -11,6 +11,25 @@ import pl.olafcio.avoid.net.command.handling.CommandHandler;
  */
 public record CommandMetadata(
         String name,
+        String usage,
+        String[] examples,
         SyntaxTree syntaxes,
         CommandHandler unknownhandler
-) {}
+) {
+    public CommandMetadata {
+        if (usage.isEmpty())
+            usage = name;
+
+        if (examples.length == 0)
+            examples = new String[]{ name };
+    }
+
+    public CommandMetadata(
+            String name,
+            SyntaxTree syntaxes,
+            CommandHandler unknownhandler
+    ) {
+        //LiteralCommandNode:97,125
+        this(name, name, new String[]{ name }, syntaxes, unknownhandler);
+    }
+}

@@ -14,4 +14,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @NeverRemoval
-public @interface AutoCommand {}
+public @interface AutoCommand {
+    String usage() default "";
+    String[] examples() default {};
+}
