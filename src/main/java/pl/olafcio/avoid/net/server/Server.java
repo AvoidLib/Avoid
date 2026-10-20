@@ -1,11 +1,13 @@
 package pl.olafcio.avoid.net.server;
 
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.server.permissions.Permission;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.player.OfflinePlayer;
 import pl.olafcio.avoid.net.services.Services;
 import pl.olafcio.avoid.net.team.Team;
@@ -18,6 +20,7 @@ import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.world.World;
+import pl.olafcio.avoid_impl.net.permission.PermissionHandlers;
 import pl.olafcio.avoid_impl.net.server.ServicesImpl;
 import pl.olafcio.avoid_impl.net.team.TeamNative;
 import pl.olafcio.avoid_impl.net.world.WorldNative;
@@ -74,9 +77,23 @@ public final class Server {
         if (optional.isEmpty())
             return null;
 
-        var uuid = optional.orElseThrow().id();
+        var nameAndID = optional.orElseThrow();
+        var uuid = nameAndID.id();
 
         return new OfflinePlayer() {
+            @Override
+            public boolean hasPermission(String text) {
+                return AvoidInternal.getServer().getProfilePermissions(nameAndID).hasPermission(PermissionHandlers.createAtom(text));
+            }
+
+            @Override
+            public boolean hasPermission(String text, PermissionLevel.Enum level) {
+                return AvoidInternal.getServer().getProfilePermissions(nameAndID).avoid$hasPermission(
+                        PermissionHandlers.createAtom(text),
+                        new Permission.HasCommandLevel(level.__get())
+                );
+            }
+
             @Override
             public String getNick() {
                 return nick;
@@ -94,9 +111,23 @@ public final class Server {
         if (optional.isEmpty())
             return null;
 
-        var nick = optional.orElseThrow().name();
+        var nameAndID = optional.orElseThrow();
+        var nick = nameAndID.name();
 
         return new OfflinePlayer() {
+            @Override
+            public boolean hasPermission(String text) {
+                return AvoidInternal.getServer().getProfilePermissions(nameAndID).hasPermission(PermissionHandlers.createAtom(text));
+            }
+
+            @Override
+            public boolean hasPermission(String text, PermissionLevel.Enum level) {
+                return AvoidInternal.getServer().getProfilePermissions(nameAndID).avoid$hasPermission(
+                        PermissionHandlers.createAtom(text),
+                        new Permission.HasCommandLevel(level.__get())
+                );
+            }
+
             @Override
             public String getNick() {
                 return nick;

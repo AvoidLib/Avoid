@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid_impl.mixininterface.IEntity;
 import pl.olafcio.avoid_impl.mixininterface.IFoodData;
 import pl.olafcio.avoid_impl.mixininterface.INameAndId;
@@ -35,6 +36,6 @@ public class PlayerMixin {
 
     @Inject(at = @At("RETURN"), method = "nameAndId")
     public void nameAndId(CallbackInfoReturnable<NameAndId> cir) {
-        ((INameAndId) (Object) cir.getReturnValue()).avoid$player((Player) (Object) this);
+        ((INameAndId) (Object) cir.getReturnValue()).avoid$owner(PlayerNative.convertFrom((Player) (Object) this));
     }
 }

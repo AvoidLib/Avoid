@@ -1,7 +1,6 @@
 package pl.olafcio.avoid_impl.mixin;
 
 import com.mojang.datafixers.DataFixer;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.Services;
 import net.minecraft.server.WorldStem;
@@ -58,7 +57,7 @@ public class MinecraftServerMixin {
     @Inject(at = @At("RETURN"), method = "getProfilePermissions", cancellable = true)
     public void getProfilePermissions(NameAndId nameAndId, CallbackInfoReturnable<LevelBasedPermissionSet> cir) {
         var delegate = cir.getReturnValue();
-        var player = PlayerNative.convertFrom(((INameAndId) (Object) nameAndId).avoid$player());
+        var player = ((INameAndId) (Object) nameAndId).avoid$owner();
 
         cir.setReturnValue(new LevelBasedPermissionSet() {
             @Override

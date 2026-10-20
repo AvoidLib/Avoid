@@ -4,14 +4,17 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.*;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.server.permissions.Permission;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 import org.jetbrains.annotations.UnknownNullability;
+import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.payload.CustomPayload;
 import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
@@ -22,6 +25,7 @@ import pl.olafcio.avoid.annotations.env.ClientUnsafe;
 import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid_impl.client.AvoidLibClient;
+import pl.olafcio.avoid_impl.mixinclass.UnassignedAtom;
 import pl.olafcio.avoid_impl.mixininterface.IServerPlayer;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
@@ -645,5 +649,29 @@ public class Player extends Entity implements Executor, OfflinePlayer {
         }
 
         throw new RuntimeException("[Player#sendPacket] Unregistered payload '%s'; did you forget to annotate it with @AutoCustomPayload?".formatted(avoid));
+    }
+
+    @Override
+    public boolean hasPermission(String text) {
+        var id = IdentificationNative.convert(text);
+
+        return __cast(net.minecraft.world.entity.player.Player.class).permissions().hasPermission(
+                !text.contains(":")
+                        ? new UnassignedAtom(id)
+                        : new Permission.Atom(id)
+        );
+    }
+
+    @Override
+    public boolean hasPermission(String text, PermissionLevel.Enum level) {
+        var id = IdentificationNative.convert(text);
+
+        return __cast(net.minecraft.world.entity.player.Player.class).permissions().avoid$hasPermission(
+                !text.contains(":")
+                        ? new UnassignedAtom(id)
+                        : new Permission.Atom(id),
+
+                new Permission.HasCommandLevel(level.__get())
+        );
     }
 }

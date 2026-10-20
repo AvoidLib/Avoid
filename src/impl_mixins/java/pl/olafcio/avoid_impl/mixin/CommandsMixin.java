@@ -32,6 +32,8 @@ import pl.olafcio.avoid_impl.mixinclass.UnassignedAtom;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static pl.olafcio.avoid_impl.net.permission.PermissionHandlers.createAtom;
+
 @Mixin(Commands.class)
 public class CommandsMixin {
     @Shadow
@@ -83,14 +85,6 @@ public class CommandsMixin {
                 }
 
                 return node;
-            }
-
-            @NotNull
-            private static Permission.Atom createAtom(String cast) {
-                if (cast.indexOf(':') == -1)
-                    return new UnassignedAtom(Identifier.withDefaultNamespace(cast));
-
-                return Permission.Atom.create(cast);
             }
 
             @Override
