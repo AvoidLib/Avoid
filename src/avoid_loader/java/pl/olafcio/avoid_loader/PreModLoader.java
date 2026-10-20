@@ -108,7 +108,7 @@ public final class PreModLoader {
         try (var mods = Files.list(modsDir)) {
             mods.forEach(mod -> {
                 if ((mod.toString().endsWith(".jar") || mod.toString().endsWith(".avoid.zip")) && !loadedMods.contains(mod)) {
-                    new ModParser(mod, loadedMods, MODS).load();
+                    new ModParser(mod, loadedMods, MODS, null).load();
                 }
             });
         }
@@ -179,9 +179,9 @@ public final class PreModLoader {
                     if (library) {
                         container.classLoader().addURL(path.toUri().toURL());
 
-                        container.children().add(new ModParser(path, loadedMods, MODS, container.classLoader()).load());
+                        container.children().add(new ModParser(path, loadedMods, MODS, container.classLoader(), container).load());
                     } else {
-                        container.children().add(new ModParser(path, loadedMods, MODS).load());
+                        container.children().add(new ModParser(path, loadedMods, MODS, container).load());
                     }
                 } else {
                     if (!library)

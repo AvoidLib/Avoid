@@ -33,19 +33,22 @@ class ModParser {
     private final Set<Path> loadedMods;
     private final ArrayList<PreModContainer> avoidMods;
     private final ModClassLoader classLoader;
+    private final PreModContainer parent;
 
-    public ModParser(Path mod, Set<Path> loadedMods, ArrayList<PreModContainer> avoidMods, ModClassLoader classLoader) {
+    public ModParser(Path mod, Set<Path> loadedMods, ArrayList<PreModContainer> avoidMods, ModClassLoader classLoader, PreModContainer parent) {
         this.mod = mod;
         this.loadedMods = loadedMods;
         this.avoidMods = avoidMods;
+        this.parent = parent;
         this.classLoader = classLoader;
     }
 
-    public ModParser(Path mod, Set<Path> loadedMods, ArrayList<PreModContainer> avoidMods) {
+    public ModParser(Path mod, Set<Path> loadedMods, ArrayList<PreModContainer> avoidMods, PreModContainer parent) {
         try {
             this.mod = mod;
             this.loadedMods = loadedMods;
             this.avoidMods = avoidMods;
+            this.parent = parent;
             this.classLoader = new ModClassLoader(new URL[]{ mod.toUri().toURL() }, this.getClass().getClassLoader());
         } catch (MalformedURLException e) {
             throw new RuntimeException("Unable to initialize mod class loader; path to URL conversion failed", e);
@@ -253,7 +256,7 @@ class ModParser {
                 avoidMods.removeAll(toRemove);
             }
 
-            avoidMods.add(container = new PreModContainer(mod, json, classLoader, null));
+            avoidMods.add(container = new PreModContainer(mod, json, classLoader, parent));
         } catch (IOException e) {
             throw new RuntimeException("Error while parsing JAR file '%s'".formatted(mod.toAbsolutePath()), e);
         }
