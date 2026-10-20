@@ -232,11 +232,13 @@ class ModParser {
                             version
                     );
 
-                    PreModLoader.LOGGER.error("You have 2 addons using the same ID: '{}' and '{}' ({})\nPicking {}",
+                    PreModLoader.LOGGER.error("You have 2 addons using the same ID: '{}' ({}) and '{}' ({})\nPicking {} ({})",
                             anotherMod.path().toAbsolutePath(),
+                            anotherMod.manifest().get("id").getAsString(),
                             mod.toAbsolutePath(),
-                            pick == VersionSelector.VersionSide.B ? id : anotherMod.manifest().get("id").getAsString(),
-                            pick.name()
+                            id,
+                            pick.name(),
+                            pick == VersionSelector.VersionSide.B ? id : anotherMod.manifest().get("id").getAsString()
                     );
 
                     if (pick == VersionSelector.VersionSide.B) {
