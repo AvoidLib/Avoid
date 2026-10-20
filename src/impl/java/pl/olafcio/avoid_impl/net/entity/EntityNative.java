@@ -13,6 +13,7 @@ import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.entity.EntityAccessor;
 import pl.olafcio.avoid_impl.mixin.accessors.IEntityType;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid_impl.mixininterface.IEntity;
 import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
 import pl.olafcio.avoid_impl.net.entity.custom_internal.IAvoidEntity;
 import pl.olafcio.avoid.net.entity.type.base.NativeEntityConstructor;
@@ -144,6 +145,10 @@ public final class EntityNative {
         else if (entity instanceof Player player)
             return PlayerNative.convertFrom(player);
 
+        var ientity = (IEntity) entity;
+        if (ientity.avoidlib$wrappedEntity() != null)
+            return ientity.avoidlib$wrappedEntity();
+
         BaseComponent<?> name;
 
         try                 { name = COFromNative.from(entity.getName()); }
@@ -155,7 +160,7 @@ public final class EntityNative {
             for (var type : types) {
                 var nec = type.apply(kls);
                 if (nec != null)
-                    return nec.construct(
+                    return keepTrack(nec.construct(
                             entity.getId(),
                             EntityTypeNative.convertFrom(entity.getType()),
                             Vect3Native.convert(entity.position()),
@@ -163,7 +168,7 @@ public final class EntityNative {
                             entity.getUUID(),
                             name,
                             entity
-                    );
+                    ), ientity);
             }
         } catch (Exception e) {
             Avoid.LOGGER.error("===========================================");
@@ -173,7 +178,7 @@ public final class EntityNative {
             Avoid.LOGGER.error("===========================================");
         }
 
-        return new Entity(
+        return keepTrack(new Entity(
                 entity.getId(),
                 EntityTypeNative.convertFrom(entity.getType()),
                 Vect3Native.convert(entity.position()),
@@ -181,6 +186,11 @@ public final class EntityNative {
                 entity.getUUID(),
                 name,
                 entity
-        ) {};
+        ) {}, ientity);
+    }
+
+    public static <T extends Entity> T keepTrack(T entity, IEntity mc) {
+        mc.avoidlib$wrappedEntity(entity);
+        return entity;
     }
 }

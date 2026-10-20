@@ -6,11 +6,14 @@ import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid_impl.mixininterface.IEntity;
 import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
 import pl.olafcio.avoid_impl.net.entity_type.EntityTypeNative;
 import pl.olafcio.avoid_impl.net.world.vect3.Vect3Native;
 
 import java.util.HashMap;
+
+import static pl.olafcio.avoid_impl.net.entity.EntityNative.keepTrack;
 
 @Native
 @ApiStatus.Internal
@@ -20,6 +23,10 @@ public final class PlayerNative {
 
     @SuppressWarnings("ConstantValue")
     public static Player convertFrom(net.minecraft.world.entity.player.Player player) {
+        var ientity = (IEntity) player;
+        if (ientity.avoidlib$wrappedEntity() != null)
+            return (Player) ientity.avoidlib$wrappedEntity();
+
         var profile = player.getGameProfile();
 
         Component name;
@@ -30,7 +37,7 @@ public final class PlayerNative {
             name = null;
         }
 
-        return new Player(
+        return keepTrack(new Player(
                 player.getId(),
                 EntityTypeNative.convertFrom(player.getType()),
                 Vect3Native.convert(player.position()),
@@ -41,7 +48,7 @@ public final class PlayerNative {
                 profile == null ? null : convertProfile(profile),
                 player instanceof ServerPlayer sp ? sp.connection : null,
                 player
-        );
+        ), (IEntity) player);
     }
 
     @NotNull
