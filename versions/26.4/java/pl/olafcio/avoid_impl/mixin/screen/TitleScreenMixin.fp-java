@@ -2,3 +2,8 @@
     Mth.clamp(
     Math.clamp(
 }
+
+{
+    public void render(GuiGraphicsExtractor guiGraphics, int i, int j, float f, CallbackInfo ci) {
+    public void render(GuiGraphicsExtractor guiGraphics, CallbackInfo ci) {
+}

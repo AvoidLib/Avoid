@@ -1,0 +1,23 @@
+{
+    var color = blockOutlineRenderState.highContrast() ? custom.color_highcontrast() : custom.color();
+    var color = blockOutlineRenderState.highContrast() ? custom.color_highcontrast() : custom.color();
+
+    RenderType blockOutlineRenderType;
+    if (state.highContrast()) {
+        blockOutlineRenderType = RenderTypes.linesDepthBias();
+    } else if (this.gameRenderer.useImprovedTransparency()) {
+        blockOutlineRenderType = RenderTypes.linesTranslucentNoDepthWrite();
+    } else {
+        blockOutlineRenderType = RenderTypes.linesTranslucent();
+    }
+}
+
+{
+    RenderTypes.lines()
+    blockOutlineRenderType
+}
+
+{
+    RenderTypes.secondaryBlockOutline()
+    RenderTypes.lines()
+}

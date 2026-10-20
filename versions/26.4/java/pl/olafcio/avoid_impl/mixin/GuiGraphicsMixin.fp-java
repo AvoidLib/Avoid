@@ -1,0 +1,45 @@
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import pl.olafcio.avoid_impl.mixininterface.IGuiGraphics;
+
+{
+    public class GuiGraphicsMixin {
+    public class GuiGraphicsMixin implements IGuiGraphics {
+
+        @Unique
+        private Float tickDeltaOVR = null;
+
+        @Override
+        public void avoidlib$tickDeltaOVR(Float value) {
+            this.tickDeltaOVR = value;
+        }
+
+        @Unique private int prevMouseX;
+        @Unique private int prevMouseY;
+
+        @Override
+        public void avoidlib$prevMouseX(int value) {
+            this.prevMouseX = value;
+        }
+
+        @Override
+        public void avoidlib$prevMouseY(int value) {
+            this.prevMouseY = value;
+        }
+
+        @Override
+        public int avoidlib$prevMouseX() {
+            return this.prevMouseX;
+        }
+
+        @Override
+        public int avoidlib$prevMouseY() {
+            return this.prevMouseY;
+        }
+
+        @Inject(at = @At("HEAD"), method = "partialTicks", cancellable = true)
+        public void partialTicks(CallbackInfoReturnable<Float> cir) {
+            if (tickDeltaOVR != null)
+                cir.setReturnValue(tickDeltaOVR);
+        }
+}

@@ -2,3 +2,8 @@
     getFluid(fluid)
     getFluid(fluid).defaultFluidState()
 }
+
+{
+    return ItemNative.convert(fluid.getBucket());
+    return ItemNative.convert(BuiltInRegistries.ITEM.getValue(fluid.getBucket()));
+}

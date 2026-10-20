@@ -1,0 +1,4 @@
+{
+    public void init(Set<TagKey<net.minecraft.world.level.material.Fluid>> fluids, CallbackInfo ci) {
+    public void init(CallbackInfo ci) {
+}

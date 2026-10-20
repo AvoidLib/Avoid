@@ -2,3 +2,25 @@
     accessible method net/minecraft/client/renderer/entity/EntityRenderers register (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/client/renderer/entity/EntityRendererProvider;)V
     accessible method net/minecraft/client/renderer/entity/EntityRenderers register (Lnet/minecraft/core/Registry;Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/client/renderer/entity/EntityRendererProvider;)Lnet/minecraft/client/renderer/entity/EntityRendererProvider;
 }
+
+{
+    accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/blaze3d/pipeline/RenderPipeline;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
+    accessible method net/minecraft/client/renderer/pipeline/RenderPipelines precompiled (Lcom/mojang/blaze3d/pipeline/RenderPipeline;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
+}
+
+{
+    classTweaker v2 official
+    classTweaker v2 official
+
+    # 26.4
+    accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker fluidType Lnet/minecraft/core/Holder;
+    accessible field net/minecraft/world/entity/EntityFluidInteraction fluidTrackers Ljava/util/List;
+    accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker wasInFluid Z
+
+    # 26.4 guigraphics
+    accessible field net/minecraft/client/gui/GuiGraphicsExtractor mouseX I
+    mutable field net/minecraft/client/gui/GuiGraphicsExtractor mouseX I
+
+    accessible field net/minecraft/client/gui/GuiGraphicsExtractor mouseY I
+    mutable field net/minecraft/client/gui/GuiGraphicsExtractor mouseY I
+}

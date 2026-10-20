@@ -1,0 +1,19 @@
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V"), method = "extractRenderStateWithTooltipAndSubtitles")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V"), method = "extractRenderStateWithTooltipAndSubtitles")
+}
+
+{
+    public void render(Screen instance, GuiGraphicsExtractor guiGraphics, int i, int j, float f, Operation<Void> original) {
+    public void render(Screen instance, GuiGraphicsExtractor guiGraphics, Operation<Void> original) {
+}
+
+{
+    original.call(instance, guiGraphics, i, j, f);
+    original.call(instance, guiGraphics);
+}
+
+{
+    mod.render(DrawerNative.create(guiGraphics), i, j, f);
+    mod.render(DrawerNative.create(guiGraphics), guiGraphics.mouseX(), guiGraphics.mouseY(), guiGraphics.partialTicks());
+}

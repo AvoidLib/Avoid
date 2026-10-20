@@ -1,0 +1,9 @@
+{
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int i, int j, float f) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics) {
+}
+
+{
+    element.render(DrawerNative.create(guiGraphics), i, j, f);
+    element.render(DrawerNative.create(guiGraphics), guiGraphics.mouseX(), guiGraphics.mouseY(), guiGraphics.partialTicks());
+}

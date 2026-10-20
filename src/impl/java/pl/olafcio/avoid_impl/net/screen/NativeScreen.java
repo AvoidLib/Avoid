@@ -45,8 +45,8 @@ public final class NativeScreen extends Screen implements ParentElement {
     }
 
     @Override
-    public void render(pl.olafcio.avoid.net.screen.Drawer gui, int mouseX, int mouseY, float tickDelta) {
-        realScreen.render(DrawerNative.graphicsOf((pl.olafcio.avoid_impl.net.screen.Drawer) gui), mouseX, mouseY, tickDelta);
+    public void render(pl.olafcio.avoid.net.screen.Drawer ctx, int mouseX, int mouseY, float tickDelta) {
+        realScreen.render(DrawerNative.graphicsOf((pl.olafcio.avoid_impl.net.screen.Drawer) ctx), mouseX, mouseY, tickDelta);
     }
 
     @Override
@@ -165,8 +165,8 @@ public final class NativeScreen extends Screen implements ParentElement {
 
         return new Renderable() {
             @Override
-            public void render(pl.olafcio.avoid.net.screen.Drawer ctx, int mouseX, int mouseY, float deltaTick) {
-                el.render(DrawerNative.graphicsOf((pl.olafcio.avoid_impl.net.screen.Drawer) ctx), mouseX, mouseY, deltaTick);
+            public void render(pl.olafcio.avoid.net.screen.Drawer ctx, int mouseX, int mouseY, float tickDelta) {
+                el.render(DrawerNative.graphicsOf((pl.olafcio.avoid_impl.net.screen.Drawer) ctx), mouseX, mouseY, tickDelta);
             }
         };
     }

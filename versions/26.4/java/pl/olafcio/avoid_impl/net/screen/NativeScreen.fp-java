@@ -1,0 +1,33 @@
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import pl.olafcio.avoid_impl.mixininterface.IGuiGraphics;
+
+{
+    DrawerNative.graphicsOf((pl.olafcio.avoid_impl.net.screen.Drawer) ctx), mouseX, mouseY, tickDelta);
+
+    injectIntoDrawer(DrawerNative.graphicsOf((pl.olafcio.avoid_impl.net.screen.Drawer) ctx), mouseX, mouseY, tickDelta));
+    uninjectDrawer(DrawerNative.graphicsOf((pl.olafcio.avoid_impl.net.screen.Drawer) ctx));
+}
+
+{
+    public final class NativeScreen extends Screen implements ParentElement {
+    public final class NativeScreen extends Screen implements ParentElement {
+
+        private static GuiGraphicsExtractor injectIntoDrawer(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta) {
+            ((IGuiGraphics) graphics).avoidlib$prevMouseX(graphics.mouseX);
+            ((IGuiGraphics) graphics).avoidlib$prevMouseY(graphics.mouseY);
+
+            ((IGuiGraphics) graphics).avoidlib$tickDeltaOVR(tickDelta);
+
+            graphics.mouseX = mouseX;
+            graphics.mouseY = mouseY;
+
+            return graphics;
+        }
+
+        private static void uninjectDrawer(GuiGraphicsExtractor graphics) {
+            graphics.mouseX = ((IGuiGraphics) graphics).avoidlib$prevMouseX();
+            graphics.mouseY = ((IGuiGraphics) graphics).avoidlib$prevMouseY();
+
+            ((IGuiGraphics) graphics).avoidlib$tickDeltaOVR(null);
+        }
+}

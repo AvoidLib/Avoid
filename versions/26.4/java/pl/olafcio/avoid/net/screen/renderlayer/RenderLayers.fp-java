@@ -7,3 +7,13 @@
     com.mojang.blaze3d.pipeline.DepthStencilState
     com.mojang.renderpearl.api.pipeline.DepthStencilState
 }
+
+{
+    net.minecraft.client.renderer.RenderPipelines
+    net.minecraft.client.renderer.pipeline.RenderPipelines
+}
+
+{
+    RenderPipelines.register(
+    RenderPipelines.precompiled(
+}

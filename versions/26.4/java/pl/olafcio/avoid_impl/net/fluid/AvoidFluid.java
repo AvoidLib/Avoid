@@ -2,6 +2,8 @@ package pl.olafcio.avoid_impl.net.fluid;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -13,12 +15,10 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.UnknownNullability;
 import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid_impl.net._3d.DirectionNative;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
@@ -40,12 +40,13 @@ public final class AvoidFluid extends FlowingFluid {
     final pl.olafcio.avoid.net.fluid.Fluid fluid;
 
     public AvoidFluid(pl.olafcio.avoid.net.fluid.Fluid fluid) {
+        super(Fluid.Properties.of());
         this.fluid = fluid;
     }
 
     @Override
-    public Item getBucket() {
-        return ItemNative.convert(fluid.getBucket());
+    public ResourceKey<Item> getBucket() {
+        return BuiltInRegistries.ITEM.getResourceKey(ItemNative.convert(fluid.getBucket())).orElseThrow();
     }
 
     @Override

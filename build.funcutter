@@ -134,8 +134,8 @@ text_papi_version=3.2.0+26.3
 ; 26.2
 ! 26.3
 : no-placeholders
-minecraft_version=26.4-snapshot-4
-minecraft_version_range=26.4-alpha.4
-minecraft_version_list=["26.4-snapshot-4"]
+minecraft_version=26.4-snapshot-5
+minecraft_version_range=26.4-alpha.5
+minecraft_version_list=["26.4-snapshot-5"]
 loader_version=0.19.3
 publish=1
