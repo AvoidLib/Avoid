@@ -1,5 +1,7 @@
 package pl.olafcio.avoid_loader;
 
+import com.google.gson.JsonObject;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.olafcio.avoid_loader.subloaders.ILoader;
@@ -7,6 +9,7 @@ import pl.olafcio.avoid_loader.subloaders.ITransformer;
 import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 import pl.olafcio.avoid_platform.PMLImpl;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
@@ -14,6 +17,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public final class PreModLoader {
@@ -108,5 +112,88 @@ public final class PreModLoader {
                 }
             });
         }
+
+        var completed = new ArrayList<PreModContainer>();
+
+        while (true) {
+            var finished = true;
+            var copy = (List<PreModContainer>) MODS.clone();
+
+            for (var mod : copy) {
+                if (!completed.contains(mod) && extractJIJ(mod, loadedMods)) {
+                    finished = false;
+                    completed.add(mod);
+                }
+            }
+
+            if (finished)
+                break;
+        }
+    }
+
+    private static boolean extractJIJ(PreModContainer container, Set<Path> loadedMods) throws IOException {
+        if (container.manifest().has("jars")) {
+            var jars = container.manifest().get("jars").getAsJsonArray();
+            var folder = AvoidWrappedLoader.getGameDir().resolve(".cache/avoid_loader/embedded_jars");
+
+            try                   { Files.createDirectories(folder);                                                      }
+            catch (IOException e) { throw new RuntimeException("Failed to create Avoid embedded jar cache directory", e); }
+
+            for (var embeddedJAR : jars) {
+                String jarPath;
+
+                boolean library;
+                boolean mod;
+
+                if (embeddedJAR.isJsonObject()) {
+                    var obj = (JsonObject) embeddedJAR;
+
+                    jarPath = obj.get("path").getAsString();
+
+                    library = !obj.has("library") ? true : obj.get("library").getAsBoolean();
+                    mod     = !obj.has("mod")     ? true : obj.get(  "mod"  ).getAsBoolean();
+                } else {
+                    jarPath = embeddedJAR.getAsString();
+
+                    library = true;
+                    mod     = true;
+                }
+
+                Path path;
+
+                try (var jar = new JarFile(container.path().toFile())) {
+                    var entry = jar.getJarEntry(jarPath);
+
+                    try (var stream = jar.getInputStream(entry)) {
+                        path = folder.resolve(DigestUtils.sha1Hex(stream) + ".jar");
+                    }
+
+                    try (var fos = new FileOutputStream(path.toFile())) {
+                        try (var stream = jar.getInputStream(entry)) {
+                            stream.transferTo(fos);
+                        }
+                    }
+                }
+
+                if (mod) {
+                    if (library) {
+                        container.classLoader().addURL(path.toUri().toURL());
+
+                        container.children().add(new ModParser(path, loadedMods, MODS, container.classLoader()).load());
+                    } else {
+                        container.children().add(new ModParser(path, loadedMods, MODS).load());
+                    }
+                } else {
+                    if (!library)
+                        throw new RuntimeException("Jar-in-jar entry with library:false & mod:false; cannot load into void");
+
+                    container.classLoader().addURL(path.toUri().toURL());
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

@@ -253,67 +253,7 @@ class ModParser {
                 avoidMods.removeAll(toRemove);
             }
 
-            var children = new ArrayList<PreModContainer>();
-
-            avoidMods.add(container = new PreModContainer(mod, json, classLoader, null, children));
-
-            if (manifest.has("jars")) {
-                var jars = manifest.get("jars").getAsJsonArray();
-                var folder = pl.olafcio.avoid_platform.AvoidWrappedLoader.getGameDir().resolve(".cache/avoid_loader/embedded_jars");
-
-                try                   { Files.createDirectories(folder);                                                      }
-                catch (IOException e) { throw new RuntimeException("Failed to create Avoid embedded jar cache directory", e); }
-
-                for (var embeddedJAR : jars) {
-                    String jarPath;
-
-                    boolean library;
-                    boolean mod;
-
-                    if (embeddedJAR.isJsonObject()) {
-                        var obj = (JsonObject) embeddedJAR;
-
-                        jarPath = obj.get("path").getAsString();
-
-                        library = !obj.has("library") ? true : obj.get("library").getAsBoolean();
-                        mod     = !obj.has("mod")     ? true : obj.get(  "mod"  ).getAsBoolean();
-                    } else {
-                        jarPath = embeddedJAR.getAsString();
-
-                        library = true;
-                        mod     = true;
-                    }
-
-                    Path path;
-
-                    var entry = jar.getJarEntry(jarPath);
-
-                    try (var stream = jar.getInputStream(entry)) {
-                        path = folder.resolve(DigestUtils.sha1Hex(stream) + ".jar");
-                    }
-
-                    try (var fos = new FileOutputStream(path.toFile())) {
-                        try (var stream = jar.getInputStream(entry)) {
-                            stream.transferTo(fos);
-                        }
-                    }
-
-                    if (mod) {
-                        if (library) {
-                            classLoader.addURL(path.toUri().toURL());
-
-                            children.add(new ModParser(path, loadedMods, avoidMods, classLoader).load());
-                        } else {
-                            children.add(new ModParser(path, loadedMods, avoidMods).load());
-                        }
-                    } else {
-                        if (!library)
-                            throw new RuntimeException("Jar-in-jar entry with library:false & mod:false; cannot load into void");
-
-                        classLoader.addURL(path.toUri().toURL());
-                    }
-                }
-            }
+            avoidMods.add(container = new PreModContainer(mod, json, classLoader, null));
         } catch (IOException e) {
             throw new RuntimeException("Error while parsing JAR file '%s'".formatted(mod.toAbsolutePath()), e);
         }

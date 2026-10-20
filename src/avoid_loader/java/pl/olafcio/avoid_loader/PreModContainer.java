@@ -3,6 +3,7 @@ package pl.olafcio.avoid_loader;
 import com.google.gson.JsonObject;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 @Deprecated(forRemoval = true)
@@ -11,14 +12,22 @@ public final class PreModContainer {
     private final JsonObject manifest;
     private final ModClassLoader classLoader;
     private final PreModContainer parent;
-    private final List<PreModContainer> children;
+    private final ArrayList<PreModContainer> children;
 
-    PreModContainer(Path path, JsonObject manifest, ModClassLoader classLoader, PreModContainer parent, List<PreModContainer> children) {
+    PreModContainer(Path path, JsonObject manifest, ModClassLoader classLoader, PreModContainer parent, ArrayList<PreModContainer> children) {
         this.path = path;
         this.manifest = manifest;
         this.classLoader = classLoader;
         this.parent = parent;
         this.children = children;
+    }
+
+    PreModContainer(Path path, JsonObject manifest, ModClassLoader classLoader, PreModContainer parent) {
+        this.path = path;
+        this.manifest = manifest;
+        this.classLoader = classLoader;
+        this.parent = parent;
+        this.children = new ArrayList<>();
     }
 
     public Path path() {
