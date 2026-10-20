@@ -1,0 +1,4 @@
+{
+    user.permissions()
+    user.getPermissionLevel()
+}
