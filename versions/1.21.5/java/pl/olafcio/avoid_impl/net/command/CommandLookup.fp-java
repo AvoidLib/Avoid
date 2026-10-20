@@ -1,0 +1,4 @@
+{
+    user.level(),
+    user.serverLevel(),
+}
