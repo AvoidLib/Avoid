@@ -10,6 +10,7 @@ import pl.olafcio.avoid_loader.subloaders.ITransformer;
 import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 import pl.olafcio.avoid_platform.PMLImpl;
 
+import javax.script.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -17,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -138,8 +140,25 @@ public final class PreModLoader {
             var copy = (List<PreModContainer>) MODS.clone();
 
             for (var mod : copy) {
-                if (!completed.contains(mod) && extractJIJ(mod, loadedMods)) {
-                    finished = false;
+                if (!completed.contains(mod)) {
+                    if (extractJIJ(mod, loadedMods))
+                        finished = false;
+
+                    try {
+                        var hook = mod.classLoader().loadClass("avoid_hooks.PreList");
+                        if (!IHook.class.isAssignableFrom(hook)) {
+                            LOGGER.warn("Fatal error applying PreList hook from mod '{}'", mod.manifest().get("id").getAsString());
+                            throw new LoaderHookException("Failed to apply 'PreList' on '%s': doesn't implement IHook".formatted(mod.path().toAbsolutePath()));
+                        }
+
+                        try {
+                            ((IHook) hook.getDeclaredConstructor().newInstance()).run();
+                        } catch (Throwable e) {
+                            LOGGER.warn("Fatal error applying PreList hook from mod '{}'", mod.manifest().get("id").getAsString());
+                            throw new LoaderHookException("Failed to apply 'PreList' on '%s': %s".formatted(mod.path().toAbsolutePath(), e.getMessage()), e);
+                        }
+                    } catch (ClassNotFoundException ignored) {}
+
                     completed.add(mod);
                 }
             }
