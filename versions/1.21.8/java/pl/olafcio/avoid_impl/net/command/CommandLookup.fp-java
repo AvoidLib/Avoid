@@ -1,0 +1,4 @@
+{
+    user.getPlainTextName(),
+    user.getName().getString(),
+}
