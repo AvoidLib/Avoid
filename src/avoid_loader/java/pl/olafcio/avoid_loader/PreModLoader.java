@@ -85,7 +85,8 @@ public final class PreModLoader {
         var text = new StringBuilder();
 
         text.append(mod.manifest().get("name").getAsString() + " " +
-                    mod.manifest().get("version").getAsString());
+                    mod.manifest().get("version").getAsString() + " " +
+                    mod.additionalText().orElse(""));
 
         for (var child : mod.children()) {
             text.append("\n   ")
