@@ -2,6 +2,7 @@ package pl.olafcio.avoid_loader;
 
 import com.google.gson.JsonObject;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.olafcio.avoid_loader.subloaders.ILoader;
@@ -43,10 +44,9 @@ public final class PreModLoader {
             loadFrom(AvoidWrappedLoader.getGameDir().resolve("avoidaddons"), loadedMods);
 
             LOGGER.info("Loading {} addons:{}", MODS.size(), MODS.stream()
-                                                                 .map(mod -> mod.manifest().get("name").getAsString() + " " +
-                                                                                            mod.manifest().get("version").getAsString())
-                                                                 .map(text -> "\n - " + text)
-                  .collect(Collectors.joining("")));
+                                                                 .filter(mod -> mod.parent() == null)
+                                                                 .map(mod -> "\n   - " + PreModLoader.getModString(mod, 1))
+                                                                 .collect(Collectors.joining("")));
         } catch (IOException e) {
             throw new RuntimeException("Failed to enumerate Avoid mods", e);
         }
@@ -78,6 +78,23 @@ public final class PreModLoader {
                 }
             }
         }
+    }
+
+    @NotNull
+    private static String getModString(PreModContainer mod, int tab) {
+        var text = new StringBuilder();
+
+        text.append(mod.manifest().get("name").getAsString() + " " +
+                    mod.manifest().get("version").getAsString());
+
+        for (var child : mod.children()) {
+            text.append("\n   ")
+                .append(" ".repeat(tab))
+                .append("\\_ ")
+                .append(getModString(child, tab + 1));
+        }
+
+        return text.toString();
     }
 
     public static List<PreModContainer> getMods() {
