@@ -7,7 +7,7 @@
 - 26.1.1 & 26.1.2
 - 26.2
 - 26.3
-- 26.4-snapshot-4 *[TS]*
+- 26.4-snapshot-5 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
@@ -16,33 +16,15 @@
 - Paper
 
 **🪵 Changelog:**
-- Correct Backported requirement on MC 1.21.5
-- Allow line comments in 'avoid.mod.json'
-- [Client] Fov Event
-- [Drawer] Item rendering methods
-- More documentation
-- TYPO IN JAVADOC FIX!!
-- [Custom Payload API] `@PacketField`
-- [Player API] Allow providing extended payloads to #sendPacket(...)
-- [Custom Payload API] More controllers & field processors
-- [Custom Payload API] #{ onRead, onWrite }()
-- [Server] Team API, Offline Players
-- Services API
-- [Team API] Actual modification
-- [Player API] #setTablistDecorations([BaseComponent] header, [BaseComponent] footer)
-- Fix Player#sendPacket on local
-- [Player API] #setTablistDisplayName([BaseComponent] value)
-- Object-Oriented YAML Configuration API
-- Permission Handler API
-- Remove 'minecraft:' from non-namespaced permissions for permission handlers
-- Either#{ hasLeft, hasRight }()
-- Identification#toString([char] separator)
-- Identification#of([String] value, [char] separator)
-- Annotation-Based Config API
-- [Object Config API] Modification methods
-- Make PermissionHandler use PermissionHolder instead of Executor
-- [ModLoader] @AutoConfig annotation
-- [ModLoader] Sorting scanned classes in alphabetical order
+- Pull Drawer item rendering methods up
+- Don't append pack.mcmeta to symbolic link mods
+- Mark session access-widenings as transitive
+- Remove on-PR in gradle.yml
+- Artifact uploading
+- Some parameters for the gradlew build
+- Unweirdify EntityModel constructor
+- [Command API] Querying, 'usage' and 'examples' fields in `@AutoCommand`
+- Update to 26.4-snapshot-5
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
