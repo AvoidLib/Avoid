@@ -160,12 +160,17 @@ class ModParser {
         }
     }
 
+    protected final VersionSelector versionSelector
+              = new VersionSelector();
+
     @SuppressWarnings("SimplifiableConditionalExpression")
-    public void load() {
+    public PreModContainer load() {
+        PreModContainer container;
+
         try (var jar = new JarFile(mod.toFile())) {
             var manifestFile = jar.getEntry("avoid.mod.json");
             if (manifestFile == null)
-                return;
+                return null;
 
             var signaturesFile = jar.getEntry("avoid.signatures");
             if (signaturesFile != null) {
@@ -180,7 +185,7 @@ class ModParser {
                                                                            .collect(Collectors.joining("\n")), JsonObject.class);
             if (json == null) {
                 PreModLoader.LOGGER.error("Failed to read Avoid mod manifest: {}", mod.toAbsolutePath());
-                return;
+                return null;
             }
 
             var manifest = new AvoidManifest(json);
@@ -188,7 +193,7 @@ class ModParser {
             int schema = manifest.get("__schema").getAsInt();
             if (schema != 1) {
                 PreModLoader.LOGGER.error("Invalid Avoid mod manifest __schema: {} [{}]", schema, mod.toAbsolutePath());
-                return;
+                return null;
             }
 
             String id = manifest.get("id").getAsString();
@@ -206,29 +211,51 @@ class ModParser {
             if (env == ModEnvironment.CLIENT) {
                 if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
                     PreModLoader.LOGGER.warn("Skipping client-only mod: {} [{}]", name, id);
-                    return;
+                    return null;
                 }
             } else if (env == ModEnvironment.SERVER) {
                 if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.SERVER) {
                     PreModLoader.LOGGER.warn("Skipping server-only mod: {} [{}]", name, id);
-                    return;
+                    return null;
                 }
             }
+
+            ArrayList<PreModContainer> toRemove = null;
 
             for (var anotherMod : avoidMods) {
                 if (Objects.equals(anotherMod.manifest().get("id").getAsString(), id)) {
-                    PreModLoader.LOGGER.error("You have 2 addons using the same ID: '{}' and '{}' ({})\nPicking '{}'",
-                            mod.toAbsolutePath(),
-                            anotherMod.path().toAbsolutePath(),
-                            id,
-                            anotherMod.path().toAbsolutePath()
+                    var pick = versionSelector.pickVersion(
+                            anotherMod.manifest().get("version").getAsString(),
+                            version
                     );
 
-                    return;
+                    PreModLoader.LOGGER.error("You have 2 addons using the same ID: '{}' and '{}' ({})\nPicking {}",
+                            anotherMod.path().toAbsolutePath(),
+                            mod.toAbsolutePath(),
+                            pick == VersionSelector.VersionSide.B ? id : anotherMod.manifest().get("id").getAsString(),
+                            pick.name()
+                    );
+
+                    if (pick == VersionSelector.VersionSide.B) {
+                        toRemove = new ArrayList<>();
+
+                        toRemove.add(anotherMod);
+                        toRemove.addAll(anotherMod.children());
+
+                        break;
+                    } else {
+                        return null;
+                    }
                 }
             }
 
-            avoidMods.add(new PreModContainer(mod, json, classLoader, null));
+            if (toRemove != null) {
+                avoidMods.removeAll(toRemove);
+            }
+
+            var children = new ArrayList<PreModContainer>();
+
+            avoidMods.add(container = new PreModContainer(mod, json, classLoader, null, children));
 
             if (manifest.has("jars")) {
                 var jars = manifest.get("jars").getAsJsonArray();
@@ -275,9 +302,9 @@ class ModParser {
                         if (library) {
                             classLoader.addURL(path.toUri().toURL());
 
-                            new ModParser(path, loadedMods, avoidMods, classLoader).load();
+                            children.add(new ModParser(path, loadedMods, avoidMods, classLoader).load());
                         } else {
-                            new ModParser(path, loadedMods, avoidMods).load();
+                            children.add(new ModParser(path, loadedMods, avoidMods).load());
                         }
                     } else {
                         if (!library)
@@ -293,6 +320,8 @@ class ModParser {
 
         if (!Files.isSymbolicLink(mod))
             new MCMetaAppender();
+
+        return container;
     }
 
     private void verifySignatures(JarFile jar, ZipEntry signaturesFile)
