@@ -1,0 +1,6 @@
+import pl.olafcio.avoid_impl.mixininterface.IPermissionSet;
+
+{
+    __cast(net.minecraft.world.entity.player.Player.class).permissions().avoid$hasPermission
+    ((IPermissionSet) __cast(net.minecraft.world.entity.player.Player.class).permissions()).avoid$hasPermission
+}
