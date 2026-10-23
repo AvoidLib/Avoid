@@ -19,3 +19,63 @@ import org.bukkit.Bukkit;
     .avoid$setTablistOrder(null);
     // .avoid$setTablistOrder(null);
 }
+
+{
+    !text.contains(":")
+    //!text.contains(":")
+}
+
+{
+    ? new UnassignedAtom(id)
+    //? new UnassignedAtom(id)
+}
+
+{
+    var id = IdentificationNative.convert(text);
+
+    if (!text.contains(":")) {
+        return Bukkit.getPlayer(__cast(ServerPlayer.class).getUUID()).hasPermission(text);
+    }
+
+    var id = IdentificationNative.convert(text);
+}
+
+{
+    public boolean hasPermission(String text, PermissionLevel.Enum level) {
+
+    //== replacement ==//
+
+    private boolean __hasperm(Permission.Atom atom, Permission.HasCommandLevel hcl) {
+        return __cast(ServerPlayer.class).permissions().hasPermission(atom) ||
+               __cast(ServerPlayer.class).permissions().hasPermission(hcl);
+    }
+
+    public boolean hasPermission(String text, PermissionLevel.Enum level) {
+        if (!text.contains(":")) {
+            var perm = Bukkit.getPlayer(__cast(ServerPlayer.class).getUUID()).permissionValue(text);
+            if (perm != TriState.NOT_SET)
+                return perm.toBoolean();
+        }
+}
+
+{
+    return __cast(net.minecraft.world.entity.player.Player.class).permissions().avoid$hasPermission(
+    return __hasperm(
+}
+
+{
+    : new Permission.Atom(id)
+    new Permission.Atom(id)
+}
+
+{
+    @Override
+    //@Override
+}
+
+import net.kyori.adventure.util.TriState;
+
+{
+    import pl.olafcio.avoid_impl.mixinclass.UnassignedAtom;
+    //import pl.olafcio.avoid_impl.mixinclass.UnassignedAtom;
+}

@@ -1,5 +1,8 @@
 package pl.olafcio.avoid_impl.net.permission;
 
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.permissions.LevelBasedPermissionSet;
+import net.minecraft.server.players.NameAndId;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -11,11 +14,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.Util;
 import pl.olafcio.avoid.api.Avoid;
+import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.permission.PermissionHandler;
 import pl.olafcio.avoid.net.permission.PermissionHolder;
 import pl.olafcio.avoid.net.permission.PermissionStatus;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid_impl.A4Paper;
+import pl.olafcio.avoid_impl.AvoidInternal;
 
 import java.util.*;
 
@@ -145,6 +150,31 @@ public final class PermissionHandlers {
 
                         var holder = user instanceof Player player               ? PlayerNative.convertFrom(Util.convert(player)) :
                                      user instanceof OfflinePlayer offlinePlayer ? new pl.olafcio.avoid.net.player.OfflinePlayer() {
+                                         @Override
+                                         public boolean hasPermission(String text) {
+                                             var vote = castVote(this, text);
+                                             if (vote != null)
+                                                 return vote;
+
+                                             return AvoidInternal.getServer().getProfilePermissions(new NameAndId(uuid(), getNick())).hasPermission(new net.minecraft.server.permissions.Permission.Atom(Identifier.withDefaultNamespace(text)));
+                                         }
+
+                                         @Override
+                                         public boolean hasPermission(String text, PermissionLevel.Enum level) {
+                                             var vote = castVote(this, text);
+                                             if (vote != null)
+                                                 return vote;
+
+                                             var vote2 = castVote(this, level);
+                                             if (vote2 != null)
+                                                 return vote2;
+
+                                             var set = AvoidInternal.getServer().getProfilePermissions(new NameAndId(uuid(), getNick()));
+
+                                             return set.hasPermission(new net.minecraft.server.permissions.Permission.Atom(Identifier.withDefaultNamespace(text))) ||
+                                                    set.hasPermission(new net.minecraft.server.permissions.Permission.HasCommandLevel(level.__get()));
+                                         }
+
                                          @Override
                                          public String getNick() {
                                              return offlinePlayer.getPlayerProfile().getName();
@@ -302,11 +332,29 @@ public final class PermissionHandlers {
         });
     }
 
-    private static Boolean castVote(PermissionHolder holder, String permission) {
+    public static Boolean castVote(PermissionHolder holder, String permission) {
         var votes = new ArrayList<PermissionStatus>();
 
         for (var handler : PERMISSION_HANDLERS) {
             var vote = handler.hasPermission(holder, permission);
+
+            if (vote.has() != null)
+                votes.add(vote);
+        }
+
+        votes.sort(Comparator.comparingInt(PermissionStatus::priority));
+
+        if (!votes.isEmpty())
+            return votes.getFirst().has();
+
+        return null;
+    }
+
+    public static Boolean castVote(PermissionHolder holder, PermissionLevel.Enum permissionLevel) {
+        var votes = new ArrayList<PermissionStatus>();
+
+        for (var handler : PERMISSION_HANDLERS) {
+            var vote = handler.hasPermissionLevel(holder, permissionLevel);
 
             if (vote.has() != null)
                 votes.add(vote);
