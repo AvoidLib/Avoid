@@ -1,0 +1,4 @@
+{
+    @WrapOperation(at = @At(value = "NEW", target = "()Lnet/minecraft/world/food/FoodData;"), method = "<init>")
+    @WrapOperation(at = @At(value = "NEW", target = "()Lnet/minecraft/world/food/FoodData;", unsafe = true), method = "<init>")
+}
