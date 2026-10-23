@@ -61,6 +61,11 @@ public record PlatformMod(
         NEOFORGE,
 
         /**
+         * A forge mod, e.g. <a href="https://modrinth.com/mod/nei">Not Enough Items</a>.
+         */
+        FORGE,
+
+        /**
          * A paper plugin, e.g. <a href="https://modrinth.com/plugin/worldguard">WorldGuard</a>.
          */
         PAPER,

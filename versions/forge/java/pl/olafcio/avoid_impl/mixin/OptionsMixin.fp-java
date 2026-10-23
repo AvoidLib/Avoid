@@ -1,0 +1,4 @@
+{
+    @Inject(at = @At("TAIL"), method = "<init>")
+    @Inject(at = @At(value = "TAIL", unsafe = true), method = "<init>")
+}

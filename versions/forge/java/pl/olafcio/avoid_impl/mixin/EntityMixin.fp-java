@@ -1,0 +1,4 @@
+{
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"), method = "updateInWaterStateAndDoWaterCurrentPushing")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;updateFluidHeightAndDoFluidPushing(Lnet/minecraft/tags/TagKey;D)Z"), method = "updateInWaterStateAndDoWaterCurrentPushing", require = 0)
+}

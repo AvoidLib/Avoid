@@ -7,6 +7,8 @@ List<String> getLoaders() {
         return ["fabric"];
     else if (ext.neoforge)
         return ["neoforge"];
+    else if (ext.forge)
+        return ["forge"];
     else if (ext.sponge)
         return ["sponge"];
     else if (ext.paper)

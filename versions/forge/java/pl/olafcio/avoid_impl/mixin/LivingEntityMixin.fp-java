@@ -1,0 +1,9 @@
+{
+    , method = "baseTick")
+    , method = "baseTick", require = 0)
+}
+
+{
+    @At("CTOR_HEAD")
+    @At(value = "CTOR_HEAD", unsafe = true)
+}
