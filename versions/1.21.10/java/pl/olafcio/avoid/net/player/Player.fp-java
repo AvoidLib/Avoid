@@ -11,3 +11,45 @@
     );  //at:raycast
     */
 }
+
+import pl.olafcio.avoid_impl.internal.PermAPI;
+
+{
+    import net.minecraft.server.permissions.Permission;
+    //import net.minecraft.server.permissions.Permission;
+}
+
+{
+    import pl.olafcio.avoid_impl.mixinclass.UnassignedAtom;
+    //import pl.olafcio.avoid_impl.mixinclass.UnassignedAtom;
+}
+
+{
+    return __cast(net.minecraft.world.entity.player.Player.class).permissions().
+    return PermAPI.check(__cast(net.minecraft.world.entity.player.Player.class),//
+}
+
+{
+    !text.contains(":")
+    //
+}
+
+{
+    ? new UnassignedAtom(id)
+    text
+}
+
+{
+    : new Permission.Atom(id)
+    //: new Permission.Atom(id)
+}
+
+{
+    new Permission.HasCommandLevel(level.__get())
+    , level.__get()
+}
+
+{
+    var id = IdentificationNative.convert(text);
+    //var id = IdentificationNative.convert(text);
+}

@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pl.olafcio.avoid.net.permission.PermissionStatus;
+import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
@@ -49,7 +50,7 @@ public class MinecraftServerMixin {
 
     @Inject(at = @At("RETURN"), method = "getProfilePermissions", cancellable = true)
     public void getProfilePermissions(NameAndId nameAndId, CallbackInfoReturnable<Integer> cir) {
-        var player = PlayerNative.convertFrom(((INameAndId) (Object) nameAndId).avoid$player());
+        var player = (Player) ((INameAndId) (Object) nameAndId).avoid$owner();
         var handlers = PermissionHandlers.PERMISSION_HANDLERS;
 
         for (int i = 0; i < 4; i++) {

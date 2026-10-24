@@ -2,22 +2,26 @@ package pl.olafcio.avoid_impl.net.permission;
 
 import me.lucko.fabric.api.permissions.v0.OfflinePermissionCheckEvent;
 import me.lucko.fabric.api.permissions.v0.PermissionCheckEvent;
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import pl.olafcio.avoid.net.command.annotation.PermissionLevel;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.permission.PermissionHandler;
 import pl.olafcio.avoid.net.permission.PermissionHolder;
 import pl.olafcio.avoid.net.player.OfflinePlayer;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid.net.server.Server;
+import pl.olafcio.avoid_impl.AvoidInternal;
 import pl.olafcio.avoid_impl.mixinclass.MyUnknownExecutor;
 import net.fabricmc.fabric.api.util.TriState;
 
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public final class PermissionHandlers {
     @ApiStatus.Internal
@@ -33,6 +37,24 @@ public final class PermissionHandlers {
             @Override
             public @NotNull CompletableFuture<TriState> onPermissionCheck(@NotNull UUID uuid, @NotNull String node) {
                 return CompletableFuture.supplyAsync(() -> convert(permissionHandler.hasPermission(new OfflinePlayer() {
+                    @Override
+                    public boolean hasPermission(String text) {
+                        try {
+                            return Permissions.check(uuid, text).get();
+                        } catch (InterruptedException | ExecutionException e) {
+                            throw new RuntimeException("[OfflinePlayer#hasPermission] Failed to call Luck's permission api", e);
+                        }
+                    }
+
+                    @Override
+                    public boolean hasPermission(String text, PermissionLevel.Enum level) {
+                        try {
+                            return Permissions.check(uuid, text).get();
+                        } catch (InterruptedException | ExecutionException e) {
+                            throw new RuntimeException("[OfflinePlayer#hasPermission] Failed to call Luck's permission api", e);
+                        }
+                    }
+
                     @Override
                     public String getNick() {
                         return Server.getServices().playerQuery().resolve(uuid);
