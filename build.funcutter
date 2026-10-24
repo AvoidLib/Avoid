@@ -22,6 +22,7 @@ $ forge
 forge=1
 publish=1
 dev_mappings=OBFUSCATED
+alpha=1
 
 $ neoforge
 ! fml
