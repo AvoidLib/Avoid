@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pl.olafcio.avoid.net.permission.PermissionStatus;
+import pl.olafcio.avoid.net.player.Player;
 import pl.olafcio.avoid.net.player.PlayerNative;
 import pl.olafcio.avoid_impl.mixininterface.INameAndId;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
@@ -29,7 +30,7 @@ public class IntegratedServerMixin {
     }, method = "getProfilePermissions", cancellable = true)
     public void getProfilePermissions(NameAndId nameAndId, CallbackInfoReturnable<LevelBasedPermissionSet> cir) {
         var delegate = cir.getReturnValue();
-        var player = PlayerNative.convertFrom(((INameAndId) (Object) nameAndId).avoid$player());
+        var player = (Player) ((INameAndId) (Object) nameAndId).avoid$owner();
 
         cir.setReturnValue(new LevelBasedPermissionSet() {
             @Override
