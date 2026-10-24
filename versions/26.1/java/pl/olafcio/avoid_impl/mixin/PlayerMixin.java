@@ -15,6 +15,7 @@ import pl.olafcio.avoid_impl.mixininterface.IFoodData;
 import pl.olafcio.avoid_impl.mixininterface.INameAndId;
 import pl.olafcio.avoid_impl.net.fluid.FluidsNative;
 import pl.olafcio.avoid.net.fluid.properties._swimmable;
+import pl.olafcio.avoid.net.player.PlayerNative;
 
 @Mixin(Player.class)
 public class PlayerMixin {
@@ -44,6 +45,6 @@ public class PlayerMixin {
 
     @Inject(at = @At("RETURN"), method = "nameAndId")
     public void nameAndId(CallbackInfoReturnable<NameAndId> cir) {
-        ((INameAndId) (Object) cir.getReturnValue()).avoid$player((Player) (Object) this);
+        ((INameAndId) (Object) cir.getReturnValue()).avoid$owner(PlayerNative.convertFrom((Player) (Object) this));
     }
 }
