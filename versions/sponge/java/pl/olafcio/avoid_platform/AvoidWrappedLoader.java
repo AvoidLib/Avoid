@@ -23,6 +23,7 @@ public final class AvoidWrappedLoader {
     private AvoidWrappedLoader() {}
 
     public static boolean isFabric() { return false; }
+    public static boolean isForge() { return false; }
     public static boolean isNeoForge() { return false; }
     public static boolean isSponge() { return true; }
     public static boolean isPaper() { return false; }

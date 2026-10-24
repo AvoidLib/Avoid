@@ -27,6 +27,9 @@ public final class AvoidWrappedLoader {
     /** Returns whether the wrapped loader is Fabric. (This changes during compile time for Avoid builds for other loaders) */
     public static boolean isFabric() { return true; }
 
+    /** Returns whether the wrapped loader is Forge. (This changes during compile time for Avoid builds for other loaders) */
+    public static boolean isForge() { return false; }
+
     /** Returns whether the wrapped loader is NeoForge. (This changes during compile time for Avoid builds for other loaders) */
     public static boolean isNeoForge() { return false; }
 
