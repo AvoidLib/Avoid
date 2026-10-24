@@ -36,11 +36,11 @@ import com.mojang.authlib.GameProfile;
 }
 
 {
-    var uuid = optional.orElseThrow().id();
-    var uuid = optional.orElseThrow().getId();
+    nameAndID.id();
+    nameAndID.getId();
 }
 
 {
-    var nick = optional.orElseThrow().name();
-    var nick = optional.orElseThrow().getName();
+    nameAndID.name();
+    nameAndID.getName();
 }
