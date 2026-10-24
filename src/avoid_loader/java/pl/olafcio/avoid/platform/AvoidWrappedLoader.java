@@ -22,6 +22,9 @@ public final class AvoidWrappedLoader {
     /** Returns whether the wrapped loader is NeoForge. (This changes during compile time for Avoid builds for other loaders) */
     public static boolean isNeoForge() { return pl.olafcio.avoid_platform.AvoidWrappedLoader.isNeoForge(); }
 
+    /** Returns whether the wrapped loader is Forge. (This changes during compile time for Avoid builds for other loaders) */
+    public static boolean isForge() { return pl.olafcio.avoid_platform.AvoidWrappedLoader.isForge(); }
+
     /** Returns whether the wrapped loader is Sponge. (This changes during compile time for Avoid builds for other loaders) */
     public static boolean isSponge() { return pl.olafcio.avoid_platform.AvoidWrappedLoader.isSponge(); }
 
