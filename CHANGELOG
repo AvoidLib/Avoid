@@ -11,11 +11,25 @@
 
 **🔌 Supported ModLoaders:**
 - Fabric
+- Forge
 - NeoForge
 - Sponge
 - Paper
 
 **🪵 Changelog:**
+- PermissionHolder#hasPermission(...) methods
+- Cache entity conversions
+- Intelligent newer JAR picking in same-ID scenarios
+- Delay JIJ loading
+- Actually make 'parent' in PreModContainer
+- Improved same-mod-ID error message
+- Improved mod listing
+- PreModContainer#additionalText
+- [PreModLoader] 'PreList' hook
+- Forge compatibility
+- AvoidWrappedLoader#isForge()
+
+**🪵 Changelog (1.32-experimental-1):**
 - Pull Drawer item rendering methods up
 - Don't append pack.mcmeta to symbolic link mods
 - Mark session access-widenings as transitive
