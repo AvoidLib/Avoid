@@ -7,15 +7,32 @@
 - 26.1.1 & 26.1.2
 - 26.2
 - 26.3
-- 26.4-snapshot-5 *[TS]*
+- 26.4-snapshot-6 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
+- Forge
 - NeoForge
 - Sponge
 - Paper
 
 **🪵 Changelog:**
+- PermissionHolder#hasPermission(...) methods
+- Cache entity conversions
+- Intelligent newer JAR picking in same-ID scenarios
+- Delay JIJ loading
+- Actually make 'parent' in PreModContainer
+- Improved same-mod-ID error message
+- Improved mod listing
+- PreModContainer#additionalText
+- Forge compatibility
+- AvoidWrappedLoader#isForge()
+- Remove platform-loaded mod omitting behaviour
+- Rework Loader
+- Update to 26.4-snapshot-6
+- Fix incorrectly-sided entity velocity event firing
+
+**🪵 Changelog (1.32-experimental-1):**
 - Pull Drawer item rendering methods up
 - Don't append pack.mcmeta to symbolic link mods
 - Mark session access-widenings as transitive
