@@ -52,6 +52,19 @@ import static net.minecraft.world.level.material.FlowingFluid.FALLING;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements ICamerable, IEntity {
+    @Unique
+    private pl.olafcio.avoid.net.entity.Entity wrappedEntity;
+
+    @Override
+    public pl.olafcio.avoid.net.entity.Entity avoidlib$wrappedEntity() {
+        return wrappedEntity;
+    }
+
+    @Override
+    public void avoidlib$wrappedEntity(pl.olafcio.avoid.net.entity.Entity value) {
+        wrappedEntity = value;
+    }
+
     @Shadow
     public abstract Level level();
 
