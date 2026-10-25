@@ -37,13 +37,13 @@ public final class PreModLoader {
      */
     public static void preload() {
         try {
-            var loadedMods = AvoidWrappedLoader.getModsPaths();
+            var loadedMods = Set.<Path>of();
 
-            loadFrom(AvoidWrappedLoader.getGameDir().resolve("mods"), loadedMods);
-            loadFrom(AvoidWrappedLoader.getGameDir().resolve("plugins"), loadedMods);
-            loadFrom(AvoidWrappedLoader.getGameDir().resolve("avoidmods"), loadedMods);
-            loadFrom(AvoidWrappedLoader.getGameDir().resolve("avoidplugins"), loadedMods);
-            loadFrom(AvoidWrappedLoader.getGameDir().resolve("avoidaddons"), loadedMods);
+            loadFrom(Path.of("mods"), loadedMods);
+            loadFrom(Path.of("plugins"), loadedMods);
+            loadFrom(Path.of("avoidmods"), loadedMods);
+            loadFrom(Path.of("avoidplugins"), loadedMods);
+            loadFrom(Path.of("avoidaddons"), loadedMods);
 
             LOGGER.info("Loading {} addons:{}", MODS.size(), MODS.stream()
                                                                  .filter(mod -> mod.parent() == null)
@@ -171,7 +171,7 @@ public final class PreModLoader {
     private static boolean extractJIJ(PreModContainer container, Set<Path> loadedMods) throws IOException {
         if (container.manifest().has("jars")) {
             var jars = container.manifest().get("jars").getAsJsonArray();
-            var folder = AvoidWrappedLoader.getGameDir().resolve(".cache/avoid_loader/embedded_jars");
+            var folder = Path.of(".cache/avoid_loader/embedded_jars");
 
             try                   { Files.createDirectories(folder);                                                      }
             catch (IOException e) { throw new RuntimeException("Failed to create Avoid embedded jar cache directory", e); }

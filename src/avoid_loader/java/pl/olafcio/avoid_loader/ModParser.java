@@ -55,7 +55,7 @@ class ModParser {
         }
     }
 
-    private final Path tmp = pl.olafcio.avoid_platform.AvoidWrappedLoader.getGameDir().resolve(".cache/avoid_loader/.tmp");
+    private final Path tmp = Path.of(".cache/avoid_loader/.tmp");
     private static String packFormat;
 
     static {
