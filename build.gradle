@@ -322,7 +322,8 @@ sourceSets {
         if (fabric)
             java { srcDir 'src/avoid_loader/fabric' }
 
-        resources { srcDir 'src/main/loader_resources' }
+        java      { srcDir 'src/avoid_loader/deprecated' }
+        resources { srcDir 'src/main/loader_resources'   }
     }
 
     main {

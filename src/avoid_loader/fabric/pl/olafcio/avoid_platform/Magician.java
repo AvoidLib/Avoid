@@ -10,8 +10,9 @@ import org.jetbrains.annotations.ApiStatus;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.Mixins;
-import pl.olafcio.avoid_loader.PreModContainer;
+import pl.olafcio.avoid_loader.AvoidModContainer;
 import pl.olafcio.avoid_loader.PreModLoader;
+import pl.olafcio.avoid_loader.interfaces.IModMetadata;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,7 +30,7 @@ import java.util.zip.ZipOutputStream;
 public class Magician implements PreLaunchEntrypoint {
     record MixinConfig(String runtimeName, String _package) {}
 
-    private void loadMixinConfig(HashMap<String, MixinConfig> configs, String config, ZipFile zip, PreModContainer mod) {
+    private void loadMixinConfig(HashMap<String, MixinConfig> configs, String config, ZipFile zip, AvoidModContainer mod) {
         JsonObject json;
 
         try (var stream = zip.getInputStream(zip.getEntry(config))) {
@@ -53,24 +54,21 @@ public class Magician implements PreLaunchEntrypoint {
         try                   { Files.createDirectories(cache);                                                          }
         catch (IOException e) { throw new RuntimeException("Failed to create Avoid transformed mod cache directory", e); }
 
-        PreModLoader.getMods().forEach(mod -> {
-            if (mod.manifest().has("mixins")) {
-                try (var zip = new ZipFile(mod.path().toFile())) {
-                    var mixins = mod.manifest().get("mixins");
+        PreModLoader.getMods().forEach(imod -> {
+            var meta = imod.metadata();
+            if (meta != null && meta.mixins().length > 0 && imod instanceof AvoidModContainer mod) {
+                try (var zip = new ZipFile(mod.getModFile().getPath().toFile())) {
+                    var mixins = meta.mixins();
                     var configs = new HashMap<String, MixinConfig>();
 
-                    if (mixins.isJsonArray()) {
-                        for (var el : (JsonArray) mixins) {
-                            loadMixinConfig(configs, el.getAsString(), zip, mod);
-                        }
-                    } else {
-                        loadMixinConfig(configs, mixins.getAsString(), zip, mod);
+                    for (var el : mixins) {
+                        loadMixinConfig(configs, el, zip, mod);
                     }
 
                     var packages = configs.values().stream().map(MixinConfig::_package).map(pkg -> pkg.replace(".", "/") + "/").toList();
                     mod.packages = packages;
 
-                    var out = cache.resolve(DigestUtils.sha1Hex(new Gson().toJson(mod.manifest())) + ".jar").toFile();
+                    var out = cache.resolve(mod.getModFile().hash() + ".jar").toFile();
                     if (!out.exists()) {
                         var bos = new FileOutputStream(out);
                         var zos = new ZipOutputStream(bos);
@@ -117,7 +115,7 @@ public class Magician implements PreLaunchEntrypoint {
                     for (var config : configs.values())
                         Mixins.addConfiguration(config.runtimeName);
                 } catch (IOException e) {
-                    throw new RuntimeException("Failed to process Avoid mod: '%s'".formatted(mod.manifest().get("id").getAsString()), e);
+                    throw new RuntimeException("Failed to process Avoid mod: '%s'".formatted(meta.id()), e);
                 }
             }
         });

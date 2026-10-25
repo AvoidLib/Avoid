@@ -28,7 +28,7 @@ import pl.olafcio.avoid_impl.mods.loader.mod_method.LXKeyHandler;
 import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.Blocks;
 import pl.olafcio.avoid.net.id.Identification;
-import pl.olafcio.avoid_loader.PreModContainer;
+import pl.olafcio.avoid_loader.AvoidModContainer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,7 +42,6 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarFile;
 
 @ApiStatus.Internal
@@ -56,9 +55,9 @@ public final class ModLoad
 
     private final Path mod;
     private final Set<String> loadedMods;
-    private final PreModContainer container;
+    private final AvoidModContainer container;
 
-    public ModLoad(PreModContainer container, Set<String> loadedMods) {
+    public ModLoad(AvoidModContainer container, Set<String> loadedMods) {
         this.mod = container.path();
         this.loadedMods = loadedMods;
         this.container = container;

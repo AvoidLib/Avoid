@@ -1,94 +1,158 @@
 package pl.olafcio.avoid_loader;
 
-import com.google.gson.JsonObject;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.olafcio.avoid_loader.subloaders.ILoader;
+import pl.olafcio.avoid_loader.interfaces.*;
+import pl.olafcio.avoid_loader.interfaces.round.IListRoundable;
+import pl.olafcio.avoid_loader.interfaces.round.IRoundable;
+import pl.olafcio.avoid_loader.interfaces.services.IModConflicter;
+import pl.olafcio.avoid_loader.interfaces.services.IModLoader;
+import pl.olafcio.avoid_loader.interfaces.services.IModProcessor;
+import pl.olafcio.avoid_loader.interfaces.services.IModScanner;
 import pl.olafcio.avoid_loader.subloaders.ITransformer;
-import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 import pl.olafcio.avoid_platform.PMLImpl;
 
-import javax.script.*;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public final class PreModLoader {
-    private PreModLoader() {}
+    private final HashSet<IModFile> MOD_FILES;
+    private static PreModLoader INSTANCE;
+
+    private PreModLoader(HashSet<IModFile> modFiles) {
+        MOD_FILES = modFiles;
+        INSTANCE = this;
+    }
+
+    public static PreModLoader getInstance() {
+        return INSTANCE;
+    }
 
     static final Logger LOGGER
                = LoggerFactory.getLogger("AvoidLoader");
 
-    private static final ArrayList<PreModContainer> MODS
+    private static final ArrayList<IMod> MODS
                    = new ArrayList<>();
 
     /**
      * Collects mods to load.
      */
+    @SuppressWarnings("unchecked")
     public static void preload() {
+        PreModLoader preModLoader;
+
         try {
-            var loadedMods = Set.<Path>of();
+            var modFiles = new ModFileCollector().collectModFiles();
+            preModLoader = new PreModLoader(modFiles);
 
-            loadFrom(Path.of("mods"), loadedMods);
-            loadFrom(Path.of("plugins"), loadedMods);
-            loadFrom(Path.of("avoidmods"), loadedMods);
-            loadFrom(Path.of("avoidplugins"), loadedMods);
-            loadFrom(Path.of("avoidaddons"), loadedMods);
+            // Loading -- calling IModLoader service
+            var loaders = preModLoader.loadService(IModLoader.class);
 
+            IRoundable.runEach(loaders, IModLoader.Stage.LOAD, IModLoader::load);
+            IListRoundable.runEach(
+                    loaders, IModLoader.Stage.PROCESS, modFiles,
+                    (proc, modFile) -> {
+                        MODS.addAll(proc.process(modFile));
+                    },
+                    els -> (HashSet<IModFile>) els.clone()
+            );
+
+            // Listing -- dumping the mod list
             LOGGER.info("Loading {} addons:{}", MODS.size(), MODS.stream()
-                                                                 .filter(mod -> mod.parent() == null)
+                                                                 .filter(mod -> mod.parent() == null && mod.visible())
                                                                  .map(mod -> "\n   - " + PreModLoader.getModString(mod, 1))
                                                                  .collect(Collectors.joining("")));
-        } catch (IOException e) {
+        } catch (Throwable e) {
             throw new RuntimeException("Failed to enumerate Avoid mods", e);
         }
 
-        for (var mod : MODS) {
-            if (mod.manifest().has("loaders")) {
-                var subloaders = mod.manifest().get("loaders").getAsJsonArray();
+        // Scanning -- passing in mod containers along with JarFile-s open of them after they're loaded
+        var scanners = preModLoader.loadService(IModScanner.class);
+        var modjars = MODS.stream().map(mod -> {
+            try {
+                return new ScanEntry(mod, new JarFile(mod.getModFile().getPath().toFile()));
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to create Avoid mods' JarFile instances for providing to IModScanner-s", e);
+            }
+        }).toList();
 
+        IRoundable.runEach(scanners, IModScanner.Stage.LOAD, IModScanner::load);
+        IRoundable.runEach(scanners, IModScanner.Stage.PROCESS, scanner -> {
+            for (var entry : modjars) {
                 try {
-                    for (var cn : subloaders) {
-                        var pluginClass = mod.classLoader().loadClass(cn.getAsString());
-                        var plugin = (ILoader) pluginClass.getDeclaredConstructor().newInstance();
-
-                        plugin.load();
-
-                        for (var mod2 : MODS)
-                            plugin.processAvoidMod(mod2);
-                    }
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException("Failed to load subloader of Avoid mod: '%s'  /ClassNotFoundException".formatted(mod.path().toAbsolutePath()), e);
-                } catch (InvocationTargetException e) {
-                    throw new RuntimeException("Failed to load subloader of Avoid mod: '%s'  /InvocationTargetException".formatted(mod.path().toAbsolutePath()), e);
-                } catch (InstantiationException e) {
-                    throw new RuntimeException("Failed to load subloader of Avoid mod: '%s'  /InstantiationException".formatted(mod.path().toAbsolutePath()), e);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException("Failed to load subloader of Avoid mod: '%s'  /IllegalAccessException\n  > Is your subloader's constructor and class public?".formatted(mod.path().toAbsolutePath()), e);
-                } catch (NoSuchMethodException e) {
-                    throw new RuntimeException("Failed to load subloader of Avoid mod: '%s'  /NoSuchMethodException\n  > Does your subloader have a default constructor?".formatted(mod.path().toAbsolutePath()), e);
+                    scanner.process(entry.mod, entry.jar);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to scan Avoid mod with scanner: '%s' (%s)".formatted(scanner, scanner.getClass().getName()), e);
                 }
             }
+        });
+
+        for (var entry : modjars) {
+            try {
+                entry.jar.close();
+            } catch (IOException e) {
+                LOGGER.warn("Failed to close Avoid mod's JAR: '{}'", entry.mod.getModFile().getPath().toAbsolutePath());
+            }
         }
+
+        // Processing -- passing in mod containers after they're scanned
+        var processors = preModLoader.loadService(IModProcessor.class);
+
+        IRoundable.runEach(processors, IModProcessor.Stage.LOAD, IModProcessor::load);
+        IRoundable.runEach(processors, IModProcessor.Stage.PROCESS, proc -> {
+            for (var mod : MODS)
+                proc.process(mod);
+        });
+
+        // Conflicting -- comparing each mod to each other to check if they're causing conflicts with each other
+        var conflicters = preModLoader.loadService(IModConflicter.class);
+
+        IRoundable.runEach(conflicters, IModConflicter.Stage.LOAD, IModConflicter::load);
+        IRoundable.runEach(conflicters, IModConflicter.Stage.PROCESS, conflicter -> {
+            master:
+            while (true) {
+                var clone = (List<IMod>) MODS.clone();
+
+                for (var modA : clone) {
+                    if (modA.metadata() == null)
+                        continue;
+
+                    for (var modB : clone) {
+                        if (modA == modB || modB.metadata() == null)
+                            continue;
+
+                        var conflict = conflicter.check(modA, modB);
+                        if (conflict.isEmpty())
+                            continue;
+
+                        if (conflict.get() == VersionSelector.VersionSide.A) {
+                            MODS.remove(modA);
+                            MODS.removeAll(modA.children());
+                        } else {
+                            MODS.remove(modB);
+                            MODS.removeAll(modB.children());
+                        }
+
+                        continue master;
+                    }
+                }
+
+                break;
+            }
+        });
     }
 
+    private record ScanEntry(IMod mod, JarFile jar) {}
+
     @NotNull
-    private static String getModString(PreModContainer mod, int tab) {
+    private static String getModString(IMod mod, int tab) {
         var text = new StringBuilder();
 
-        text.append(mod.manifest().get("name").getAsString() + " " +
-                    mod.manifest().get("version").getAsString() + " " +
-                    mod.additionalText().orElse(""));
+        text.append(mod.toListing());
 
         for (var child : mod.children()) {
             text.append("\n   ")
@@ -100,7 +164,7 @@ public final class PreModLoader {
         return text.toString();
     }
 
-    public static List<PreModContainer> getMods() {
+    public static List<IMod> getMods() {
         return MODS;
     }
 
@@ -119,118 +183,18 @@ public final class PreModLoader {
         PMLImpl.addTransformer(transformer);
     }
 
-    private static void loadFrom(Path modsDir, Set<Path> loadedMods)
-                   throws IOException
-    {
-        if (!Files.isDirectory(modsDir))
-            return;
+    public <T> Collection<T> loadService(Class<T> service) {
+        var list = new HashMap<Class<?>, T>();
 
-        try (var mods = Files.list(modsDir)) {
-            mods.forEach(mod -> {
-                if ((mod.toString().endsWith(".jar") || mod.toString().endsWith(".avoid.zip")) && !loadedMods.contains(mod)) {
-                    new ModParser(mod, loadedMods, MODS, null).load();
-                }
-            });
+        for (var mod : MOD_FILES) {
+            ServiceLoader.load(service, mod.getClassLoader())
+                         .forEach(instance -> {
+                             var klass = instance.getClass();
+                             if (!list.containsKey(klass))
+                                 list.put(klass, instance);
+                         });
         }
 
-        var completed = new ArrayList<PreModContainer>();
-
-        while (true) {
-            var finished = true;
-            var copy = (List<PreModContainer>) MODS.clone();
-
-            for (var mod : copy) {
-                if (!completed.contains(mod)) {
-                    if (extractJIJ(mod, loadedMods))
-                        finished = false;
-
-                    try {
-                        var hook = mod.classLoader().loadClass("avoid_hooks.PreList");
-                        if (!IHook.class.isAssignableFrom(hook)) {
-                            LOGGER.warn("Fatal error applying PreList hook from mod '{}'", mod.manifest().get("id").getAsString());
-                            throw new LoaderHookException("Failed to apply 'PreList' on '%s': doesn't implement IHook".formatted(mod.path().toAbsolutePath()));
-                        }
-
-                        try {
-                            ((IHook) hook.getDeclaredConstructor().newInstance()).run();
-                        } catch (Throwable e) {
-                            LOGGER.warn("Fatal error applying PreList hook from mod '{}'", mod.manifest().get("id").getAsString());
-                            throw new LoaderHookException("Failed to apply 'PreList' on '%s': %s".formatted(mod.path().toAbsolutePath(), e.getMessage()), e);
-                        }
-                    } catch (ClassNotFoundException ignored) {}
-
-                    completed.add(mod);
-                }
-            }
-
-            if (finished)
-                break;
-        }
-    }
-
-    private static boolean extractJIJ(PreModContainer container, Set<Path> loadedMods) throws IOException {
-        if (container.manifest().has("jars")) {
-            var jars = container.manifest().get("jars").getAsJsonArray();
-            var folder = Path.of(".cache/avoid_loader/embedded_jars");
-
-            try                   { Files.createDirectories(folder);                                                      }
-            catch (IOException e) { throw new RuntimeException("Failed to create Avoid embedded jar cache directory", e); }
-
-            for (var embeddedJAR : jars) {
-                String jarPath;
-
-                boolean library;
-                boolean mod;
-
-                if (embeddedJAR.isJsonObject()) {
-                    var obj = (JsonObject) embeddedJAR;
-
-                    jarPath = obj.get("path").getAsString();
-
-                    library = !obj.has("library") ? true : obj.get("library").getAsBoolean();
-                    mod     = !obj.has("mod")     ? true : obj.get(  "mod"  ).getAsBoolean();
-                } else {
-                    jarPath = embeddedJAR.getAsString();
-
-                    library = true;
-                    mod     = true;
-                }
-
-                Path path;
-
-                try (var jar = new JarFile(container.path().toFile())) {
-                    var entry = jar.getJarEntry(jarPath);
-
-                    try (var stream = jar.getInputStream(entry)) {
-                        path = folder.resolve(DigestUtils.sha1Hex(stream) + ".jar");
-                    }
-
-                    try (var fos = new FileOutputStream(path.toFile())) {
-                        try (var stream = jar.getInputStream(entry)) {
-                            stream.transferTo(fos);
-                        }
-                    }
-                }
-
-                if (mod) {
-                    if (library) {
-                        container.classLoader().addURL(path.toUri().toURL());
-
-                        container.children().add(new ModParser(path, loadedMods, MODS, container.classLoader(), container).load());
-                    } else {
-                        container.children().add(new ModParser(path, loadedMods, MODS, container).load());
-                    }
-                } else {
-                    if (!library)
-                        throw new RuntimeException("Jar-in-jar entry with library:false & mod:false; cannot load into void");
-
-                    container.classLoader().addURL(path.toUri().toURL());
-                }
-            }
-
-            return true;
-        }
-
-        return false;
+        return list.values();
     }
 }

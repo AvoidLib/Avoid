@@ -8,7 +8,7 @@ import pl.olafcio.avoid.mods.events_loader.AllModsLoadingEvent;
 import pl.olafcio.avoid.platform.mod.PlatformMod;
 import pl.olafcio.avoid_impl.net.block.values.NoteBlockInstrumentNative;
 import pl.olafcio.avoid_impl.mods.loader.ModLoad;
-import pl.olafcio.avoid_loader.PreModContainer;
+import pl.olafcio.avoid_loader.AvoidModContainer;
 import pl.olafcio.avoid_loader.PreModLoader;
 import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 
@@ -47,15 +47,16 @@ public class Avoid {
 
         var loadedMods = new HashSet<String>();
 
-        loadedMods.addAll(PreModLoader.getMods().stream().map(mod -> mod.manifest().get("id").getAsString()).toList());
+        loadedMods.addAll(PreModLoader.getMods().stream().map(mod -> mod.metadata().id()).toList());
         loadedMods.addAll(AvoidWrappedLoader.getMods().stream().map(PlatformMod::id).toList());
 
         PreModLoader.getMods().forEach(mod -> {
-            load(mod, loadedMods);
+            if (mod instanceof AvoidModContainer avoid)
+                load(avoid, loadedMods);
         });
     }
 
-    private void load(PreModContainer mod, Set<String> loadedMods) {
+    private void load(AvoidModContainer mod, Set<String> loadedMods) {
         new ModLoad(mod, loadedMods).load();
     }
 }

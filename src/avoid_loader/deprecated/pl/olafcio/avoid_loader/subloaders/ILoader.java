@@ -1,7 +1,7 @@
 package pl.olafcio.avoid_loader.subloaders;
 
-import org.jetbrains.annotations.ApiStatus;
-import pl.olafcio.avoid_loader.PreModContainer;
+import pl.olafcio.avoid_loader.AvoidModContainer;
+import pl.olafcio.avoid_loader.interfaces.services.IModProcessor;
 
 /**
  * A subloader.
@@ -15,9 +15,11 @@ import pl.olafcio.avoid_loader.PreModContainer;
  * </ul>
  * <br/>
  * You probably heard of them before; they're basically <i>coremods</i>.
+ *
+ * @deprecated Implement a {@link IModProcessor IModProcessor} instead.
  */
-@ApiStatus.Experimental
+@Deprecated(since = "v2.0", forRemoval = true)
 public interface ILoader {
     void load();
-    default void processAvoidMod(PreModContainer container) {}
+    default void processAvoidMod(AvoidModContainer container) {}
 }
