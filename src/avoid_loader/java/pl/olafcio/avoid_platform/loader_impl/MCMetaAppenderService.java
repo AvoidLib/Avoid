@@ -3,16 +3,17 @@ package pl.olafcio.avoid_platform.loader_impl;
 import org.slf4j.LoggerFactory;
 import pl.olafcio.avoid_loader.AvoidModContainer;
 import pl.olafcio.avoid_loader.interfaces.IMod;
+import pl.olafcio.avoid_loader.interfaces.IModFile;
 import pl.olafcio.avoid_loader.interfaces.services.IModProcessor;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -35,18 +36,21 @@ public final class MCMetaAppenderService implements IModProcessor {
     @Override
     public void process(IMod mod) {
         if (mod instanceof AvoidModContainer avoid && !Files.isSymbolicLink(avoid.path()))
-            new MCMetaAppender(mod.getModFile().getPath());
+            new MCMetaAppender(mod.getModFile());
     }
 
     private class MCMetaAppender {
         private FileInputStream fis;
         private ZipInputStream zis;
 
+        private final IModFile modfile;
+
         private final Path mod;
         private final Path packedJAR;
 
-        MCMetaAppender(Path mod) {
-            this.mod = mod;
+        MCMetaAppender(IModFile modfile) {
+            this.modfile = modfile;
+            this.mod = modfile.getPath();
 
             try {
                 fis = new FileInputStream(mod.toFile());
@@ -79,7 +83,12 @@ public final class MCMetaAppenderService implements IModProcessor {
         }
 
         private void override() throws IOException {
-            Files.move(packedJAR, mod, StandardCopyOption.REPLACE_EXISTING);
+            modfile.getClassLoader().prefer(new URL[]{ packedJAR.toUri().toURL() });
+
+            // v  i CAN'T do this because the previous JAR is already classloaded  (for the loader services)
+            //    and so i have to do this messup
+
+            //            Files.move(packedJAR, mod, StandardCopyOption.REPLACE_EXISTING);
         }
 
         private boolean addPackMCMeta() {

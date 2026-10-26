@@ -58,7 +58,8 @@ public final class PreModLoader {
                     (proc, modFile) -> {
                         MODS.addAll(proc.process(modFile));
                     },
-                    els -> (HashSet<IModFile>) els.clone()
+                    els -> (HashSet<IModFile>) els.clone(),
+                    set -> new HashSet<>(Arrays.stream(set).toList())
             );
 
             // Listing -- dumping the mod list
@@ -80,22 +81,24 @@ public final class PreModLoader {
             }
         }).toList();
 
-        IRoundable.runEach(scanners, IModScanner.Stage.LOAD, IModScanner::load);
-        IRoundable.runEach(scanners, IModScanner.Stage.PROCESS, scanner -> {
+        try {
+            IRoundable.runEach(scanners, IModScanner.Stage.LOAD, IModScanner::load);
+            IRoundable.runEach(scanners, IModScanner.Stage.PROCESS, scanner -> {
+                for (var entry : modjars) {
+                    try {
+                        scanner.process(entry.mod, entry.jar);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to scan Avoid mod with scanner: '%s' (%s)".formatted(scanner, scanner.getClass().getName()), e);
+                    }
+                }
+            });
+        } finally {
             for (var entry : modjars) {
                 try {
-                    scanner.process(entry.mod, entry.jar);
+                    entry.jar.close();
                 } catch (IOException e) {
-                    throw new RuntimeException("Failed to scan Avoid mod with scanner: '%s' (%s)".formatted(scanner, scanner.getClass().getName()), e);
+                    LOGGER.warn("Failed to close Avoid mod's JAR: '{}'", entry.mod.getModFile().getPath().toAbsolutePath());
                 }
-            }
-        });
-
-        for (var entry : modjars) {
-            try {
-                entry.jar.close();
-            } catch (IOException e) {
-                LOGGER.warn("Failed to close Avoid mod's JAR: '{}'", entry.mod.getModFile().getPath().toAbsolutePath());
             }
         }
 

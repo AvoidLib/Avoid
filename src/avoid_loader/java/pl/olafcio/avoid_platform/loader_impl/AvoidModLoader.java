@@ -33,6 +33,7 @@ public final class AvoidModLoader implements IModLoader {
     public Collection<IMod> process(IModFile iModFile) {
         if (iModFile instanceof ModFile modFile) {
             Path mod = modFile.getPath();
+            AvoidModContainer container;
 
             try (var jar = new JarFile(mod.toFile())) {
                 var manifestFile = jar.getEntry("avoid.mod.json");
@@ -82,14 +83,18 @@ public final class AvoidModLoader implements IModLoader {
                     }
                 }
 
-                var container = new AvoidModContainer(modFile, this, json, iModFile instanceof JIJModFile jij ? jij.parent : null);
-
-                extractJIJ(container);
-
-                return List.of(container);
+                container = new AvoidModContainer(modFile, this, json, iModFile instanceof JIJModFile jij ? jij.parent : null);
             } catch (IOException e) {
                 throw new RuntimeException("Error while parsing JAR file '%s'".formatted(mod.toAbsolutePath()), e);
             }
+
+            try {
+                extractJIJ(container);
+            } catch (IOException e) {
+                throw new RuntimeException("Error while resolving JIJ of JAR file '%s'".formatted(mod.toAbsolutePath()), e);
+            }
+
+            return List.of(container);
         }
 
         return List.of();
@@ -141,11 +146,11 @@ public final class AvoidModLoader implements IModLoader {
 
                 if (mod) {
                     if (library) {
-                        container.classLoader().addURL(path.toUri().toURL());
+                        recall(new JIJModFile(path, container.classLoader(), container));
 
-                        recall.add(new JIJModFile(path, container.classLoader(), container));
+                        container.classLoader().addURL(path.toUri().toURL());
                     } else {
-                        recall.add(new JIJModFile(path, container));
+                        recall(new JIJModFile(path, container));
                     }
                 } else {
                     if (!library)
@@ -155,18 +160,5 @@ public final class AvoidModLoader implements IModLoader {
                 }
             }
         }
-    }
-
-    private final HashSet<IModFile> recall
-            = new HashSet<>();
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public HashSet<IModFile> shouldRecall() {
-        var val = (HashSet<IModFile>) recall.clone();
-
-        recall.clear();
-
-        return val;
     }
 }

@@ -109,4 +109,26 @@ public class ModClassLoader extends URLClassLoader {
 
         return wrapped;
     }
+
+    /**
+     * Changes the wrapped loader, with a cyclic dependency on this ModClassLoader, but the given URLs appended at the start of future URLs.
+     * @param newURLs URL-s to load future classes from.
+     */
+    public void prefer(URL[] newURLs) {
+        var oldURLs = this.getURLs();
+        var URLs = new URL[newURLs.length + oldURLs.length];
+
+        System.arraycopy(newURLs, 0, URLs, 0, newURLs.length);
+        System.arraycopy(oldURLs, 0, URLs, newURLs.length, oldURLs.length);
+
+        var wrapped = new ModClassLoader(URLs, getParent()) {
+            @Override
+            public boolean shouldOverrideParent(String name) {
+                return true;
+            }
+        };
+
+        wrapped.parent = this;
+        this.parent = wrapped;
+    }
 }
