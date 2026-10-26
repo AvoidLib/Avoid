@@ -132,7 +132,7 @@ public final class PreModLoader {
                         if (conflict.isEmpty())
                             continue;
 
-                        if (conflict.get() == VersionSelector.VersionSide.A) {
+                        if (conflict.get() == VersionSelector.VersionSide.B) {
                             MODS.remove(modA);
                             MODS.removeAll(modA.children());
                         } else {

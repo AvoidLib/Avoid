@@ -24,7 +24,7 @@ public interface IModConflicter extends IRoundable<IModConflicter.Stage> {
     /**
      * If a conflict is detected, this should log a warning/error/fatal message, and optionally either:
      * <ul>
-     *     <li>return one of the conflicting mods<p>&emsp;<i>({@linkplain VersionSelector.VersionSide#A} if modA, {@linkplain VersionSelector.VersionSide#B} if modB)</i><p>in order to cause it to be unloaded,</li>
+     *     <li>return one of the conflicting mods<p>&emsp;<i>({@linkplain VersionSelector.VersionSide#A} if modA, {@linkplain VersionSelector.VersionSide#B} if modB)</i><p>in order to cause the other one to be unloaded,</li>
      *     <li>initiate a game crash.</li>
      * </ul>
      * <p><p>
