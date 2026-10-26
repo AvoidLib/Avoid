@@ -1,0 +1,35 @@
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootTable;
+import org.spongepowered.asm.mixin.gen.Invoker;
+
+import java.util.Optional;
+
+{
+    public interface IEntityType<T extends Entity> {
+    public interface IEntityType<T extends Entity> {
+        @Invoker("<init>")
+        static <T extends Entity> EntityType<T> init(
+                EntityType.EntityFactory<T> entityFactory,
+                MobCategory mobCategory,
+                boolean bl,
+                boolean bl2,
+                boolean bl3,
+                boolean bl4,
+                ImmutableSet<Block> immutableSet,
+                EntityDimensions entityDimensions,
+                float f, int i, int j,
+                String string,
+                Optional<ResourceKey<LootTable>> optional,
+                FeatureFlagSet featureFlagSet,
+                boolean bl5,
+                EntityType.Builder builder
+        ) {
+            throw new RuntimeException("Implemented via mixin");
+        }
+
+}

@@ -173,9 +173,7 @@ public final class EntityTypes {
 
         // TODO: Should I use the builder? Guess we'll see when there are issues in cross-version compatibility ;d
         Registry.register(BuiltInRegistries.ENTITY_TYPE, id, Type = new AvoidEntityType<T>(
-                stuff.synchs,
-                stuff.lastID,
-                saved,
+                stuff.synchs, stuff.lastID, saved,
                 factory,
                 CategoryNative.convertFrom(category),
                 !klass.isAnnotationPresent(_noSave.class),
@@ -208,7 +206,7 @@ public final class EntityTypes {
                                                                 .toList())
                         : FeatureFlags.VANILLA_SET,
                 !klass.isAnnotationPresent(_notInPeaceful.class)
-        ));
+        )); //#endentitytype
 
         return Type;
     }

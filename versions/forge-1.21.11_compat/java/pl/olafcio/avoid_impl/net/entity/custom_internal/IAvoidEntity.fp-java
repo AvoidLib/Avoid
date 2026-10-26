@@ -1,0 +1,11 @@
+import pl.olafcio.avoid_impl.mixininterface.XEntityType;
+
+{
+    return (AvoidEntityType<?>) getEntity().getType();
+    return ((XEntityType) getEntity().getType()).avoid$entityType();
+}
+
+{
+    default @NotNull AvoidEntityType<?> getAvoidType() {
+    default @NotNull AvoidEntityType getAvoidType() {
+}

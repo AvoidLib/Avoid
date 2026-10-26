@@ -20,8 +20,9 @@ import org.spongepowered.asm.mixin.Mixins;
 import org.spongepowered.asm.service.*;
 import org.spongepowered.asm.service.modlauncher.MixinServiceModLauncher;
 import org.spongepowered.asm.util.ReEntranceLock;
-import pl.olafcio.avoid_loader.PreModContainer;
+import pl.olafcio.avoid_loader.AvoidModContainer;
 import pl.olafcio.avoid_loader.PreModLoader;
+import pl.olafcio.avoid_loader.interfaces.IMod;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
@@ -42,7 +43,7 @@ public class Magician {
 
     record MixinConfig(byte[] data, String runtimeName, String _package) {}
 
-    private void loadMixinConfig(HashMap<String, MixinConfig> configs, String config, ZipFile zip, PreModContainer mod) {
+    private void loadMixinConfig(HashMap<String, MixinConfig> configs, String config, ZipFile zip, IMod mod) {
         byte[] data;
         JsonObject json;
 
@@ -50,12 +51,12 @@ public class Magician {
             data = stream.readAllBytes();
             json = new Gson().fromJson(new String(data, StandardCharsets.UTF_8), JsonObject.class);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load mixin config '%s' from Avoid mod: '%s'".formatted(config, mod.manifest().get("id").getAsString()), e);
+            throw new RuntimeException("Failed to load mixin config '%s' from Avoid mod: '%s'".formatted(config, mod.metadata().id()), e);
         }
 
         configs.put(config, new MixinConfig(
                 data,
-                mod.manifest().get("id").getAsString() + "-" + config,
+                mod.metadata().id() + "-" + config,
                 json.get("package").getAsString()
         ));
     }
@@ -68,18 +69,14 @@ public class Magician {
         try                   { Files.createDirectories(cache);                                                          }
         catch (IOException e) { throw new RuntimeException("Failed to create Avoid transformed mod cache directory", e); }
 
-        PreModLoader.getMods().forEach(mod -> {
-            if (mod.manifest().has("mixins")) {
-                try (var zip = new ZipFile(mod.path().toFile())) {
-                    var mixins = mod.manifest().get("mixins");
+        PreModLoader.getMods().forEach(imod -> {
+            if (imod instanceof AvoidModContainer mod && mod.metadata().mixins().length > 0) {
+                try (var zip = new ZipFile(mod.getModFile().getPath().toFile())) {
+                    var mixins = mod.metadata().mixins();
                     var configs = new HashMap<String, MixinConfig>();
 
-                    if (mixins.isJsonArray()) {
-                        for (var el : (JsonArray) mixins) {
-                            loadMixinConfig(configs, el.getAsString(), zip, mod);
-                        }
-                    } else {
-                        loadMixinConfig(configs, mixins.getAsString(), zip, mod);
+                    for (var el : mixins) {
+                        loadMixinConfig(configs, el, zip, mod);
                     }
 
                     var packages = configs.values().stream().map(MixinConfig::_package).map(pkg -> pkg.replace(".", "/") + "/").toList();

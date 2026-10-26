@@ -1,0 +1,26 @@
+import pl.olafcio.avoid_impl.mixin.accessors.IEntityType;
+import pl.olafcio.avoid_impl.mixininterface.XEntityType;
+
+{
+    stuff.synchs, stuff.lastID, saved,
+    //stuff.synchs, stuff.lastID, saved,
+}
+
+{
+    new AvoidEntityType<T>(
+    setAvoidStuff(IEntityType.init(
+}
+
+{
+    )); //#endentitytype
+    , null), new AvoidEntityType(stuff.synchs, stuff.lastID, saved))); //#endentitytype
+}
+
+{
+    public final class EntityTypes {
+    public final class EntityTypes {
+        private static <T extends EntityType<?>> T setAvoidStuff(T value, AvoidEntityType aet) {
+            ((XEntityType) value).avoid$entityType(aet);
+            return value;
+        }
+}
