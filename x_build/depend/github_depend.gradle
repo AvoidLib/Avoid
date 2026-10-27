@@ -9,14 +9,21 @@ String github(String repository, String versionName = "latest", Predicate<String
 
     Files.createDirectories(libs)
 
+    String left = null
+
     if (versionName == "latest") {
         try (var allLibs = Files.list(libs)) {
             String ret = null
 
             allLibs.forEach {
                 def fn = it.getFileName().toString()
-                if (fn.startsWith(repoName + "-") && fn.endsWith(".jar") && (System.currentTimeMillis() - Files.getLastModifiedTime(it).toMillis() < 1000*60*60*24*3 || gradle.startParameter.offline))
-                    ret = ":" + repoName + ":" + fn.substring(0, fn.length() - 4).split("-", 2)[1]
+                if (fn.startsWith(repoName + "-") && fn.endsWith(".jar")) {
+                    if (System.currentTimeMillis() - Files.getLastModifiedTime(it).toMillis() < 1000*60*60*24*3 && !gradle.startParameter.offline) {
+                        left = ":" + repoName + ":" + fn.substring(0, fn.length() - 4).split("-", 2)[1]
+                    } else {
+                        ret = ":" + repoName + ":" + fn.substring(0, fn.length() - 4).split("-", 2)[1]
+                    }
+                }
             }
 
             if (ret != null)
@@ -27,7 +34,17 @@ String github(String repository, String versionName = "latest", Predicate<String
             return ":" + repoName + ":" + versionName
     }
 
-    var version = github_getRelease(repository, versionName)
+    var version
+
+    try {
+        version = github_getRelease(repository, versionName)
+    } catch (Throwable e) {
+        if (left != null)
+            return left
+
+        throw e
+    }
+
     var repoVersion = version['tag_name']
 
     var jar = libs.resolve(repoName + "-" + repoVersion + ".jar")
