@@ -1,0 +1,24 @@
+import pl.olafcio.avoid_impl.net.screen.DrawerNative;
+import pl.olafcio.avoid_impl.mixininterface.IGuiGraphics;
+
+{
+    invoke("render", gui, mouseX, mouseY, tickDelta);
+    {
+        var graphics = DrawerNative.graphicsOf((pl.olafcio.avoid_impl.net.screen.Drawer) gui);
+        var igg = ((IGuiGraphics) graphics);
+
+        igg.avoidlib$tickDeltaOVR(tickDelta);
+        igg.avoidlib$prevMouseX(graphics.mouseX);
+        igg.avoidlib$prevMouseY(graphics.mouseY);
+
+        graphics.mouseX = mouseX;
+        graphics.mouseY = mouseY;
+
+        invoke("render", gui);
+
+        graphics.mouseX = igg.avoidlib$prevMouseX();
+        graphics.mouseY = igg.avoidlib$prevMouseY();
+
+        igg.avoidlib$tickDeltaOVR(null);
+    }
+}

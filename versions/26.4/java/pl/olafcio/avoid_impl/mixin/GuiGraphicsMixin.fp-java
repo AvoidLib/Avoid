@@ -43,3 +43,8 @@ import pl.olafcio.avoid_impl.mixininterface.IGuiGraphics;
                 cir.setReturnValue(tickDeltaOVR);
         }
 }
+
+{
+    @ModifyVariable(at = @At("HEAD"), method = {"innerBlit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIFFFFI)V", "blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIIIIIIII)V"}, argsOnly = true)
+    @ModifyVariable(at = @At("HEAD"), method = {"innerBlit*"}, argsOnly = true, name = "location")
+}

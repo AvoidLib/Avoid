@@ -17,3 +17,13 @@
     mod.render(DrawerNative.create(guiGraphics), i, j, f);
     mod.render(DrawerNative.create(guiGraphics), guiGraphics.mouseX(), guiGraphics.mouseY(), guiGraphics.partialTicks());
 }
+
+{
+    return original.call(instance, DrawerNative.graphicsOf((Drawer) args[0]), args[1], args[2], args[3]);
+    return original.call(instance, DrawerNative.graphicsOf((Drawer) args[0]));
+}
+
+{
+    }, 4, "render");
+    }, 1, "render");
+}

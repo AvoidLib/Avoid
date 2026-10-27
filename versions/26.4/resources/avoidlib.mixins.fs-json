@@ -1,2 +1,3 @@
 this['mixins'].append("BlockSoundSetsMixin")
 this['mixins'].append("FogRendererMixin")
+this['mixins'].append("GuiPipelineMixin")

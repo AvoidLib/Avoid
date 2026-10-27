@@ -1,0 +1,4 @@
+{
+    ItemStackTemplate.fromNonEmptyStack(BuiltInRegistries.ITEM.get(IdentificationNative.convert(display.icon())).orElseThrow().value().getDefaultInstance())
+    new ItemStackTemplate(BuiltInRegistries.ITEM.get(IdentificationNative.convert(display.icon())).orElseThrow().value())
+}

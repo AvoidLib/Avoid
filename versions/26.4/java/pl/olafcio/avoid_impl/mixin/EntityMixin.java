@@ -105,18 +105,18 @@ public abstract class EntityMixin implements ICamerable, IEntity {
         return false;
     }
 
-    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"), method = "baseTick")
-    private boolean updateFluidOnEyes__isEyeInFluid(Entity instance, TagKey<net.minecraft.world.level.material.Fluid> tagKey, Operation<Boolean> original) {
-        if (original.call(instance, tagKey))
-            return true;
-
-        for (var fluid : FluidsNative.instances.keySet())
-            if (fluid.getClass().isAnnotationPresent(_gravity.class))
-                if (((IEntityFluidInteraction) this.fluidInteraction).avoid$isEyeInFluid(fluid))
-                    return true;
-
-        return false;
-    }
+//    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isEyeInFluid(Lnet/minecraft/tags/TagKey;)Z"), method = "baseTick")
+//    private boolean updateFluidOnEyes__isEyeInFluid(Entity instance, TagKey<net.minecraft.world.level.material.Fluid> tagKey, Operation<Boolean> original) {
+//        if (original.call(instance, tagKey))
+//            return true;
+//
+//        for (var fluid : FluidsNative.instances.keySet())
+//            if (fluid.getClass().isAnnotationPresent(_gravity.class))
+//                if (((IEntityFluidInteraction) this.fluidInteraction).avoid$isEyeInFluid(fluid))
+//                    return true;
+//
+//        return false;
+//    }
 
     @Inject(at = @At("HEAD"), method = "updateFluidInteraction")
     public void updateFluidInteraction__wasTouchingWater(CallbackInfoReturnable<Boolean> cir) {

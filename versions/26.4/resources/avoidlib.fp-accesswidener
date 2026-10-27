@@ -5,7 +5,7 @@
 
 {
     accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/blaze3d/pipeline/RenderPipeline;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
-    accessible method net/minecraft/client/renderer/pipeline/RenderPipelines precompiled (Lcom/mojang/blaze3d/pipeline/RenderPipeline;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
+    accessible method net/minecraft/client/renderer/pipeline/RenderPipelines precompiled (Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lcom/mojang/renderpearl/api/pipeline/RenderPassLayout;[Lcom/mojang/renderpearl/api/pipeline/RenderPassLayout;)Lcom/mojang/blaze3d/pipeline/RenderPipeline;
 }
 
 {

@@ -31,3 +31,8 @@ import pl.olafcio.avoid_impl.mixininterface.IGuiGraphics;
             ((IGuiGraphics) graphics).avoidlib$tickDeltaOVR(null);
         }
 }
+
+{
+    realScreen.addRenderableOnly(
+    realScreen.renderables.add(
+}
