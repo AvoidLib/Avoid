@@ -1,4 +1,0 @@
-{
-    pl.olafcio.avoid_platform.AvoidWrappedLoader.getGameDir()
-    Path.of(".")
-}
