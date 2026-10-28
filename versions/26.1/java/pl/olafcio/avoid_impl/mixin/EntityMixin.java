@@ -178,7 +178,7 @@ public abstract class EntityMixin implements ICamerable, IEntity {
 
     @WrapOperation(at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;deltaMovement:Lnet/minecraft/world/phys/Vec3;", opcode = Opcodes.PUTFIELD), method = "setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V")
     public void setDeltaMovement(Entity instance, Vec3 value, Operation<Void> original) {
-        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT) {
+        if (instance.level().isClientSide()) {
             var event = new ClientEntityVelocityEvent(
                     EntityNative.convertFromTry(instance),
                     Vect3Native.convert(value),
@@ -191,7 +191,7 @@ public abstract class EntityMixin implements ICamerable, IEntity {
                 return;
             else if (event.isVelocityChanged())
                 value = Vect3Native.convertFrom(event.getVelocity());
-        } else if (!instance.level().isClientSide()) {
+        } else {
             var event = new ServerEntityVelocityEvent(
                     EntityNative.convertFromTry(instance),
                     Vect3Native.convert(value)
