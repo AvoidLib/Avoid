@@ -40,7 +40,7 @@ public final class JarManager {
                 pkg += "/";
 
             // multi-classloader support with package name specified
-            try (var zip = new ZipFile(klass.getClassLoader().getResource(pkg.substring(0, pkg.length() - 1)).getPath().split("!")[0].substring(5))) { //file:
+            try (var zip = new ZipFile(klass.getClassLoader().getResource(pkg.substring(0, pkg.length() - 1)).getPath().split("!")[0].substring(5).replace("%20", " "))) { //file:
                 var entries = zip.entries();
                 var list = new ArrayList<String>();
 
