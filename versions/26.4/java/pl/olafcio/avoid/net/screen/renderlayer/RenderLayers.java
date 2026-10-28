@@ -1,0 +1,362 @@
+package pl.olafcio.avoid.net.screen.renderlayer;
+
+import net.minecraft.client.gui.GuiPipeline;
+import net.minecraft.client.renderer.RenderPassLayouts;
+import com.mojang.renderpearl.api.pipeline.UniformType;
+import com.mojang.renderpearl.api.pipeline.BindGroupLayout;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import net.minecraft.client.renderer.pipeline.RenderPipelines;
+import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.api.Avoid;
+import pl.olafcio.avoid.platform.AvoidWrappedLoader;
+import pl.olafcio.avoid.errors.ImproperEnvironment;
+import pl.olafcio.avoid.platform.RunningEnv;
+import pl.olafcio.avoid_impl.mixinclass.GuiPipelineMap;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.ArrayList;
+
+@ApiStatus.Experimental
+public final class RenderLayers {
+    @ApiStatus.Internal
+    private RenderLayers() {
+    }
+
+    static {
+        RenderLayersNative.PRESENT = new HashMap<>();
+        RenderLayersNative.CUSTOM = new HashMap<>();
+
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
+            clinit();
+    }
+
+    private static void clinit() {
+        var fields = RenderPipelines.class.getDeclaredFields();
+        for (var field : fields) {
+            try {
+                if (!RenderPipeline.class.isAssignableFrom(field.getType()))
+                    continue;
+
+                int modifiers = field.getModifiers();
+                if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
+                    RenderPipeline pipeline = (RenderPipeline) field.get(null);
+                    String path = pipeline.getLocation().getPath();
+
+                    if (path.startsWith("pipeline/"))
+                        RenderLayersNative.PRESENT.put(path.substring(9).toLowerCase(), pipeline);
+                }
+            } catch (IllegalAccessException | ClassCastException e) {
+                Avoid.LOGGER.error("Couldn't register RenderPipeline '{}'; ignoring", field);
+            }
+        }
+    }
+
+    public static final RenderLayer SOLID_BLOCK = register("SOLID_BLOCK");
+    public static final RenderLayer SOLID_TERRAIN = register("SOLID_TERRAIN");
+    public static final RenderLayer WIREFRAME = register("WIREFRAME");
+    public static final RenderLayer CUTOUT_BLOCK = register("CUTOUT_BLOCK");
+    public static final RenderLayer CUTOUT_TERRAIN = register("CUTOUT_TERRAIN");
+    public static final RenderLayer TRANSLUCENT_TERRAIN = register("TRANSLUCENT_TERRAIN");
+    public static final RenderLayer TRIPWIRE_BLOCK = register("TRIPWIRE_BLOCK");
+    public static final RenderLayer TRIPWIRE_TERRAIN = register("TRIPWIRE_TERRAIN");
+    public static final RenderLayer TRANSLUCENT_MOVING_BLOCK = register("TRANSLUCENT_BLOCK");
+    public static final RenderLayer ARMOR_CUTOUT_NO_CULL = register("ARMOR_CUTOUT_NO_CULL");
+    public static final RenderLayer ARMOR_DECAL_CUTOUT_NO_CULL = register("ARMOR_DECAL_CUTOUT_NO_CULL");
+    public static final RenderLayer ARMOR_TRANSLUCENT = register("ARMOR_TRANSLUCENT");
+    public static final RenderLayer ENTITY_SOLID = register("ENTITY_SOLID");
+    public static final RenderLayer ENTITY_SOLID_Z_OFFSET_FORWARD = register("ENTITY_SOLID_Z_OFFSET_FORWARD");
+    public static final RenderLayer ENTITY_CUTOUT = register("ENTITY_CUTOUT_CULL");
+    public static final RenderLayer ENTITY_CUTOUT_NO_CULL = register("ENTITY_CUTOUT");
+    public static final RenderLayer ENTITY_CUTOUT_NO_CULL_Z_OFFSET = register("ENTITY_CUTOUT_Z_OFFSET");
+    public static final RenderLayer ENTITY_TRANSLUCENT = register("ENTITY_TRANSLUCENT");
+    public static final RenderLayer ENTITY_TRANSLUCENT_EMISSIVE = register("ENTITY_TRANSLUCENT_EMISSIVE");
+    public static final RenderLayer ENTITY_SMOOTH_CUTOUT = register("ENTITY_CUTOUT");
+    public static final RenderLayer ENTITY_NO_OUTLINE = register("ENTITY_NO_OUTLINE");
+    public static final RenderLayer BREEZE_WIND = register("BREEZE_WIND");
+    public static final RenderLayer ENERGY_SWIRL = register("ENERGY_SWIRL");
+    public static final RenderLayer EYES = register("EYES");
+    public static final RenderLayer ENTITY_DECAL = register("ENTITY_CUTOUT_DISSOLVE" /* Is this bs? */);
+    public static final RenderLayer ENTITY_SHADOW = register("ENTITY_SHADOW");
+    public static final RenderLayer ITEM_ENTITY_TRANSLUCENT_CULL = register("ITEM_TRANSLUCENT");
+    public static final RenderLayer BEACON_BEAM_OPAQUE = register("BEACON_BEAM_OPAQUE");
+    public static final RenderLayer BEACON_BEAM_TRANSLUCENT = register("BEACON_BEAM_TRANSLUCENT");
+    public static final RenderLayer DRAGON_EXPLOSION_ALPHA = register("GUI_TEXTURED_PREMULTIPLIED_ALPHA" /* Is this bs? */);
+    public static final RenderLayer LEASH = register("LEASH");
+    public static final RenderLayer WATER_MASK = register("WATER_MASK");
+    public static final RenderLayer GLINT = register("GLINT");
+    public static final RenderLayer CRUMBLING = register("CRUMBLING");
+    public static final RenderLayer TEXT = register("TEXT");
+    public static final RenderLayer GUI_TEXT = register("GUI_TEXT");
+    public static final RenderLayer TEXT_BACKGROUND = register("TEXT_BACKGROUND");
+    public static final RenderLayer TEXT_INTENSITY = register("TEXT_INTENSITY");
+    public static final RenderLayer GUI_TEXT_INTENSITY = register("GUI_TEXT_INTENSITY");
+    public static final RenderLayer TEXT_POLYGON_OFFSET = register("TEXT_POLYGON_OFFSET");
+    public static final RenderLayer TEXT_SEE_THROUGH = register("TEXT_SEE_THROUGH");
+    public static final RenderLayer TEXT_BACKGROUND_SEE_THROUGH = register("TEXT_BACKGROUND_SEE_THROUGH");
+    public static final RenderLayer TEXT_INTENSITY_SEE_THROUGH = register("TEXT_INTENSITY_SEE_THROUGH");
+    public static final RenderLayer LIGHTNING = register("LIGHTNING");
+    public static final RenderLayer DRAGON_RAYS = register("DRAGON_RAYS");
+    public static final RenderLayer DRAGON_RAYS_DEPTH = register("DRAGON_RAYS_DEPTH");
+    public static final RenderLayer END_PORTAL = register("END_PORTAL");
+    public static final RenderLayer END_GATEWAY = register("END_GATEWAY");
+    public static final RenderLayer FLAT_CLOUDS = register("FLAT_CLOUDS");
+    public static final RenderLayer CLOUDS = register("CLOUDS");
+    public static final RenderLayer LINES = register("LINES");
+    public static final RenderLayer LINES_TRANSLUCENT = register("LINES_TRANSLUCENT");
+    public static final RenderLayer SECONDARY_BLOCK_OUTLINE = register("SECONDARY_BLOCK_OUTLINE");
+    public static final RenderLayer DEBUG_POINTS = register("DEBUG_POINTS");
+    public static final RenderLayer DEBUG_FILLED_BOX = register("DEBUG_FILLED_BOX");
+    public static final RenderLayer DEBUG_QUADS = register("DEBUG_QUADS");
+    public static final RenderLayer DEBUG_TRIANGLE_FAN = register("DEBUG_TRIANGLE_FAN");
+    public static final RenderLayer WORLD_BORDER = register("WORLD_BORDER");
+    public static final RenderLayer OPAQUE_PARTICLE = register("OPAQUE_PARTICLE");
+    public static final RenderLayer TRANSLUCENT_PARTICLE = register("TRANSLUCENT_PARTICLE");
+    public static final RenderLayer WEATHER_DEPTH_WRITE = register("WEATHER_DEPTH_WRITE");
+    public static final RenderLayer WEATHER_NO_DEPTH_WRITE = register("WEATHER_NO_DEPTH_WRITE");
+    public static final RenderLayer SKY = register("SKY");
+    public static final RenderLayer END_SKY = register("END_SKY");
+    public static final RenderLayer SUNRISE_SUNSET = register("SUNRISE_SUNSET");
+    public static final RenderLayer STARS = register("STARS");
+    public static final RenderLayer CELESTIAL = register("CELESTIAL");
+    public static final RenderLayer GUI = register("GUI");
+    public static final RenderLayer GUI_INVERT = register("GUI_INVERT");
+    public static final RenderLayer GUI_TEXT_HIGHLIGHT = register("GUI_TEXT_HIGHLIGHT");
+    public static final RenderLayer GUI_TEXTURED = register("GUI_TEXTURED");
+    public static final RenderLayer GUI_TEXTURED_PREMULTIPLIED_ALPHA = register("GUI_TEXTURED_PREMULTIPLIED_ALPHA");
+    public static final RenderLayer BLOCK_SCREEN_EFFECT = register("BLOCK_SCREEN_EFFECT");
+    public static final RenderLayer FIRE_SCREEN_EFFECT = register("FIRE_SCREEN_EFFECT");
+    public static final RenderLayer GUI_OPAQUE_TEXTURED_BACKGROUND = register("GUI_OPAQUE_TEXTURED_BACKGROUND");
+    public static final RenderLayer GUI_NAUSEA_OVERLAY = register("GUI_NAUSEA_OVERLAY");
+    public static final RenderLayer VIGNETTE = register("VIGNETTE");
+    public static final RenderLayer CROSSHAIR = register("CROSSHAIR");
+    public static final RenderLayer MOJANG_LOGO = register("MOJANG_LOGO");
+    public static final RenderLayer ENTITY_OUTLINE_BLIT = register("ENTITY_OUTLINE_BLIT");
+    public static final RenderLayer TRACY_BLIT = register("TRACY_BLIT");
+    public static final RenderLayer PANORAMA = register("PANORAMA");
+    public static final RenderLayer OUTLINE_CULL = register("OUTLINE_CULL");
+    public static final RenderLayer OUTLINE_NO_CULL = register("OUTLINE_NO_CULL");
+    public static final RenderLayer LIGHTMAP = register("LIGHTMAP");
+    public static final RenderLayer ANIMATE_SPRITE_BLIT = register("ANIMATE_SPRITE_BLIT");
+    public static final RenderLayer ANIMATE_SPRITE_INTERPOLATE = register("ANIMATE_SPRITE_INTERPOLATE");
+
+    @ApiStatus.Internal
+    public static RenderLayer register(String name) {
+        if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
+            return registerClient(name);
+
+        return new RenderLayer() {
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public boolean isPresent() {
+                return false;
+            }
+
+            @Override
+            Object get() {
+                return null;
+            }
+        };
+    }
+
+    private static RenderLayer registerClient(String name) {
+        var namelc = name.toLowerCase();
+
+        if (RenderLayersNative.CUSTOM.containsKey(namelc))
+            return RenderLayersNative.CUSTOM.get(namelc);
+
+        GuiPipeline gui = null;
+
+        var pipeline = RenderLayersNative.PRESENT.get(name.toLowerCase());
+        if (pipeline != null) {
+            gui = GuiPipelineMap.MAP.get(pipeline);
+        } else {
+            Field guiField = null;
+            // Shit's not obfuscated so I might as well fuck it
+
+            try {
+                guiField = GuiPipeline.class.getDeclaredField(name);
+            } catch (Throwable e) {
+                try {
+                    if (name.equals("GUI"))
+                        guiField = GuiPipeline.class.getDeclaredField("DEFAULT");
+                    else if (name.startsWith("GUI_"))
+                        guiField = GuiPipeline.class.getDeclaredField(name.substring(4));
+                } catch (Throwable ex) {
+                    guiField = null;
+                }
+            }
+
+            if (guiField != null) {
+                try {
+                    guiField.setAccessible(true);
+
+                    gui = (GuiPipeline) guiField.get(null);
+                    pipeline = gui.pipeline();
+                } catch (Throwable e) {
+                    gui = null;
+                }
+            }
+        }
+
+        var isPresent = pipeline != null || gui != null;
+
+        final var c_pipeline = pipeline;
+        final var c_gui = gui;
+
+        return new RenderLayer() {
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public boolean isPresent() {
+                return isPresent;
+            }
+
+            @Override
+            Object get() {
+                return c_pipeline;
+            }
+
+            @Override
+            Object getGui() {
+                return c_gui;
+            }
+        };
+    }
+
+    @ApiStatus.Experimental
+    public static final class Builder {
+        private String name;
+        private String shader_vertex;
+        private String shader_fragment;
+        private boolean cull = true;
+        private boolean depthwrite = true;
+        private ArrayList<String> samplers
+                = new ArrayList<>();
+        private HashMap<String, Float> defines
+                = new HashMap<>();
+
+        /**
+         * Sets the name and location of the builded renderlayer.
+         *
+         * @param name The renderlayer name. This shouldn't start {@code pipeline/}, as that is already prepended.
+         *             This should also be lowercase.
+         */
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder shader(String shader) {
+            this.shader_vertex = shader;
+            this.shader_fragment = shader;
+            return this;
+        }
+
+        public Builder shader_vertex(String shader) {
+            this.shader_vertex = shader;
+            return this;
+        }
+
+        public Builder shader_fragment(String shader) {
+            this.shader_fragment = shader;
+            return this;
+        }
+
+        public Builder sampler(String sampler) {
+            this.samplers.add(sampler);
+            return this;
+        }
+
+        public Builder define(String property, float value) {
+            this.defines.put(property, value);
+            return this;
+        }
+
+        //TODO Snippets
+        //TODO Vertex Format
+        //TODO Polygon Mode
+        //TODO Blend
+        //TODO Depth Test
+
+        public Builder noCull() {
+            this.cull = false;
+            return this;
+        }
+
+        public Builder noDepthWrite() {
+            this.depthwrite = false;
+            return this;
+        }
+
+        public RenderLayer buildAndRegister() {
+            if (AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT)
+                return createClient();
+
+            throw new ImproperEnvironment("[RenderLayers/Builder#buildAndRegister] Cannot be run in server environment!");
+        }
+
+        private RenderLayer createClient() {
+            var builder = RenderPipeline.builder(new RenderPipeline.Snippet[0])
+                    .withLocation("pipeline/" + name.toLowerCase());
+
+            if (shader_vertex != null)
+                builder.withVertexShader(shader_vertex);
+
+            if (shader_fragment != null)
+                builder.withFragmentShader(shader_fragment);
+
+            for (var sampler : samplers)
+                builder.withBindGroupLayout(BindGroupLayout.builder().withUniform(sampler, UniformType.COMBINED_IMAGE_SAMPLER).build());
+
+            for (var entry : defines.entrySet())
+                builder.withShaderDefine(entry.getKey(), entry.getValue());
+
+            if (!depthwrite)
+                builder.withDepthStencilState(DepthStencilState.DEFAULT);
+
+            if (!cull)
+                builder.withCull(false);
+
+            var pipeline = RenderPipelines.precompiled(builder.build(), RenderPassLayouts.COLOR_ONLY);
+            var systemName = name.toUpperCase();
+
+            //== replacement ==//
+            var gui = GuiPipeline.of(() -> pipeline);
+            var layer = new RenderLayer() {
+                @Override
+                Object getGui() {
+                    return gui;
+                }
+
+                @Override
+                public String getName() {
+                    return systemName;
+                }
+
+                @Override
+                public boolean isPresent() {
+                    return true;
+                }
+
+                @Override
+                Object get() {
+                    return pipeline;
+                }
+            };
+
+            RenderLayersNative.CUSTOM.put(name.toLowerCase(), layer);
+
+            return layer;
+        }
+    }
+}
