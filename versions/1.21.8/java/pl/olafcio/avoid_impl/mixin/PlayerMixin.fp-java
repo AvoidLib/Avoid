@@ -14,11 +14,31 @@
 }
 
 {
-    ((INameAndId) (Object) cir.getReturnValue()).avoid$player((Player) (Object) this);
+    ((INameAndId) (Object) cir.getReturnValue()).avoid$owner(PlayerNative.convertFrom((Player) (Object) this));
 
     //== replacement ==//
 
+    if (shutTheFuckUp) {
+        shutTheFuckUp = false;
+        return;
+    }
+
     var ret = cir.getReturnValue();
     if (ret != null)
-        ((INameAndId) (Object) ret).avoid$player((Player) (Object) this);
+        ((INameAndId) (Object) ret).avoid$owner(PlayerNative.convertFrom((Player) (Object) this));
+}
+
+import pl.olafcio.avoid_impl.mixininterface.IPlayer;
+import org.spongepowered.asm.mixin.Unique;
+
+{
+    public class PlayerMixin {
+    public class PlayerMixin implements IPlayer {
+        @Unique
+        private boolean shutTheFuckUp = false;
+
+        @Override
+        public void avoid$pleaseDontStackOverflow() {
+            this.shutTheFuckUp = true;
+        }
 }

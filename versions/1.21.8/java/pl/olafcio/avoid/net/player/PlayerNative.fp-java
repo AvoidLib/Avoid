@@ -1,3 +1,5 @@
+import pl.olafcio.avoid_impl.mixininterface.IPlayer;
+
 {
     profile.id()
     profile.getId()
@@ -11,4 +13,12 @@
 {
     profile.properties()
     profile.getProperties()
+}
+
+{
+    var profile = player.getGameProfile();
+
+    ((IPlayer) player).avoid$pleaseDontStackOverflow();
+
+    var profile = player.getGameProfile();
 }
