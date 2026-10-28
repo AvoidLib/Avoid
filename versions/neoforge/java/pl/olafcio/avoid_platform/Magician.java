@@ -22,9 +22,9 @@ import org.spongepowered.asm.mixin.Mixins;
 import org.spongepowered.asm.mixin.transformer.IMixinTransformer;
 import org.spongepowered.asm.service.*;
 import org.spongepowered.asm.util.ReEntranceLock;
+import pl.olafcio.avoid_loader.AvoidModContainer;
 import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 import pl.olafcio.avoid_platform.Reflect;
-import pl.olafcio.avoid_loader.PreModContainer;
 import pl.olafcio.avoid_loader.PreModLoader;
 
 import java.io.FileOutputStream;
@@ -46,7 +46,7 @@ import java.util.zip.ZipOutputStream;
 public class Magician {
     record MixinConfig(String runtimeName, String _package) {}
 
-    private void loadMixinConfig(HashMap<String, MixinConfig> configs, String config, ZipFile zip, PreModContainer mod) {
+    private void loadMixinConfig(HashMap<String, MixinConfig> configs, String config, ZipFile zip, AvoidModContainer mod) {
         JsonObject json;
 
         try (var stream = zip.getInputStream(zip.getEntry(config))) {
@@ -69,8 +69,8 @@ public class Magician {
         try                   { Files.createDirectories(cache);                                                          }
         catch (IOException e) { throw new RuntimeException("Failed to create Avoid transformed mod cache directory", e); }
 
-        PreModLoader.getMods().forEach(mod -> {
-            if (mod.manifest().has("mixins")) {
+        PreModLoader.getMods().forEach(imod -> {
+            if (imod instanceof AvoidModContainer mod && mod.manifest().has("mixins")) {
                 try (var zip = new ZipFile(mod.path().toFile())) {
                     var mixins = mod.manifest().get("mixins");
                     var configs = new HashMap<String, MixinConfig>();
