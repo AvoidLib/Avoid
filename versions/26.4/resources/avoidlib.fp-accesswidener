@@ -24,3 +24,8 @@
     accessible field net/minecraft/client/gui/GuiGraphicsExtractor mouseY I
     mutable field net/minecraft/client/gui/GuiGraphicsExtractor mouseY I
 }
+
+{
+    accessible method net/minecraft/client/gui/screens/Screen addRenderableOnly (Lnet/minecraft/client/gui/components/Renderable;)Lnet/minecraft/client/gui/components/Renderable;
+    #accessible method net/minecraft/client/gui/screens/Screen addRenderableOnly (Lnet/minecraft/client/gui/components/Renderable;)Lnet/minecraft/client/gui/components/Renderable;
+}
