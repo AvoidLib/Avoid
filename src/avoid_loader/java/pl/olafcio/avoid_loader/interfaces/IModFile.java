@@ -6,9 +6,11 @@ import pl.olafcio.avoid_loader.ModClassLoader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.jar.JarFile;
 
 public interface IModFile {
     Path           getPath();
+    JarFile        getJar();
     ModClassLoader getClassLoader();
 
     default String hash() {

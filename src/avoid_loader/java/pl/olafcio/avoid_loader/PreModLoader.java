@@ -73,34 +73,17 @@ public final class PreModLoader {
 
         // Scanning -- passing in mod containers along with JarFile-s open of them after they're loaded
         var scanners = preModLoader.loadService(IModScanner.class);
-        var modjars = MODS.stream().map(mod -> {
-            try {
-                return new ScanEntry(mod, new JarFile(mod.getModFile().getPath().toFile()));
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to create Avoid mods' JarFile instances for providing to IModScanner-s", e);
-            }
-        }).toList();
 
-        try {
-            IRoundable.runEach(scanners, IModScanner.Stage.LOAD, IModScanner::load);
-            IRoundable.runEach(scanners, IModScanner.Stage.PROCESS, scanner -> {
-                for (var entry : modjars) {
-                    try {
-                        scanner.process(entry.mod, entry.jar);
-                    } catch (IOException e) {
-                        throw new RuntimeException("Failed to scan Avoid mod with scanner: '%s' (%s)".formatted(scanner, scanner.getClass().getName()), e);
-                    }
-                }
-            });
-        } finally {
-            for (var entry : modjars) {
+        IRoundable.runEach(scanners, IModScanner.Stage.LOAD, IModScanner::load);
+        IRoundable.runEach(scanners, IModScanner.Stage.PROCESS, scanner -> {
+            for (var mod : MODS) {
                 try {
-                    entry.jar.close();
+                    scanner.process(mod, mod.getModFile().getJar());
                 } catch (IOException e) {
-                    LOGGER.warn("Failed to close Avoid mod's JAR: '{}'", entry.mod.getModFile().getPath().toAbsolutePath());
+                    throw new RuntimeException("Failed to scan Avoid mod with scanner: '%s' (%s)".formatted(scanner, scanner.getClass().getName()), e);
                 }
             }
-        }
+        });
 
         // Processing -- passing in mod containers after they're scanned
         var processors = preModLoader.loadService(IModProcessor.class);

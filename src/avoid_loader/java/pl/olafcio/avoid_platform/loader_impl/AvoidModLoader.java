@@ -35,7 +35,9 @@ public final class AvoidModLoader implements IModLoader {
             Path mod = modFile.getPath();
             AvoidModContainer container;
 
-            try (var jar = new JarFile(mod.toFile())) {
+            var jar = modFile.getJar();
+
+            try {
                 var manifestFile = jar.getEntry("avoid.mod.json");
                 if (manifestFile == null)
                     return List.of();
@@ -130,17 +132,16 @@ public final class AvoidModLoader implements IModLoader {
 
                 Path path;
 
-                try (var jar = new JarFile(container.path().toFile())) {
-                    var entry = jar.getJarEntry(jarPath);
+                var jar = container.getModFile().getJar();
+                var entry = jar.getJarEntry(jarPath);
 
+                try (var stream = jar.getInputStream(entry)) {
+                    path = folder.resolve(DigestUtils.sha1Hex(stream) + ".jar");
+                }
+
+                try (var fos = new FileOutputStream(path.toFile())) {
                     try (var stream = jar.getInputStream(entry)) {
-                        path = folder.resolve(DigestUtils.sha1Hex(stream) + ".jar");
-                    }
-
-                    try (var fos = new FileOutputStream(path.toFile())) {
-                        try (var stream = jar.getInputStream(entry)) {
-                            stream.transferTo(fos);
-                        }
+                        stream.transferTo(fos);
                     }
                 }
 

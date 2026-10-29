@@ -8,6 +8,7 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModMeta;
+import pl.olafcio.avoid_loader.interfaces.IMod;
 
 import java.nio.file.Path;
 
@@ -46,12 +47,23 @@ public final class AvoidModLoader {
     }
 
     /**
-     * Gets the filesystem path of an Avoid addon, under the given ID.<br/>
+     * Gets the filesystem path of an Avoid addon, under the given metadata.<br/>
+     * If no addon was found (or the addon wasn't loaded yet), {@code null} is returned.
+     * @deprecated Use {@link #getLoadedAddonContainer} instead.
+     */
+    @UnknownNullability
+    @Deprecated(since = "v2.1")
+    public static Path getLoadedAddonFile(AvoidModMeta meta) {
+        return pl.olafcio.avoid_impl.mods.loader.AvoidModLoader.getLoadedAddonFile(meta);
+    }
+
+    /**
+     * Gets the container of an Avoid addon, under the given metadata.<br/>
      * If no addon was found (or the addon wasn't loaded yet), {@code null} is returned.
      */
     @UnknownNullability
-    public static Path getLoadedAddonFile(AvoidModMeta meta) {
-        return pl.olafcio.avoid_impl.mods.loader.AvoidModLoader.getLoadedAddonFile(meta);
+    public static IMod getLoadedAddonContainer(AvoidModMeta meta) {
+        return pl.olafcio.avoid_impl.mods.loader.AvoidModLoader.getLoadedAddonContainer(meta);
     }
 
     /**

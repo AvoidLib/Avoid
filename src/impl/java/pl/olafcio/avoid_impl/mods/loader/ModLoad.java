@@ -29,6 +29,7 @@ import pl.olafcio.avoid.net.block.Block;
 import pl.olafcio.avoid.net.block.Blocks;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_loader.AvoidModContainer;
+import pl.olafcio.avoid_loader.interfaces.IMod;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -53,12 +54,12 @@ public final class ModLoad
     private static final Gson GSON
                    = new Gson();
 
-    private final Path mod;
+    private final IMod mod;
     private final Set<String> loadedMods;
     private final AvoidModContainer container;
 
     public ModLoad(AvoidModContainer container, Set<String> loadedMods) {
-        this.mod = container.path();
+        this.mod = container;
         this.loadedMods = loadedMods;
         this.container = container;
     }
@@ -66,12 +67,14 @@ public final class ModLoad
     public void load() {
         container.classLoader().startup = false;
 
-        try (var jar = new JarFile(mod.toFile())) {
+        var jar = mod.getModFile().getJar();
+
+        try {
             var manifest = container.manifest();
 
             int schema = manifest.get("__schema").getAsInt();
             if (schema != 1) {
-                Avoid.LOGGER.error("Invalid Avoid mod manifest __schema: {} [{}]", schema, mod.toAbsolutePath());
+                Avoid.LOGGER.error("Invalid Avoid mod manifest __schema: {} [{}]", schema, mod.getModFile().getPath().toAbsolutePath());
                 return;
             }
 
@@ -158,7 +161,7 @@ public final class ModLoad
             Class<?> klassUnc = classLoader.loadClass(klassName);
 
             if (!AvoidMod.class.isAssignableFrom(klassUnc)) {
-                Avoid.LOGGER.error("Main class of mod must extend AvoidMod: {}", mod.toAbsolutePath());
+                Avoid.LOGGER.error("Main class of mod must extend AvoidMod: {}", mod.getModFile().getPath().toAbsolutePath());
                 return;
             }
 
@@ -194,27 +197,27 @@ public final class ModLoad
             });
 
             EventManager.fire(new ModLoadedEvent(meta));
-        } catch (FileNotFoundException e) {
-            Avoid.LOGGER.warn("Failed to resolve mod .jar file symbolic link target: {}", mod.toAbsolutePath());
-            EventManager.fire(new ModErrorEvent(mod, e));
-        } catch (IOException e) {
-            Avoid.LOGGER.error("Failed to read mod .jar file [IOException]: {}", mod.toAbsolutePath(), e);
-            EventManager.fire(new ModErrorEvent(mod, e));
+//        } catch (FileNotFoundException e) {
+//            Avoid.LOGGER.warn("Failed to resolve mod .jar file symbolic link target: {}", mod.getModFile().getPath().toAbsolutePath());
+//            EventManager.fire(new ModErrorEvent(mod, e));
+//        } catch (IOException e) {
+//            Avoid.LOGGER.error("Failed to read mod .jar file [IOException]: {}", mod.getModFile().getPath().toAbsolutePath(), e);
+//            EventManager.fire(new ModErrorEvent(mod, e));
         } catch (NullPointerException e) {
-            Avoid.LOGGER.error("Failed to read mod .jar avoid-manifest [NullPE]: {}", mod.toAbsolutePath(), e);
+            Avoid.LOGGER.error("Failed to read mod .jar avoid-manifest [NullPE]: {}", mod.getModFile().getPath().toAbsolutePath(), e);
             EventManager.fire(new ModErrorEvent(mod, e));
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
                  InstantiationException | IllegalAccessException e) {
-            Avoid.LOGGER.error("Failed to enable Avoid mod: {}", mod.toAbsolutePath(), e);
+            Avoid.LOGGER.error("Failed to enable Avoid mod: {}", mod.getModFile().getPath().toAbsolutePath(), e);
             EventManager.fire(new ModErrorEvent(mod, e));
         } catch (NoSuchFieldException e) {
             try {
                 EventManager.fire(new ModFatalEvent(mod, e));
             } catch (Exception ex) {
-                Avoid.LOGGER.warn("Failed to fire ModFatalEvent for '%s': ".formatted(mod.toAbsolutePath()), ex);
+                Avoid.LOGGER.warn("Failed to fire ModFatalEvent for '%s': ".formatted(mod.getModFile().getPath().toAbsolutePath()), ex);
             }
 
-            throw new RuntimeException("Failed to set Avoid mod metadata: %s".formatted(mod.toAbsolutePath()), e);
+            throw new RuntimeException("Failed to set Avoid mod metadata: %s".formatted(mod.getModFile().getPath().toAbsolutePath()), e);
         }
     }
 
@@ -256,7 +259,7 @@ public final class ModLoad
                 try {
                     klass = classLoader.loadClass(className);
                 } catch (Throwable e) {
-                    Avoid.LOGGER.error("Failed to load class {} ({})", className, mod.getFileName().toString());
+                    Avoid.LOGGER.error("Failed to load class {} ({})", className, mod.getModFile().getPath().getFileName().toString());
                     continue;
                 }
 
@@ -406,6 +409,6 @@ public final class ModLoad
 
     @Override
     public Path mod() {
-        return mod;
+        return mod.getModFile().getPath();
     }
 }

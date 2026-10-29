@@ -8,6 +8,7 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid.mods.AvoidMod;
 import pl.olafcio.avoid.mods.AvoidModMeta;
+import pl.olafcio.avoid_loader.interfaces.IMod;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public final class AvoidModLoader {
     static final HashMap<AvoidModMeta, AvoidMod> instances
            = new HashMap<>();
 
-    static final HashMap<AvoidModMeta, Path> files
+    static final HashMap<AvoidModMeta, IMod> files
            = new HashMap<>();
 
     private AvoidModLoader() {}
@@ -56,11 +57,22 @@ public final class AvoidModLoader {
     }
 
     /**
-     * Gets the filesystem path of an Avoid addon, under the given ID.<br/>
+     * Gets the filesystem path of an Avoid addon, under the given metadata.<br/>
+     * If no addon was found (or the addon wasn't loaded yet), {@code null} is returned.
+     * @deprecated Use {@link #getLoadedAddonContainer} instead.
+     */
+    @UnknownNullability
+    @Deprecated(since = "v2.1")
+    public static Path getLoadedAddonFile(AvoidModMeta meta) {
+        return files.get(meta).getModFile().getPath();
+    }
+
+    /**
+     * Gets the container of an Avoid addon, under the given metadata.<br/>
      * If no addon was found (or the addon wasn't loaded yet), {@code null} is returned.
      */
     @UnknownNullability
-    public static Path getLoadedAddonFile(AvoidModMeta meta) {
+    public static IMod getLoadedAddonContainer(AvoidModMeta meta) {
         return files.get(meta);
     }
 
