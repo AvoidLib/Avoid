@@ -16,8 +16,9 @@ import java.util.Map;
  * Specifies the extending class is ready to register as a server command.
  */
 @NeverRemoval
-public abstract class Command {
+public abstract class Command implements AnyCommand {
     @NeverRemoval
+    @Override
     public void sendSyntaxException(
             @NotNull Executor executor,
             @NotNull Usage ctx,
@@ -53,8 +54,8 @@ public abstract class Command {
      * <b>Note:</b> This method works only after registering the class.
      */
     @NeverRemoval
-    @NotNull
-    public final String getName() {
+    @Override
+    public final @NotNull String getName() {
         return CommandManager.get(this).name();
     }
 
@@ -62,8 +63,8 @@ public abstract class Command {
      * <b>Note:</b> This method works only after registering the class.
      */
     @NeverRemoval
-    @NotNull
-    public final String getUsage() {
+    @Override
+    public final @NotNull String getUsage() {
         return CommandManager.get(this).usage();
     }
 
@@ -71,6 +72,7 @@ public abstract class Command {
      * <b>Note:</b> This method works only after registering the class.
      */
     @NeverRemoval
+    @Override
     public final String @NotNull[] getExamples() {
         return CommandManager.get(this).examples();
     }
@@ -79,8 +81,8 @@ public abstract class Command {
      * <b>Note:</b> This method works only after registering the class.
      */
     @NeverRemoval
-    @NotNull
-    public final SyntaxTree getSyntaxTree() {
+    @Override
+    public final @NotNull SyntaxTree getSyntaxTree() {
         return CommandManager.get(this).syntaxes();
     }
 
@@ -88,8 +90,8 @@ public abstract class Command {
      * <b>Note:</b> This method works only after registering the class.
      */
     @NeverRemoval
-    @Nullable
-    public final CommandHandler getUnknownHandler() {
+    @Override
+    public final @Nullable CommandHandler getUnknownHandler() {
         return CommandManager.get(this).unknownhandler();
     }
 }

@@ -34,7 +34,11 @@ public abstract class BrigadierSupport<Src> {
            = new LinkedHashMap<>();
 
     public void finishCommands(CommandDispatcher<Src> dispatcher) {
-        CommandManager.each(cmd -> {
+        finishCommands(dispatcher, CommandManager.getInstance());
+    }
+
+    public void finishCommands(CommandDispatcher<Src> dispatcher, CommandManager.Instance<?> commandManager) {
+        commandManager.each(cmd -> {
             var name = cmd.getName();
 
             var root = LiteralArgumentBuilder.<Src>literal(name);

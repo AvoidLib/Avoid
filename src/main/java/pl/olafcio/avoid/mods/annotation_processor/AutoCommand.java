@@ -17,4 +17,5 @@ import java.lang.annotation.Target;
 public @interface AutoCommand {
     String usage() default "";
     String[] examples() default {};
+    boolean clientSide() default false;
 }

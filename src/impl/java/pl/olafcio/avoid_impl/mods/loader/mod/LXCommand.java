@@ -3,6 +3,8 @@ package pl.olafcio.avoid_impl.mods.loader.mod;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.mods.annotation_processor.AutoCommand;
+import pl.olafcio.avoid.net.command.ClientCommand;
+import pl.olafcio.avoid.net.command.ClientCommandManager;
 import pl.olafcio.avoid.net.command.Command;
 import pl.olafcio.avoid.net.command.CommandManager;
 
@@ -14,12 +16,21 @@ public interface LXCommand {
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
         if (klass.isAnnotationPresent(AutoCommand.class)) {
-            if (!Command.class.isAssignableFrom(klass)) {
-                Avoid.LOGGER.error("@AutoCommand requires the annotated type to extend Command (avoid.net.command)");
-                return true;
-            }
+            if (klass.getDeclaredAnnotation(AutoCommand.class).clientSide()) {
+                if (!ClientCommand.class.isAssignableFrom(klass)) {
+                    Avoid.LOGGER.error("@AutoCommand(clientSide = true) requires the annotated type to extend ClientCommand (avoid.net.command)");
+                    return true;
+                }
 
-            CommandManager.add((Command) klass.getDeclaredConstructor().newInstance());
+                ClientCommandManager.add((ClientCommand) klass.getDeclaredConstructor().newInstance());
+            } else {
+                if (!Command.class.isAssignableFrom(klass)) {
+                    Avoid.LOGGER.error("@AutoCommand requires the annotated type to extend Command (avoid.net.command)");
+                    return true;
+                }
+
+                CommandManager.add((Command) klass.getDeclaredConstructor().newInstance());
+            }
         }
 
         return false;

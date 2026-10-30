@@ -42,7 +42,7 @@ import java.util.function.Function;
 @NeverRemoval
 public final class SyntaxTree extends LinkedHashMap<CommandParameter<?>, SyntaxTree> {
     public CommandHandler method;
-    public Command cmd;
+    public AnyCommand cmd;
     public Function<String, String[]> tabcomplete;
 
     private Annotation permission;
