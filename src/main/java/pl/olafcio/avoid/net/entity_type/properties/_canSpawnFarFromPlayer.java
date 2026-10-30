@@ -5,4 +5,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-public @interface _canSpawnFarFromPlayer {}
+public @interface _canSpawnFarFromPlayer {
+    boolean value() default true;
+}

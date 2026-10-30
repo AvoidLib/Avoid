@@ -179,8 +179,9 @@ public final class EntityTypes {
                 !klass.isAnnotationPresent(_noSave.class),
                 !klass.isAnnotationPresent(_noSummon.class),
                 klass.isAnnotationPresent(_fireImmune.class),
-                klass.isAnnotationPresent(_canSpawnFarFromPlayer.class) ||
-                     category == Category.CREATURE || category == Category.MISC,
+                klass.isAnnotationPresent(_canSpawnFarFromPlayer.class)
+                        ? klass.getDeclaredAnnotation(_canSpawnFarFromPlayer.class).value()
+                        : (category == Category.CREATURE || category == Category.MISC),
                 ImmutableSet.of(),  // immuneTo (blocks)
                 dimensions.withAttachments(attachments),
                 klass.isAnnotationPresent(_spawnDimensionsScale.class)
