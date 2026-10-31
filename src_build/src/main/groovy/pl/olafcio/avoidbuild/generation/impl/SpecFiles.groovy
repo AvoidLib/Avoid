@@ -157,7 +157,7 @@ class SpecFiles implements ITransformer {
                             if (srcDir[1] == ':')
                                 srcDir = srcDir.substring(2)
 
-                            srcDir = srcDir.substring(0, relative.length())
+                            srcDir = srcDir.substring(0, srcDir.length() - relative.length())
 
                             var annotationPackage = file.toAbsolutePath().toString()
                             if (annotationPackage[1] == ':')
