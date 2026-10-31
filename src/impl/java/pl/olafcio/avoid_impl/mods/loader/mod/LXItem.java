@@ -8,6 +8,7 @@ import pl.olafcio.avoid.mods.annotation_processor.AutoItem;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.item.Item;
 import pl.olafcio.avoid.net.item.ItemNative;
+import pl.olafcio.avoid.net.item.Items;
 import pl.olafcio.avoid_impl.mods.loader.ModLoad;
 
 import java.lang.reflect.InvocationTargetException;
@@ -49,9 +50,8 @@ public interface LXItem {
 
             Avoid.LOGGER.debug("Registering item '{}'", idstr);
 
-            pl.olafcio.avoid.net.item.Items.register(Identification.of(idstr), mcItem -> {
+            Items.register(Identification.of(idstr), () -> {
                 try {
-                    ItemNative.itemconstruct.put(Thread.currentThread().threadId(), mcItem);
                     return (Item) constructor.newInstance();
                 } catch (InstantiationException | IllegalAccessException e) {
                     throw new RuntimeException("Failed to construct item (%s)".formatted(idstr), e);

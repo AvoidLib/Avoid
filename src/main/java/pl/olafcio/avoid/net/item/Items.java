@@ -6,6 +6,7 @@ import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
 import pl.olafcio.avoid.net.id.Identification;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -31,15 +32,24 @@ public final class Items {
     }
 
     /**
-     * @deprecated Use {@link Items#register(Identification, Function, Class)} instead.
+     * @deprecated Use {@link Items#register(Identification, Supplier, AnnotatedElement)} instead.
      */
     @Deprecated(since = "v1.26", forRemoval = true)
     public static void register(Identification itemID, Supplier<? extends Item> constructor) {
         pl.olafcio.avoid_impl.net.item.Items.register(itemID, constructor);
     }
 
+    /**
+     * @deprecated Use {@link Items#register(Identification, Supplier, AnnotatedElement)} instead.
+     */
+    @Deprecated(since = "v2.1", forRemoval = true)
     public static void register(Identification itemID, Function<net.minecraft.world.item.Item, ? extends Item> constructor, Class<? extends Item> itemClass) {
         pl.olafcio.avoid_impl.net.item.Items.register(itemID, constructor, itemClass);
+    }
+
+    @ApiStatus.Experimental
+    public static void register(Identification itemID, Supplier<? extends Item> constructor, AnnotatedElement config) {
+        pl.olafcio.avoid_impl.net.item.Items.register(itemID, constructor, config);
     }
 
     @ApiStatus.Internal

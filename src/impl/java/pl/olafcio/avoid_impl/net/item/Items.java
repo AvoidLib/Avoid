@@ -18,6 +18,7 @@ import pl.olafcio.avoid.net.item.properties.*;
 import pl.olafcio.avoid.net.item.properties.spawnegg.ID;
 import pl.olafcio.avoid_impl.net.item.values.SlotDescriptionNative;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -42,9 +43,6 @@ public final class Items {
         return customItem.getID();
     }
 
-    /**
-     * @deprecated Use {@link Items#register(Identification, Function, Class)} instead.
-     */
     @Deprecated(since = "v1.26", forRemoval = true)
     public static void register(Identification itemID, Supplier<? extends Item> constructor) {
         var id = IdentificationNative.convert(itemID);
@@ -61,7 +59,7 @@ public final class Items {
         );
     }
 
-    public static void register(Identification itemID, Function<net.minecraft.world.item.Item, ? extends Item> constructor, Class<? extends Item> itemClass) {
+    public static void register(Identification itemID, Function<net.minecraft.world.item.Item, ? extends Item> constructor, AnnotatedElement itemClass) {
         var id = IdentificationNative.convert(itemID);
 
         Function<Properties, net.minecraft.world.item.Item> callback = properties -> {
@@ -77,6 +75,14 @@ public final class Items {
                 callback,
                 getProperties(itemClass)
         );
+    }
+
+    public static void register(Identification itemID, Supplier<? extends Item> constructor, AnnotatedElement config) {
+        register(itemID, mcItem -> {
+            pl.olafcio.avoid.net.item.ItemNative.itemconstruct.put(Thread.currentThread().threadId(), mcItem);
+
+            return constructor.get();
+        }, config);
     }
 
     @ApiStatus.Internal
@@ -95,7 +101,7 @@ public final class Items {
         );
     }
 
-    private static Properties getProperties(Class<? extends Item> item) {
+    private static Properties getProperties(AnnotatedElement item) {
         var properties = new Properties();
 
         if (item.isAnnotationPresent(_useCooldown.class))
