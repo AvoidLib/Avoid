@@ -12,6 +12,7 @@ import java.nio.file.Path
 import java.util.function.Consumer
 import java.util.function.Function
 import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class SpecFiles implements ITransformer {
     private Project project
@@ -126,13 +127,22 @@ class SpecFiles implements ITransformer {
                             var content       = Files.readString(file, StandardCharsets.UTF_8)
                             var contentLines = content.split("\n")
 
+                            var packaged = new HashMap<String, String>()
+
                             for (var line : contentLines) {
-                                if (line.startsWith("package ") || line.trim().isEmpty() || line.startsWith("/") || line.startsWith("*"))
-                                    continue
-                                else if (line.startsWith("import "))
-                                    imports.add(line.substring(7, line.length() - 2))
-                                else
-                                    break
+                                if (line.startsWith("import ")) {
+                                    var pkg = line.substring(7, line.length() - 2)
+
+                                    if (imports.contains(pkg)) {
+                                        packaged[pkg.substring(pkg.lastIndexOf("\\.") + 1)] = pkg
+                                    } else {
+                                        imports.add(pkg)
+                                    }
+                                } else {
+                                    var output = (line =~ /^ *(class|enum|interface|record|@interface) (([a-zA-Z_]+)([a-zA-Z0-9_]+).*?) \{$/)
+                                    if (output.find())
+                                        packaged[output.group(2)] = annotationName + "." + output.group(2)
+                                }
                             }
 
                             var body   = content.substring(content.indexOf("{"), content.lastIndexOf("}"))
@@ -145,8 +155,13 @@ class SpecFiles implements ITransformer {
                                     var beforeParen = trim.substring(0, trim.indexOf('('))
                                     var space = beforeParen.lastIndexOf(' ')
 
+                                    var type = beforeParen.substring(0, space)
+                                    if (packaged.containsKey(type)) {
+                                        type = packaged[type]
+                                    }
+
                                     annotationProperties.add([
-                                            beforeParen.substring(0, space),
+                                            type,
                                             beforeParen.substring(space + 1)
                                     ])
                                 }
