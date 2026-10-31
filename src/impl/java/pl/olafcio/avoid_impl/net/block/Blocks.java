@@ -32,6 +32,7 @@ import pl.olafcio.avoid.net.world.block_data.BlockData;
 import pl.olafcio.avoid_impl.net.world.block_data.BlockDataNative;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -51,11 +52,12 @@ public final class Blocks {
         return BlockDataNative.convertFrom(BuiltInRegistries.BLOCK.getValue(IdentificationNative.convert(id)).defaultBlockState());
     }
 
-    public static void register(Identification blockID, Supplier<? extends pl.olafcio.avoid.net.block.Block> constructor) {
+    public static void register(Identification blockID, Supplier<? extends pl.olafcio.avoid.net.block.Block> constructor, AnnotatedElement config) {
         var id = IdentificationNative.convert(blockID);
 
         Function<Properties, Block> callback = properties -> BlockNative.make(
                 constructor.get(),
+                config,
                 properties
         );
 
@@ -63,7 +65,7 @@ public final class Blocks {
         var block = net.minecraft.world.level.block.Blocks.register(
                 ResourceKey.create(Registries.BLOCK, id),
                 callback,
-                getProperties(inst, inst.getClass(), blockID)
+                getProperties(inst, config, blockID)
         );  //at:register
 
         Registry.register(BuiltInRegistries.BLOCK_TYPE, id, simpleCodec(callback));
@@ -102,7 +104,7 @@ public final class Blocks {
 
     private record ChosenPreset(Properties properties, String preset) {}
 
-    private static <T extends pl.olafcio.avoid.net.block.Block> Properties getProperties(T instance, Class<? extends T> block, Identification blockID) {
+    private static <T extends pl.olafcio.avoid.net.block.Block> Properties getProperties(T instance, AnnotatedElement block, Identification blockID) {
         var ret = presetProperties(block);
 
         var properties = ret.properties();
@@ -265,7 +267,7 @@ public final class Blocks {
     }
 
     @NotNull
-    private static ChosenPreset presetProperties(Class<? extends pl.olafcio.avoid.net.block.Block> block) {
+    private static ChosenPreset presetProperties(AnnotatedElement block) {
         var presets = Map.<Class<? extends Annotation>, Function<? extends Annotation, Properties>>
                 //at:presets
                           of(_presetNetherStem.class, (_presetNetherStem preset) -> IBlocks.netherStemProperties(
@@ -297,7 +299,7 @@ public final class Blocks {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends Annotation> T getUnsafe(Class<?> clazz, Class<?> annotation) {
+    private static <T extends Annotation> T getUnsafe(AnnotatedElement clazz, Class<?> annotation) {
         return clazz.getDeclaredAnnotation((Class<T>) annotation);
     }
 }

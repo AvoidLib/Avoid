@@ -22,6 +22,8 @@ import pl.olafcio.avoid_impl.net.world.WorldNative;
 import pl.olafcio.avoid_impl.net.world.block_data.BlockDataNative;
 import pl.olafcio.avoid_impl.net.world.vect3.Vect3Native;
 
+import java.lang.reflect.AnnotatedElement;
+
 @Native
 @ApiStatus.Internal
 public final class BlockNative {
@@ -33,7 +35,10 @@ public final class BlockNative {
     }
 
     static Block make(pl.olafcio.avoid.net.block.Block avoidBlock, BlockBehaviour.Properties properties) {
-        var abc = avoidBlock.getClass();
+        return make(avoidBlock, avoidBlock.getClass(), properties);
+    }
+
+    static Block make(pl.olafcio.avoid.net.block.Block avoidBlock, AnnotatedElement abc, BlockBehaviour.Properties properties) {
         if (abc.isAnnotationPresent(_liquid.class)) {
             var liquid = abc.getDeclaredAnnotation(_liquid.class);
             if (liquid.fluid() != Fluid.class)
