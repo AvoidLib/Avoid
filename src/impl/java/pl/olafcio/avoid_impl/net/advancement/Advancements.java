@@ -16,7 +16,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 
-import java.lang.reflect.Constructor;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,7 +32,25 @@ public final class Advancements {
     public static final HashMap<Identifier, Advancement> ADVANCEMENTS
                   = new HashMap<>();
 
-    public static void register(Identification id, Class<? extends pl.olafcio.avoid.net.advancement.Advancement> advancement) {
+    public static void register(Identification id, Class<? extends pl.olafcio.avoid.net.advancement.Advancement> avoidAdvancement) {
+        try {
+            var constructor = avoidAdvancement.getDeclaredConstructor();
+
+            register(id, () -> {
+                try {
+                    return constructor.newInstance();
+                } catch (InstantiationException | IllegalAccessException e) {
+                    throw new RuntimeException("Failed to initialize Avoid advancement  /Instantiation or IllegalAccess (missing public no-arg constructor?)", e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException("Failed to initialize Avoid advancement  /InvocationTargetException (wrapped exception)", e);
+                }
+            }, avoidAdvancement);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Failed to initialize Avoid advancement  /NoSuchMethodException (missing constructor?)", e);
+        }
+    }
+
+    public static void register(Identification id, Supplier<? extends pl.olafcio.avoid.net.advancement.Advancement> supplier, AnnotatedElement advancement) {
         var display = advancement.getDeclaredAnnotation(_display.class);
         var type = advancement.getDeclaredAnnotation(_type.class)
                               .value();
@@ -61,7 +79,7 @@ public final class Advancements {
                 Map.of("toggle", new Criterion<>(CriteriaTriggers.IMPOSSIBLE, new ImpossibleTrigger.TriggerInstance())),
                 AdvancementRequirements.anyOf(Collections.singleton("toggle")),
                 false,
-                advancement
+                supplier
         ));
     }
 
@@ -75,25 +93,11 @@ public final class Advancements {
                 @NotNull Map<String, Criterion<?>> map,
                 AdvancementRequirements advancementRequirements,
                 boolean bl,
-                Class<? extends pl.olafcio.avoid.net.advancement.Advancement> avoidAdvancement
+                Supplier<? extends pl.olafcio.avoid.net.advancement.Advancement> avoidAdvancement
         ) {
             super(optional, optional2, advancementRewards, map, advancementRequirements, bl);
 
-            try {
-                var constructor = avoidAdvancement.getDeclaredConstructor();
-
-                this.advancement = () -> {
-                    try {
-                        return constructor.newInstance();
-                    } catch (InstantiationException | IllegalAccessException e) {
-                        throw new RuntimeException("Failed to initialize Avoid advancement  /Instantiation or IllegalAccess (missing public no-arg constructor?)", e);
-                    } catch (InvocationTargetException e) {
-                        throw new RuntimeException("Failed to initialize Avoid advancement  /InvocationTargetException (wrapped exception)", e);
-                    }
-                };
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException("Failed to initialize Avoid advancement  /NoSuchMethodException (missing constructor?)", e);
-            }
+            this.advancement = avoidAdvancement;
         }
 
         @Override
