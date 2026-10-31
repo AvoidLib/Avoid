@@ -139,9 +139,9 @@ class SpecFiles implements ITransformer {
                             var lines = body.split("\n")
 
                             for (var line : lines) {
-                                var trim = line.stripLeading()
+                                var trim = line.stripLeading().split("/")[0]
 
-                                if (line.startsWith("    ") && !trim.startsWith("/") && !trim.startsWith("*")) {
+                                if (line.startsWith("    ") && !trim.isEmpty() && !trim.startsWith("*") && trim.contains("(")) {
                                     var beforeParen = trim.substring(0, trim.indexOf('('))
                                     var space = beforeParen.lastIndexOf(' ')
 
