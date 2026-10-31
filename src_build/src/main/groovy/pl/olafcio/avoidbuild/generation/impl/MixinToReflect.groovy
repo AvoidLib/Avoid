@@ -87,10 +87,12 @@ class MixinToReflect implements ITransformer {
     @Override
     void transform(Path sub) {
         var data = Files.readString(sub, StandardCharsets.UTF_8)
+        var orig = data
 
         for (var entry : replacements.entrySet())
             data = data.replaceAll(entry.getKey(), entry.getValue());
 
-        Files.writeString(sub, data, StandardCharsets.UTF_8)
+        if (orig != data)
+            Files.writeString(sub, data, StandardCharsets.UTF_8)
     }
 }

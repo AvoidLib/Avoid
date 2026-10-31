@@ -21,10 +21,15 @@ class EnvProcessing implements ITransformer {
 
     @Override
     void transform(Path sub) {
-        Files.writeString(sub, Files.readString(sub, StandardCharsets.UTF_8) \
-                                    .replace("net.fabricmc.api.Environment", onlyIn) \
-                                    .replace("net.fabricmc.api.EnvType", dist) \
-                                    .replace("@Environment(EnvType.SERVER", "@Environment(EnvType." + server) \
-                                    .replace("@Environment(EnvType.", "@${onlyIn.split("\\.").toList().getLast()}(${dist.split("\\.").toList().getLast()}."), StandardCharsets.UTF_8)
+        var data = Files.readString(sub, StandardCharsets.UTF_8)
+        var orig = data
+
+        data = data.replace("net.fabricmc.api.Environment", onlyIn) \
+                   .replace("net.fabricmc.api.EnvType", dist) \
+                   .replace("@Environment(EnvType.SERVER", "@Environment(EnvType." + server) \
+                   .replace("@Environment(EnvType.", "@${onlyIn.split("\\.").toList().getLast()}(${dist.split("\\.").toList().getLast()}.")
+
+        if (data != orig)
+            Files.writeString(sub, data, StandardCharsets.UTF_8)
     }
 }
