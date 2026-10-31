@@ -468,7 +468,7 @@ public abstract class Entity {
     }
 
     /**
-     * Returns whether he entity is sensitive to water.<br/>
+     * Returns whether the entity is sensitive to water.<br/>
      * Returns null if the entity is dead ({@link Entity#isAlive()} returns {@code false}).
      */
     @UnknownNullability

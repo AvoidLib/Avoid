@@ -6,7 +6,7 @@ import pl.olafcio.avoid.net.player.Player;
 @ApiStatus.Experimental
 public abstract class Advancement {
     /**
-     * Invoked when the client has been notified that he has been granted the advancement.
+     * Invoked when the client has been notified that they have been granted the advancement.
      */
     public void onGrantClient(Player player) {}
 
