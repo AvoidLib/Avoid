@@ -12,6 +12,9 @@ Minecraft complete wrapper framework.
 ![GitHub Issues](https://img.shields.io/github/issues/AvoidLib/Avoid?style=plastic&color=9152cc)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/AvoidLib/Avoid?style=plastic&color=512e73)
 ![GitHub last commit](https://img.shields.io/github/last-commit/AvoidLib/Avoid?style=plastic&color=2d1940)
+<br/>
+![Modrinth Followers](https://img.shields.io/modrinth/followers/avoid?style=plastic&logo=modrinth&label=followers&color=%2327752b)
+![Modrinth Downloads](https://img.shields.io/modrinth/dt/avoid?style=plastic&logo=modrinth&color=%23104713)
 
 </div>
 
