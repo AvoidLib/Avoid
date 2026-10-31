@@ -153,6 +153,8 @@ class SpecFiles implements ITransformer {
                             }
 
                             // Append
+                            var methodName = annotationName.substring(0, 1).toLowerCase() + annotationName.substring(1)
+
                             var srcDir = path.toAbsolutePath().toString()
                             if (srcDir[1] == ':')
                                 srcDir = srcDir.substring(2)
@@ -174,7 +176,6 @@ class SpecFiles implements ITransformer {
                                 imports.add(annotationPackage)
                             }
 
-                            var methodName = fn.substring(0, 1).toLowerCase() + annotationName
                             var methodArgs = []
                             var methodImpl = [
                                     "\n" +
