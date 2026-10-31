@@ -1,0 +1,10 @@
+package pl.olafcio.avoid.net.entity_selector;
+
+import java.util.function.Supplier;
+
+make an annotation builder:
+    out of "properties/"
+    onto:
+        public void buildAndRegister(char ch, Supplier<? extends EntitySelector> constructor) {
+            EntitySelectors.register(ch, constructor, build());
+        }

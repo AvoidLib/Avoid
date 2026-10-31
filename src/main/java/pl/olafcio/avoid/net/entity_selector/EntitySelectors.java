@@ -6,6 +6,7 @@ import pl.olafcio.avoid.net.entity_selector.properties.SelectorResults;
 import pl.olafcio.avoid.net.entity_selector.properties.SelectorSelf;
 import pl.olafcio.avoid.net.entity_selector.properties.SelectorTarget;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
@@ -20,6 +21,23 @@ public final class EntitySelectors {
     public static void register(char ch, Supplier<? extends EntitySelector> constructor) {
         var instance = constructor.get();
         var type = instance.getClass();
+
+        var self = type.isAnnotationPresent(SelectorSelf.class);
+        var maxResults = type.getDeclaredAnnotation(SelectorResults.class)
+                             .value();
+
+        var order = type.getDeclaredAnnotation(SelectorOrder.class)
+                        .value();
+        var target = type.getDeclaredAnnotation(SelectorTarget.class)
+                         .value();
+
+        SELECTOR_TYPES.put(ch, new EntitySelectorMeta(self, maxResults,
+                                                      order, target,
+                                                      instance));
+    }
+
+    public static void register(char ch, Supplier<? extends EntitySelector> constructor, AnnotatedElement type) {
+        var instance = constructor.get();
 
         var self = type.isAnnotationPresent(SelectorSelf.class);
         var maxResults = type.getDeclaredAnnotation(SelectorResults.class)
