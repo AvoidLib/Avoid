@@ -10,7 +10,9 @@ import pl.olafcio.avoidbuild.generation.annotations.BeforeVCSTransform
 
 import java.lang.reflect.Method
 import java.nio.file.Files
+import java.nio.file.LinkOption
 import java.nio.file.Path
+import java.util.function.BiConsumer
 import java.util.function.Consumer
 
 class MainPlugin implements Plugin<Project> {
@@ -43,8 +45,13 @@ class MainPlugin implements Plugin<Project> {
             boolean shouldAnalyze(String path)
         }
 
+        private interface PathAnalyzer {
+            void analyze(Path path, String relative)
+            boolean shouldAnalyze(Path path)
+        }
+
         void run(Project project) {
-            var beforeTransform = new ArrayList<ITransformer>()
+            var beforeTransform = new ArrayList<PathAnalyzer>()
             var beforeVCS       = new ArrayList<VCSAnalyzer>()
 
             for (var transformer : transformers) {
@@ -52,7 +59,19 @@ class MainPlugin implements Plugin<Project> {
 
                 for (var m : methods) {
                     if (m.isAnnotationPresent(BeforeTransform.class)) {
-                        beforeTransform.add(sub -> m.invoke(transformer, sub))
+                        beforeTransform.add(new PathAnalyzer() {
+                            final Method method = m;
+
+                            @Override
+                            void analyze(Path path, String relative) {
+                                method.invoke(transformer, path, relative)
+                            }
+
+                            @Override
+                            boolean shouldAnalyze(Path path) {
+                                return (path.toAbsolutePath().toString() =~ method.getAnnotation(BeforeTransform.class).regex()).find()
+                            }
+                        })
                     } else if (m.isAnnotationPresent(BeforeVCSTransform.class)) {
                         beforeVCS.add(new VCSAnalyzer() {
                             final Method method = m;
@@ -97,12 +116,19 @@ class MainPlugin implements Plugin<Project> {
 
             if (!beforeTransform.isEmpty()) {
                 for (var src : ((SourceSetContainer) project.sourceSets).main.java.srcDirs) {
-                    walk(src.toPath(), sub -> beforeTransform*.transform(sub))
-                }
-            }
+                    walkAny(src.toPath(), (sub, rel) -> {
+                        for (var transformer : beforeTransform)
+                            if (transformer.shouldAnalyze(sub))
+                                transformer.analyze(sub, rel)
 
-            for (var src : ((SourceSetContainer) project.sourceSets).main.java.srcDirs) {
-                walk(src.toPath(), this::transform)
+                        if (rel.endsWith(".java"))
+                            this.transform(sub)
+                    })
+                }
+            } else {
+                for (var src : ((SourceSetContainer) project.sourceSets).main.java.srcDirs) {
+                    walk(src.toPath(), this::transform)
+                }
             }
         }
 
@@ -117,6 +143,18 @@ class MainPlugin implements Plugin<Project> {
                         walk(sub, transform)
                     } else if (sub.getFileName().toString().endsWith(".java")) {
                         transform(sub)
+                    }
+                })
+            }
+        }
+
+        static void walkAny(Path path, BiConsumer<Path, String> transform, String relative = "") {
+            try (var files = Files.list(path)) {
+                files.forEach(sub -> {
+                    if (Files.isDirectory(sub)) {
+                        walkAny(sub, transform, relative + "/" + sub.getFileName().toString())
+                    } else if (Files.isRegularFile(sub, LinkOption.NOFOLLOW_LINKS)) {
+                        transform(sub, relative + "/" + sub.getFileName().toString())
                     }
                 })
             }

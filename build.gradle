@@ -180,6 +180,7 @@ if (sponge) {
 
 code {
     entityTypes()
+    specFiles()
 
     if (neoforge) {
         replaceEnvAnnot("net.neoforged.api.distmarker.OnlyIn", "net.neoforged.api.distmarker.Dist", "DEDICATED_SERVER")

@@ -9,4 +9,6 @@ import java.lang.annotation.Target
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@interface BeforeTransform {}
+@interface BeforeTransform {
+    String regex()
+}

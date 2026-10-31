@@ -68,4 +68,8 @@ class CodeExtension {
     def entityTypes() {
         apply generator: new Generation(project)
     }
+
+    def specFiles() {
+        apply transformer: new SpecFiles(project)
+    }
 }

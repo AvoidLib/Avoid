@@ -26,6 +26,8 @@ dependencies {
 
     implementation 'org.ow2.asm:asm:9.10.1'
     implementation 'org.ow2.asm:asm-tree:9.10.1'
+
+    implementation github("Olafcio1/LangBase", version: '1.0-SNAPSHOT')
 }
 
 test {
@@ -35,6 +37,7 @@ test {
 jar {
     shade {
         runtimeClasspath("asm-(.*)")
+        runtimeClasspath("LangBase-(.*)")
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
