@@ -1,6 +1,7 @@
 package pl.olafcio.avoid_common;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,7 +41,7 @@ public final class JarManager {
                 pkg += "/";
 
             // multi-classloader support with package name specified
-            try (var zip = new ZipFile(klass.getClassLoader().getResource(pkg.substring(0, pkg.length() - 1)).getPath().split("!")[0].substring(5).replace("%20", " "))) { //file:
+            try (var zip = new ZipFile(getJarPath(pkg))) {
                 var entries = zip.entries();
                 var list = new ArrayList<String>();
 
@@ -60,5 +61,16 @@ public final class JarManager {
                 return list.toArray(String[]::new);
             }
         }
+    }
+
+    /**
+     * <b>NOTE:</b> This won't work for directory jars!
+     */
+    @NotNull
+    public String getJarPath(String pkg) {
+        return klass.getClassLoader().getResource(pkg.substring(0, pkg.length() - 1))
+                    .getPath()
+                    .split("!")[0].substring(5) //file:
+                    .replace("%20", " ");
     }
 }
