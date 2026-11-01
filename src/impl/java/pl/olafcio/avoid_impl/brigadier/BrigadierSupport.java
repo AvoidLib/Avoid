@@ -194,7 +194,7 @@ public abstract class BrigadierSupport<Src> {
                         }
                     }
 
-                    tree.cmd.sendSyntaxException(executor, new Usage((Map<String, Object>) args, executor), param);
+                    tree.anycmd.sendSyntaxException(executor, new Usage((Map<String, Object>) args, executor), param);
 
                     return 2;
                 }

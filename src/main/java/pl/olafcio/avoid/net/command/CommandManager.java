@@ -112,7 +112,10 @@ public final class CommandManager {
                         }
                     };
 
-                    node.cmd = cmd;
+                    if (cmd instanceof Command cast)
+                        node.cmd = cast;
+
+                    node.anycmd = cmd;
 
                     markPermission(method, node);
                 } else if (method.isAnnotationPresent(Unknown.class)) {

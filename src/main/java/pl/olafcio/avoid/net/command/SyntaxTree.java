@@ -42,7 +42,14 @@ import java.util.function.Function;
 @NeverRemoval
 public final class SyntaxTree extends LinkedHashMap<CommandParameter<?>, SyntaxTree> {
     public CommandHandler method;
-    public AnyCommand cmd;
+
+    /**
+     * @deprecated Use {@link #anycmd} instead.
+     */
+    @Deprecated(forRemoval = true, since = "v2.1")
+    public Command cmd;
+
+    public AnyCommand anycmd;
     public Function<String, String[]> tabcomplete;
 
     private Annotation permission;
