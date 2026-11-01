@@ -2,12 +2,14 @@ package pl.olafcio.avoid.net.command;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.olafcio.avoid.annotations.refactor.Discouraged;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.net.command.executor.Executor;
 import pl.olafcio.avoid.net.command.handling.CommandHandler;
 import pl.olafcio.avoid.net.command.handling.Usage;
 import pl.olafcio.avoid.net.command.parameter.CommandParameter;
 
+@Discouraged(reason = "Very likely to be refactored around")
 public interface AnyCommand {
     @NeverRemoval
     void sendSyntaxException(
