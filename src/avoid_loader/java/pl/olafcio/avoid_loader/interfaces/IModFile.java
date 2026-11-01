@@ -1,7 +1,7 @@
 package pl.olafcio.avoid_loader.interfaces;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import pl.olafcio.avoid_loader.ModClassLoader;
+import pl.olafcio.avoid_platform.DigestUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;

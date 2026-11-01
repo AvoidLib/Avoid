@@ -1,11 +1,11 @@
 package pl.olafcio.avoid_platform.loader_impl;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.olafcio.avoid_loader.AvoidModContainer;
 import pl.olafcio.avoid_loader.interfaces.IMod;
 import pl.olafcio.avoid_loader.interfaces.services.IModScanner;
+import pl.olafcio.avoid_platform.DigestUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

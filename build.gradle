@@ -77,6 +77,39 @@ base {
     archivesName = project.archives_base_name
 }
 
+sourceSets {
+    avoid_loader {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+
+        if (fabric)
+            java { srcDir 'src/avoid_loader/fabric' }
+
+        java      { srcDir 'src/avoid_loader/deprecated' }
+        resources { srcDir 'src/main/loader_resources'   }
+    }
+
+    main {
+        compileClasspath += avoid_loader.output
+        runtimeClasspath += avoid_loader.output
+
+        java { srcDir 'src/main/generated'   }
+        java { srcDir 'src/impl/java'        }
+
+        resources { srcDir 'src/impl/resources' }
+
+        if (fabric) {
+            java      { srcDir 'src/fabric/java'      }
+            resources { srcDir 'src/fabric/resources' }
+        }
+
+        if ('mixinless' !in project.properties) {
+            java      { srcDir 'src/impl_mixins/java'      }
+            resources { srcDir 'src/impl_mixins/resources' }
+        }
+    }
+}
+
 loom {
     if (!paper)
         accessWidenerPath = rootProject.file("src/impl/resources/avoidlib.accesswidener")
@@ -95,6 +128,13 @@ loom {
     runs {
         it.forEach {
             it.getJvmArguments().add("-XX:StackShadowPages=32")
+        }
+    }
+
+    mods {
+        "avoid" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.avoid_loader
         }
     }
 }
@@ -314,39 +354,6 @@ processResources {
 }
 
 //apply from: project.file('x_build/generation.gradle')
-
-sourceSets {
-    avoid_loader {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
-
-        if (fabric)
-            java { srcDir 'src/avoid_loader/fabric' }
-
-        java      { srcDir 'src/avoid_loader/deprecated' }
-        resources { srcDir 'src/main/loader_resources'   }
-    }
-
-    main {
-        compileClasspath += avoid_loader.output
-        runtimeClasspath += avoid_loader.output
-
-        java { srcDir 'src/main/generated'   }
-        java { srcDir 'src/impl/java'        }
-
-        resources { srcDir 'src/impl/resources' }
-
-        if (fabric) {
-            java      { srcDir 'src/fabric/java'      }
-            resources { srcDir 'src/fabric/resources' }
-        }
-
-        if ('mixinless' !in project.properties) {
-            java      { srcDir 'src/impl_mixins/java'      }
-            resources { srcDir 'src/impl_mixins/resources' }
-        }
-    }
-}
 
 def targetJavaVersion = Integer.parseInt((String) project.property("java_version"))
 

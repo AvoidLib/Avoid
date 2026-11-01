@@ -2,7 +2,6 @@ package pl.olafcio.avoid_platform.loader_impl;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.olafcio.avoid.platform.RunningEnv;
@@ -13,6 +12,7 @@ import pl.olafcio.avoid_loader.interfaces.IMod;
 import pl.olafcio.avoid_loader.interfaces.IModFile;
 import pl.olafcio.avoid_loader.interfaces.services.IModLoader;
 import pl.olafcio.avoid_platform.AvoidWrappedLoader;
+import pl.olafcio.avoid_platform.DigestUtils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

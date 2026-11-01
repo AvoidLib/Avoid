@@ -10,6 +10,7 @@ import pl.olafcio.avoid_loader.interfaces.services.IModConflicter;
 import pl.olafcio.avoid_loader.interfaces.services.IModLoader;
 import pl.olafcio.avoid_loader.interfaces.services.IModProcessor;
 import pl.olafcio.avoid_loader.interfaces.services.IModScanner;
+import pl.olafcio.avoid_loader.interfaces.services.stage.IPostLoader;
 import pl.olafcio.avoid_loader.subloaders.ITransformer;
 import pl.olafcio.avoid_platform.PMLImpl;
 
@@ -37,6 +38,16 @@ public final class PreModLoader {
 
     private static final ArrayList<IMod> MODS
                    = new ArrayList<>();
+
+    /**
+     * Loads the {@link IPostLoader} service.
+     */
+    public static void post() {
+        var services = INSTANCE.loadService(IPostLoader.class);
+
+        for (var service : services)
+            service.acknowledge();
+    }
 
     /**
      * Collects mods to load.

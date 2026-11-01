@@ -27,6 +27,9 @@
   "mixins": [
     "avoidlib.mixins.json"
   ],
+  "languageAdapters": {
+    "avoid": "pl.olafcio.avoid_platform.FabricEarlyInit"
+  },
   "depends": {
     "fabricloader": ">=${loader_version}",
     "minecraft": "${minecraft_version_range}",
