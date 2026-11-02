@@ -24,6 +24,6 @@ public interface IPlatformFatal {
          * Sets whether a window describing the crash should be displayed.<br/><br/>
          * <b>Note:</b> This may not work on some platforms.
          */
-        void shouldDisplay(boolean value);
+        void shouldDisplay(boolean value) throws UnsupportedOperationException;
     }
 }
