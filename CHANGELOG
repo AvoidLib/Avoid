@@ -17,6 +17,11 @@
 - Paper
 
 **🪵 Changelog:**
+- [Loader] IPlatformFatal service
+- Fix (rewritten) SHA1 hashing on streams
+- Add "This minecraft version may not receive updates" warning for snapshot releases on Modrinth
+
+**🪵 Changelog (2.1-experimental-1):**
 - Unify JarFile construction for mods, provide 'IMod' instead of 'Path' for all ModLoad events
 - Client Command Manager
 - [Entity Type Creation API] @_canSpawnFarFromPlayer(boolean value)
