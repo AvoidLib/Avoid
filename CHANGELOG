@@ -17,31 +17,20 @@
 - Paper
 
 **🪵 Changelog:**
-- PermissionHolder#hasPermission(...) methods
-- Cache entity conversions
-- Intelligent newer JAR picking in same-ID scenarios
-- Delay JIJ loading
-- Actually make 'parent' in PreModContainer
-- Improved same-mod-ID error message
-- Improved mod listing
-- PreModContainer#additionalText
-- Forge compatibility
-- AvoidWrappedLoader#isForge()
-- Remove platform-loaded mod omitting behaviour
-- Rework Loader
-- Update to 26.4-snapshot-6
-- Fix incorrectly-sided entity velocity event firing
-
-**🪵 Changelog (1.32-experimental-1):**
-- Pull Drawer item rendering methods up
-- Don't append pack.mcmeta to symbolic link mods
-- Mark session access-widenings as transitive
-- Remove on-PR in gradle.yml
-- Artifact uploading
-- Some parameters for the gradlew build
-- Unweirdify EntityModel constructor
-- [Command API] Querying, 'usage' and 'examples' fields in `@AutoCommand`
-- Update to 26.4-snapshot-5
+- Unify JarFile construction for mods, provide 'IMod' instead of 'Path' for all ModLoad events
+- Client Command Manager
+- [Entity Type Creation API] @_canSpawnFarFromPlayer(boolean value)
+- Modrinth statistics in README
+- IO optimizations in source transforming
+- Object-oriented block registration
+- Object-oriented advancement registration
+- Object-oriented item registration
+- Object-oriented entity selector registration
+- [Placeholder API] Implementability
+- `@Discouraged` for AnyCommand
+- Remove this stupid unused self mixin
+- JarManager#getJarPath([String] pkg)
+- [Loader] Move PreModLoader#preload more early on Fabric + IPostLoader service
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
