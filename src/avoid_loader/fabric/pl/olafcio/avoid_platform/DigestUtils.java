@@ -27,13 +27,10 @@ public enum DigestUtils {
 
         while (true) {
             var length = stream.read(array, 0, 1024);
-            if (length <= 0)
+            if (length == -1)
                 break;
 
             sha1.update(array, 0, length);
-
-            if (length < 1024)
-                break;
         }
 
         return sha1.digest();
