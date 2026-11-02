@@ -490,6 +490,27 @@ release {
     environment    Environment.CLIENT_OR_SERVER_PREFERS_BOTH
     changelog      Files.readString(rootProject.file("CHANGELOG").toPath())
 
+    if ("snapshot" in project.minecraft_version) {
+        changelog = """
+
+<details open>
+<summary>Detached version warning</summary>
+<br/>
+<center>
+
+<b>🚧 This Minecraft version may not receive updates.<br/>
+Use with caution.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+
+</center>
+
+</details>
+
+""".substring(1) + changelog
+
+        if (changelog.endsWith("\n\n"))
+            changelog = changelog.substring(0, changelog.length() - 1)
+    }
+
     if ("minecraft_version_list" !in project.getProperties())
         minecraft = [minecraft_version]
     else
