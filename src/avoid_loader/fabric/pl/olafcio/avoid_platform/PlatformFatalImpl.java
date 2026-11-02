@@ -121,7 +121,7 @@ public final class PlatformFatalImpl implements IModLoader {
                 public boolean displayCrash(Throwable exception, String context) {
                     var platformFatal = PreModLoader.getInstance().loadService(IPlatformFatal.class);
                     var event = new IPlatformFatal.CrashEvent() {
-                        private boolean _value = gameProvider.displayCrash(exception, context);
+                        private boolean _value = !gameProvider.displayCrash(exception, context);
 
                         @Override
                         public boolean shouldDisplay() {
@@ -138,7 +138,7 @@ public final class PlatformFatalImpl implements IModLoader {
                         service.acknowledge(event);
                     }
 
-                    return event.shouldDisplay();
+                    return !event.shouldDisplay();
                 }
 
                 @Override
