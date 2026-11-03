@@ -1,3 +1,4 @@
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
@@ -7,17 +8,23 @@ import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
+
+import pl.olafcio.avoid_loader.PreModLoader;
+import pl.olafcio.avoid_loader.interfaces.services.stage.IPlatformFatal;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.Field;
 
 {
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(II)V")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(II)V")
 
     //== replacement ==//
 
@@ -29,9 +36,17 @@ import java.lang.reflect.Field;
     @Final
     private List<Renderable> renderables;
 
+    @Unique
+    private boolean notified = false;
+
     @Inject(at = @At("HEAD"), method = "renderWithTooltipAndSubtitles")
-    public void renderWithTooltipAndSubtitles(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci) {
+    public void renderWithTooltipAndSubtitles(CallbackInfo ci) {
         if (this.getClass().getName().equalsIgnoreCase("net.neoforged.neoforge.client.gui.LoadingErrorScreen")) {
+            if (notified)
+                return;
+
+            boolean getout = true;
+
             for (var el : children) {
                 if (el.getClass().getName().equalsIgnoreCase("net.neoforged.neoforge.client.gui.LoadingErrorScreen$LoadingEntryList")) {
                     List<?> nest;
@@ -50,23 +65,18 @@ import java.lang.reflect.Field;
 
                     for (var err : clone) {
                         try {
-                            returning:
-                            {
-                                Field msgf = err.getClass().getDeclaredField("message");
-                                msgf.setAccessible(true);
+                            Field msgf = err.getClass().getDeclaredField("message");
+                            msgf.setAccessible(true);
 
-                                var msg = ((Component) msgf.get(err)).getString();
-                                if (msg.startsWith("File mods/") && msg.endsWith("is not a valid mod file")) {
-                                    var mods = AvoidModLoader.getLoadedAddons();
-                                    for (var mod : mods) {
-                                        if (msg.contains("mods/" + AvoidModLoader.getLoadedAddonFile(mod).getFileName().toString())) {
-                                            nest.remove(err);
-                                            break returning;
-                                        }
+                            var msg = ((Component) msgf.get(err)).getString();
+                            if (msg.startsWith("File mods/") && msg.endsWith("is not a valid mod file")) {
+                                var mods = AvoidModLoader.getLoadedAddons();
+                                for (var mod : mods) {
+                                    if (msg.contains("mods/" + AvoidModLoader.getLoadedAddonFile(mod).getFileName().toString())) {
+                                        nest.remove(err);
+                                        getout = false;
                                     }
                                 }
-
-                                return;
                             }
                         } catch (NoSuchFieldException | IllegalAccessException e) {
                             throw new RuntimeException("AvoidLib failed to analyze loading errors", e);
@@ -75,15 +85,48 @@ import java.lang.reflect.Field;
                 }
             }
 
+            if (getout)
+                return;
+
+            boolean yoProceeded = false;
+
             for (var btn : this.renderables) {
                 if (((AbstractWidget) btn).getMessage().getString().toLowerCase().startsWith("proceed")) {
                     ((AbstractWidget) btn).onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
+                    yoProceeded = true;
                 }
+            }
+
+            if (!yoProceeded) {
+                notified = true;
+
+                var platformFatal = PreModLoader.getInstance().loadService(IPlatformFatal.class);
+                var event = new IPlatformFatal.CrashEvent() {
+                    private boolean _value = true;
+
+                    @Override
+                    public boolean shouldDisplay() {
+                        return _value;
+                    }
+
+                    @Override
+                    public void shouldDisplay(boolean value) {
+                        _value = value;
+                    }
+                };
+
+                for (var service : platformFatal) {
+                    service.acknowledge(event);
+                }
+
+                if (!event.shouldDisplay())
+                    // I mean..
+                    Minecraft.getInstance().close();
             }
         }
     }
 
     //== back ==//
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(II)V")
+    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;init()V"), method = "init(II)V")
 }
