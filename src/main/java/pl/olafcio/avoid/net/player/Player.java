@@ -57,18 +57,27 @@ import java.util.UUID;
  */
 @NeverRemoval
 public class Player extends Entity implements Executor, OfflinePlayer {
-    private final PlayerProfile profile;
-    private final Object connection;
-
     public Player(
             int id, EntityType type, IVect3 pos, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
-            PlayerProfile profile, @Nullable Object connection,
+            @Deprecated(since = "v2.1", forRemoval = true) PlayerProfile profile,
+            @Deprecated(since = "v2.1", forRemoval = true) @Nullable Object connection,
             net.minecraft.world.entity.player.Player player
     ) {
         super(id, type, pos, velocity, uuid, name, player);
+    }
 
-        this.profile = profile;
-        this.connection = connection;
+    public Player(
+            int id, EntityType type, IVect3 pos, IVect3 velocity, UUID uuid, String uuidString, BaseComponent<?> name,
+            net.minecraft.world.entity.player.Player player
+    ) {
+        super(id, type, pos, velocity, uuid, name, player);
+    }
+
+    public Player(
+            int id, EntityType type, IVect3 pos, IVect3 velocity, UUID uuid, BaseComponent<?> name,
+            net.minecraft.world.entity.player.Player player
+    ) {
+        super(id, type, pos, velocity, uuid, name, player);
     }
 
     @Override
@@ -77,7 +86,11 @@ public class Player extends Entity implements Executor, OfflinePlayer {
     }
 
     public String getNick() {
-        return profile == null ? null : profile.name();
+        var gp = ((net.minecraft.world.entity.player.Player) underlyingEntity).getGameProfile();
+        if (gp == null)
+            return null;
+
+        return gp.name();
     }
 
     /**
@@ -89,7 +102,7 @@ public class Player extends Entity implements Executor, OfflinePlayer {
     @NeverRemoval
     public void sendMessage(BaseComponent<?> component) {
         if (underlyingEntity instanceof ServerPlayer)
-            ((ServerGamePacketListenerImpl) connection).send(new ClientboundSystemChatPacket(COToNative.from(component), false));
+            (((ServerPlayer) underlyingEntity).connection).send(new ClientboundSystemChatPacket(COToNative.from(component), false));
 
         else if (
                 AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
@@ -110,7 +123,7 @@ public class Player extends Entity implements Executor, OfflinePlayer {
     @NeverRemoval
     public void sendActionbar(BaseComponent<?> component) {
         if (underlyingEntity instanceof ServerPlayer)
-            ((ServerGamePacketListenerImpl) connection).send(new ClientboundSystemChatPacket(COToNative.from(component), true));
+            (((ServerPlayer) underlyingEntity).connection).send(new ClientboundSystemChatPacket(COToNative.from(component), true));
 
         else if (
                 AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
@@ -131,7 +144,7 @@ public class Player extends Entity implements Executor, OfflinePlayer {
     @NeverRemoval
     public void sendTitle(BaseComponent<?> component) {
         if (underlyingEntity instanceof ServerPlayer)
-            ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetTitleTextPacket(COToNative.from(component)));
+            (((ServerPlayer) underlyingEntity).connection).send(new ClientboundSetTitleTextPacket(COToNative.from(component)));
 
         else if (
                 AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
@@ -152,7 +165,7 @@ public class Player extends Entity implements Executor, OfflinePlayer {
     @NeverRemoval
     public void sendSubtitle(BaseComponent<?> component) {
         if (underlyingEntity instanceof ServerPlayer)
-            ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetSubtitleTextPacket(COToNative.from(component)));
+            (((ServerPlayer) underlyingEntity).connection).send(new ClientboundSetSubtitleTextPacket(COToNative.from(component)));
 
         else if (
                 AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
@@ -173,7 +186,7 @@ public class Player extends Entity implements Executor, OfflinePlayer {
     @NeverRemoval
     public void setTitleAnimations(int fadeIn, int stay, int fadeOut) {
         if (underlyingEntity instanceof ServerPlayer)
-            ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetTitlesAnimationPacket(fadeIn, stay, fadeOut));
+            (((ServerPlayer) underlyingEntity).connection).send(new ClientboundSetTitlesAnimationPacket(fadeIn, stay, fadeOut));
 
         else if (
                 AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
@@ -194,7 +207,7 @@ public class Player extends Entity implements Executor, OfflinePlayer {
     @NeverRemoval
     public void clearTitles(boolean resetAnimations) {
         if (underlyingEntity instanceof ServerPlayer)
-            ((ServerGamePacketListenerImpl) connection).send(new ClientboundClearTitlesPacket(resetAnimations));
+            (((ServerPlayer) underlyingEntity).connection).send(new ClientboundClearTitlesPacket(resetAnimations));
 
         else if (
                 AvoidWrappedLoader.getRunningEnvironment() == RunningEnv.CLIENT &&
@@ -231,7 +244,7 @@ public class Player extends Entity implements Executor, OfflinePlayer {
         var cast = __castEnv(ServerPlayer.class, "[Player#updateHealthAndFood] This method can only be ran on server players!");
         var food = cast.getFoodData();
 
-        ((ServerGamePacketListenerImpl) connection).send(new ClientboundSetHealthPacket(getHealth(), food.getFoodLevel(), food.getSaturationLevel()));
+        (((ServerPlayer) underlyingEntity).connection).send(new ClientboundSetHealthPacket(getHealth(), food.getFoodLevel(), food.getSaturationLevel()));
     }
 
     /**
