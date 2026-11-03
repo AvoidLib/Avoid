@@ -56,6 +56,7 @@ class MainPlugin implements Plugin<Project> {
 
             for (var transformer : transformers) {
                 var methods = transformer.class.getMethods()
+                final var tcopy = transformer
 
                 for (var m : methods) {
                     if (m.isAnnotationPresent(BeforeTransform.class)) {
@@ -64,7 +65,7 @@ class MainPlugin implements Plugin<Project> {
 
                             @Override
                             void analyze(Path path, String relative) {
-                                method.invoke(transformer, path, relative)
+                                method.invoke(tcopy, path, relative)
                             }
 
                             @Override
@@ -78,7 +79,7 @@ class MainPlugin implements Plugin<Project> {
 
                             @Override
                             void analyze(String path, String content) {
-                                method.invoke(transformer, path, content)
+                                method.invoke(tcopy, path, content)
                             }
 
                             @Override
