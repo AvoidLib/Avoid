@@ -2,3 +2,8 @@
     .getBiomeManager()
     /*biomemanager*/
 }
+
+{
+    return level.isDebug();
+    return false;
+}

@@ -395,6 +395,9 @@ public final class World extends pl.olafcio.avoid.net.world.World {
         });
     }
 
+    /**
+     * <b>NOTE:</b> This always returns {@code false} on MC 26.4 <i>(this information doesn't exist there anymore)</i>.
+     */
     @ApiStatus.Experimental
     @Override
     public boolean isDebug() {
