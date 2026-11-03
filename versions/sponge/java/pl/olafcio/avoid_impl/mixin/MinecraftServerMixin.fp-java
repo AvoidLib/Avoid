@@ -1,4 +1,5 @@
 import pl.olafcio.avoid_impl.mixininterface.IPermissionSet;
+import pl.olafcio.avoid_impl.mixinclass.PermissionSetImpl;
 
 {
     @At("CTOR_HEAD")
@@ -8,13 +9,6 @@ import pl.olafcio.avoid_impl.mixininterface.IPermissionSet;
 {
     new LevelBasedPermissionSet(
     new PermissionSetImpl(
-}
-
-{
-    public class MinecraftServerMixin {
-    public class MinecraftServerMixin {
-        private interface PermissionSetImpl
-                extends LevelBasedPermissionSet, IPermissionSet {}
 }
 
 {

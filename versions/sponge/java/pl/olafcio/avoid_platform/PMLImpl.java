@@ -24,6 +24,6 @@ public final class PMLImpl {
     }
 
     public static void addTransformer(ITransformer transformer) {
-        throw new RuntimeException("[PreModLoader#addToClasspath] Not implemented on Sponge");
+        throw new RuntimeException("[PreModLoader#addTransformer] Not implemented on Sponge");
     }
 }

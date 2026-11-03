@@ -15,7 +15,9 @@ public final class MixinExtrasLoader implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         MixinExtrasBootstrap.init();
+
         PreModLoader.preload();
+        PreModLoader.post();
     }
 
     @Override
