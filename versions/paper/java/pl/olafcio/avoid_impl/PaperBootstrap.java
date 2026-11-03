@@ -14,6 +14,8 @@ public class PaperBootstrap implements PluginBootstrap {
 
     @Override
     public void bootstrap(BootstrapContext context) {
+        PreModLoader.post();
+
         Avoid.INSTANCE.onEarlyInit();
 
         context.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {

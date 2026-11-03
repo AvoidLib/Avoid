@@ -16,6 +16,6 @@ public final class PMLImpl {
     }
 
     public static void addTransformer(ITransformer transformer) {
-        throw new RuntimeException("[PreModLoader#addToClasspath] Not implemented on Paper");
+        throw new RuntimeException("[PreModLoader#addTransformer] Not implemented on Paper");
     }
 }

@@ -16,6 +16,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
@@ -31,6 +32,38 @@ public final class Advancements {
 
     public static final HashMap<Identifier, Advancement> ADVANCEMENTS
                   = new HashMap<>();
+
+    public static void register(Identification id, Supplier<? extends pl.olafcio.avoid.net.advancement.Advancement> advancement, AnnotatedElement config) {
+        var display = config.getDeclaredAnnotation(_display.class);
+        var type = config.getDeclaredAnnotation(_type.class)
+                              .value();
+
+        ADVANCEMENTS.put(IdentificationNative.convert(id), new Advancement(
+                config.isAnnotationPresent(_parent.class)
+                    ? IdentificationNative.convertOptional(
+                        config.getDeclaredAnnotation(_parent.class)
+                              .id()
+                      )
+                    : Optional.empty(),
+                Optional.of(new DisplayInfo(
+                        BuiltInRegistries.ITEM.get(IdentificationNative.convert(display.icon())).orElseThrow().value().getDefaultInstance(),
+                        COToNative.from(Components.Parse.minimessage(display.title())),
+                        COToNative.from(Components.Parse.minimessage(display.description())),
+                        IdentificationNative.convertOptional(display.background())
+                                            .map(ClientAsset.ResourceTexture::new),
+                        type == AdvancementType.GOAL ? net.minecraft.advancements.AdvancementType.GOAL :
+                        type == AdvancementType.TASK ? net.minecraft.advancements.AdvancementType.TASK :
+                                                       net.minecraft.advancements.AdvancementType.CHALLENGE,
+                        display.showToast(),
+                        display.announceChat(),
+                        display.hidden()
+                )),
+                AdvancementRewards.EMPTY,
+                Map.of("toggle", new Criterion<>(CriteriaTriggers.IMPOSSIBLE, new ImpossibleTrigger.TriggerInstance())),
+                AdvancementRequirements.anyOf(Collections.singleton("toggle")),
+                false
+        ));
+    }
 
     public static void register(Identification id, Class<? extends pl.olafcio.avoid.net.advancement.Advancement> advancement) {
         var display = advancement.getDeclaredAnnotation(_display.class);

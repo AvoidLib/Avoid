@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.placeholder;
+package pl.olafcio.avoid_impl.net.placeholder;
 
 import me.clip.placeholderapi.PAPIComponents;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,14 +12,12 @@ import pl.olafcio.avoid_impl.net.chat.converter_kyori.COFromNative;
 import pl.olafcio.avoid_impl.net.chat.converter_kyori.COToNative;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.player.Player;
+import pl.olafcio.avoid.net.placeholder.PlaceholderProvider;
 
 @ApiStatus.Experimental
-public final class PlaceholderAPI {
-    @ApiStatus.Internal
-    private PlaceholderAPI() {}
-
+public final class Impl_PlaceholderAPI implements PlaceholderProvider {
     @ServerOnly
-    public static BaseComponent<?> replacePlaceholders_ServerOnly(BaseComponent<?> message) {
+    public BaseComponent<?> replaceServerPlaceholders(BaseComponent<?> message) {
         if (!AvoidWrappedLoader.isModPresent("PlaceholderAPI"))
             return message;
 
@@ -29,7 +27,7 @@ public final class PlaceholderAPI {
         ));
     }
 
-    public static BaseComponent<?> replacePlaceholders(BaseComponent<?> message, @NotNull Player player) {
+    public BaseComponent<?> replacePlaceholders(BaseComponent<?> message, @NotNull Player player) {
         if (!AvoidWrappedLoader.isModPresent("PlaceholderAPI"))
             return message;
 

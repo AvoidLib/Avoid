@@ -20,7 +20,7 @@ import pl.olafcio.avoid_impl.paper.AvoidDefer;
     public final class Items {
         private static void __registerItem(net.minecraft.resources.ResourceKey<net.minecraft.world.item.Item> resourceKey,
                                            java.util.function.Function<net.minecraft.world.item.Item.Properties, net.minecraft.world.item.Item> function,
-                                           Class<? extends Item> properties)
+                                           AnnotatedElement properties)
         {
             AvoidDefer.defer(() -> {
                 net.minecraft.world.item.Items.registerItem(resourceKey, function, getProperties(properties));
@@ -30,7 +30,7 @@ import pl.olafcio.avoid_impl.paper.AvoidDefer;
         private static void __registerItem(AvoidPackageOnly<net.minecraft.world.item.Item> interceptor,
                                            net.minecraft.resources.ResourceKey<net.minecraft.world.item.Item> resourceKey,
                                            java.util.function.Function<net.minecraft.world.item.Item.Properties, net.minecraft.world.item.Item> function,
-                                           Class<? extends Item> properties)
+                                           AnnotatedElement properties)
         {
             AvoidDefer.defer(() -> {
                 interceptor.value = net.minecraft.world.item.Items.registerItem(resourceKey, function, getProperties(properties));
