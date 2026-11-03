@@ -1,4 +1,4 @@
-package pl.olafcio.avoid.net.placeholder;
+package pl.olafcio.avoid_impl.net.placeholder;
 
 import eu.pb4.placeholders.api.PlaceholderContext;
 import eu.pb4.placeholders.api.Placeholders;
@@ -15,14 +15,12 @@ import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
 import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
 import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid.net.player.Player;
+import pl.olafcio.avoid.net.placeholder.PlaceholderProvider;
 
 @ApiStatus.Experimental
-public final class PlaceholderAPI {
-    @ApiStatus.Internal
-    private PlaceholderAPI() {}
-
+public class Impl_TextPlaceholderAPI implements PlaceholderProvider {
     @ServerOnly
-    public static BaseComponent<?> replacePlaceholders_ServerOnly(BaseComponent<?> message) {
+    public BaseComponent<?> replaceServerPlaceholders(BaseComponent<?> message) {
         if (AvoidInternal.getServer() == null)
             throw new ImproperEnvironment("[PlaceholderAPI#replacePlaceholders_ServerOnly] Can be invoked only from the server");
 
@@ -35,7 +33,7 @@ public final class PlaceholderAPI {
         ));
     }
 
-    public static BaseComponent<?> replacePlaceholders(BaseComponent<?> message, @NotNull Player player) {
+    public BaseComponent<?> replacePlaceholders(BaseComponent<?> message, @NotNull Player player) {
         if (!AvoidWrappedLoader.isModPresent("placeholder-api"))
             return message;
 
