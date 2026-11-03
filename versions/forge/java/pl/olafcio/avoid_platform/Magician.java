@@ -63,6 +63,7 @@ public class Magician {
 
     public void onPreLaunch() {
         PreModLoader.preload();
+        PreModLoader.post();
 
         var cache = Path.of(".").resolve(".cache/avoid_loader/exported_jars");
 
