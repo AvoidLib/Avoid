@@ -63,7 +63,7 @@ public final class Datapack extends pl.olafcio.avoid.net.datapack.pack.Datapack 
      */
     public void enable() throws DatapackFailedToToggle {
         if (!AvoidInternal.getServer().getPackRepository().addPack(id))
-            throw new DatapackFailedToToggle("[Datapack#enable] Datapack '%s' could not be enabled");
+            throw new DatapackFailedToToggle("[Datapack#enable] Datapack '%s' could not be enabled".formatted(id));
     }
 
     /**
@@ -72,7 +72,7 @@ public final class Datapack extends pl.olafcio.avoid.net.datapack.pack.Datapack 
      */
     public void disable() throws DatapackFailedToToggle {
         if (!AvoidInternal.getServer().getPackRepository().removePack(id))
-            throw new DatapackFailedToToggle("[Datapack#disable] Datapack '%s' could not be disabled");
+            throw new DatapackFailedToToggle("[Datapack#disable] Datapack '%s' could not be disabled".formatted(id));
     }
 
     /**
