@@ -1,0 +1,4 @@
+{
+    @Inject(at = @At("TAIL"), method = "submitBlockOutline")
+    @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V"), method = "submitBlockOutline")
+}
