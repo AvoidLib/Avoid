@@ -17,6 +17,12 @@
 - Paper
 
 **🪵 Changelog:**
+- Remove caching for player fields *(guess what! it broke networking!)*
+- Fix issue in folders for mod scanning
+- Fix Datapack string formatting...
+- Paper try/catch datapack loading
+
+**🪵 Changelog (2.1-candidate-1):**
 - Minor throws change
 - Invert IPlatformFatal->shouldDisplay
 - Update to 26.4-snapshot-7
