@@ -20,9 +20,11 @@ public abstract class ModFolderLocator implements IModFileLocator {
                 if (Files.isDirectory(folder)) {
                     try (var sub = Files.list(folder)) {
                         sub.forEachOrdered(file -> {
-                            var modfile = new ModFile(file);
-                            if (matches(modfile))
-                                files.add(modfile);
+                            if (!Files.isDirectory(file)) {
+                                var modfile = new ModFile(file);
+                                if (matches(modfile))
+                                    files.add(modfile);
+                            }
                         });
                     }
                 }
