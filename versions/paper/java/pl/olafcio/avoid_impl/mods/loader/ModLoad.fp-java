@@ -5,8 +5,12 @@
 
     var datapack = new pl.olafcio.avoid_impl.net.datapack.pack.Datapack(id, pl.olafcio.avoid.net.chat.component.Components.literal(name), pl.olafcio.avoid.net.chat.component.Components.literal("(Avoid plugin pack) " + description), pl.olafcio.avoid.net.datapack.pack.DatapackCompatibility.COMPATIBLE, mod.getModFile().getPath());
 
-    datapack.load();
-    datapack.enable();
+    try {
+        datapack.load();
+        datapack.enable();
+    } catch (Exception e) {
+        Avoid.LOGGER.warn("Failed to apply datapack of '%s'".formatted(id));
+    }
 
     instance.onEnable();
 }
