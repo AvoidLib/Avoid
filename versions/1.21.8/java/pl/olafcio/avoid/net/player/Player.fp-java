@@ -12,3 +12,8 @@
     RespawnDataNative.convertBlockPos(value.location()),
     value.location().yaw(),
 }
+
+{
+    return gp.name();
+    return gp.getName();
+}
