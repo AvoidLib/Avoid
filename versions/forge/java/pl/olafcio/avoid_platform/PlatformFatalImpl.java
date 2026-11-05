@@ -33,7 +33,10 @@ public final class PlatformFatalImpl implements IModLoader {
     private Optional<Consumer<String>> make(Consumer<String> delegate) {
         return Optional.of(t -> {
             if (t.equals("ERROR DURING MOD LOADING") && !Reflect.get(ModLoader.class, "loadingStateValid", boolean.class, ModLoader.get())) {
-                PreModLoader.getInstance().loadService(IFMLCowardlyEventStateListener.class);
+                var services = PreModLoader.getInstance().loadService(IFMLCowardlyEventStateListener.class);
+
+                for (var service : services)
+                    service.acknowledge();
             }
 
             if (delegate != null)
