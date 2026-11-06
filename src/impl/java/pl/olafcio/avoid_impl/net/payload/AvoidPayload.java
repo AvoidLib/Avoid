@@ -5,6 +5,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import pl.olafcio.avoid.net.payload.CustomPayload;
 import pl.olafcio.avoid.net.payload.annotations.NoManual;
+import pl.olafcio.avoid.net.payload.annotations.Size;
 import pl.olafcio.avoid.net.payload.field.Order;
 import pl.olafcio.avoid.net.payload.field.PacketField;
 import pl.olafcio.avoid_impl.net.payload.field_controller.NetworkControllers;
@@ -20,6 +21,7 @@ public class AvoidPayload {
     final CustomPacketPayload.Type<Payload> TYPE;
 
     private final boolean hasByteArray;
+    private final int byteArraySize;
     private final ArrayList<FieldInstance<?, ?>> packetFields;
 
     AvoidPayload(
@@ -33,6 +35,9 @@ public class AvoidPayload {
         Class<?> klass = supplier.get().getClass();
 
         this.hasByteArray = !klass.isAnnotationPresent(NoManual.class);
+        this.byteArraySize = klass.isAnnotationPresent(Size.class)
+                                ? klass.getDeclaredAnnotation(Size.class).value()
+                                : 1024 * 2;
         this.packetFields = new ArrayList<>();
 
         while (klass != CustomPayload.class) {
@@ -73,7 +78,7 @@ public class AvoidPayload {
                 read(friendlyByteBuf, field);
 
             if (hasByteArray)
-                payload.read(friendlyByteBuf.readByteArray());
+                payload.read(friendlyByteBuf.readByteArray(byteArraySize));
 
             payload.onRead();
         }
