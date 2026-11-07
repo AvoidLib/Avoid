@@ -1,0 +1,34 @@
+{
+    public void apply(InsideBlockEffectType insideBlockEffectType) {
+    public void perform(InsideBlockEffectType insideBlockEffectType) {
+}
+
+{
+    public void runBefore(InsideBlockEffectType insideBlockEffectType, Consumer<net.minecraft.world.entity.Entity> consumer) {
+    public void performBefore(InsideBlockEffectType insideBlockEffectType, Consumer<net.minecraft.world.entity.Entity> consumer) {
+}
+
+{
+    public void runAfter(InsideBlockEffectType insideBlockEffectType, Consumer<net.minecraft.world.entity.Entity> consumer) {
+    public void performAfter(InsideBlockEffectType insideBlockEffectType, Consumer<net.minecraft.world.entity.Entity> consumer) {
+}
+
+{
+    InsideBlockEffectApplier
+    BackportedInsideBlockEffectApplier
+}
+
+{
+    InsideBlockEffectType
+    BackportedInsideBlockEffectType
+}
+
+{
+    net.minecraft.world.entity.BackportedInsideBlockEffectApplier
+    pl.olafcio.backported.BackportedInsideBlockEffectApplier
+}
+
+{
+    net.minecraft.world.entity.BackportedInsideBlockEffectType
+    pl.olafcio.backported.BackportedInsideBlockEffectType
+}

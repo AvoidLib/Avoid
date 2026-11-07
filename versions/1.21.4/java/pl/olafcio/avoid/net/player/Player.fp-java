@@ -1,0 +1,19 @@
+{
+    .getRespawnConfig();
+    ;
+}
+
+{
+    RespawnDataNative.convertFrom(config.pos(), config.dimension(), config.angle()),
+    RespawnDataNative.convertFrom(config.getRespawnPosition(), config.getRespawnDimension(), config.getRespawnAngle()),
+}
+
+{
+    config.forced()
+    config.isRespawnForced()
+}
+
+{
+    __cast(net.minecraft.world.entity.player.Player.class).gameMode()
+    __cast(ServerPlayer.class).gameMode.getGameModeForPlayer()
+}

@@ -1,0 +1,9 @@
+{
+    enchantmentInstance.enchantment()
+    enchantmentInstance.enchantment
+}
+
+{
+    enchantmentInstance.level()
+    enchantmentInstance.level
+}

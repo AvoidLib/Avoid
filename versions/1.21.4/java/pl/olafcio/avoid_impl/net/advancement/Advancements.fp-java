@@ -1,0 +1,9 @@
+{
+    .map(ClientAsset::new)
+    /* */
+}
+
+{
+    import net.minecraft.core.ClientAsset;
+    //import net.minecraft.core.ClientAsset;
+}

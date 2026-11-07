@@ -1,0 +1,20 @@
+{
+    return EntityNative.convertFrom(level.getEntity(uuid));
+    return EntityNative.convertFrom(level.getEntities().get(uuid));
+}
+
+import net.minecraft.world.entity.player.Player;
+
+{
+    this.level.playSeededSound(EntityNative.convert(entity), x, y, z, BuiltInRegistries.SOUND_EVENT.get(IdentificationNative.convert(soundID)).orElseThrow(), SoundCategoryNative.convert(category), volume, pitch, seed);
+
+    if (EntityNative.convert(entity) instanceof Player target)
+        this.level.playSeededSound(target, x, y, z, BuiltInRegistries.SOUND_EVENT.get(IdentificationNative.convert(soundID)).orElseThrow(), SoundCategoryNative.convert(category), volume, pitch, seed);
+}
+
+{
+    this.level.playSound(EntityNative.convert(entity), x, y, z, BuiltInRegistries.SOUND_EVENT.get(IdentificationNative.convert(soundID)).orElseThrow(), SoundCategoryNative.convert(category), volume, pitch);
+
+    if (EntityNative.convert(entity) instanceof Player target)
+        this.level.playSound(target, x, y, z, BuiltInRegistries.SOUND_EVENT.get(IdentificationNative.convert(soundID)).orElseThrow(), SoundCategoryNative.convert(category), volume, pitch);
+}

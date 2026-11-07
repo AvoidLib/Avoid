@@ -1,0 +1,8 @@
+this = this.replace("new ServerPlayer.RespawnConfig(", "")
+
+elements = this.split("value.force()")
+
+this = elements[0]
+
+for el in elements[1:]:
+    this += "value.force()" + el.replace(")", "", 1)

@@ -1,0 +1,24 @@
+{
+    InsideBlockEffectApplier
+    BackportedInsideBlockEffectApplier
+}
+
+{
+    import net.minecraft.world.entity.BackportedInsideBlockEffectApplier;
+    import pl.olafcio.backported.BackportedInsideBlockEffectApplier;
+}
+
+{
+    protected void entityInside(Level level, BlockPos blockPos, Entity entity, BackportedInsideBlockEffectApplier insideBlockEffectApplier) {
+    public void backported_attr$entityInside(Level level, BlockPos blockPos, Entity entity, BackportedInsideBlockEffectApplier insideBlockEffectApplier) {
+}
+
+{
+    insideBlockEffectApplier.apply
+    insideBlockEffectApplier.perform
+}
+
+{
+    insideBlockEffectApplier.run
+    insideBlockEffectApplier.perform
+}

@@ -1,0 +1,6 @@
+import net.minecraft.nbt.CompoundTag;
+
+{
+    CustomData.of(NbtNative.convert(value.tag).asCompound().orElseThrow())
+    CustomData.of((CompoundTag) NbtNative.convert(value.tag))
+}

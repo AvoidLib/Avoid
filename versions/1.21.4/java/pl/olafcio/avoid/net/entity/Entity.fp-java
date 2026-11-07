@@ -1,0 +1,9 @@
+{
+    underlyingEntity.isInterpolating()
+    underlyingEntity.getDeltaMovement().x > 0 || underlyingEntity.getDeltaMovement().y > 0 || underlyingEntity.getDeltaMovement().z > 0
+}
+
+{
+    underlyingEntity.lavaIgnite();
+    underlyingEntity.lavaHurt();
+}

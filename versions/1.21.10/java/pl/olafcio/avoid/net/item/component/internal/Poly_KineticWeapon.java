@@ -73,7 +73,7 @@ public record Poly_KineticWeapon(
                         );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, Poly_KineticWeapon> STREAM_CODEC
-                      = StreamCodec.composite(
+                      = StreamCodec.composite(//9
                             ByteBufCodecs.VAR_INT, Poly_KineticWeapon::contactCooldownTicks,
                             ByteBufCodecs.VAR_INT, Poly_KineticWeapon::delayTicks,
                             Poly_KineticWeapon.Condition.STREAM_CODEC.apply(ByteBufCodecs::optional), Poly_KineticWeapon::dismountConditions,

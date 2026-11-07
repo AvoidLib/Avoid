@@ -1,0 +1,6 @@
+import java.util.Objects;
+
+{
+    return new DamageType(IdentificationNative.convertFrom(VResourceKey.identifier(value.key().orElseThrow())));
+    return new DamageType(IdentificationNative.convertFrom(VResourceKey.identifier(Objects.requireNonNull(value.key(), "value.key() is null"))));
+}

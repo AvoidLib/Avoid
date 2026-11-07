@@ -1,0 +1,22 @@
+import java.util.List;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+
+{
+    public final class AvoidLivingEntity extends LivingEntity implements IAvoidEntity {
+    public final class AvoidLivingEntity extends LivingEntity implements IAvoidEntity {
+        @Override
+        public Iterable<ItemStack> getArmorSlots() {
+            return List.of();
+        }
+
+        @Override
+        public ItemStack getItemBySlot(EquipmentSlot equipmentSlot) {
+            return null;
+        }
+
+        @Override
+        public void setItemSlot(EquipmentSlot equipmentSlot, ItemStack itemStack) {
+
+        }
+}

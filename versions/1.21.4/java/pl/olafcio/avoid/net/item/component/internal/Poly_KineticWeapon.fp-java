@@ -1,0 +1,6 @@
+import pl.olafcio.backported.BackportedStreamCodec;
+
+{
+    = StreamCodec.composite(//9
+    = BackportedStreamCodec.composite(//9
+}

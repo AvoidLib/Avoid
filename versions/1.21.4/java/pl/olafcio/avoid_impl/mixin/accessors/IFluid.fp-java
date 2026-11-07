@@ -1,0 +1,4 @@
+{
+    net.minecraft.world.entity.InsideBlockEffectApplier
+    pl.olafcio.backported.BackportedInsideBlockEffectApplier
+}

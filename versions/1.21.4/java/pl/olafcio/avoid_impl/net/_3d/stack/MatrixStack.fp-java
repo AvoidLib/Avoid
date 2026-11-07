@@ -1,0 +1,67 @@
+{
+    this.pose = new PoseStack.Pose();
+
+    Matrix4f matrix4f = new Matrix4f();
+    Matrix3f matrix3f = new Matrix3f();
+
+    this.poseMc = new PoseStack.Pose(matrix4f, matrix3f);
+    this.pose = poseMc.pose;
+}
+
+{
+    final PoseStack.Pose pose;
+    final PoseStack.Pose poseMc;
+
+    final Matrix4f pose;
+}
+
+{
+    this.pose.pose()
+    this.poseMc.pose()
+}
+
+{
+    this.pose.normal()
+    this.poseMc.normal()
+}
+
+{
+    this.pose.transformNormal
+    this.poseMc.transformNormal
+}
+
+{
+    this.pose.setIdentity()
+    this.poseMc.setIdentity()
+}
+
+{
+    this.pose.mulPose(matrix4fc)
+    this.poseMc.mulPose(matrix4fc)
+}
+
+{
+    this.pose = pose;
+    this.poseMc = pose;
+    this.pose = pose.pose;
+}
+
+{
+    this.stack.mulPose(matrix4fc);
+    this.stack.mulPose(new Matrix4f(matrix4fc));
+}
+
+{
+    this.stack.rotateAround(quaternionfc, x, y, z);
+    this.stack.rotateAround(new Quaternionf(quaternionfc), x, y, z);
+}
+
+{
+    this.stack.mulPose(quaternionfc);
+    this.stack.mulPose(new Quaternionf(quaternionfc));
+}
+
+{
+    this.poseMc.mulPose(matrix4fc);
+    this.pose.mul(matrix4fc);
+}
