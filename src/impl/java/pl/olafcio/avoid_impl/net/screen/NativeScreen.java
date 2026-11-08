@@ -2,6 +2,7 @@ package pl.olafcio.avoid_impl.net.screen;
 
 import com.google.common.base.CaseFormat;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 import pl.olafcio.avoid.net.screen.*;
@@ -96,9 +97,19 @@ public final class NativeScreen extends Screen implements ParentElement {
 
     @Override
     public void append(Renderable widget) {
-        if (widget instanceof Focusable && widget instanceof Hoverable && widget instanceof Narratable)
+        if (widget instanceof Focusable && widget instanceof Hoverable && widget instanceof Narratable) {
             realScreen.addRenderableWidget(new AWFull<>((Renderable & Focusable & Hoverable & Narratable) widget));
-        else if (widget instanceof Focusable)
+        } else if (widget instanceof NativeRenderable nativ) {
+            var el = nativ.element();
+
+            realScreen.renderables.add(el);
+
+            if (el instanceof NarratableEntry nr)
+                realScreen.narratables.add(nr);
+
+            if (el instanceof GuiEventListener gel)
+                realScreen.children.add(gel);
+        } else if (widget instanceof Focusable)
             throw new NativeWidgetAppendException("A minecraft screen cannot have widgets that are focusable without being hoverable and narratable");
         else if (widget instanceof Hoverable)
             throw new NativeWidgetAppendException("A minecraft screen cannot have widgets that are hoverable without being focusable and narratable");
@@ -116,6 +127,16 @@ public final class NativeScreen extends Screen implements ParentElement {
             realScreen.renderables.addFirst(impl);
             realScreen.narratables.addFirst(impl);
             realScreen.children.addFirst(impl);
+        } else if (widget instanceof NativeRenderable nativ) {
+            var el = nativ.element();
+
+            realScreen.renderables.addFirst(el);
+
+            if (el instanceof NarratableEntry nr)
+                realScreen.narratables.addFirst(nr);
+
+            if (el instanceof GuiEventListener gel)
+                realScreen.children.addFirst(gel);
         } else if (widget instanceof Focusable) {
             throw new NativeWidgetAppendException("A minecraft screen cannot have widgets that are focusable without being hoverable and narratable");
         } else if (widget instanceof Hoverable) {
@@ -137,10 +158,14 @@ public final class NativeScreen extends Screen implements ParentElement {
         net.minecraft.client.gui.components.Renderable wrapper = null;
 
         //at:removechild
-        for (var el : realScreen.renderables) {
-            if (el instanceof IAvoidWidget avoid && avoid.getAvoid() == widget) {
-                wrapper = (net.minecraft.client.gui.components.Renderable) avoid;
-                break;
+        if (widget instanceof NativeRenderable nativ) {
+            wrapper = nativ.element();
+        } else {
+            for (var el : realScreen.renderables) {
+                if (el instanceof IAvoidWidget avoid && avoid.getAvoid() == widget) {
+                    wrapper = (net.minecraft.client.gui.components.Renderable) avoid;
+                    break;
+                }
             }
         }
 
