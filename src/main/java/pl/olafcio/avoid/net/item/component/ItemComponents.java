@@ -32,6 +32,7 @@ import org.jspecify.annotations.NullMarked;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.chat.component.BaseComponent;
+import pl.olafcio.avoid.net.item.component.values.SuspiciousStewEffects;
 import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
 import pl.olafcio.avoid_impl.net.chat.converter.COToNative;
 import pl.olafcio.avoid.net.id.Identification;
@@ -124,7 +125,7 @@ public class ItemComponents {
     public static final ItemComponentType<BundleContents> BUNDLE_CONTENTS = register("bundle_contents", new BundleContents.Controller());
     public static final ItemComponentType<PotionContents> POTION_CONTENTS = register("potion_contents");
     public static final ItemComponentType<Float> POTION_DURATION_SCALE = register("potion_duration_scale");
-    public static final ItemComponentType<SuspiciousStewEffects> SUSPICIOUS_STEW_EFFECTS = register("suspicious_stew_effects");
+    public static final ItemComponentType<SuspiciousStewEffects> SUSPICIOUS_STEW_EFFECTS = register("suspicious_stew_effects", new SuspiciousStewEffects.Controller());
     public static final ItemComponentType<WritableBookContent> WRITABLE_BOOK_CONTENT = register("writable_book_content");
     public static final ItemComponentType<WrittenBookContent> WRITTEN_BOOK_CONTENT = register("written_book_content");
     public static final ItemComponentType<ArmorTrim> TRIM = register("trim");
