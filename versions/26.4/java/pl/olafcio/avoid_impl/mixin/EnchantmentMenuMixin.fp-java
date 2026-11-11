@@ -1,0 +1,6 @@
+import net.minecraft.core.HolderGetter;
+
+{
+    @Shadow protected abstract List<EnchantmentInstance> getEnchantmentList(RegistryAccess registryAccess, ItemStack itemStack, int i, int j);
+    @Shadow protected abstract List<EnchantmentInstance> getEnchantmentList(final HolderGetter.Provider access, final ItemStack itemStack, final int slot, final int enchantmentCost);
+}

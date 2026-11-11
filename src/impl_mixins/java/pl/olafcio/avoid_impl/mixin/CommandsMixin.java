@@ -36,9 +36,7 @@ import static pl.olafcio.avoid_impl.net.permission.PermissionHandlers.createAtom
 
 @Mixin(Commands.class)
 public class CommandsMixin {
-    @Shadow
-    @Final
-    private CommandDispatcher<CommandSourceStack> dispatcher;
+    @Shadow @Final private CommandDispatcher<CommandSourceStack> dispatcher;
 
     @Inject(at = @At("HEAD"), method = "performCommand", cancellable = true)
     public void performCommand(@Coerce Object parseResults, String string, CallbackInfo ci) {

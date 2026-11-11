@@ -1,0 +1,20 @@
+{
+    var dispatcher = player.connection.getCommands();
+    var dispatcher = player.connection.commandSuggestions().dispatcher;
+}
+
+{
+    var dispatcher = server.getCommands().getDispatcher();
+    var dispatcher = server.getCommands().suggestionBox().dispatcher;
+}
+
+import net.minecraft.commands.ServerPlayerSuggestionContext;
+import java.util.*;
+
+{
+    return requirement.test(stack);
+    return requirement.test(
+            source instanceof Player player && player.isServer()
+                    ? new ServerPlayerSuggestionContext((ServerPlayer) EntityNative.convert(player))
+                    : new AnonymousSuggestionContext(server, source, stack));
+}

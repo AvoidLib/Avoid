@@ -1,0 +1,21 @@
+import com.llamalad7.mixinextras.sugar.Local;
+import java.util.function.Consumer;
+
+{
+    @Shadow @Final private CommandDispatcher<CommandSourceStack> dispatcher;
+    //@Shadow @Final private CommandDispatcher<CommandSourceStack> dispatcher;
+}
+
+{
+    public void performCommand(@Coerce Object parseResults, String string, CallbackInfo ci) {
+    private static void performCommand(CommandSourceStack executionContext, @Coerce Object command, String string, CallbackInfo ci) {
+}
+
+{
+    public void finishCommands(Commands.CommandSelection commandSelection, CommandBuildContext commandBuildContext, CallbackInfo ci) {
+    public void finishCommands(
+            Consumer<CommandDispatcher<CommandSourceStack>> commandRegistration,
+            CallbackInfo ci,
+            @Local(name = "dispatcher") CommandDispatcher<CommandSourceStack> dispatcher
+    ) {
+}
