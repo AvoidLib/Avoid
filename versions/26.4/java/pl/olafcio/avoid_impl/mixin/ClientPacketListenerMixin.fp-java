@@ -1,0 +1,36 @@
+import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
+import org.spongepowered.asm.mixin.Final;
+
+{
+    public class ClientPacketListenerMixin {
+    public abstract class ClientPacketListenerMixin extends ClientCommonPacketListenerImpl {
+
+        protected ClientPacketListenerMixin() {
+            super(null, null, null);
+        }
+}
+
+{
+    private CommandDispatcher<ClientSuggestionProvider> commands;
+    @Final private ClientSuggestionContext suggestionsProvider;
+}
+
+{
+    ClientSuggestionProvider
+    ClientSuggestionContext
+}
+
+{
+    @Inject(at = @At("TAIL"), method = "handleCommands")
+    @Override
+}
+
+{
+    public void handleCommands(ClientboundCommandsPacket packet, CallbackInfo ci) {
+    public void handleCommands(ClientboundCommandsPacket packet) {
+        super.handleCommands(packet);
+
+        var commands = (CommandDispatcher<ClientSuggestionContext>)
+                       (CommandDispatcher<?>)
+                       this.commandSuggestions.dispatcher;
+}

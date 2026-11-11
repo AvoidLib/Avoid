@@ -10,7 +10,7 @@ import pl.olafcio.avoid.net.permission.PermissionHolder;
 public abstract class UnknownExecutor implements PermissionHolder, Executor {
     @Override
     public @Nullable BaseComponent<?> getDisplayName() {
-        return PermissionHolder.super.getDisplayName();
+        return Executor.super.getDisplayName();
     }
 
     @Override
