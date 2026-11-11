@@ -7,7 +7,7 @@
 - 26.1.1 & 26.1.2
 - 26.2
 - 26.3
-- 26.4-snapshot-7 *[TS]*
+- 26.4-snapshot-8 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
@@ -17,36 +17,14 @@
 - Paper
 
 **🪵 Changelog:**
-- Remove caching for player fields *(guess what! it broke networking!)*
-- Fix issue in folders for mod scanning
-- Fix Datapack string formatting...
-- Paper try/catch datapack loading
-
-**🪵 Changelog (2.1-candidate-1):**
-- Minor throws change
-- Invert IPlatformFatal->shouldDisplay
-- Update to 26.4-snapshot-7
-
-**🪵 Changelog (2.1-experimental-2):**
-- [Loader] IPlatformFatal service
-- Fix (rewritten) SHA1 hashing on streams
-- Add "This minecraft version may not receive updates" warning for snapshot releases on Modrinth
-
-**🪵 Changelog (2.1-experimental-1):**
-- Unify JarFile construction for mods, provide 'IMod' instead of 'Path' for all ModLoad events
-- Client Command Manager
-- [Entity Type Creation API] @_canSpawnFarFromPlayer(boolean value)
-- Modrinth statistics in README
-- IO optimizations in source transforming
-- Object-oriented block registration
-- Object-oriented advancement registration
-- Object-oriented item registration
-- Object-oriented entity selector registration
-- [Placeholder API] Implementability
-- `@Discouraged` for AnyCommand
-- Remove this stupid unused self mixin
-- JarManager#getJarPath([String] pkg)
-- [Loader] Move PreModLoader#preload more early on Fabric + IPostLoader service
+- [Loader] IFMLCowardlyEventStateListener service
+- [Loader] IFMLLoadingExceptionListener service
+- [Custom Payload API] Client-side payload bytearray size limit (default 2 KB, configurable with `@Size`)
+- Update URLs for Forge & NeoForge
+- Display URLs for Forge & NeoForge
+- [Item Components] Transform SUSPICIOUS_STEW_EFFECTS
+- [Screen API] Native element manipulation
+- Update to 26.4-snapshot-8
 
 **🐙 GitHub: https://github.com/AvoidLib/Avoid**<br/>
 **📚 Wiki: https://github.com/AvoidLib/Avoid/wiki**<br/>
