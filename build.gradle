@@ -198,6 +198,10 @@ repositories {
             name "ModMaven"
         }
     }
+
+    flatDir {
+        dirs "libs-all"
+    }
 }
 
 if (sponge) {
@@ -234,6 +238,12 @@ code {
     }
 }
 
+if (forge) {
+    configurations {
+        shadeLoader
+    }
+}
+
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -243,6 +253,14 @@ dependencies {
 
     if ("include_jspecify" in project.getProperties()) {
         implementation(append("org.jspecify:jspecify:1.0.1"))
+    }
+
+    if (forge) {
+        implementation(shadeLoader(github("Olafcio1/ReflectStorm", versionName: "0.2.1")))
+        implementation(shadeLoader(github("Olafcio1/ReflectStorm", versionName: "0.2.1", suffix: "-j21", jarFinder: { fn -> fn.contains("-j21") })))
+    } else {
+        implementation(append(github("Olafcio1/ReflectStorm", versionName: "0.2.1")))
+        implementation(append(github("Olafcio1/ReflectStorm", versionName: "0.2.1", suffix: "-j21", jarFinder: { fn -> fn.contains("-j21") })))
     }
 
     implementation(append("org.yaml:snakeyaml:2.7"))
@@ -453,6 +471,11 @@ if (forge) {
         manifest {
             from 'src/main/loader_resources/META-INF/MANIFEST.MF'
         }
+
+        var paths = (configurations.shadeLoader.findAll { f -> f.name ==~ '.*(ReflectStorm|reflectstorm-j21).*' })
+
+        for (var path : paths)
+            from(zipTree(path))
     }
 }
 

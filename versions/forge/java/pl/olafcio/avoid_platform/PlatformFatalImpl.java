@@ -9,14 +9,88 @@ import pl.olafcio.avoid_loader.interfaces.IMod;
 import pl.olafcio.avoid_loader.interfaces.IModFile;
 import pl.olafcio.avoid_loader.interfaces.services.stage.fml.IFMLCowardlyEventStateListener;
 import pl.olafcio.avoid_loader.interfaces.services.stage.fml.IFMLLoadingExceptionListener;
+import pl.olafcio.reflectstorm.Abstraction;
+import pl.olafcio.reflectstorm.ReflectStorm;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public final class PlatformFatalImpl implements IModLoader {
+    ///Copypaste from JarManager to be in loader namespace
+    @NotNull
+    private String getJarURL() {
+        var pkg = "pl/olafcio/avoid_platform/";
+
+        return this.getClass().getClassLoader().getResource(pkg.substring(0, pkg.length() - 1))
+                                               .getPath()
+                                               .split("!")[0];
+    }
+
     @Override
-    @SuppressWarnings("unchecked")
     public void load() {
+        try {
+            // OH MY GOD JPMS WHAT THE FUCK IM LOSING IT
+            // ESCALATION ONTO PARENT CLASSLOADER?! LIKE WHAT THE FUCK
+
+            var dir = Path.of(".cache/avoid_loader/extract/");
+            Files.createDirectories(dir);
+
+            var jar = dir.resolve("Avoid AppLevel.jar");
+
+            var fos = new FileOutputStream(jar.toFile());
+            var zos = new ZipOutputStream(fos);
+
+            try {
+                try (var stream = this.getClass().getResourceAsStream("/pl/olafcio/avoid_platform/applevel/PFIAppNat.class"))  {
+                    zos.putNextEntry(new ZipEntry("pl/olafcio/avoid_platform/applevel/PFIAppNat.class"));
+                    stream.transferTo(zos);
+                }
+            } finally {
+                zos.close();
+                fos.close();
+            }
+
+            ReflectStorm.classpath().klassLoader(ReflectStorm.Classpath.BuiltinCL.APP)
+                        .addFile(jar.toAbsolutePath().toString());  // Safest method for builtin loaders \:
+
+            // Right. I guess ReflectStorm helped... more than it should've ._.
+
+            var b =ReflectStorm.builder();
+            b.klassLoader(Abstraction.get().getClassLoader(ReflectStorm.Classpath.BuiltinCL.APP));
+            b.klass("pl.olafcio.avoid_platform.applevel.PFIAppNat").method("thisIsInsane", Runnable.class, URL[].class).invoke(null, (Runnable) this::inject, new URL[]{
+                    URI.create(getJarURL()).toURL(),
+                    jar.toAbsolutePath().toUri().toURL()
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            System.err.println("Failed to initialize Avoid appclassloader logger manipulation magic! Sorry for the throwup!");
+            System.err.println("Crashing your game so that you don't think avoid works. Because this message means it broke.");
+            System.err.println("---");
+            System.err.println("--- SOLUTION: Try changing Avoid version");
+            System.err.println("---");
+
+            Runtime.getRuntime().halt(0);
+
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static volatile boolean injected = false;
+
+    @SuppressWarnings("unchecked")
+    public void inject() {
         var statusconsumer = (Optional<Consumer<String>>)
                              Reflect.get(ModLoader.class, "statusConsumer", Optional.class, ModLoader.get());
 
@@ -28,6 +102,8 @@ public final class PlatformFatalImpl implements IModLoader {
 
         Reflect.set(ModLoader.class, "loadingexceptions", ModLoader.get(),
                                                                 this.make(loadingexceptions));
+
+        injected = true;
     }
 
     private Optional<Consumer<String>> make(Consumer<String> delegate) {
