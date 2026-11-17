@@ -7,7 +7,7 @@
 - 26.1.1 & 26.1.2
 - 26.2
 - 26.3
-- 26.4-snapshot-8 *[TS]*
+- 26.4-snapshot-9 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
@@ -17,6 +17,9 @@
 - Paper
 
 **🪵 Changelog:**
+- Update to 26.4-snapshot-9
+
+**🪵 Changelog (v2.2-experimental-1):**
 - [Loader] IFMLCowardlyEventStateListener service
 - [Loader] IFMLLoadingExceptionListener service
 - [Custom Payload API] Client-side payload bytearray size limit (default 2 KB, configurable with `@Size`)
