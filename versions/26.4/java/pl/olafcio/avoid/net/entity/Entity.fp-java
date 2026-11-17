@@ -1,0 +1,4 @@
+{
+    return underlyingEntity.is(EntityNative.convert(entity));
+    return underlyingEntity == EntityNative.convert(entity);
+}

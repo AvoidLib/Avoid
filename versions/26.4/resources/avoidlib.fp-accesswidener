@@ -17,6 +17,7 @@
     accessible field net/minecraft/world/entity/EntityFluidInteraction fluidTrackers Ljava/util/List;
     accessible field net/minecraft/world/entity/EntityFluidInteraction$Tracker wasInFluid Z
     accessible field net/minecraft/commands/CommandBox dispatcher Lcom/mojang/brigadier/CommandDispatcher;
+    extendable class net/minecraft/server/permissions/PermissionCheck$Require
 
     # 26.4 guigraphics
     accessible field net/minecraft/client/gui/GuiGraphicsExtractor mouseX I
