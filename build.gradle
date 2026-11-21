@@ -77,6 +77,12 @@ base {
     archivesName = project.archives_base_name
 }
 
+def builtinExtensions = [
+        "avoid_mod_yaml",
+        "avoid_mc_environment",
+        "avoid_loading_state"
+]
+
 sourceSets {
     avoid_loader {
         compileClasspath += main.compileClasspath
@@ -109,26 +115,14 @@ sourceSets {
         }
     }
 
-    avoid_mod_yaml {
-        compileClasspath += main.compileClasspath
-        compileClasspath += main.output
+    for (var n : builtinExtensions) {
+        create(n) {
+            compileClasspath += main.compileClasspath
+            compileClasspath += main.output
+        }
+
+        main.runtimeClasspath += named(n).get().output
     }
-
-    main.runtimeClasspath += avoid_mod_yaml.output
-
-    avoid_mc_environment {
-        compileClasspath += main.compileClasspath
-        compileClasspath += main.output
-    }
-
-    main.runtimeClasspath += avoid_mc_environment.output
-
-    avoid_loading_state {
-        compileClasspath += main.compileClasspath
-        compileClasspath += main.output
-    }
-
-    main.runtimeClasspath += avoid_loading_state.output
 }
 
 loom {
@@ -147,8 +141,9 @@ loom {
     }
 
     runs {
-        it.forEach {
-            it.getJvmArguments().add("-XX:StackShadowPages=32")
+        configureEach {
+            jvmArguments.add("-XX:StackShadowPages=32")
+            generateRunConfig = true
         }
     }
 
@@ -158,17 +153,10 @@ loom {
             sourceSet sourceSets.avoid_loader
         }
 
-        "avoid_mod_yaml" {
-            sourceSet sourceSets.avoid_mod_yaml
-        }
-
-        "avoid_loading_state" {
-            sourceSet sourceSets.avoid_loading_state
-        }
-
-        "avoid_mc_environment" {
-            sourceSet sourceSets.avoid_mc_environment
-        }
+        for (var n : builtinExtensions)
+            create(n) {
+                sourceSet sourceSets.named(n).get()
+            }
     }
 }
 
@@ -482,25 +470,25 @@ if (forge) {
     }
 }
 
-tasks.register("extensions_jar", Jar) {
-    archiveClassifier = 'extensions'
+for (var n : builtinExtensions) {
+    var task = tasks.register("jar_" + n, Jar) {
+        archiveClassifier = n
 
-    from(sourceSets.avoid_mod_yaml.output)
-    from(sourceSets.avoid_mc_environment.output)
-    from(sourceSets.avoid_loading_state.output)
-}
+        from(sourceSets.named(n).get().output)
+    }
 
-if (forge) {
-    loader_jar {
-        from(extensions_jar)
-    }
-} else if (sponge || paper || neoforge || forge) {
-    shadowJar {
-        from(extensions_jar)
-    }
-} else {
-    jar {
-        from(extensions_jar)
+    if (forge) {
+        loader_jar {
+            from(task.get())
+        }
+    } else if (sponge || paper || neoforge || forge) {
+        shadowJar {
+            from(task.get())
+        }
+    } else {
+        jar {
+            from(task.get())
+        }
     }
 }
 
