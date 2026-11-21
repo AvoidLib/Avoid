@@ -108,6 +108,13 @@ sourceSets {
             resources { srcDir 'src/impl_mixins/resources' }
         }
     }
+
+    avoid_mod_yaml {
+        compileClasspath += main.compileClasspath
+        compileClasspath += main.output
+    }
+
+    main.runtimeClasspath += avoid_mod_yaml.output
 }
 
 loom {
@@ -135,6 +142,10 @@ loom {
         "avoid" {
             sourceSet sourceSets.main
             sourceSet sourceSets.avoid_loader
+        }
+
+        "avoid_mod_yaml" {
+            sourceSet sourceSets.avoid_mod_yaml
         }
     }
 }
@@ -453,6 +464,26 @@ if (forge) {
         manifest {
             from 'src/main/loader_resources/META-INF/MANIFEST.MF'
         }
+    }
+}
+
+tasks.register("extensions_jar", Jar) {
+    archiveClassifier = 'extensions'
+
+    from(sourceSets.avoid_mod_yaml.output)
+}
+
+if (forge) {
+    loader_jar {
+        from(extensions_jar)
+    }
+} else if (sponge || paper || neoforge || forge) {
+    shadowJar {
+        from(extensions_jar)
+    }
+} else {
+    jar {
+        from(extensions_jar)
     }
 }
 

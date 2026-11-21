@@ -1,0 +1,21 @@
+{
+  "__schema": 1,
+
+  // Metadata
+  "id": "avoid-mod-yaml",
+  "version": "1.0",
+  "version-system": "semver",
+
+  // Less-processed metadata
+  "name": "Avoid Mod YAML",
+  "author": "Olafcio",
+  "description": "Parses avoid.mod.yml files.",
+
+  // Entrypoint
+  "main-class": "re.avoidmc.modyaml.ModYamlAddon",
+
+  // Dependencies
+  "dependencies": {
+    "avoid": ">=2.2"
+  }
+}
