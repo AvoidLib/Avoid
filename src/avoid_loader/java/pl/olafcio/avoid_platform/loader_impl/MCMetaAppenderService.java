@@ -35,7 +35,8 @@ public final class MCMetaAppenderService implements IModProcessor {
 
     @Override
     public void process(IMod mod) {
-        if (mod instanceof AvoidModContainer avoid && !Files.isSymbolicLink(avoid.path()))
+        //TODO Make a variant of this not requiring JAR-s. Or make a IModModifier.
+        if (mod instanceof AvoidModContainer avoid && avoid.getModFile().getJar() != null && !Files.isSymbolicLink(avoid.path()))
             new MCMetaAppender(mod.getModFile());
     }
 

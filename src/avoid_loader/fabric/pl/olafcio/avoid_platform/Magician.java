@@ -36,11 +36,11 @@ public class Magician implements PreLaunchEntrypoint {
         try (var stream = zip.getInputStream(zip.getEntry(config))) {
             json = new Gson().fromJson(new String(stream.readAllBytes(), StandardCharsets.UTF_8), JsonObject.class);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load mixin config '%s' from Avoid mod: '%s'".formatted(config, mod.manifest().get("id").getAsString()), e);
+            throw new RuntimeException("Failed to load mixin config '%s' from Avoid mod: '%s'".formatted(config, mod.metadata().id()), e);
         }
 
         configs.put(config, new MixinConfig(
-                mod.manifest().get("id").getAsString() + "-" + config,
+                mod.metadata().id() + "-" + config,
                 json.get("package").getAsString()
         ));
     }

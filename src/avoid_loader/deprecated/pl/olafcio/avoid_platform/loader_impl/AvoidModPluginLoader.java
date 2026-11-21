@@ -7,17 +7,18 @@ import pl.olafcio.avoid_loader.interfaces.services.IModProcessor;
 import pl.olafcio.avoid_loader.subloaders.ILoader;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 @Deprecated(since = "v2.0", forRemoval = true)
 public final class AvoidModPluginLoader implements IModProcessor {
     @Override
     public void process(IMod imod) {
-        if (imod instanceof AvoidModContainer mod && mod.manifest().has("loaders")) {
-            var subloaders = mod.manifest().get("loaders").getAsJsonArray();
+        if (imod instanceof AvoidModContainer mod && mod.manifest().containsKey("loaders")) {
+            var subloaders = (List<?>) mod.manifest().get("loaders");
 
             try {
                 for (var cn : subloaders) {
-                    var pluginClass = mod.classLoader().loadClass(cn.getAsString());
+                    var pluginClass = mod.classLoader().loadClass((String) cn);
                     var plugin = (ILoader) pluginClass.getDeclaredConstructor().newInstance();
 
                     plugin.load();

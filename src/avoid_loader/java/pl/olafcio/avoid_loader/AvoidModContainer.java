@@ -1,28 +1,28 @@
 package pl.olafcio.avoid_loader;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid_loader.abst.ModFile;
 import pl.olafcio.avoid_loader.interfaces.IMod;
 import pl.olafcio.avoid_loader.interfaces.services.IModLoader;
-import pl.olafcio.avoid_loader.interfaces.IModMetadata;
+import pl.olafcio.avoid_loader.interfaces.standard.IAvoidModMetadata;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Deprecated(forRemoval = true)
 public class AvoidModContainer implements IMod {
     private final ModFile modFile;
     private final IModLoader origin;
-    private final JsonObject manifest;
+    private final IAvoidModMetadata manifest;
     private final AvoidModContainer parent;
     private final ArrayList<IMod> children;
     private       String additionalText;
 
-    public AvoidModContainer(ModFile modFile, IModLoader origin, JsonObject manifest, AvoidModContainer parent, ArrayList<IMod> children) {
+    public AvoidModContainer(ModFile modFile, IModLoader origin, IAvoidModMetadata manifest, AvoidModContainer parent, ArrayList<IMod> children) {
         this.modFile = modFile;
         this.origin = origin;
         this.manifest = manifest;
@@ -31,7 +31,7 @@ public class AvoidModContainer implements IMod {
         this.additionalText = null;
     }
 
-    public AvoidModContainer(ModFile modFile, IModLoader origin, JsonObject manifest, AvoidModContainer parent) {
+    public AvoidModContainer(ModFile modFile, IModLoader origin, IAvoidModMetadata manifest, AvoidModContainer parent) {
         this.modFile = modFile;
         this.origin = origin;
         this.manifest = manifest;
@@ -40,7 +40,7 @@ public class AvoidModContainer implements IMod {
         this.additionalText = null;
     }
 
-    public AvoidModContainer(ModFile modFile, IModLoader origin, JsonObject manifest, AvoidModContainer parent, ArrayList<IMod> children, String additionalText) {
+    public AvoidModContainer(ModFile modFile, IModLoader origin, IAvoidModMetadata manifest, AvoidModContainer parent, ArrayList<IMod> children, String additionalText) {
         this.modFile = modFile;
         this.origin = origin;
         this.manifest = manifest;
@@ -49,7 +49,7 @@ public class AvoidModContainer implements IMod {
         this.additionalText = additionalText;
     }
 
-    public AvoidModContainer(ModFile modFile, IModLoader origin, JsonObject manifest, AvoidModContainer parent, String additionalText) {
+    public AvoidModContainer(ModFile modFile, IModLoader origin, IAvoidModMetadata manifest, AvoidModContainer parent, String additionalText) {
         this.modFile = modFile;
         this.origin = origin;
         this.manifest = manifest;
@@ -71,8 +71,9 @@ public class AvoidModContainer implements IMod {
     public Path path() {
         return modFile.getPath();
     }
-    public JsonObject manifest() {
-        return manifest;
+    @Nullable
+    public Map<String, ?> manifest() {
+        return manifest.map();
     }
     public ModClassLoader classLoader() {
         return modFile.getClassLoader();
@@ -103,53 +104,14 @@ public class AvoidModContainer implements IMod {
 
     @Override
     public String toListing() {
-        return manifest().get("name").getAsString() + " " +
-               manifest().get("version").getAsString() + " " +
+        return metadata().name() + " " +
+               metadata().version() + " " +
                additionalText().orElse("");
     }
 
     @Override
-    public IModMetadata metadata() {
-        return new IModMetadata() {
-            @Override
-            public String id() {
-                return manifest().get("id").getAsString();
-            }
-
-            @Override
-            public String name() {
-                return manifest().get("name").getAsString();
-            }
-
-            @Override
-            public String version() {
-                return manifest().get("version").getAsString();
-            }
-
-            @Override
-            public String author() {
-                return manifest().get("author").getAsString();
-            }
-
-            @Override
-            public String @NotNull [] mixins() {
-                var mixins = manifest().get("mixins");
-
-                if (mixins == null) {
-                    return IModMetadata.super.mixins();
-                } else if (mixins instanceof JsonArray array) {
-                    var out = new String[array.size()];
-                    var i = 0;
-
-                    for (var el : array) {
-                        out[i++] = el.getAsString();
-                    }
-
-                    return out;
-                } else {
-                    return new String[]{ mixins.getAsString() };
-                }
-            }
-        };
+    @NotNull
+    public IAvoidModMetadata metadata() {
+        return manifest;
     }
 }

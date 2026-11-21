@@ -1,16 +1,17 @@
 package pl.olafcio.avoid_platform.loader_impl;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.olafcio.avoid.platform.RunningEnv;
 import pl.olafcio.avoid.util.ModEnvironment;
 import pl.olafcio.avoid_loader.AvoidModContainer;
+import pl.olafcio.avoid_loader.PreModLoader;
 import pl.olafcio.avoid_loader.abst.ModFile;
 import pl.olafcio.avoid_loader.interfaces.IMod;
 import pl.olafcio.avoid_loader.interfaces.IModFile;
 import pl.olafcio.avoid_loader.interfaces.services.IModLoader;
+import pl.olafcio.avoid_loader.interfaces.services.standard.IAvoidModDescriber;
+import pl.olafcio.avoid_loader.interfaces.standard.IAvoidModMetadata;
 import pl.olafcio.avoid_platform.AvoidWrappedLoader;
 import pl.olafcio.avoid_platform.DigestUtils;
 
@@ -19,12 +20,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public final class AvoidModLoader implements IModLoader {
-    private static final Gson GSON
-                   = new Gson();
-
     private static final Logger LOGGER
                        = LoggerFactory.getLogger("AvoidLoader/Mod Loader");
 
@@ -35,58 +32,33 @@ public final class AvoidModLoader implements IModLoader {
             AvoidModContainer container;
 
             try {
-                var manifestFile = modFile.getResourceAsStream("avoid.mod.json");
-                if (manifestFile == null)
+                IAvoidModMetadata manifest = null;
+
+                var describers = PreModLoader.getInstance().loadService(IAvoidModDescriber.class);
+
+                for (var describer : describers) {
+                    var metadata = describer.describe(modFile);
+                    if (metadata != null)
+                        manifest = metadata;
+                }
+
+                if (manifest == null)
                     return List.of();
 
-                final byte[] manifestData;
-                try {
-                    manifestData = manifestFile.readAllBytes();
-                } finally {
-                    manifestFile.close();
-                }
-
-                var json = GSON.fromJson(Arrays.stream(new String(manifestData).split("\n"))
-                                                                               .filter(line -> !line.stripLeading().startsWith("//"))
-                                                                               .collect(Collectors.joining("\n")), JsonObject.class);
-                if (json == null) {
-                    LOGGER.error("Failed to read Avoid mod manifest: {}", mod.toAbsolutePath());
-                    return null;
-                }
-
-                var manifest = new AvoidManifest(json);
-
-                int schema = manifest.get("__schema").getAsInt();
-                if (schema != 1) {
-                    LOGGER.error("Invalid Avoid mod manifest __schema: {} [{}]", schema, mod.toAbsolutePath());
-                    return null;
-                }
-
-                String id = manifest.get("id").getAsString();
-                String version = manifest.get("version").getAsString();
-                String versionSystem = manifest.get("version-system").getAsString();
-
-                String name = manifest.get("name").getAsString();
-                String author = manifest.get("author").getAsString();
-                String description = manifest.get("description").getAsString();
-
-                ModEnvironment env = manifest.has("environment")
-                        ? ModEnvironment.valueOf(manifest.get("environment").getAsString().toUpperCase())
-                        : ModEnvironment.ALL;
-
+                var env = manifest.env();
                 if (env == ModEnvironment.CLIENT) {
                     if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
-                        LOGGER.warn("Skipping client-only mod: {} [{}]", name, id);
+                        LOGGER.warn("Skipping client-only mod: {} [{}]", manifest.name(), manifest.id());
                         return null;
                     }
                 } else if (env == ModEnvironment.SERVER) {
                     if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.SERVER) {
-                        LOGGER.warn("Skipping server-only mod: {} [{}]", name, id);
+                        LOGGER.warn("Skipping server-only mod: {} [{}]", manifest.name(), manifest.id());
                         return null;
                     }
                 }
 
-                container = new AvoidModContainer(modFile, this, json, iModFile instanceof JIJModFile jij ? jij.parent : null);
+                container = new AvoidModContainer(modFile, this, manifest, iModFile instanceof JIJModFile jij ? jij.parent : null);
             } catch (IOException e) {
                 throw new RuntimeException("Error while parsing JAR file '%s'".formatted(mod.toAbsolutePath()), e);
             }
@@ -104,32 +76,15 @@ public final class AvoidModLoader implements IModLoader {
     }
 
     private void extractJIJ(AvoidModContainer container) throws IOException {
-        if (container.manifest().has("jars")) {
-            var jars = container.manifest().get("jars").getAsJsonArray();
+        if (container.metadata().jars() != null) {
+            var jars = container.metadata().jars();
             var folder = Path.of(".cache/avoid_loader/embedded_jars");
 
             try                   { Files.createDirectories(folder);                                                      }
             catch (IOException e) { throw new RuntimeException("Failed to create Avoid embedded jar cache directory", e); }
 
             for (var embeddedJAR : jars) {
-                String jarPath;
-
-                boolean library;
-                boolean mod;
-
-                if (embeddedJAR.isJsonObject()) {
-                    var obj = (JsonObject) embeddedJAR;
-
-                    jarPath = obj.get("path").getAsString();
-
-                    library = !obj.has("library") ? true : obj.get("library").getAsBoolean();
-                    mod     = !obj.has("mod")     ? true : obj.get(  "mod"  ).getAsBoolean();
-                } else {
-                    jarPath = embeddedJAR.getAsString();
-
-                    library = true;
-                    mod     = true;
-                }
+                var jarPath = embeddedJAR.path();
 
                 Path path;
 
@@ -142,6 +97,9 @@ public final class AvoidModLoader implements IModLoader {
                         stream.transferTo(fos);
                     }
                 }
+
+                boolean mod     = Objects.requireNonNullElse(embeddedJAR.mod(), true);
+                boolean library = Objects.requireNonNullElse(embeddedJAR.library(), true);
 
                 if (mod) {
                     if (library) {

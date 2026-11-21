@@ -32,7 +32,6 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_loader.AvoidModContainer;
 import pl.olafcio.avoid_loader.interfaces.IMod;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -71,33 +70,19 @@ public final class ModLoad
         var jar = mod.getModFile().getJar();
 
         try {
-            var manifest = container.manifest();
+            var metadata = container.metadata();
 
-            int schema = manifest.get("__schema").getAsInt();
-            if (schema != 1) {
-                Avoid.LOGGER.error("Invalid Avoid mod manifest __schema: {} [{}]", schema, mod.getModFile().getPath().toAbsolutePath());
-                return;
-            }
+            String id = metadata.id();
+            String version = metadata.version();
+            String versionSystem = metadata.versionSystem();
 
-            String id = manifest.get("id").getAsString();
-            String version = manifest.get("version").getAsString();
-            String versionSystem = manifest.get("version-system").getAsString();
+            String name = metadata.name();
+            String author = metadata.author();
+            String description = metadata.description();
 
-            String name = manifest.get("name").getAsString();
-            String author = manifest.get("author").getAsString();
-            String description = manifest.get("description").getAsString();
+            ModEnvironment env = metadata.env();
 
-            ModEnvironment env = manifest.has("environment")
-                    ? ModEnvironment.valueOf(manifest.get("environment").getAsString().toUpperCase())
-                    : ModEnvironment.ALL;
-
-            List<String> libraries = manifest.has("libraries")
-                    ? manifest.getAsJsonArray("libraries")
-                    .asList()
-                    .stream()
-                    .map(JsonElement::getAsString)
-                    .toList()
-                    : List.of();
+            List<String> libraries = metadata.libraries();
 
             if (env == ModEnvironment.CLIENT) {
                 if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT) {
@@ -144,17 +129,19 @@ public final class ModLoad
                 http.close();
             }
 
-            List<String> skipClasses = manifest.has("skip-classes")
-                    ? manifest.get("skip-classes").getAsJsonArray().asList().stream()
-                    .map(JsonElement::getAsString)
-                    .toList()
-                    : List.of();
+            List<String> skipClasses = metadata.skipClasses();
 
             var classLoader = container.classLoader();
 
-            EventManager.fire(new ModBeforeLoadEvent(id, manifest, jar));
+            var simpleJSON = new JsonObject();
 
-            String klassName = manifest.get("main-class").getAsString();
+            simpleJSON.addProperty("id", metadata.id());
+            simpleJSON.addProperty("name", metadata.name());
+            simpleJSON.addProperty("version", metadata.version());
+
+            EventManager.fire(new ModBeforeLoadEvent(id, metadata, simpleJSON, jar));
+
+            String klassName = metadata.mainClass();
 
             if (skipClasses.contains(klassName))
                 Avoid.LOGGER.warn("Main class of mod cannot be skipped; loading anyways");
