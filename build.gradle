@@ -126,8 +126,17 @@ sourceSets {
         resources { srcDir 'src/impl/resources' }
 
         if (fabric) {
-            java      { srcDir 'src/fabric/java'      }
-            resources { srcDir 'src/fabric/resources' }
+            java      { srcDir 'src/main_loader/fabric/java'      }
+            resources { srcDir 'src/main_loader/fabric/resources' }
+        } else if (neoforge) {
+            java      { srcDir 'src/main_loader/neoforge/java'      }
+            resources { srcDir 'src/main_loader/neoforge/resources' }
+        } else if (forge) {
+            java      { srcDir 'src/main_loader/forge/java'      }
+            resources { srcDir 'src/main_loader/forge/resources' }
+        } else if (sponge) {
+            java      { srcDir 'src/main_loader/sponge/java'      }
+            resources { srcDir 'src/main_loader/sponge/resources' }
         }
 
         if ('mixinless' !in project.properties) {
@@ -487,9 +496,13 @@ jar {
         from sourceSets.main.output, sourceSets.avoid_loader.output
     }
 
-    if (sponge || forge) {
+    if (sponge) {
         manifest {
-            from 'src/main/resources/META-INF/MANIFEST.MF'
+            from 'src/main_loader/sponge/resources/META-INF/MANIFEST.MF'
+        }
+    } else if (forge) {
+        manifest {
+            from 'src/main_loader/forge/resources/META-INF/MANIFEST.MF'
         }
     }
 }
