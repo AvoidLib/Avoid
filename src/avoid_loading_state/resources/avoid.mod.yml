@@ -1,0 +1,18 @@
+__schema: 1
+
+# Metadata
+id: avoid-loading-state
+version: 0.1
+version-system: semver
+
+# Less-processed metadata
+name: Avoid Loading State
+author: Olafcio
+description: Provides additional information in the loading screen.
+
+# Entrypoint
+main-class: re.avoidmc.loadingstate.LoadingStateAddon
+
+# Dependencies
+dependencies:
+  "avoid": ">=2.1"

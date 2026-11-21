@@ -115,6 +115,13 @@ sourceSets {
     }
 
     main.runtimeClasspath += avoid_mod_yaml.output
+
+    avoid_loading_state {
+        compileClasspath += main.compileClasspath
+        compileClasspath += main.output
+    }
+
+    main.runtimeClasspath += avoid_loading_state.output
 }
 
 loom {
@@ -146,6 +153,10 @@ loom {
 
         "avoid_mod_yaml" {
             sourceSet sourceSets.avoid_mod_yaml
+        }
+
+        "avoid_loading_state" {
+            sourceSet sourceSets.avoid_loading_state
         }
     }
 }
@@ -471,6 +482,7 @@ tasks.register("extensions_jar", Jar) {
     archiveClassifier = 'extensions'
 
     from(sourceSets.avoid_mod_yaml.output)
+    from(sourceSets.avoid_loading_state.output)
 }
 
 if (forge) {
