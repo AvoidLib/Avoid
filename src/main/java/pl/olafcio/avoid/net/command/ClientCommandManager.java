@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.annotations.refactor.WillRefactor;
 import pl.olafcio.avoid.net.command.external.ExternalCommand;
 import pl.olafcio.avoid.net.command.external.PlayerNotInWorldException;
+import pl.olafcio.avoid_impl.net.command.CommandLookupCL;
 
 /**
  * A namespace for managing client commands.
@@ -21,7 +22,7 @@ public final class ClientCommandManager {
                    = new CommandManager.Instance<>() {
                         @Override
                         public @Nullable ExternalCommand getByName(String name) throws PlayerNotInWorldException {
-                            return pl.olafcio.avoid_impl.net.command.CommandLookup.queryClient(name);
+                            return CommandLookupCL.queryClient(name);
                         }
                     };
 
