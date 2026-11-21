@@ -244,4 +244,7 @@ public abstract class Drawer {
      * @param y The Y axis to render on.
      */
     public abstract void renderEntityItem(Entity entity, ItemStack itemStack, int x, int y);
+
+    public abstract int getWidth();
+    public abstract int getHeight();
 }

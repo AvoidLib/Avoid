@@ -333,4 +333,14 @@ public class Drawer extends pl.olafcio.avoid.net.screen.Drawer {
         // Tf is this last parameter? Shade?
         this.graphics.renderItem(le, ItemStackNative.convert(itemStack), x, y, 0);
     }
+
+    @Override
+    public int getWidth() {
+        return graphics.guiWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return graphics.guiHeight();
+    }
 }
