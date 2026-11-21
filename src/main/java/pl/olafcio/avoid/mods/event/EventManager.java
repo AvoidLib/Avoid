@@ -4,7 +4,8 @@ import com.mojang.logging.LogUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -24,18 +25,20 @@ public final class EventManager {
 
     @SuppressWarnings("unchecked")
     public static <T> void fire(T event) {
-        if (listeners.containsKey(event.getClass())) {
-            var array = listeners.get(event.getClass());
+        var array = listeners.get(event.getClass());
+        if (array != null) {
             for (Consumer<?> el : array)
                 ((Consumer<T>) el).accept(event);
         }
     }
 
+    @SuppressWarnings("Java8MapApi")
     public static <T> void register(Class<T> event, Consumer<T> handler) {
-        if (!listeners.containsKey(event))
-            listeners.put(event, new ArrayList<>());
+        var value = listeners.get(event);
+        if (value == null)
+            listeners.put(event, value = new ArrayList<>());
 
-        listeners.get(event).add(handler);
+        value.add(handler);
     }
 
     public static void collect(Class<?> klass, Method[] methods) {
@@ -58,16 +61,26 @@ public final class EventManager {
                 boolean ignoreCancelled = m.getAnnotation(EventHandler.class)
                                            .ignoreCancelled();
 
-                if (ignoreCancelled && !Cancellable.class.isAssignableFrom(klass))
+                var actuallyCancellable = Cancellable.class.isAssignableFrom(klass);
+                if (ignoreCancelled && !actuallyCancellable)
                     LOGGER.debug("@EventHandler(ignoreCancelled = true) on a non-cancellable event ({}#{})", className, methodName);
+
+                final var ignoreForReal = ignoreCancelled && actuallyCancellable;
+                final MethodHandle handle;
+
+                try {
+                    handle = MethodHandles.lookup().unreflect(m);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
 
                 register(type, obj -> {
                     try {
-                        if (ignoreCancelled && obj instanceof Cancellable can && can.isCancelled())
+                        if (ignoreForReal && ((Cancellable) obj).isCancelled())
                             return;
 
-                        m.invoke(null, obj);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        handle.invoke(obj);
+                    } catch (Throwable e) {
                         LOGGER.error("Failed to invoke static {} for {}#{}", typeName, className, methodName);
                     }
                 });
@@ -96,16 +109,26 @@ public final class EventManager {
                 boolean ignoreCancelled = m.getAnnotation(EventHandler.class)
                                            .ignoreCancelled();
 
-                if (ignoreCancelled && !Cancellable.class.isAssignableFrom(klass))
+                var actuallyCancellable = Cancellable.class.isAssignableFrom(klass);
+                if (ignoreCancelled && !actuallyCancellable)
                     LOGGER.debug("@EventHandler(ignoreCancelled = true) on a non-cancellable event ({}#{})", className, methodName);
+
+                final var ignoreForReal = ignoreCancelled && actuallyCancellable;
+                final MethodHandle handle;
+
+                try {
+                    handle = MethodHandles.lookup().unreflect(m);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
 
                 register(type, obj -> {
                     try {
-                        if (ignoreCancelled && obj instanceof Cancellable can && can.isCancelled())
+                        if (ignoreForReal && ((Cancellable) obj).isCancelled())
                             return;
 
-                        m.invoke(instance, obj);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        handle.invoke(instance, obj);
+                    } catch (Throwable e) {
                         LOGGER.error("Failed to invoke {} for {}#{}", typeName, className, methodName);
                     }
                 });
