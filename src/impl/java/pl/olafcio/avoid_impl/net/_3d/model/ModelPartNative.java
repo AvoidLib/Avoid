@@ -1,12 +1,11 @@
 package pl.olafcio.avoid_impl.net._3d.model;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 
 @Native
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 @ApiStatus.Internal
 public final class ModelPartNative {
     private ModelPartNative() {}

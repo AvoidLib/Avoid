@@ -1,12 +1,11 @@
 package pl.olafcio.avoid_impl.net.client;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid.net.services.Services;
 import pl.olafcio.avoid_impl.mixininterface.IScreen;
 import pl.olafcio.avoid_impl.net.chat.converter.COFromNative;
@@ -26,7 +25,7 @@ import pl.olafcio.avoid_impl.net.server.ServicesImpl;
 import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 @Native
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 @ApiStatus.Internal
 public final class ClientNative {
     @ApiStatus.Internal

@@ -1,12 +1,11 @@
 package pl.olafcio.avoid_impl.net._3d.layer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid.net._3d.layer.MeshDef;
 
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 public class LayerDef extends pl.olafcio.avoid.net._3d.layer.LayerDef {
     private final LayerDefinition def;
 

@@ -1,0 +1,18 @@
+__schema: 1
+
+# Metadata
+id: avoid-mc-environment
+version: 0.1
+version-system: semver
+
+# Less-processed metadata
+name: Avoid @MCEnvironment
+author: Olafcio
+description: Provides implementation for Avoid's `@MCEnvironment` annotation.
+
+# Entrypoint
+main-class: re.avoidmc.mcenvironment.MCEnvironmentAddon
+
+# Dependencies
+dependencies:
+  "avoid": ">=2.2"

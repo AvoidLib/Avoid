@@ -1,7 +1,5 @@
 package pl.olafcio.avoid_impl.net.entity_renderer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.Identifier;
@@ -9,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid_impl.net._3d.model.ModelPartNative;
 import pl.olafcio.avoid.net.entity_renderer.Baker;
 import pl.olafcio.avoid.net.entity_renderer.EntityModelAccessor;
@@ -23,7 +22,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @NullMarked
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 @ApiStatus.Internal
 public final class EntityRenderersNative {
     @ApiStatus.Internal
@@ -59,7 +58,7 @@ public final class EntityRenderersNative {
         };
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     // istg vro
     private static class LivingEntityAvoidLivingRenderStateEntityModelLivingEntityRenderer<T extends pl.olafcio.avoid.net.entity.Entity, S> extends net.minecraft.client.renderer.entity.LivingEntityRenderer<
             LivingEntity,
@@ -97,7 +96,7 @@ public final class EntityRenderersNative {
         }
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private static class EntityAvoidRenderStateEntityRenderer<T extends pl.olafcio.avoid.net.entity.Entity, S> extends net.minecraft.client.renderer.entity.EntityRenderer<Entity, AvoidRenderState<S>> {
         private final EntityRenderer<T, S> renderer;
         private final Supplier<S> stateSupplier;

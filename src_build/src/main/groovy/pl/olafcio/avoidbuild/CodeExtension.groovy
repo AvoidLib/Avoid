@@ -57,10 +57,6 @@ class CodeExtension {
         }
     }
 
-    def replaceEnvAnnot(String onlyIn, String dist, String server = "SERVER") {
-        apply transformer: new EnvProcessing(project, onlyIn, dist, server)
-    }
-
     def reflectionizeMixinAccessors() {
         apply transformer: new MixinToReflect(project)
     }

@@ -1,12 +1,11 @@
 package pl.olafcio.avoid_impl.net._3d.layer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid.net._3d.layer.CubeList;
 import pl.olafcio.avoid.net._3d.layer.PartTransform;
 
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 public class MeshDef extends pl.olafcio.avoid_impl.net._3d.layer.PartDef implements pl.olafcio.avoid.net._3d.layer.MeshDef {
     private final MeshDefinition mesh;
 

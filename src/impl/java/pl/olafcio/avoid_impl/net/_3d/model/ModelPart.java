@@ -1,10 +1,9 @@
 package pl.olafcio.avoid_impl.net._3d.model;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid.net._3d.Direction;
 import pl.olafcio.avoid.net._3d.apex.ApexConsumer;
 import pl.olafcio.avoid.net._3d.layer.PartTransform;
@@ -23,7 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 public class ModelPart implements pl.olafcio.avoid.net._3d.model.ModelPart {
     final net.minecraft.client.model.geom.ModelPart part;
 

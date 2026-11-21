@@ -1,14 +1,13 @@
 package pl.olafcio.avoid_impl.net._3d.layer._native;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.PartPose;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid.net._3d.layer.PartTransform;
 
 @Native
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 @ApiStatus.Internal
 public final class PartTransformNative {
     @ApiStatus.Internal

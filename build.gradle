@@ -116,6 +116,13 @@ sourceSets {
 
     main.runtimeClasspath += avoid_mod_yaml.output
 
+    avoid_mc_environment {
+        compileClasspath += main.compileClasspath
+        compileClasspath += main.output
+    }
+
+    main.runtimeClasspath += avoid_mc_environment.output
+
     avoid_loading_state {
         compileClasspath += main.compileClasspath
         compileClasspath += main.output
@@ -157,6 +164,10 @@ loom {
 
         "avoid_loading_state" {
             sourceSet sourceSets.avoid_loading_state
+        }
+
+        "avoid_mc_environment" {
+            sourceSet sourceSets.avoid_mc_environment
         }
     }
 }
@@ -244,15 +255,8 @@ code {
     entityTypes()
     specFiles()
 
-    if (neoforge) {
-        replaceEnvAnnot("net.neoforged.api.distmarker.OnlyIn", "net.neoforged.api.distmarker.Dist", "DEDICATED_SERVER")
-    } else if (forge) {
-        replaceEnvAnnot("net.minecraftforge.api.distmarker.OnlyIn", "net.minecraftforge.api.distmarker.Dist", "DEDICATED_SERVER")
-    } else if (paper) {
-        replaceEnvAnnot("pl.olafcio.avoid.annotations.dist.OnlyIn", "pl.olafcio.avoid.annotations.dist.Dist")
+    if (paper) {
         reflectionizeMixinAccessors()
-    } else if (sponge) {
-        replaceEnvAnnot("pl.olafcio.avoid.annotations.dist.OnlyIn", "pl.olafcio.avoid.annotations.dist.Dist")
     }
 }
 
@@ -482,6 +486,7 @@ tasks.register("extensions_jar", Jar) {
     archiveClassifier = 'extensions'
 
     from(sourceSets.avoid_mod_yaml.output)
+    from(sourceSets.avoid_mc_environment.output)
     from(sourceSets.avoid_loading_state.output)
 }
 

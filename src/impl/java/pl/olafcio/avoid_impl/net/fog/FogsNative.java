@@ -1,7 +1,5 @@
 package pl.olafcio.avoid_impl.net.fog;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -12,6 +10,7 @@ import net.minecraft.world.level.material.FogType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 import pl.olafcio.avoid.annotations.Native;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid.net.fog.Fog;
 import pl.olafcio.avoid.net.fog.FogState;
 import pl.olafcio.avoid_impl.mixin.accessors.IFogRenderer;
@@ -22,7 +21,7 @@ import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.world.WorldNative;
 
 @Native
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 @ApiStatus.Internal
 public final class FogsNative {
     @ApiStatus.Internal

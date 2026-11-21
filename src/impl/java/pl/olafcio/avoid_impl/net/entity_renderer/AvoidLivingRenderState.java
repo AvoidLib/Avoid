@@ -1,10 +1,9 @@
 package pl.olafcio.avoid_impl.net.entity_renderer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 final class AvoidLivingRenderState<S> extends LivingEntityRenderState {
     public final S wrappedState;
 

@@ -1,8 +1,7 @@
 package pl.olafcio.avoid_impl.net.fog.delta;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.DeltaTracker;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 
 public final class TickTracker extends pl.olafcio.avoid.net.fog.delta.TickTracker {
     private final Object deltaTracker;
@@ -11,7 +10,7 @@ public final class TickTracker extends pl.olafcio.avoid.net.fog.delta.TickTracke
         this.deltaTracker = deltaTracker;
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private DeltaTracker __dt() {
         return (DeltaTracker) deltaTracker;
     }
@@ -31,17 +30,17 @@ public final class TickTracker extends pl.olafcio.avoid.net.fog.delta.TickTracke
         return __getRealtimeTick();
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private float __getTick() {
         return __dt().getGameTimeDeltaTicks();
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private float __getPartialTick(boolean ignoreFreeze) {
         return __dt().getGameTimeDeltaPartialTick(ignoreFreeze);
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private float __getRealtimeTick() {
         return __dt().getRealtimeDeltaTicks();
     }
