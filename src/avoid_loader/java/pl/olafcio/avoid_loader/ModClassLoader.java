@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Path;
 import java.util.HashSet;
 
 /**
@@ -18,7 +19,7 @@ import java.util.HashSet;
 @ApiStatus.Internal
 public class ModClassLoader extends URLClassLoader {
     public ModClassLoader(URL[] urls, ClassLoader parent) {
-        super(urls, parent);
+        super(urls.length == 0 ? "avoid//?" : "avoid//'" + Path.of(urls[0].getPath().substring(1)).getFileName().toString() + "'", urls, parent);
     }
 
     public ModClassLoader(URL[] urls, ClassLoader parent, boolean startup) {
