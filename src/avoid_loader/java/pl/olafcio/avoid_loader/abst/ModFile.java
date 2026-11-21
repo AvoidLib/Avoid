@@ -1,12 +1,17 @@
 package pl.olafcio.avoid_loader.abst;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.olafcio.avoid_loader.ModClassLoader;
 import pl.olafcio.avoid_loader.interfaces.IModFile;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.jar.JarFile;
 
 public class ModFile implements IModFile {
@@ -36,7 +41,46 @@ public class ModFile implements IModFile {
         }
     }
 
+    private ModFile(Path directory, ModClassLoader classLoader, Void _useless) {
+        this.path = directory;
+        this.jar = null;
+        this.classLoader = classLoader;
+    }
+
+    public static ModFile forDirectories(Path... directories) {
+        return new ModFile(
+                directories[0],
+
+                new ModClassLoader(
+                        Arrays.stream(directories)
+                              .map(dir -> {
+                                  try {
+                                      return dir.toUri().toURL();
+                                  } catch (MalformedURLException e) {
+                                      throw new RuntimeException("[ModFile::forDirectories] Failed to create URL for: '%s'".formatted(dir), e);
+                                  }
+                              })
+                              .toArray(URL[]::new),
+                        ModFile.class.getClassLoader()),
+
+                null
+        ) {
+            @Override
+            @Nullable
+            public InputStream getResourceAsStream(String path) throws IOException {
+                for (var directory : directories) {
+                    var file = directory.resolve(path).toFile();
+                    if (file.exists())
+                        return new FileInputStream(file);
+                }
+
+                return null;
+            }
+        };
+    }
+
     @Override
+    @NotNull
     public Path getPath() {
         return path;
     }
@@ -47,7 +91,17 @@ public class ModFile implements IModFile {
     }
 
     @Override
+    @NotNull
     public ModClassLoader getClassLoader() {
         return classLoader;
+    }
+
+    @Override
+    public @Nullable InputStream getResourceAsStream(String path) throws IOException {
+        var entry = jar.getJarEntry(path);
+        if (entry == null)
+            return null;
+
+        return jar.getInputStream(entry);
     }
 }

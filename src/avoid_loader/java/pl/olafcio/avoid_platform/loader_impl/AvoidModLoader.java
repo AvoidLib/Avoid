@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 public final class AvoidModLoader implements IModLoader {
@@ -35,15 +34,17 @@ public final class AvoidModLoader implements IModLoader {
             Path mod = modFile.getPath();
             AvoidModContainer container;
 
-            var jar = modFile.getJar();
-
             try {
-                var manifestFile = jar.getEntry("avoid.mod.json");
+                var manifestFile = modFile.getResourceAsStream("avoid.mod.json");
                 if (manifestFile == null)
                     return List.of();
 
-                byte[] manifestData = jar.getInputStream(manifestFile)
-                                         .readAllBytes();
+                final byte[] manifestData;
+                try {
+                    manifestData = manifestFile.readAllBytes();
+                } finally {
+                    manifestFile.close();
+                }
 
                 var json = GSON.fromJson(Arrays.stream(new String(manifestData).split("\n"))
                                                                                .filter(line -> !line.stripLeading().startsWith("//"))
@@ -132,15 +133,12 @@ public final class AvoidModLoader implements IModLoader {
 
                 Path path;
 
-                var jar = container.getModFile().getJar();
-                var entry = jar.getJarEntry(jarPath);
-
-                try (var stream = jar.getInputStream(entry)) {
+                try (var stream = container.getModFile().getResourceAsStream(jarPath)) {
                     path = folder.resolve(DigestUtils.sha1Hex(stream) + ".jar");
                 }
 
                 try (var fos = new FileOutputStream(path.toFile())) {
-                    try (var stream = jar.getInputStream(entry)) {
+                    try (var stream = container.getModFile().getResourceAsStream(jarPath)) {
                         stream.transferTo(fos);
                     }
                 }

@@ -89,7 +89,9 @@ public final class PreModLoader {
         IRoundable.runEach(scanners, IModScanner.Stage.PROCESS, scanner -> {
             for (var mod : MODS) {
                 try {
-                    scanner.process(mod, mod.getModFile().getJar());
+                    var jar = mod.getModFile().getJar();
+                    if (jar != null)
+                        scanner.process(mod, jar);
                 } catch (IOException e) {
                     throw new RuntimeException("Failed to scan Avoid mod with scanner: '%s' (%s)".formatted(scanner, scanner.getClass().getName()), e);
                 }

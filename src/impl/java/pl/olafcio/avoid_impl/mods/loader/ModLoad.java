@@ -2,10 +2,11 @@ package pl.olafcio.avoid_impl.mods.loader;
 
 import com.google.common.base.CaseFormat;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
@@ -173,7 +174,9 @@ public final class ModLoad
                                         name, author, description,
                                         env, libraries, klass);
 
-            scanAllClasses(jar, classLoader, id, skipClasses, meta);
+            scanAllClasses(id, meta, jar == null
+                    ? getClassesForFolder(mod.getModFile().getPath(), classLoader, skipClasses, meta)
+                    : getClassesForJAR(jar, classLoader, skipClasses, meta));
 
             ///TIP: Access mod metadata by using {@link AvoidModLoader#getLoadedAddons()}
             AvoidModLoader.metadatas.put(id, meta);
@@ -233,42 +236,9 @@ public final class ModLoad
         }
     }
 
-    private void scanAllClasses(JarFile jar, URLClassLoader classLoader, String id, List<String> skipClasses, AvoidModMeta meta)
+    private void scanAllClasses(String id, AvoidModMeta meta, TreeMap<String, ClassStatus> classes)
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
-        var classes = new TreeMap<String, ClassStatus>();
-        var entries = jar.entries();
-
-        EventManager.fire(new ModClassCollectingEvent(meta));
-
-        do {
-            var el = entries.nextElement();
-            var fn = el.getRealName();
-
-            if (!el.isDirectory() && fn.endsWith(".class") && container.packages.stream().noneMatch(fn::startsWith)) {
-                var className = fn.substring(0, fn.length() - 6)
-                                  .replace("/", ".");
-
-                if (skipClasses.contains(className)) {
-                    Avoid.LOGGER.debug("Skipping class: {}", className);
-                    continue;
-                }
-
-                Class<?> klass;
-
-                try {
-                    klass = classLoader.loadClass(className);
-                } catch (Throwable e) {
-                    Avoid.LOGGER.error("Failed to load class {} ({})", className, mod.getModFile().getPath().getFileName().toString());
-                    continue;
-                }
-
-                var status = new ClassStatus(klass);
-
-                classes.put(klass.getName(), status);
-            }
-        } while (entries.hasMoreElements());
-
         EventManager.fire(new ModClassAnalyzingEvent(meta));
 
         for (var entry : classes.entrySet()) {
@@ -348,6 +318,85 @@ public final class ModLoad
                 }
             }
         }
+    }
+
+    @NotNull
+    private TreeMap<String, ClassStatus> getClassesForJAR(JarFile jar, URLClassLoader classLoader, List<String> skipClasses, AvoidModMeta meta) {
+        var classes = new TreeMap<String, ClassStatus>();
+        var entries = jar.entries();
+
+        EventManager.fire(new ModClassCollectingEvent(meta));
+
+        do {
+            var el = entries.nextElement();
+            var fn = el.getRealName();
+
+            if (!el.isDirectory() && fn.endsWith(".class") && container.packages.stream().noneMatch(fn::startsWith)) {
+                var className = fn.substring(0, fn.length() - 6)
+                                  .replace("/", ".");
+
+                if (skipClasses.contains(className)) {
+                    Avoid.LOGGER.debug("Skipping class: {}", className);
+                    continue;
+                }
+
+                Class<?> klass;
+
+                try {
+                    klass = classLoader.loadClass(className);
+                } catch (Throwable e) {
+                    Avoid.LOGGER.error("Failed to load class {} ({})", className, mod.getModFile().getPath().getFileName().toString());
+                    continue;
+                }
+
+                var status = new ClassStatus(klass);
+
+                classes.put(klass.getName(), status);
+            }
+        } while (entries.hasMoreElements());
+
+        return classes;
+    }
+
+    @NotNull
+    private TreeMap<String, ClassStatus> getClassesForFolder(Path folder, URLClassLoader classLoader, List<String> skipClasses, AvoidModMeta meta) {
+        var classes = new TreeMap<String, ClassStatus>();
+
+        EventManager.fire(new ModClassCollectingEvent(meta));
+
+        try {
+            Files.walk(folder).forEach(file -> {
+                var fn = folder.relativize(file).toString();
+
+                if (!Files.isDirectory(file) && fn.endsWith(".class") && container.packages.stream().noneMatch(fn::startsWith)) {
+                    var className = fn.substring(0, fn.length() - 6)
+                                      .replace("\\", ".")
+                                      .replace("/", ".");
+
+                    if (skipClasses.contains(className)) {
+                        Avoid.LOGGER.debug("Skipping class: {}", className);
+                        return;
+                    }
+
+                    Class<?> klass;
+
+                    try {
+                        klass = classLoader.loadClass(className);
+                    } catch (Throwable e) {
+                        Avoid.LOGGER.error("Failed to load class {} ({})", className, mod.getModFile().getPath().getFileName().toString());
+                        return;
+                    }
+
+                    var status = new ClassStatus(klass);
+
+                    classes.put(klass.getName(), status);
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to iterate through classes of a directory mod", e);
+        }
+
+        return classes;
     }
 
     private static final Logger LOGGER

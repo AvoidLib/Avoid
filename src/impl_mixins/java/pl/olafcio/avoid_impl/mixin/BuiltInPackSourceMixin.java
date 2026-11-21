@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.FilePackResources;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
+import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.*;
 import net.minecraft.world.flag.FeatureFlagSet;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pl.olafcio.avoid.mods.loader.AvoidModLoader;
 import pl.olafcio.avoid.mods.AvoidModMeta;
 
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +32,9 @@ public class BuiltInPackSourceMixin {
             modPacks = new ArrayList<>();
 
             var addons = AvoidModLoader.getLoadedAddons();
-            for (AvoidModMeta addon : addons)
+            for (AvoidModMeta addon : addons) {
+                var path = AvoidModLoader.getLoadedAddonFile(addon);
+
                 modPacks.add(
                         new Pack(
                                 new PackLocationInfo(
@@ -39,11 +43,14 @@ public class BuiltInPackSourceMixin {
                                         PackSource.create(x -> x, true),
                                         Optional.of(new KnownPack("avoidlib_res", addon.id(), "1"))
                                 ),
-                                new FilePackResources.FileResourcesSupplier(AvoidModLoader.getLoadedAddonFile(addon)),
+                                Files.isDirectory(path)
+                                        ? new PathPackResources.PathResourcesSupplier(path)
+                                        : new FilePackResources.FileResourcesSupplier(path),
                                 new Pack.Metadata(Component.literal("(Mod resources)"), PackCompatibility.COMPATIBLE, FeatureFlagSet.of(), List.of()),
                                 new PackSelectionConfig(true, Pack.Position.TOP, false)
                         )
                 );
+            }
         }
 
         for (var pack : modPacks)
