@@ -2,11 +2,17 @@ package pl.olafcio.avoid_loader;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 /**
  * A classloader used for all mods loaded by Avoid Loader.
@@ -17,7 +23,7 @@ import java.util.HashSet;
  * <u>loading parent</u> - the classloader to fallback to, if not already loaded.
  */
 @ApiStatus.Internal
-public class ModClassLoader extends URLClassLoader {
+public class ModClassLoader extends ShadowAwareClassLoader {
     public ModClassLoader(URL[] urls, ClassLoader parent) {
         super(urls.length == 0 ? "avoid//?" : "avoid//'" + Path.of(urls[0].getPath().substring(1)).getFileName().toString() + "'", urls, parent);
     }
