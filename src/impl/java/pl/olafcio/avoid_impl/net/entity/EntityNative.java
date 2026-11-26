@@ -64,48 +64,7 @@ public final class EntityNative {
                     try {
                         var klass = Class.forName(path.replace("/", "."));
                         if (klass.isAnnotationPresent(AutoEntityAttach.class)) {
-                            Class<? extends net.minecraft.world.entity.Entity> mcEntity;
-
-                            if (klass.isAnnotationPresent(pl.olafcio.avoid.net.entity.type.base.annotations.klass.Class.class))
-                                mcEntity = klass.getAnnotation(pl.olafcio.avoid.net.entity.type.base.annotations.klass.Class.class)
-                                                .value();
-                            else if (klass.isAnnotationPresent(pl.olafcio.avoid.net.entity.type.base.annotations.id.Namespace.class)) {
-                                var type = BuiltInRegistries.ENTITY_TYPE.getValue(
-                                        Identifier.fromNamespaceAndPath(
-                                            klass.getAnnotation(pl.olafcio.avoid.net.entity.type.base.annotations.id.Namespace.class)
-                                                 .value(),
-                                            klass.getAnnotation(pl.olafcio.avoid.net.entity.type.base.annotations.id.Value.class)
-                                                 .value()
-                                        )
-                                );
-
-                                //noinspection unchecked
-                                mcEntity = (Class<? extends net.minecraft.world.entity.Entity>)
-                                           ((IEntityType<?>) type).avoid$factory().getClass().getNestHost();
-
-                                // Magic. Ikr?
-                            } else
-                                throw new RuntimeException("Illegal use of @AutoEntityAttach in '%s' [Avoid internals]".formatted(id(path)));
-
-                            var constructor = klass.getDeclaredConstructor(int.class, EntityType.class,
-                                                                                          IVect3.class, IVect3.class,
-                                                                                          UUID.class, BaseComponent.class,
-                                                                                          net.minecraft.world.entity.Entity.class);
-
-                            final var ident = id(path);
-
-                            Avoid.LOGGER.debug("Registering " + klass.getSimpleName());
-                            register(mcEntity, (int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) -> {
-                                try {
-                                    return (Entity) constructor.newInstance(id, type, position, velocity, uuid, name, underlyingEntity);
-                                } catch (InstantiationException e) {
-                                    throw new RuntimeException("Failed to register Minecraft entity type: '%s' /reflection exception".formatted(ident), e);
-                                } catch (IllegalAccessException e) {
-                                    throw new RuntimeException("Failed to register Minecraft entity type: '%s' /access exception".formatted(ident), e);
-                                } catch (InvocationTargetException e) {
-                                    throw new RuntimeException("Failed to register Minecraft entity type: '%s' /invocation exception".formatted(ident), e);
-                                }
-                            });
+                            register(klass, id(path));
                         }
                     } catch (ClassNotFoundException e) {
                         throw new RuntimeException("Failed to process internal class: '%s' /classnotfound exception".formatted(path), e);
@@ -119,6 +78,53 @@ public final class EntityNative {
         } catch (IOException e) {
             throw new RuntimeException("Failed to scan internal Avoid entity-type wrappers", e);
         }
+    }
+
+    /**
+     * Registers a {@link AutoEntityAttach @AutoEntityAttach} marked class.
+     */
+    @ApiStatus.Experimental
+    public static void register(Class<?> klass, String ident) throws NoSuchMethodException {
+        Class<? extends net.minecraft.world.entity.Entity> mcEntity;
+
+        if (klass.isAnnotationPresent(pl.olafcio.avoid.net.entity.type.base.annotations.klass.Class.class))
+            mcEntity = klass.getAnnotation(pl.olafcio.avoid.net.entity.type.base.annotations.klass.Class.class)
+                            .value();
+        else if (klass.isAnnotationPresent(pl.olafcio.avoid.net.entity.type.base.annotations.id.Namespace.class)) {
+            var type = BuiltInRegistries.ENTITY_TYPE.getValue(
+                    Identifier.fromNamespaceAndPath(
+                        klass.getAnnotation(pl.olafcio.avoid.net.entity.type.base.annotations.id.Namespace.class)
+                             .value(),
+                        klass.getAnnotation(pl.olafcio.avoid.net.entity.type.base.annotations.id.Value.class)
+                             .value()
+                    )
+            );
+
+            //noinspection unchecked
+            mcEntity = (Class<? extends net.minecraft.world.entity.Entity>)
+                       ((IEntityType<?>) type).avoid$factory().getClass().getNestHost();
+
+            // Magic. Ikr?
+        } else
+            throw new RuntimeException("Illegal use of @AutoEntityAttach in '%s' [Avoid internals]".formatted(ident));
+
+        var constructor = klass.getDeclaredConstructor(int.class, EntityType.class,
+                                                                  IVect3.class, IVect3.class,
+                                                                  UUID.class, BaseComponent.class,
+                                                                  net.minecraft.world.entity.Entity.class);
+
+        Avoid.LOGGER.debug("Registering " + klass.getSimpleName());
+        register(mcEntity, (int id, EntityType type, IVect3 position, IVect3 velocity, UUID uuid, BaseComponent<?> name, net.minecraft.world.entity.Entity underlyingEntity) -> {
+            try {
+                return (Entity) constructor.newInstance(id, type, position, velocity, uuid, name, underlyingEntity);
+            } catch (InstantiationException e) {
+                throw new RuntimeException("Failed to register Minecraft entity type: '%s' /reflection exception".formatted(ident), e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Failed to register Minecraft entity type: '%s' /access exception".formatted(ident), e);
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException("Failed to register Minecraft entity type: '%s' /invocation exception".formatted(ident), e);
+            }
+        });
     }
 
     static {
