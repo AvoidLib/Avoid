@@ -7,7 +7,7 @@
 - 26.1.1 & 26.1.2
 - 26.2
 - 26.3
-- 26.4-snapshot-10 *[TS]*
+- 26.4-pre-1 *[TS]*
 
 **🔌 Supported ModLoaders:**
 - Fabric
@@ -17,6 +17,18 @@
 - Paper
 
 **🪵 Changelog:**
+- Revert FML events which didn't work anyway..
+- Performance improvements in EventManager
+- Drawer#{ getWidth, getHeight }()
+- Potentially fix CommandLookup environmental issues, just incase
+- Loading addons from classpath
+- [Loader] IAvoidModDescriber service
+- Assign names to mod classloaders
+- Fix Avoid addons not being able to reference Avoid's JIJ-ed libraries
+- Fix+rework pack.mcmeta appender
+- Update to 26.4-pre-1
+
+**🪵 Changelog (v2.2-experimental-3):**
 - Update to 26.4-snapshot-10
 
 **🪵 Changelog (v2.2-experimental-2):**
