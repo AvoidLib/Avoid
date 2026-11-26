@@ -21,6 +21,9 @@ public interface IModFile {
     @Nullable
     InputStream getResourceAsStream(String path) throws IOException;
 
+    @ApiStatus.Experimental
+    void addResource(String path, byte[] data) throws IOException;
+
     @NotNull
     default String hash() {
         try (var stream = Files.newInputStream(getPath())) {

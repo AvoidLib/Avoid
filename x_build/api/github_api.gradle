@@ -22,7 +22,7 @@ static Object getRelease(String repository, String versionName = "latest") {
 
     if (versionName != "latest") {
         for (var ver : versions) {
-            if (ver['tag_name'] == "v" + versionName) {
+            if ((ver['tag_name'] == versionName) || (ver['tag_name'] == "v" + versionName)) {
                 version = ver
                 break
             }

@@ -253,6 +253,10 @@ repositories {
             name "ModMaven"
         }
     }
+
+    flatDir {
+        dirs "libs-all"
+    }
 }
 
 if (sponge) {
@@ -298,6 +302,10 @@ dependencies {
     }
 
     implementation(shadow("org.yaml:snakeyaml:2.7"))
+
+    implementation(shadow(github("Olafcio1/ReflectStorm", versionName: "0.2.1")))
+    implementation(shadow(github("Olafcio1/ReflectStorm", versionName: "0.2.1", suffix: "-j21", jarFinder: { fn -> fn.contains("-j21") })))
+
     shadow("org.apache.commons:commons-lang3:3.19.0")
 
     if ("omit_mappings" !in project.getProperties()) {

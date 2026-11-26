@@ -1,26 +1,18 @@
 package pl.olafcio.avoid_platform.loader_impl;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.olafcio.avoid_loader.AvoidModContainer;
+import pl.olafcio.avoid_loader.PleaseAppendMCMeta;
 import pl.olafcio.avoid_loader.interfaces.IMod;
-import pl.olafcio.avoid_loader.interfaces.IModFile;
 import pl.olafcio.avoid_loader.interfaces.services.IModProcessor;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 public final class MCMetaAppenderService implements IModProcessor {
-    private final Path tmp = Path.of(".cache/avoid_loader/.tmp");
     private static String packFormat;
+    private static final Logger LOGGER = LoggerFactory.getLogger("AvoidLoader/MCMeta Appender");
 
     static {
         try (var stream = ClassLoader.getSystemResourceAsStream("version.json")) {
@@ -28,120 +20,32 @@ public final class MCMetaAppenderService implements IModProcessor {
                                                           .split(",")[0]
                                                           .trim();
         } catch (Exception e) {
-            LoggerFactory.getLogger("AvoidLoader/MCMeta Appender")
-                         .warn("Failed to retrieve required data major version; omitting");
+            LOGGER.warn("Failed to retrieve required data major version; omitting");
         }
     }
 
     @Override
     public void process(IMod mod) {
-        //TODO Make a variant of this not requiring JAR-s. Or make a IModModifier.
-        if (mod instanceof AvoidModContainer avoid && avoid.getModFile().getJar() != null && !Files.isSymbolicLink(avoid.path()))
-            new MCMetaAppender(mod.getModFile());
-    }
-
-    private class MCMetaAppender {
-        private FileInputStream fis;
-        private ZipInputStream zis;
-
-        private final IModFile modfile;
-
-        private final Path mod;
-        private final Path packedJAR;
-
-        MCMetaAppender(IModFile modfile) {
-            this.modfile = modfile;
-            this.mod = modfile.getPath();
+        if (mod.getClass().isAnnotationPresent(PleaseAppendMCMeta.class) && !Files.isSymbolicLink(mod.getModFile().getPath())) {
+            byte[] pack = """
+                          {
+                              "pack": {
+                                  "description": "Avoid addon (generated pack.mcmeta)",
+                                  "min_format": 1,
+                                  "max_format": 1000,
+                                  "supported_formats": [1, 1000]%s
+                              }
+                          }
+                          """.formatted(packFormat == null ? "" : ",\n" +
+                                  "\"pack_format\": " + packFormat
+                          )
+                          .getBytes(StandardCharsets.UTF_8);
 
             try {
-                fis = new FileInputStream(mod.toFile());
-                zis = new ZipInputStream(fis);
-
-                Files.createDirectories(tmp);
-                packedJAR = tmp.resolve(mod.getFileName());
-
-                if (addPackMCMeta()) {
-                    closeStuff();
-                    override();
-                }
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Couldn't append pack.mcmeta to mod JAR: '%s'  (phase: begin)".formatted(mod.toAbsolutePath()), e);
+                mod.getModFile().addResource("pack.mcmeta", pack);
             } catch (IOException e) {
-                throw new RuntimeException("Couldn't append pack.mcmeta to mod JAR: '%s'  (phase: end)".formatted(mod.toAbsolutePath()), e);
-            } finally {
-                closeStuff();
+                LOGGER.warn("Failed to append pack.mcmeta to mod: '{}'", mod.getModFile().getPath(), e);
             }
-        }
-
-        private void closeStuff() {
-            if (zis != null)
-                try                         { zis.close(); }
-                catch (IOException ignored) {}
-
-            if (fis != null)
-                try                         { fis.close(); }
-                catch (IOException ignored) {}
-        }
-
-        private void override() throws IOException {
-            modfile.getClassLoader().prefer(new URL[]{ packedJAR.toUri().toURL() });
-
-            // v  i CAN'T do this because the previous JAR is already classloaded  (for the loader services)
-            //    and so i have to do this messup
-
-            //            Files.move(packedJAR, mod, StandardCopyOption.REPLACE_EXISTING);
-        }
-
-        private boolean addPackMCMeta() {
-            FileOutputStream fos = null;
-            ZipOutputStream zos = null;
-
-            try {
-                fos = new FileOutputStream(packedJAR.toFile());
-                zos = new ZipOutputStream(fos);
-
-                ZipEntry entry;
-
-                while ((entry = zis.getNextEntry()) != null) {
-                    var name = entry.getName();
-                    while (name.startsWith("/"))
-                        name = name.substring(1);
-
-                    if (name.equals("pack.mcmeta"))
-                        return false;
-
-                    zos.putNextEntry(entry);
-                    zis.transferTo(zos);
-                }
-
-                zos.putNextEntry(new ZipEntry("pack.mcmeta"));
-                zos.write("""
-                            {
-                                "pack": {
-                                    "description": "Avoid addon (generated pack.mcmeta)",
-                                    "min_format": 1,
-                                    "max_format": 1000,
-                                    "supported_formats": [1, 1000]%s
-                                }
-                            }
-                            """.formatted(packFormat == null ? "" : ",\n" +
-                                "\"pack_format\": "  + packFormat)
-                        .getBytes(StandardCharsets.UTF_8));
-
-                zos.finish();
-            } catch (IOException e) {
-                throw new RuntimeException("Couldn't append pack.mcmeta to mod JAR: '%s'  (phase: process)".formatted(mod.toAbsolutePath()), e);
-            } finally {
-                if (zos != null)
-                    try                       { zos.close(); }
-                    catch (Exception ignored) {}
-
-                if (fos != null)
-                    try                       { fos.close(); }
-                    catch (Exception ignored) {}
-            }
-
-            return true;
         }
     }
 }
