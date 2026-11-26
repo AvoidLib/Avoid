@@ -1,0 +1,4 @@
+{
+    return new net.minecraft.world.item.component.TooltipDisplay(value.hideTooltip, value.hiddenComponents.stream()
+    return new net.minecraft.world.item.component.TooltipDisplay(true, value.hideTooltip, value.hiddenComponents.stream()
+}

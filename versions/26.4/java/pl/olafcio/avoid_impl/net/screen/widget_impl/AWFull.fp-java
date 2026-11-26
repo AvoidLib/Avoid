@@ -7,3 +7,23 @@
     element.render(DrawerNative.create(guiGraphics), i, j, f);
     element.render(DrawerNative.create(guiGraphics), guiGraphics.mouseX(), guiGraphics.mouseY(), guiGraphics.partialTicks());
 }
+
+import net.minecraft.client.gui.narration.NarrationTrigger;
+
+{
+    public NarrationPriority narrationPriority() {
+    public NarrationPriority narrationPriority(NarrationTrigger narrationTrigger) {
+}
+
+{
+    return element.isFocused() ? NarrationPriority.FOCUSED :
+
+    return NarratableEntry.NarrationPriority.of(element.isFocused(), element.isHovered(), narrationTrigger);
+
+    /*return element.isFocused() ? NarrationPriority.FOCUSED :
+}
+
+{
+    NarrationPriority.NONE;
+    NarrationPriority.NONE;*/
+}

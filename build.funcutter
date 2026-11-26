@@ -150,6 +150,7 @@ text_papi_version=3.2.0+26.3
 ; 26.2
 ! 26.3
 : no-placeholders
+apache_commons=3.22.0
 minecraft_version=26.4-pre-1
 minecraft_version_range=26.4-pre.1
 minecraft_version_list=["26.4-pre-1"]
