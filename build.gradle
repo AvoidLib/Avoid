@@ -274,6 +274,9 @@ if (sponge) {
 
 shadow2 {
     relocate("org.yaml.snakeyaml", "pl.olafcio.avoid.__shadow__.snakeyaml")
+
+    if (!fabric)
+        relocate("org.apache.commons", "pl.olafcio.avoid.__shadow__.apcommons")
 }
 
 if ("include_jspecify" in project.getProperties()) {

@@ -26,6 +26,7 @@ public enum ShadowArtifacts {
 
     private static final boolean ASM = isLoaded("pl.olafcio.avoid.__shadow__.asm.ClassReader");
     private static final boolean YAML = isLoaded("pl.olafcio.avoid.__shadow__.snakeyaml.Yaml");
+    private static final boolean COMMONS = isLoaded("pl.olafcio.avoid.__shadow__.apcommons.lang3.Strings");
     private static final boolean JSPECIFY = isLoaded("pl.olafcio.avoid.__shadow__.jspecify.annotations.Nullable");
     private static final boolean MIXINEXTRAS = isLoaded("pl.olafcio.avoid.__shadow__.mixinextras.MixinExtrasBootstrap");
 
@@ -35,6 +36,8 @@ public enum ShadowArtifacts {
             name = "pl.olafcio.avoid.__shadow__.asm." + name.substring(18);
         else if (YAML && name.startsWith("org.yaml." + __("snakeyaml.")))
             name = "pl.olafcio.avoid.__shadow__.snakeyaml." + name.substring(19);
+        else if (COMMONS && name.startsWith("org.apache." + __("commons.")))
+            name = "pl.olafcio.avoid.__shadow__.apcommons." + name.substring(19);
         else if (JSPECIFY && name.startsWith("org." + __("jspecify.")))
             name = "pl.olafcio.avoid.__shadow__.jspecify." + name.substring(13);
         else if (MIXINEXTRAS && name.startsWith("com.llamalad7." + __("mixinextras.")))
@@ -54,6 +57,11 @@ public enum ShadowArtifacts {
         if (YAML) {
             name = name.replace("org/yaml/" + __("snakeyaml/"), "pl/olafcio/avoid/__shadow__/snakeyaml/");
             name = name.replace("org.yaml." + __("snakeyaml."), "pl.olafcio.avoid.__shadow__.snakeyaml.");
+        }
+
+        if (COMMONS) {
+            name = name.replace("org/apache/" + __("commons/"), "pl/olafcio/avoid/__shadow__/apcommons/");
+            name = name.replace("org.apache." + __("commons."), "pl.olafcio.avoid.__shadow__.apcommons.");
         }
 
         if (JSPECIFY) {
