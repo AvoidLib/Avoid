@@ -308,7 +308,7 @@ dependencies {
     implementation(shadow(github("Olafcio1/ReflectStorm", versionName: "0.2.1")))
     implementation(shadow(github("Olafcio1/ReflectStorm", versionName: "0.2.1", suffix: "-j21", jarFinder: { fn -> fn.contains("-j21") })))
 
-    shadow("org.apache.commons:commons-lang3:3.19.0")
+    shadow("org.apache.commons:commons-lang3:${project.apache_commons}")
 
     if ("omit_mappings" !in project.getProperties()) {
         mappings loom.officialMojangMappings()
