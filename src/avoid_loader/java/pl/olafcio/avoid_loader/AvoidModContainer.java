@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@PleaseAppendMCMeta
 @Deprecated(forRemoval = true)
 public class AvoidModContainer implements IMod {
     private final ModFile modFile;

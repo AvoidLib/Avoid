@@ -3,7 +3,7 @@ import java.util.function.Predicate
 
 apply from: rootProject.file("x_build/api/github_api.gradle")
 
-String github(String repository, String versionName = "latest", Predicate<String> jarFinder = { _ -> true }, Predicate<String> sourcesJarFinder = { _ -> false }) {
+String github(String repository, String versionName = "latest", Predicate<String> jarFinder = { _ -> true }, Predicate<String> sourcesJarFinder = { _ -> false }, String suffix = "") {
     var repoName = repository.substring(repository.indexOf("/") + 1)
     var libs = project.file("libs-all").toPath()
 
@@ -17,11 +17,11 @@ String github(String repository, String versionName = "latest", Predicate<String
 
             allLibs.forEach {
                 def fn = it.getFileName().toString()
-                if (fn.startsWith(repoName + "-") && fn.endsWith(".jar")) {
+                if (fn.startsWith(repoName + "-") && fn.endsWith(suffix + ".jar")) {
                     if (System.currentTimeMillis() - Files.getLastModifiedTime(it).toMillis() < 1000*60*60*24*3 && !gradle.startParameter.offline) {
-                        left = ":" + repoName + ":" + fn.substring(0, fn.length() - 4).split("-", 2)[1]
+                        left = ":" + repoName + suffix + ":" + fn.substring(0, fn.length() - 4).split("-", 2)[1]
                     } else {
-                        ret = ":" + repoName + ":" + fn.substring(0, fn.length() - 4).split("-", 2)[1]
+                        ret = ":" + repoName + suffix + ":" + fn.substring(0, fn.length() - 4).split("-", 2)[1]
                     }
                 }
             }
@@ -30,8 +30,8 @@ String github(String repository, String versionName = "latest", Predicate<String
                 return ret
         }
     } else {
-        if (libs.resolve(repoName + "-" + versionName + ".jar").toFile().isFile())
-            return ":" + repoName + ":" + versionName
+        if (libs.resolve(repoName + suffix + "-" + versionName + ".jar").toFile().isFile())
+            return ":" + repoName + suffix + ":" + versionName
     }
 
     var version
@@ -47,8 +47,8 @@ String github(String repository, String versionName = "latest", Predicate<String
 
     var repoVersion = version['tag_name']
 
-    var jar = libs.resolve(repoName + "-" + repoVersion + ".jar")
-    var jarSources = libs.resolve(repoName + "-" + repoVersion + "-sources.jar")
+    var jar = libs.resolve(repoName + suffix + "-" + repoVersion + ".jar")
+    var jarSources = libs.resolve(repoName + suffix + "-" + repoVersion + "-sources.jar")
 
     for (var asset : version['assets']) {
         if (jarFinder(asset['name'])) {
@@ -70,7 +70,7 @@ String github(String repository, String versionName = "latest", Predicate<String
         }
     }
 
-    return ":" + repoName + ":" + repoVersion
+    return ":" + repoName + suffix + ":" + repoVersion
 }
 
 String github(kwargs, repository) {
@@ -78,7 +78,8 @@ String github(kwargs, repository) {
             (String)repository,
             'versionName' in kwargs ? (String)kwargs['versionName'] : "latest",
             'jarFinder' in kwargs ? (Predicate<String>)kwargs['jarFinder'] : { _ -> true },
-            'sourcesJarFinder' in kwargs ? (Predicate<String>)kwargs['sourcesJarFinder'] : { _ -> false }
+            'sourcesJarFinder' in kwargs ? (Predicate<String>)kwargs['sourcesJarFinder'] : { _ -> false },
+            'suffix' in kwargs ? (String)kwargs['suffix'] : ""
     )
 }
 
