@@ -1,18 +1,17 @@
 package pl.olafcio.avoid.net.keyboard.bind;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid.platform.RunningEnv;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 
 public final class Category {
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     InternalCategory category;
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private Category(Object category) {
         this.category = new InternalCategory((KeyMapping.Category) category);
     }
@@ -22,7 +21,7 @@ public final class Category {
             this.init(id);
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private void init(Identification id) {
         this.category = new InternalCategory(KeyMapping.Category.register(IdentificationNative.convert(id)));
     }
@@ -36,7 +35,7 @@ public final class Category {
     public static Category SPECTATOR;
     public static Category DEBUG;
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private static void clinit() {
         MOVEMENT    = new Category(KeyMapping.Category.MOVEMENT);
         MISC        = new Category(KeyMapping.Category.MISC);

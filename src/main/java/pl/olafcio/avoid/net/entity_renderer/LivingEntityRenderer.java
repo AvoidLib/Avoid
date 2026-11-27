@@ -1,10 +1,9 @@
 package pl.olafcio.avoid.net.entity_renderer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.PlayerSkinRenderCache;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid_impl.net.entity_renderer.LOCustomHead;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 public abstract class LivingEntityRenderer<T extends Entity, S>
                 extends EntityRenderer<T, S>
 {
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private ArrayList<LivingOp> operations
       = new ArrayList<>();
 
@@ -33,12 +32,12 @@ public abstract class LivingEntityRenderer<T extends Entity, S>
         __addCustomHead();
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private void __addCustomHead() {
         operations.add(new LOCustomHead());
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     final void finishInit(net.minecraft.client.renderer.entity.LivingEntityRenderer<?, ?, ?> renderer,
                           EntityRendererProvider.Context context,
                           EntityModelSet entityModelSet,

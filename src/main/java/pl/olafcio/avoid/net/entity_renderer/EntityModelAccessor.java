@@ -1,11 +1,10 @@
 package pl.olafcio.avoid.net.entity_renderer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.PlayerSkinRenderCache;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid.annotations.refactor.Discouraged;
 import pl.olafcio.avoid.net._3d.model.ModelPart;
 
@@ -27,7 +26,7 @@ public final class EntityModelAccessor {
         return ler.shadowRadius;
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     public static void finishInit(LivingEntityRenderer<?, ?> ler,  net.minecraft.client.renderer.entity.LivingEntityRenderer<?, ?, ?> renderer,
                           EntityRendererProvider.Context context,
                           EntityModelSet entityModelSet,

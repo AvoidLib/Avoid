@@ -1,8 +1,7 @@
 package pl.olafcio.avoid.net.keyboard.bind;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 record InternalCategory(KeyMapping.Category category) {}

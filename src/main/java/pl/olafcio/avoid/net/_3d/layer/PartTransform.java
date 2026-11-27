@@ -1,10 +1,9 @@
 package pl.olafcio.avoid.net._3d.layer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 
-@Environment(EnvType.CLIENT)
+@MCEnvironment("client")
 @ApiStatus.Experimental
 public record PartTransform(float x, float y, float z, float rotateX, float rotateY, float rotateZ, float scaleX, float scaleY, float scaleZ) {
     public static final PartTransform ZERO = PartTransform._trans_rot(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);

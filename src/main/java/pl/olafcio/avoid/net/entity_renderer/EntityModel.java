@@ -1,7 +1,6 @@
 package pl.olafcio.avoid.net.entity_renderer;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import pl.olafcio.avoid.annotations.dist.MCEnvironment;
 import pl.olafcio.avoid.platform.AvoidWrappedLoader;
 import pl.olafcio.avoid.platform.RunningEnv;
 import pl.olafcio.avoid.net._3d.model.ModelPart;
@@ -22,7 +21,7 @@ public abstract class EntityModel<S> {
             __resetTransforms();
     }
 
-    @Environment(EnvType.CLIENT)
+    @MCEnvironment("client")
     private void __resetTransforms() {
         for (ModelPart modelPart : this.modelPart.getEveryPart()) {
             modelPart.resetTransform();
