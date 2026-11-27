@@ -45,6 +45,17 @@ public class MCEnvironmentAddon extends AvoidMod {
                                                })
                                                .toList();
 
+                    node.fields = node.fields.stream()
+                                             .filter(m -> {
+                                                 if (isMismatch(m.invisibleAnnotations)) {
+                                                     b[0] = true;
+                                                     return false;
+                                                 } else {
+                                                     return true;
+                                                 }
+                                             })
+                                             .toList();
+
                     return b[0];
                 }
 
