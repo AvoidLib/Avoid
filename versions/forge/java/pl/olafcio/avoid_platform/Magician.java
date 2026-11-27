@@ -402,7 +402,7 @@ public class Magician {
                                     "The necessary elements should be available on the game classpath, although not passed through mixin!");
                     }
                 } catch (IOException e) {
-                    throw new RuntimeException("Failed to process Avoid mod: '%s'".formatted(mod.manifest().get("id").getAsString()), e);
+                    throw new RuntimeException("Failed to process Avoid mod: '%s'".formatted(mod.manifest().get("id")), e);
                 }
             }
         });
