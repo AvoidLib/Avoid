@@ -82,6 +82,7 @@ var remap = "omit_mappings" !in project.getProperties()
 
 tasks.register("shadow2", ShadowJar) {
     dependsOn (remap ? remapJar : jar)
+    mergeServiceFiles()
 
     configurations = [project.configurations.shadow]
     archiveClassifier = 'all'
@@ -153,10 +154,6 @@ sourceSets {
 
         main.runtimeClasspath += named(n).get().output
     }
-}
-
-configurations {
-    loader
 }
 
 loom {
@@ -264,7 +261,6 @@ repositories {
 if (sponge) {
     shadow2 {
         relocate("com.llamalad7.mixinextras", "pl.olafcio.avoid.__shadow__.mixinextras")
-        mergeServiceFiles() // Very important!
     }
 } else if (paper) {
     shadow2 {
