@@ -613,13 +613,7 @@ Use with caution.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb
         main = (
                 "merge" in project.getProperties()
                         ? getMergeJAR()
-                        :
-                "shadow" in project.getProperties()
-                        ? shadow2.archiveFile.get().asFile
-                        :
-                "omit_mappings" !in project.getProperties()
-                        ? remapJar.archiveFile.get().asFile
-                        : jar     .archiveFile.get().asFile
+                        : shadow2.archiveFile.get().asFile
         ).toPath()
     }
 
