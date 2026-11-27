@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -30,13 +31,33 @@ public class ModFile implements IModFile {
     private final ModClassLoader classLoader;
 
     private final Path actualPath;
+    private boolean lowcode = false;
+
+    @Override
+    public boolean isLowcode() {
+        return lowcode;
+    }
 
     public ModFile(Path path) {
         try {
             this.path = path;
-            this.classLoader = new ModClassLoader(new URL[]{ path.toUri().toURL() }, this.getClass().getClassLoader());
-            //TODO Make this code better
-            this.jar = new JarFile((actualPath = Path.of(classLoader.getURLs()[0].toURI())).toFile());
+
+            // Just temporary!
+            try (var jar = new JarFile(path.toFile())) {
+                var manifest = jar.getManifest();
+                if (manifest != null) {
+                    this.lowcode = Objects.equals(manifest.getMainAttributes().getValue("Lowcode"), "true");
+                }
+            }
+
+            if (lowcode) {
+                this.classLoader = new ModClassLoader(new URL[0], this.getClass().getClassLoader());
+                this.actualPath = path;
+                this.jar = null;
+            } else {
+                this.classLoader = new ModClassLoader(new URL[]{ path.toUri().toURL() }, this.getClass().getClassLoader());
+                this.jar = new JarFile((actualPath = Path.of(classLoader.getURLs()[0].toURI())).toFile());  // todo fix quality of code
+            }
         } catch (MalformedURLException e) {
             throw new RuntimeException("[ModFile::constructor] Failed to create ModClassLoader for: '%s'".formatted(path.toAbsolutePath()), e);
         } catch (IOException | URISyntaxException e) {
@@ -49,7 +70,7 @@ public class ModFile implements IModFile {
             this.path = path;
             this.classLoader = classLoader;
             //TODO Make this code better
-            this.jar = new JarFile((actualPath = Path.of(classLoader.getURLs()[0].toURI())).toFile());
+            this.jar = new JarFile((actualPath = (classLoader.getURLs().length == 0 ? path : Path.of(classLoader.getURLs()[0].toURI()))).toFile());
         } catch (IOException | URISyntaxException e) {
             throw new RuntimeException("[ModFile::constructor] Failed to create JarFile for: '%s'".formatted(path.toAbsolutePath()), e);
         }
@@ -113,6 +134,9 @@ public class ModFile implements IModFile {
 
     @Override
     public @Nullable InputStream getResourceAsStream(String path) throws IOException {
+        if (jar == null)
+            return null;
+
         var entry = jar.getJarEntry(path);
         if (entry == null)
             return null;

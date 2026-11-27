@@ -141,52 +141,54 @@ public final class ModLoad
 
             EventManager.fire(new ModBeforeLoadEvent(id, metadata, simpleJSON, jar));
 
-            String klassName = metadata.mainClass();
+            if (!mod.getModFile().isLowcode()) {
+                String klassName = metadata.mainClass();
 
-            if (skipClasses.contains(klassName))
-                Avoid.LOGGER.warn("Main class of mod cannot be skipped; loading anyways");
+                if (skipClasses.contains(klassName))
+                    Avoid.LOGGER.warn("Main class of mod cannot be skipped; loading anyways");
 
-            Class<?> klassUnc = classLoader.loadClass(klassName);
+                Class<?> klassUnc = classLoader.loadClass(klassName);
 
-            if (!AvoidMod.class.isAssignableFrom(klassUnc)) {
-                Avoid.LOGGER.error("Main class of mod must extend AvoidMod: {}", mod.getModFile().getPath().toAbsolutePath());
-                return;
+                if (!AvoidMod.class.isAssignableFrom(klassUnc)) {
+                    Avoid.LOGGER.error("Main class of mod must extend AvoidMod: {}", mod.getModFile().getPath().toAbsolutePath());
+                    return;
+                }
+
+                //noinspection unchecked
+                var klass = (Class<? extends AvoidMod>)
+                            klassUnc;
+
+                var meta = new AvoidModMeta(id, version, versionSystem,
+                                            name, author, description,
+                                            env, libraries, klass);
+
+                scanAllClasses(id, meta, jar == null
+                        ? getClassesForFolder(mod.getModFile().getPath(), classLoader, skipClasses, meta)
+                        : getClassesForJAR(jar, classLoader, skipClasses, meta));
+
+                ///TIP: Access mod metadata by using {@link AvoidModLoader#getLoadedAddons()}
+                AvoidModLoader.metadatas.put(id, meta);
+                AvoidModLoader.files.put(meta, mod);
+
+                var constructor = klass.getDeclaredConstructor();
+                constructor.setAccessible(true);
+
+                var instance = constructor.newInstance();
+
+                var metaField = AvoidModBase.class.getDeclaredField("meta");
+                metaField.setAccessible(true);
+                metaField.set(instance, meta);
+
+                AvoidModLoader.instances.put(meta, instance);
+                instance.onLoad();
+
+                Avoid.INSTANCE.Schedule(() -> {
+                    EventManager.fire(new ModEnablingEvent(meta));
+                    instance.onEnable();
+                });
+
+                EventManager.fire(new ModLoadedEvent(meta));
             }
-
-            //noinspection unchecked
-            var klass = (Class<? extends AvoidMod>)
-                        klassUnc;
-
-            var meta = new AvoidModMeta(id, version, versionSystem,
-                                        name, author, description,
-                                        env, libraries, klass);
-
-            scanAllClasses(id, meta, jar == null
-                    ? getClassesForFolder(mod.getModFile().getPath(), classLoader, skipClasses, meta)
-                    : getClassesForJAR(jar, classLoader, skipClasses, meta));
-
-            ///TIP: Access mod metadata by using {@link AvoidModLoader#getLoadedAddons()}
-            AvoidModLoader.metadatas.put(id, meta);
-            AvoidModLoader.files.put(meta, mod);
-
-            var constructor = klass.getDeclaredConstructor();
-            constructor.setAccessible(true);
-
-            var instance = constructor.newInstance();
-
-            var metaField = AvoidModBase.class.getDeclaredField("meta");
-            metaField.setAccessible(true);
-            metaField.set(instance, meta);
-
-            AvoidModLoader.instances.put(meta, instance);
-            instance.onLoad();
-
-            Avoid.INSTANCE.Schedule(() -> {
-                EventManager.fire(new ModEnablingEvent(meta));
-                instance.onEnable();
-            });
-
-            EventManager.fire(new ModLoadedEvent(meta));
 //        } catch (FileNotFoundException e) {
 //            Avoid.LOGGER.warn("Failed to resolve mod .jar file symbolic link target: {}", mod.getModFile().getPath().toAbsolutePath());
 //            EventManager.fire(new ModErrorEvent(mod, e));
