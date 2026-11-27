@@ -67,9 +67,9 @@ public final class EntityNative {
                             register(klass, id(path));
                         }
                     } catch (ClassNotFoundException e) {
-                        throw new RuntimeException("Failed to process internal class: '%s' /classnotfound exception".formatted(path), e);
+                        Avoid.LOGGER.error("Failed to process internal class: '%s' /classnotfound exception".formatted(path), e);
                     } catch (NoSuchMethodException e) {
-                        throw new RuntimeException("Failed to process internal class: '%s' /nosuchmethod exception".formatted(path), e);
+                        Avoid.LOGGER.error("Failed to process internal class: '%s' /nosuchmethod exception".formatted(path), e);
                     }
                 } else if (!path.contains(".") && path.toLowerCase().equals(path)) {
                     scan(path);
