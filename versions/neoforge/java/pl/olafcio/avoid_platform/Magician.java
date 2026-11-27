@@ -52,11 +52,11 @@ public class Magician {
         try (var stream = zip.getInputStream(zip.getEntry(config))) {
             json = new Gson().fromJson(new String(stream.readAllBytes(), StandardCharsets.UTF_8), JsonObject.class);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load mixin config '%s' from Avoid mod: '%s'".formatted(config, mod.manifest().get("id").getAsString()), e);
+            throw new RuntimeException("Failed to load mixin config '%s' from Avoid mod: '%s'".formatted(config, mod.metadata().id(), e));
         }
 
         configs.put(config, new MixinConfig(
-                mod.manifest().get("id").getAsString() + "-" + config,
+                mod.metadata().id() + "-" + config,
                 json.get("package").getAsString()
         ));
     }
@@ -71,17 +71,13 @@ public class Magician {
         catch (IOException e) { throw new RuntimeException("Failed to create Avoid transformed mod cache directory", e); }
 
         PreModLoader.getMods().forEach(imod -> {
-            if (imod instanceof AvoidModContainer mod && mod.manifest().has("mixins")) {
+            if (imod instanceof AvoidModContainer mod && mod.metadata().mixins().length > 0) {
                 try (var zip = new ZipFile(mod.path().toFile())) {
-                    var mixins = mod.manifest().get("mixins");
+                    var mixins = mod.metadata().mixins();
                     var configs = new HashMap<String, MixinConfig>();
 
-                    if (mixins.isJsonArray()) {
-                        for (var el : (JsonArray) mixins) {
-                            loadMixinConfig(configs, el.getAsString(), zip, mod);
-                        }
-                    } else {
-                        loadMixinConfig(configs, mixins.getAsString(), zip, mod);
+                    for (var el : mixins) {
+                        loadMixinConfig(configs, el, zip, mod);
                     }
 
                     var packages = configs.values().stream().map(MixinConfig::_package).map(pkg -> pkg.replace(".", "/") + "/").toList();
@@ -341,7 +337,7 @@ public class Magician {
                         }
                     }
                 } catch (IOException e) {
-                    throw new RuntimeException("Failed to process Avoid mod: '%s'".formatted(mod.manifest().get("id").getAsString()), e);
+                    throw new RuntimeException("Failed to process Avoid mod: '%s'".formatted(mod.manifest().get("id")), e);
                 }
             }
         });
