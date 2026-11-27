@@ -1,6 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.google.gson.Gson
 import com.google.gson.JsonArray
+import groovy.json.JsonOutput
 import net.fabricmc.loom.api.mappings.layered.MappingsNamespace
 
 import java.nio.charset.StandardCharsets
@@ -529,20 +530,46 @@ for (var n : builtinExtensions) {
         from(sourceSets.named(n).get().output)
     }
 
-    if (forge) {
-        loader_jar {
-            from(task.get())
-        }
-    } else if (sponge || paper || neoforge || forge) {
-        shadow2 {
-            from(task.get())
-        }
-    } else {
-        jar {
-            from(task.get())
-        }
+    jar {
+        from(task.get())
     }
 }
+
+jar.manifest.attributes("Lowcode": "true")
+
+var cajTask = tasks.register("createAvoidJSON") {
+    group = "build"
+
+    var projectVersion = project.version
+
+    inputs.property("projectVersion", projectVersion)
+    outputs.dir(temporaryDir)
+
+    doLast {
+        var resource = new File(temporaryDir, "avoid.mod.json")
+
+        resource.write(JsonOutput.toJson([
+                "__schema": 1,
+
+                // Metadata
+                "id": "avoid",
+                "version": projectVersion,
+                "version-system": "semver",
+
+                // Less-processed metadata
+                "name": "Avoid",
+                "author": "Olafcio",
+                "description": "Core of Avoid Framework",
+
+                // Misc
+                "jars": builtinExtensions.collect { tasks.named("jar_" + it).get().archiveFile.get().asFile.toPath().fileName.toString() }
+                                         .toList()
+        ]))
+    }
+}
+
+if ("build" in gradle.startParameter.taskNames)
+    sourceSets.main.resources.srcDir(cajTask.map { it.temporaryDir })
 
 // configure the maven publication
 publishing {
