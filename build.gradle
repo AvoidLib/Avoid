@@ -88,6 +88,9 @@ tasks.register("shadow2", ShadowJar) {
     configurations = [project.configurations.shadow]
     archiveClassifier = 'all'
 
+    exclude("META-INF/*.txt")
+    exclude("META-INF/versions/*/module-info.class")
+
     doFirst {
         if (remap) {
             remapJar.workerExecutor.await()
@@ -489,12 +492,6 @@ if (neoforge) {
     assemble.dependsOn loader_jar
 }
 
-if (sponge || paper) {
-    shadow2 {
-        from sourceSets.main.output, sourceSets.avoid_loader.output
-    }
-}
-
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
@@ -503,7 +500,9 @@ jar {
     if (!neoforge && !forge && !sponge) {
         from sourceSets.main.output, sourceSets.avoid_loader.output
     }
+}
 
+shadow2 {
     if (sponge) {
         manifest {
             from 'src/main_loader/sponge/resources/META-INF/MANIFEST.MF'
@@ -535,7 +534,7 @@ for (var n : builtinExtensions) {
     }
 }
 
-jar.manifest.attributes("Lowcode": "true")
+shadow2.manifest.attributes("Lowcode": "true")
 
 var cajTask = tasks.register("createAvoidJSON") {
     group = "build"
