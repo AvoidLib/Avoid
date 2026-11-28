@@ -1,22 +1,25 @@
 package pl.olafcio.avoid.net.client_loading.event;
 
-import net.minecraft.client.gui.GuiGraphics;
+import org.jetbrains.annotations.ApiStatus;
+import pl.olafcio.avoid.annotations.refactor.Discouraged;
 import pl.olafcio.avoid.mods.event.Cancellable;
 import pl.olafcio.avoid.net.screen.Drawer;
-import pl.olafcio.avoid_impl.net.screen.DrawerNative;
+
+import java.util.function.Supplier;
 
 /**
  * An event fired when the Mojang Logo on the loading screen is rendered.
  */
 public final class ClientLoadingScreenRenderMojangEvent extends Cancellable {
-    static final ClientLoadingScreenRenderMojangEvent INSTANCE
-           = new ClientLoadingScreenRenderMojangEvent();
+    private final Supplier<Drawer> drawerSupplier;
 
-    Object guiGraphics;
-
-    private ClientLoadingScreenRenderMojangEvent() {}
+    @Discouraged(reason = "Meant to be internal.")
+    @ApiStatus.Experimental
+    public ClientLoadingScreenRenderMojangEvent(Supplier<Drawer> drawerSupplier) {
+        this.drawerSupplier = drawerSupplier;
+    }
 
     public Drawer ctx() {
-        return DrawerNative.create((GuiGraphics) guiGraphics);
+        return drawerSupplier.get();
     }
 }

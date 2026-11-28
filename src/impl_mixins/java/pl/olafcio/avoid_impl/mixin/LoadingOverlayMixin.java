@@ -9,10 +9,8 @@ import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Slice;
 import pl.olafcio.avoid.mods.event.EventManager;
-import pl.olafcio.avoid.net.client_loading.event.ClientLoadingScreenRenderMojangEvent;
-import pl.olafcio.avoid.net.client_loading.event.ClientLoadingScreenRenderMojangEventNative;
+import pl.olafcio.avoid_impl.net.client_loading.event.ClientLoadingScreenRenderMojangEventNative;
 
 @Mixin(LoadingOverlay.class)
 public class LoadingOverlayMixin {

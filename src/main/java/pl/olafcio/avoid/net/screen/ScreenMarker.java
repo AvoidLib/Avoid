@@ -2,12 +2,8 @@ package pl.olafcio.avoid.net.screen;
 
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
-import pl.olafcio.avoid_impl.client.AvoidLibClient;
 import pl.olafcio.avoid_impl.mixininterface.IScreen;
-import pl.olafcio.avoid_impl.net.screen.NativeScreen;
 import pl.olafcio.avoid_impl.net.screen.ScreenMarkerNative;
-
-import java.lang.reflect.InvocationTargetException;
 
 @NeverRemoval
 public enum ScreenMarker {
