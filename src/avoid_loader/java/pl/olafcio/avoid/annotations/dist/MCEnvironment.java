@@ -1,6 +1,7 @@
 package pl.olafcio.avoid.annotations.dist;
 
 import org.intellij.lang.annotations.MagicConstant;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.annotation.*;
 
@@ -10,6 +11,7 @@ import java.lang.annotation.*;
  * <b>For classes:</b> This throws an error when loaded with a side mismatch.<br/>
  * <b>For others:</b> This removes the element on the other side.
  */
+@ApiStatus.Experimental
 @Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD })
 @Retention(RetentionPolicy.CLASS)
 @Documented
