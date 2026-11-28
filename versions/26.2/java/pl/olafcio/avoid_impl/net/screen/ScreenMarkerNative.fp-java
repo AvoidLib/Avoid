@@ -2,3 +2,8 @@
     ShareToLanScreen
     MultiplayerOptionsScreen
 }
+
+{
+    mc.screen
+    mc.gui.screen()
+}

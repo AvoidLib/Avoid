@@ -16,14 +16,18 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import pl.olafcio.avoid.net.screen.ScreenMarker;
+import pl.olafcio.avoid.net.screen.eventvalue.ScreenValue;
 import pl.olafcio.avoid_impl.mixininterface.IMinecraft;
 import pl.olafcio.avoid_impl.mixininterface.IScreen;
 import pl.olafcio.avoid.mods.event.EventManager;
 import pl.olafcio.avoid_impl.net.fog.delta.TickTrackerNative;
 import pl.olafcio.avoid.net.gui.event.RenderHudEvent;
 import pl.olafcio.avoid.net.screen.event.ScreenOpenEvent;
-import pl.olafcio.avoid.net.screen.event.ScreenOpenEventNative;
+import pl.olafcio.avoid_impl.net.screen.AvoidScreen;
 import pl.olafcio.avoid_impl.net.screen.DrawerNative;
+import pl.olafcio.avoid_impl.net.screen.NativeScreen;
+import pl.olafcio.avoid_impl.net.screen.NativeScreenNative;
 
 import java.util.HashMap;
 import java.util.function.Supplier;
@@ -36,13 +40,45 @@ public class GuiMixin implements IMinecraft {
         if (screen != null && OVERWRITES.containsKey(screen.getClass()))
             screen = OVERWRITES.get(screen.getClass()).get();
 
-        ScreenOpenEvent event = new ScreenOpenEvent((IScreen) screen);
+        if (screen != null && OVERWRITES.containsKey(screen.getClass()))
+            screen = OVERWRITES.get(screen.getClass()).get();
+
+        final var scr = screen;
+        final var value = new ScreenValue() {
+            private Screen mc = scr;
+            private pl.olafcio.avoid.net.screen.Screen avoid;
+
+            @Override
+            public pl.olafcio.avoid.net.screen.Screen getScreen() {
+                if (avoid == null)
+                    avoid = NativeScreenNative.create((IScreen) mc);
+
+                return avoid;
+            }
+
+            @Override
+            public void setScreen(pl.olafcio.avoid.net.screen.Screen screen) {
+                avoid = screen;
+                mc = new AvoidScreen(screen);
+            }
+
+            @Override
+            public void setScreen(ScreenMarker screen) {
+                var in = (NativeScreen) screen.create();
+
+                avoid = in;
+                mc = in.realScreen;
+            }
+        };
+
+        ScreenOpenEvent event = new ScreenOpenEvent(value);
+
         EventManager.fire(event);
 
         if (event.isCancelled())
             return;
 
-        original.call(ScreenOpenEventNative.getScreen(event));
+        original.call(value.mc);
     }
 
     @Shadow
