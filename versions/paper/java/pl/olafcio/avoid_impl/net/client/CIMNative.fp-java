@@ -1,4 +1,0 @@
-{
-    new BlockHitResult(isMiss, Vec3.atBottomCenterOf(pos), DirectionNative.convertFrom(direction), pos, isInside, isWorldBorder)
-    null
-}

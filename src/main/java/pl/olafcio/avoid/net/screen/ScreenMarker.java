@@ -107,26 +107,6 @@ public enum ScreenMarker {
     }
 
     public final pl.olafcio.avoid.net.screen.Screen create() {
-        var screen = ScreenMarkerNative.LOOKUP.get(this);
-
-        try {
-            var constructors = screen.getDeclaredConstructors();
-
-            for (var con : constructors) {
-                if (con.getParameterCount() == 0) {
-                    con.setAccessible(true);
-
-                    return new NativeScreen((IScreen) con.newInstance());
-                } else if (con.getParameterCount() == 1 && IScreen.class.isAssignableFrom(con.getParameters()[0].getType())) {
-                    con.setAccessible(true);
-
-                    return new NativeScreen((IScreen) con.newInstance(AvoidLibClient.mc.screen));
-                }
-            }
-
-            throw new RuntimeException("[ScreenMarker#create] Unable to find constructor for '%s (%s)'".formatted(this, screen));
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException("[ScreenMarker#create] Failed to construct screen '%s (%s)'".formatted(this, screen), e);
-        }
+        return ScreenMarkerNative.create(this);
     }
 }

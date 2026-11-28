@@ -23,9 +23,12 @@ import net.minecraft.client.gui.screens.worldselection.*;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Native;
 import pl.olafcio.avoid.net.screen.ScreenMarker;
+import pl.olafcio.avoid_impl.client.AvoidLibClient;
+import pl.olafcio.avoid_impl.mixininterface.IScreen;
 
 import static pl.olafcio.avoid.net.screen.ScreenMarker.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 @Native
@@ -124,5 +127,29 @@ public enum ScreenMarkerNative {
         LOOKUP.put(GAME_MENU, PauseScreen.class);
         LOOKUP.put(RECOVER_WORLD_DATA, RecoverWorldDataScreen.class);
         LOOKUP.put(PRESET_FLAT_WORLD, PresetFlatWorldScreen.class);
+    }
+
+    public static NativeScreen create(ScreenMarker marker) {
+        var screen = ScreenMarkerNative.LOOKUP.get(marker);
+
+        try {
+            var constructors = screen.getDeclaredConstructors();
+
+            for (var con : constructors) {
+                if (con.getParameterCount() == 0) {
+                    con.setAccessible(true);
+
+                    return new NativeScreen((IScreen) con.newInstance());
+                } else if (con.getParameterCount() == 1 && IScreen.class.isAssignableFrom(con.getParameters()[0].getType())) {
+                    con.setAccessible(true);
+
+                    return new NativeScreen((IScreen) con.newInstance(AvoidLibClient.mc.screen));
+                }
+            }
+
+            throw new RuntimeException("[ScreenMarker#create] Unable to find constructor for '%s (%s)'".formatted(marker, screen));
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException("[ScreenMarker#create] Failed to construct screen '%s (%s)'".formatted(marker, screen), e);
+        }
     }
 }

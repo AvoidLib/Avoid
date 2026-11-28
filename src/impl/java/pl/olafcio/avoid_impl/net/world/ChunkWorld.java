@@ -1,16 +1,11 @@
 package pl.olafcio.avoid_impl.net.world;
 
-import net.minecraft.SharedConstants;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.state.BlockOutlineRenderState;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.gamerules.GameRule;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.ApiStatus;
 import pl.olafcio.avoid.annotations.Untested;
 import pl.olafcio.avoid.annotations.env.ClientOnly;
@@ -18,25 +13,18 @@ import pl.olafcio.avoid.annotations.env.ServerOnly;
 import pl.olafcio.avoid.annotations.refactor.NeverRemoval;
 import pl.olafcio.avoid.errors.ImproperEnvironment;
 import pl.olafcio.avoid.net.block.pos.BlockPos;
-import pl.olafcio.avoid.net.client.Client;
 import pl.olafcio.avoid.net.entity.Entity;
 import pl.olafcio.avoid.net.id.Identification;
 import pl.olafcio.avoid.net.sound.category.SoundCategory;
 import pl.olafcio.avoid.net.world.Highlight;
 import pl.olafcio.avoid.net.world.block_data.BlockData;
 import pl.olafcio.avoid.net.world.vect3.IVect3;
-import pl.olafcio.avoid.platform.AvoidWrappedLoader;
-import pl.olafcio.avoid.platform.RunningEnv;
 import pl.olafcio.avoid_impl.AvoidInternal;
-import pl.olafcio.avoid_impl.client.AvoidLibClient;
 import pl.olafcio.avoid_impl.internal.VResourceKey;
-import pl.olafcio.avoid_impl.mixininterface.IBlockOutlineRenderState;
 import pl.olafcio.avoid_impl.net.block.pos.BlockPosNative;
-import pl.olafcio.avoid_impl.net.entity.EntityNative;
 import pl.olafcio.avoid_impl.net.id.IdentificationNative;
 import pl.olafcio.avoid_impl.net.world.block_data.BlockDataNative;
 
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -311,62 +299,14 @@ public final class ChunkWorld extends pl.olafcio.avoid.net.world.World {
     @ApiStatus.Experimental
     @Override
     public void highlight(BlockPos blockPos, Highlight highlight) {
-        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
-            throw new ImproperEnvironment("[World#highlight] This method can only be ran on client worlds!");
-
-        final var v_blockPos = BlockPosNative.convertFrom(blockPos);
-        final var v_blockState = this.level.getBlockState(v_blockPos);
-
-        boolean translucent = ItemBlockRenderTypes.getChunkRenderType(v_blockState).sortOnUpload();
-        boolean highContrast = AvoidLibClient.mc.options.highContrastBlockOutline().get();
-
-        final var collisionContext = CollisionContext.of(
-                                         EntityNative.convert(
-                                                 Objects.requireNonNull(Client.getCamera(), "Camera not initialized (player probably isn't fully loaded into the world)")
-                                         )
-                                     );
-
-        final var voxelShape = v_blockState.getShape(this.level, v_blockPos, collisionContext);
-
-        BlockOutlineRenderState renderState;
-
-        //TODO Wtf is this
-        if (SharedConstants.DEBUG_SHAPES) {
-            VoxelShape collision = v_blockState.getCollisionShape(this.level, v_blockPos, collisionContext);
-            VoxelShape occlusion = v_blockState.getOcclusionShape();
-            VoxelShape interaction = v_blockState.getInteractionShape(this.level, v_blockPos);
-
-            WorldNative.highlights.add(renderState = new BlockOutlineRenderState(v_blockPos, translucent, highContrast, voxelShape, collision, occlusion, interaction));
-        } else {
-            WorldNative.highlights.add(renderState = new BlockOutlineRenderState(v_blockPos, translucent, highContrast, voxelShape));
-        }
-
-        var cast = (IBlockOutlineRenderState) (Object) renderState;
-
-        cast.color         (highlight.color());
-        cast.secondaryColor(highlight.secondaryColor());
-
-        cast.         color_highcontrast(highlight.color_highcontrast());
-        cast.secondaryColor_highcontrast(highlight.secondaryColor_highcontrast());
-
-        cast.lineWidth          (highlight.lineWidth());
-        cast.lineWidth_secondary(highlight.lineWidth_secondary());
+        ClientStuff.highlightstatic(this.level, blockPos, highlight);
     }
 
     @ClientOnly
     @ApiStatus.Experimental
     @Override
     public void unhighlight(BlockPos blockPos) {
-        if (AvoidWrappedLoader.getRunningEnvironment() != RunningEnv.CLIENT)
-            throw new ImproperEnvironment("[World#highlight] This method can only be ran on client worlds!");
-
-        WorldNative.highlights.removeIf(renderState -> {
-            var pos = renderState.pos();
-
-            return pos.getX() == blockPos.x() &&
-                   pos.getY() == blockPos.y() &&
-                   pos.getZ() == blockPos.z();
-        });
+        ClientStuff.unhighlightstatic(blockPos);
     }
 
     @ApiStatus.Experimental

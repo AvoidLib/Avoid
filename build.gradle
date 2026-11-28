@@ -148,6 +148,12 @@ sourceSets {
             java      { srcDir 'src/impl_mixins/java'      }
             resources { srcDir 'src/impl_mixins/resources' }
         }
+
+        if (paper) {
+            java { srcDir 'src/impl_client/noop' }
+        } else {
+            java { srcDir 'src/impl_client/java' }
+        }
     }
 
     for (var n : builtinExtensions) {
