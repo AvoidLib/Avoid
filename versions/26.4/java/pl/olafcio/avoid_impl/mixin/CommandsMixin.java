@@ -1,18 +1,28 @@
 package pl.olafcio.avoid_impl.mixin;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.StringArgument;
+import net.minecraft.commands.suggestions.ServerOnlyCustomSuggestion;
+import net.minecraft.commands.suggestions.SuggestionContext;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.permissions.Permission;
 import net.minecraft.server.permissions.PermissionCheck;
 import net.minecraft.server.permissions.PermissionProviderCheck;
 import net.minecraft.server.permissions.PermissionSet;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,6 +40,7 @@ import pl.olafcio.avoid.net.player.PlayerNative;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import static pl.olafcio.avoid_impl.net.permission.PermissionHandlers.createAtom;
 
@@ -102,6 +113,37 @@ public class CommandsMixin {
                     return new MyUnknownExecutor(source);
                 }
             }
+
+            @Override
+            @NotNull
+            protected SuggestionProvider<CommandSourceStack> getSuggestionProvider(Function<CommandContext<?>, String[]> suggester) {
+                return new MyServerOnlyCustomSuggestion(suggester).toBrigadier();
+            }
+
+            @Override
+            @NotNull
+            protected ArgumentType<String> provideGreedyString() {
+                return StringArgument.greedyString();
+            }
+
+            @Override
+            @NotNull
+            protected ArgumentType<String> provideWordString() {
+                return StringArgument.word();
+            }
         }.finishCommands(dispatcher);
+    }
+
+    private static class MyServerOnlyCustomSuggestion implements ServerOnlyCustomSuggestion {
+        private final Function<CommandContext<?>, String[]> suggester;
+
+        public MyServerOnlyCustomSuggestion(Function<CommandContext<?>, String[]> suggester) {
+            this.suggester = suggester;
+        }
+
+        @Override
+        public CompletableFuture<Suggestions> generate(MinecraftServer server, CommandContext<? extends SuggestionContext> ctx, SuggestionsBuilder builder) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+            return BrigadierSupport.performActualSuggestions(ctx, builder, suggester);
+        }
     }
 }

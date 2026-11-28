@@ -2,15 +2,20 @@ package pl.olafcio.avoid_impl.brigadier;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import pl.olafcio.avoid.api.Avoid;
 import pl.olafcio.avoid.net.command.CommandManager;
 import pl.olafcio.avoid.net.command.SyntaxTree;
@@ -53,7 +58,7 @@ public abstract class BrigadierSupport<Src> {
 
             var unknownhandler = cmd.getUnknownHandler();
             if (unknownhandler != null)
-                root = root.then(RequiredArgumentBuilder.<Src, String>argument("input", StringArgumentType.greedyString())
+                root = root.then(RequiredArgumentBuilder.<Src, String>argument("input", provideGreedyString())
                            .executes(executing(new SyntaxTree(unknownhandler), new LinkedHashMap<>() {{
                                 put("input", new StringParameter("input"));
                            }}, name)));
@@ -77,6 +82,16 @@ public abstract class BrigadierSupport<Src> {
         });
     }
 
+    @NotNull
+    protected ArgumentType<String> provideGreedyString() {
+        return StringArgumentType.greedyString();
+    }
+
+    @NotNull
+    protected ArgumentType<String> provideWordString() {
+        return StringArgumentType.word();
+    }
+
     @SuppressWarnings("unchecked")
     private <T extends ArgumentBuilder<Src, T>> T addNodePermissions_unsafe(SyntaxTree entry, ArgumentBuilder<Src, ?> obj) {
         return addNodePermissions(entry, (T) obj);
@@ -92,7 +107,7 @@ public abstract class BrigadierSupport<Src> {
                             ? LiteralArgumentBuilder.<Src>literal(lp.getValue())
                             : RequiredArgumentBuilder.<Src, String>argument(
                                     entry.getKey().getName(),
-                                    StringArgumentType.word()
+                                    provideWordString()
                             );
 
             var entryStack = (LinkedHashMap<String, CommandParameter<?>>) stack.clone();
@@ -107,15 +122,7 @@ public abstract class BrigadierSupport<Src> {
                         ? ctx -> entry.getKey().tabcomplete()
                         : ctx -> entry.getValue().tabcomplete.apply(ctx.getInput());
 
-                node = (ArgumentBuilder<Src, ?>) rab.suggests((ctx, builder) -> {
-                    var suggestions = suggester.apply(ctx);
-                    if (suggestions != null)
-                        for (var sug : suggestions)
-                            if (sug.startsWith(builder.getRemaining()))
-                                builder.suggest(sug);
-
-                    return CompletableFuture.completedFuture(builder.build());
-                });
+                node = ((RequiredArgumentBuilder<Src, ?>) rab).suggests(getSuggestionProvider(suggester));
             }
 
             if (entry.getValue().isNodeExecutable()) {
@@ -128,6 +135,22 @@ public abstract class BrigadierSupport<Src> {
         }
 
         return root;
+    }
+
+    protected @NotNull SuggestionProvider<Src> getSuggestionProvider(Function<CommandContext<?>, String[]> suggester) {
+        return (ctx, builder) -> {
+            return performActualSuggestions(ctx, builder, suggester);
+        };
+    }
+
+    public static @NotNull CompletableFuture<Suggestions> performActualSuggestions(CommandContext<?> ctx, SuggestionsBuilder builder, Function<CommandContext<?>, String[]> suggester) {
+        var suggestions = suggester.apply(ctx);
+        if (suggestions != null)
+            for (var sug : suggestions)
+                if (sug.startsWith(builder.getRemaining()))
+                    builder.suggest(sug);
+
+        return CompletableFuture.completedFuture(builder.build());
     }
 
     protected abstract <T extends ArgumentBuilder<Src, T>> T addNodePermissions(SyntaxTree entry, T node);
